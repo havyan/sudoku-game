@@ -1,0 +1,9 @@
+html, body {
+	margin: 0;
+	height: 100%;
+}
+
+body {
+	background: -webkit-radial-gradient(#C7D2D6, #96A4AD);
+	background: radial-gradient(#C7D2D6, #96A4AD);
+}
