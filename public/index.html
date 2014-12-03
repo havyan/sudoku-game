@@ -1,24 +1,29 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-<link href="css/common.css" rel="stylesheet" type="text/css" />
-<link href="css/index.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-	<form class="login-form">
-		<div class="login-icon"></div>
-		<div class="login-user">
-			<div class="login-user-icon">
-				<img src="images/user.png"></img>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="css/common.css" rel="stylesheet" type="text/css" />
+		<link href="css/index.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<form class="login-form">
+			<div class="login-icon"></div>
+			<div class="login-user">
+				<div class="login-user-icon">
+					<img src="images/user.png"></img>
+				</div>
+				<input class="login-user-field" type="text" name="userName" autocomplete="on" placeholder="用户名" />
+				<div class="login-error">
+					您输入的用户名错误
+				</div>
 			</div>
-			<input class="login-user-field" type="text" name="userName" autocomplete="on" placeholder="�û���" />
-		</div>
-		<div class="login-button">
-			<input class="btn" type="submit" value="��½" />
-		</div>
-		<div class="remember-me">
-			<input type="checkbox">�´��Զ���½</input>
-		</div>
-	</form>
-</body>
+			<div class="login-button">
+				<input class="btn" type="submit" value="登录" />
+			</div>
+			<div class="remember-me">
+				<input type="checkbox">
+				下次自动登录</input>
+			</div>
+		</form>
+	</body>
 </html>

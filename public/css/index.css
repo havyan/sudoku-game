@@ -58,6 +58,17 @@
 	outline: none;
 }
 
+.login-error {
+	background: red;
+	height: 25px;
+	font-size: 15px;
+	line-height: 25px;
+	color: #FFF;
+	border-radius: 5px;
+	display: none;
+	padding-left: 34px;
+}
+
 .login-button {
 	height: 30px;
 	width: 100px;

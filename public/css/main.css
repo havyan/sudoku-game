@@ -1,0 +1,56 @@
+.main-header {
+	margin-top: 10px;
+	height: 32px;
+}
+
+.main-header a {
+	float: right;
+	line-height: 32px;
+	height: 32px;
+	text-decoration: none;
+}
+
+.logout {
+	margin-left: 20px;
+	margin-right: 20%;
+}
+
+.main-header span {
+	position: relative;
+	top: -10px;
+	line-height: 32px;
+	height: 32px;
+	margin-left: 5px;
+	color: #FFF;
+}
+
+.game-entrance {
+	position: fixed;
+	margin: auto;
+	width: 300px;
+	height: 100px;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.game-entrance div {
+	margin: auto;
+	text-align: center;
+	color: #FFF;
+	margin-bottom: 20px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.game-entrance input {
+	margin: auto;
+	display: block;
+	height: 30px;
+	width: 150px;
+	border-radius: 20px;
+	color: #96A4AD;
+	font-size: 16px;
+	font-weight: bold;
+}
