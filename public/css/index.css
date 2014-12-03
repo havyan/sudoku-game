@@ -90,3 +90,7 @@
 	margin: auto;
 	font-size: 8px;
 }
+
+.remember-me * {
+	vertical-align: middle;
+}
