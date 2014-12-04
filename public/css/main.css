@@ -15,11 +15,8 @@
 	margin-right: 20%;
 }
 
-.main-header span {
-	position: relative;
-	top: -10px;
-	line-height: 32px;
-	height: 32px;
+.main-header a * {
+	vertical-align: middle;
 	margin-left: 5px;
 	color: #FFF;
 }
