@@ -13,8 +13,7 @@
 				<div class="add-rule-list">
 					{{#levels}}
 					<div class="add-rule-item-row">
-						<input type="text" class="add-rule-start" value="{{start}}" />-
-						<input type="text" class="add-rule-end" value="{{end}}" />
+						<input type="text" class="add-rule-start" value="{{start}}" />-<input type="text" class="add-rule-end" value="{{end}}" />
 						<input type="text" class="add-rule-score" value="{{score}}" />
 					</div>
 					{{/levels}}

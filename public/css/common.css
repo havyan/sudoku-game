@@ -82,6 +82,11 @@ body {
 	margin-bottom: 10px;
 }
 
+.setting-panel .add-rule input {
+	color: #96A4AD;
+	text-align: center;
+}
+
 .setting-panel .add-rule-list {
 	display: inline-block;
 	width: 50%;
