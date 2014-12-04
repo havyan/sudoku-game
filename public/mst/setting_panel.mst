@@ -1,0 +1,31 @@
+<div class="setting-panel">
+	<label class="add-title">每步时间</label>
+	<a class="add-button" href="javascript:void(0);"> <img src="images/add.png" /><span>增加</span> </a>
+	<a class="delete-button" href="javascript:void(0);"> <img src="images/delete.png" /><span>删除</span> </a>
+	<div class="add-rule">
+		{{#add}}
+		<div class="add-rule-separator"></div>
+		<div class="add-rule-item">
+			<div class="add-rule-collapsed-button">收起</div>
+			<input type="radio"/><label>{{total}}秒</label>
+			<div class="add-rule-content">
+				<div class="add-rule-list-label">加分设置</div>
+				<div class="add-rule-list">
+					{{#levels}}
+					<div class="add-rule-item-row">
+						<input type="text" class="add-rule-start" value="{{start}}" />-
+						<input type="text" class="add-rule-end" value="{{end}}" />
+						<input type="text" class="add-rule-score" value="{{score}}" />
+					</div>
+					{{/levels}}
+				</div>
+				<div class="add-rule-item-actions">
+					<a class="add-button" href="javascript:void(0);"> <img src="images/add.png" /></a>
+	                <a class="delete-button" href="javascript:void(0);"> <img src="images/delete.png" /></a>
+				</div>
+			</div>
+		</div>
+		{{/add}}
+		<div class="add-rule-separator"></div>
+	</div>
+</div>

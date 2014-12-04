@@ -1,8 +1,9 @@
 html, body {
 	margin: 0;
 	height: 100%;
-	min-height:900px;
-	min-width:1200px;
+	min-height: 900px;
+	min-width: 1200px;
+	color: #FFF;
 }
 
 * {
@@ -12,6 +13,111 @@ html, body {
 body {
 	background: -webkit-radial-gradient(#C7D2D6, #96A4AD);
 	background: radial-gradient(#C7D2D6, #96A4AD);
+}
+
+.header {
+	margin-top: 10px;
+	height: 32px;
+}
+
+.header a {
+	float: right;
+	line-height: 32px;
+	height: 32px;
+	text-decoration: none;
+}
+
+.header a * {
+	vertical-align: middle;
+	margin-left: 5px;
+	color: #FFF;
+}
+
+.logout-button {
+	margin-left: 20px;
+	margin-right: 20%;
+}
+
+.setting-panel>label {
+	font-size: 25px;
+}
+
+.setting-panel .add-button {
+	margin-left: 30px;
+}
+
+.setting-panel>a {
+	line-height: 24px;
+	height: 24px;
+	text-decoration: none;
+	margin-left: 10px;
+}
+
+.setting-panel>a * {
+	vertical-align: middle;
+	color: #FFF;
+}
+
+.setting-panel .add-rule-separator {
+	height: 2px;
+	background: gray;
+	opacity: 0.3; margin-top : 10px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.setting-panel .add-rule-collapsed-button {
+	float: right;
+}
+
+.setting-panel .add-rule-item>label {
+	margin-left: 10px;
+}
+
+.setting-panel .add-rule-content {
+	position: relative;
+	width: 80%;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.setting-panel .add-rule-list {
+	display: inline-block;
+	width: 50%;
+}
+
+.setting-panel .add-rule-list-label {
+	float: left;
+	width: 15%;
+	margin-top: 5px;
+}
+
+.setting-panel .add-rule-item-actions {
+	display: inline-block;
+	width: 25%;
+}
+
+.setting-panel .add-rule-item-row {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.setting-panel .add-rule-item-row .add-rule-start {
+	width: 20%;
+}
+
+.setting-panel .add-rule-item-row .add-rule-end {
+	width: 20%;
+}
+
+.setting-panel .add-rule-score {
+	width: 40%;
+	margin-left: 10px;
+}
+
+.setting-panel .add-rule-item-actions .add-button {
+	margin-left: 0px;
 }
 
 .btn {

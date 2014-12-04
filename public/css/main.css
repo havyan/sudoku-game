@@ -1,26 +1,3 @@
-.main-header {
-	margin-top: 10px;
-	height: 32px;
-}
-
-.main-header a {
-	float: right;
-	line-height: 32px;
-	height: 32px;
-	text-decoration: none;
-}
-
-.logout {
-	margin-left: 20px;
-	margin-right: 20%;
-}
-
-.main-header a * {
-	vertical-align: middle;
-	margin-left: 5px;
-	color: #FFF;
-}
-
 .game-entrance {
 	position: fixed;
 	margin: auto;
