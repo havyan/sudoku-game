@@ -38,6 +38,10 @@ body {
 	margin-right: 20%;
 }
 
+.footer {
+	height: 30px;
+}
+
 .setting-panel .setting-title {
 	font-size: 25px;
 }
@@ -68,6 +72,13 @@ body {
 
 .setting-panel .add-rule-collapsed-button {
 	float: right;
+	text-decoration: none;
+	color: #FFF;
+	font-size: 14px;
+}
+
+.setting-panel .add-rule-item.collapsed .add-rule-content {
+	display: none;
 }
 
 .setting-panel .add-rule-item>label {
@@ -153,17 +164,22 @@ body {
 }
 
 .setting-panel .setting-actions {
+	height: 30px;
 	margin-top: 20px;
+	margin-bottom: 30px;
 }
 
 .setting-panel .setting-actions .btn {
 	float: right;
 	margin-left: 30px;
+	height: 30px;
 	width: 15%;
+	box-shadow: 2px 2px 2px #888888;
 }
 
 .setting-panel .setting-back-action {
 	background: #d58512;
+	color: #FFF;
 }
 
 .btn {

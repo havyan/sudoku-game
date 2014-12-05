@@ -1,5 +1,6 @@
 {
 	"add" : [{
+		"selected" : true,
 		"total" : 30,
 		"levels" : [0, 5, 10, 20, 30],
 		"scores" : [200, 180, 150, 100]

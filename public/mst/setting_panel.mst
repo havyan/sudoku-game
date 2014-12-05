@@ -3,38 +3,38 @@
 	<a class="add-button" href="javascript:void(0);"> <img src="images/add.png" /><span>增加</span> </a>
 	<a class="delete-button" href="javascript:void(0);"> <img src="images/delete.png" /><span>删除</span> </a>
 	<div class="add-rule">
-		{{#add}}
+		{{#each add}}
 		<div class="add-rule-separator"></div>
-		<div class="add-rule-item">
-			<div class="add-rule-collapsed-button">收起</div>
-			<input type="radio"/><label>{{total}}秒</label>
+		<div class="add-rule-item{{#if @index}} collapsed{{/if}}" index="{{@index}}">
+			<a class="add-rule-collapsed-button" href="javascript:void(0);">{{#if @index}}展开{{else}}收起{{/if}}</a>
+			<input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} /><label>{{total}}秒</label>
 			<div class="add-rule-content">
 				<div class="add-rule-list-label">加分设置</div>
 				<div class="add-rule-list">
-					{{#levels}}
-					<div class="add-rule-item-row">
+					{{#each levels}}
+					<div class="add-rule-item-row" itemIndex="{{@index}}">
 						<input type="text" class="add-rule-start" value="{{start}}" />-<input type="text" class="add-rule-end" value="{{end}}" />
 						<input type="text" class="add-rule-score" value="{{score}}" />
 					</div>
-					{{/levels}}
+					{{/each}}
 				</div>
 				<div class="add-rule-item-actions">
-					<a class="add-button" href="javascript:void(0);"> <img src="images/add.png" /></a>
-	                <a class="delete-button" href="javascript:void(0);"> <img src="images/delete.png" /></a>
+					<a class="add-item-button" href="javascript:void(0);"> <img src="images/add.png" /></a>
+	                <a class="delete-item-button" href="javascript:void(0);"> <img src="images/delete.png" /></a>
 				</div>
 			</div>
 		</div>
-		{{/add}}
+		{{/each}}
 		<div class="add-rule-separator"></div>
 	</div>
 	<label class="setting-title">减分规则</label>
 	<div class="reduce-rule">
 		{{#reduce}}
 		<div class="reduce-rule-row">
-			<label>答错或超时扣分分值</label><input type="text" class="reduce-rule-score" value="{{timeout}}" />
+			<label>答错或超时扣分分值</label><input type="text" class="reduce-rule-timeout-score" value="{{timeout}}" />
 		</div>
 		<div class="reduce-rule-row">
-			<label>Pass扣分分值</label><input type="text" class="reduce-rule-score" value="{{pass}}" />
+			<label>Pass扣分分值</label><input type="text" class="reduce-rule-pass-score" value="{{pass}}" />
 		</div>
 		{{/reduce}}
 	</div>
