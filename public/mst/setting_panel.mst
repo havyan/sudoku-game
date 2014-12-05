@@ -1,5 +1,5 @@
 <div class="setting-panel">
-	<label class="add-title">每步时间</label>
+	<label class="setting-title">每步时间</label>
 	<a class="add-button" href="javascript:void(0);"> <img src="images/add.png" /><span>增加</span> </a>
 	<a class="delete-button" href="javascript:void(0);"> <img src="images/delete.png" /><span>删除</span> </a>
 	<div class="add-rule">
@@ -26,5 +26,20 @@
 		</div>
 		{{/add}}
 		<div class="add-rule-separator"></div>
+	</div>
+	<label class="setting-title">减分规则</label>
+	<div class="reduce-rule">
+		{{#reduce}}
+		<div class="reduce-rule-row">
+			<label>答错或超时扣分分值</label><input type="text" class="reduce-rule-score" value="{{timeout}}" />
+		</div>
+		<div class="reduce-rule-row">
+			<label>Pass扣分分值</label><input type="text" class="reduce-rule-score" value="{{pass}}" />
+		</div>
+		{{/reduce}}
+	</div>
+	<div class="setting-actions">
+		<input class="btn setting-back-action" type="button" value="返回" />
+		<input class="btn setting-save-action" type="button" value="保存" />
 	</div>
 </div>

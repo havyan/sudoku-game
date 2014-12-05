@@ -38,7 +38,7 @@ body {
 	margin-right: 20%;
 }
 
-.setting-panel>label {
+.setting-panel .setting-title {
 	font-size: 25px;
 }
 
@@ -62,7 +62,6 @@ body {
 	height: 2px;
 	background: gray;
 	opacity: 0.3;
-	margin-top: 10px;
 	margin-bottom: 10px;
 	margin-top: 10px;
 }
@@ -83,7 +82,11 @@ body {
 	margin-bottom: 10px;
 }
 
-.setting-panel .add-rule input {
+.setting-panel .add-rule {
+	margin-bottom: 20px;
+}
+
+.setting-panel input {
 	color: #96A4AD;
 	text-align: center;
 }
@@ -91,6 +94,23 @@ body {
 .setting-panel .add-rule-list {
 	display: inline-block;
 	width: 50%;
+}
+
+.setting-panel .reduce-rule-row {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.setting-panel .reduce-rule-row label {
+	display: inline-block;
+	text-align: right;
+	width: 25%;
+}
+
+.setting-panel .reduce-rule-row input {
+	display: inline-block;
+	margin-left: 3%;
+	width: 25%;
 }
 
 .setting-panel .add-rule-list-label {
@@ -130,6 +150,20 @@ body {
 
 .setting-panel .add-rule-item-actions .add-button {
 	margin-left: 0px;
+}
+
+.setting-panel .setting-actions {
+	margin-top: 20px;
+}
+
+.setting-panel .setting-actions .btn {
+	float: right;
+	margin-left: 30px;
+	width: 15%;
+}
+
+.setting-panel .setting-back-action {
+	background: #d58512;
 }
 
 .btn {
