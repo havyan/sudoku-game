@@ -146,11 +146,11 @@ body {
 	margin-bottom: 5px;
 }
 
-.setting-panel .add-rule-item-row .add-rule-start {
+.setting-panel .add-rule-item-row .add-rule-from {
 	width: 22%;
 }
 
-.setting-panel .add-rule-item-row .add-rule-end {
+.setting-panel .add-rule-item-row .add-rule-to {
 	width: 22%;
 }
 

@@ -17,8 +17,8 @@
 				var levels = [];
 				for (var i = 0; i < addItem.levels.length - 1; i++) {
 					levels.push({
-						start : addItem.levels[i],
-						end : addItem.levels[i + 1],
+						from : addItem.levels[i],
+						to : addItem.levels[i + 1],
 						score : addItem.scores[i]
 					});
 				}
@@ -45,12 +45,12 @@
 			this.model.attr('add').push({
 				total : 30,
 				levels : [ {
-					start : 0,
-					end : 5,
+					from : 0,
+					to : 5,
 					score : 200
 				}, {
-					start : 5,
-					end : 10,
+					from : 5,
+					to : 10,
 					score : 100
 				} ]
 			});
@@ -64,8 +64,8 @@
 
 		'.add-rule-item-actions .add-item-button click' : function(e) {
 			this.model.attr('add').attr($(e).parents('.add-rule-item').attr('index')).attr('levels').push({
-				start : 5,
-				end : 10,
+				from : 5,
+				to : 10,
 				score : 100
 			});
 		},
@@ -78,12 +78,12 @@
 			var rule = this.getRule();
 		},
 
-		'.add-rule-start blur' : function(e) {
-			this.getLevel(e).attr('start', parseInt($(e).val()));
+		'.add-rule-from blur' : function(e) {
+			this.getLevel(e).attr('from', parseInt($(e).val()));
 		},
 
-		'.add-rule-end blur' : function(e) {
-			this.getLevel(e).attr('end', parseInt($(e).val()));
+		'.add-rule-to blur' : function(e) {
+			this.getLevel(e).attr('to', parseInt($(e).val()));
 		},
 
 		'.add-rule-score blur' : function(e) {
