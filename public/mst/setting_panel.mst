@@ -13,8 +13,8 @@
 				<div class="add-rule-list">
 					{{#each levels}}
 					<div class="add-rule-item-row" itemIndex="{{@index}}">
-						<input type="text" class="add-rule-from" value="{{from}}" />-<input type="text" class="add-rule-to" value="{{to}}" />
-						<input type="text" class="add-rule-score" value="{{score}}" />
+						<input type="text" class="add-rule-from" pattern="\d{0,10}" disabled="disabled" value="{{from}}" />-<input type="text" class="add-rule-to" pattern="\d{0,10}" value="{{to}}" />
+						<input type="text" class="add-rule-score" pattern="\d{0,10}" value="{{score}}" />
 					</div>
 					{{/each}}
 				</div>
@@ -31,10 +31,10 @@
 	<div class="reduce-rule">
 		{{#reduce}}
 		<div class="reduce-rule-row">
-			<label>答错或超时扣分分值</label><input type="text" class="reduce-rule-timeout-score" value="{{timeout}}" />
+			<label>答错或超时扣分分值</label><input type="text" class="reduce-rule-timeout-score" pattern="\d{0,10}" value="{{timeout}}" />
 		</div>
 		<div class="reduce-rule-row">
-			<label>Pass扣分分值</label><input type="text" class="reduce-rule-pass-score" value="{{pass}}" />
+			<label>Pass扣分分值</label><input type="text" class="reduce-rule-pass-score" pattern="\d{0,10}" value="{{pass}}" />
 		</div>
 		{{/reduce}}
 	</div>

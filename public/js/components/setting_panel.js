@@ -63,10 +63,22 @@
 		},
 
 		'.add-rule-item-actions .add-item-button click' : function(e) {
-			this.model.attr('add').attr($(e).parents('.add-rule-item').attr('index')).attr('levels').push({
-				from : 5,
-				to : 10,
-				score : 100
+			var addRule = this.getAddRule(e);
+			var levels = this.model.attr('add').attr($(e).parents('.add-rule-item').attr('index')).attr('levels');
+			var first = levels.attr('0');
+			first.attr('from', 0);
+			first.attr('to', '');
+			first.attr('score', '');
+			for (var i = 1; i < levels.length; i++) {
+				var level = levels.attr('' + i);
+				level.attr('from', '');
+				level.attr('to', '');
+				level.attr('score', '');
+			}
+			levels.push({
+				from : '',
+				to : addRule.total,
+				score : ''
 			});
 		},
 
