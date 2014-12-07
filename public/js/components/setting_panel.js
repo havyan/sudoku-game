@@ -11,27 +11,8 @@
 		},
 
 		setRule : function(rule) {
-			var model = new can.Model();
-			var add = [];
-			$.each(rule.add, function(index, addItem) {
-				var levels = [];
-				for (var i = 0; i < addItem.levels.length - 1; i++) {
-					levels.push({
-						from : addItem.levels[i],
-						to : addItem.levels[i + 1],
-						score : addItem.scores[i]
-					});
-				}
-				add.push({
-					selected : addItem.selected,
-					total : addItem.total,
-					levels : levels
-				});
-			});
-			model.attr('add', add);
-			model.attr('reduce', rule.reduce);
-			this.model = model;
-			return model;
+			this.model = new can.Model(rule);
+			return this.model;
 		},
 
 		'.add-rule-collapsed-button click' : function(e) {
@@ -57,33 +38,25 @@
 		},
 
 		'.setting-panel .delete-button click' : function() {
-			var index = parseInt(this.element.find('[name=addRule]:checked').parents('.add-rule-item').attr('index'));
+			var index = this.getAddRuleIndex(this.element.find('[name=addRule]:checked'));
 			this.model.attr('add').splice(index, 1);
 			this.element.find('.add-rule-item[index=0] [name=addRule]').click();
 		},
 
 		'.add-rule-item-actions .add-item-button click' : function(e) {
 			var addRule = this.getAddRule(e);
-			var levels = this.model.attr('add').attr($(e).parents('.add-rule-item').attr('index')).attr('levels');
-			var first = levels.attr('0');
-			first.attr('from', 0);
-			first.attr('to', '');
-			first.attr('score', '');
-			for (var i = 1; i < levels.length; i++) {
-				var level = levels.attr('' + i);
-				level.attr('from', '');
-				level.attr('to', '');
-				level.attr('score', '');
-			}
-			levels.push({
+			addRule.attr('levels').push({
 				from : '',
 				to : addRule.total,
 				score : ''
 			});
+			this.resetAddRule(addRule);
 		},
 
 		'.add-rule-item-actions .delete-item-button click' : function(e) {
-			this.model.attr('add').attr($(e).parents('.add-rule-item').attr('index')).attr('levels').pop();
+			var addRule = this.getAddRule(e);
+			addRule.attr('levels').pop();
+			this.resetAddRule(addRule);
 		},
 
 		'.setting-save-action click' : function() {
@@ -91,44 +64,86 @@
 		},
 
 		'.add-rule-from blur' : function(e) {
-			this.getLevel(e).attr('from', parseInt($(e).val()));
+			this.getLevel(e).attr('from', this.getValue(e));
 		},
 
 		'.add-rule-to blur' : function(e) {
-			this.getLevel(e).attr('to', parseInt($(e).val()));
+			this.getLevel(e).attr('to', this.getValue(e));
 		},
 
 		'.add-rule-score blur' : function(e) {
-			this.getLevel(e).attr('score', parseInt($(e).val()));
+			this.getLevel(e).attr('score', this.getValue(e));
 		},
 
 		'.reduce-rule-timeout-score blur' : function(e) {
-			this.model.attr('reduce').attr('timeout', parseInt($(e).val()));
+			this.model.attr('reduce').attr('timeout', this.getValue(e));
 		},
 
 		'.reduce-rule-pass-score blur' : function(e) {
-			this.model.attr('reduce').attr('pass', parseInt($(e).val()));
+			this.model.attr('reduce').attr('pass', this.getValue(e));
 		},
 
 		'input[name=addRule] click' : function(e) {
-			e = $(e);
-			var index = parseInt(e.parents('.add-rule-item').attr('index'));
+			var index = this.getAddRuleIndex(e);
 			$.each(this.model.attr('add'), function(i, addRule) {
 				addRule.attr('selected', i === index);
 			});
 		},
 
-		getAddRule : function(e) {
+		'input[type=text] keydown' : function(e) {
+			return ((event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106));
+		},
+
+		'input.add-rule-to blur' : function(e) {
+			var addRuleRowIndex = this.getAddRuleRowIndex(e);
+			var levels = this.getAddRule(e).attr('levels');
+			if (addRuleRowIndex < levels.length - 1) {
+				levels.attr(addRuleRowIndex + 1).attr('from', this.getValue(e));
+			}
+		},
+
+		getValue : function(e) {
+			var value = $(e).val();
+			return $.isNumeric(value) ? parseInt(value) : '';
+		},
+
+		resetAddRule : function(addRule) {
+			var levels = addRule.attr('levels');
+			$.each(levels, function(index, level) {
+				if (index === 0) {
+					level.attr('from', 0);
+					level.attr('to', '');
+					level.attr('score', '');
+				} else if (index === (levels.length - 1)) {
+					level.attr('from', '');
+					level.attr('to', addRule.total);
+					level.attr('score', '');
+				} else {
+					level.attr('from', '');
+					level.attr('to', '');
+					level.attr('score', '');
+				}
+			});
+		},
+
+		getAddRuleIndex : function(e) {
 			e = $(e);
-			var index = e.parents('.add-rule-item').attr('index');
-			return this.model.attr('add.' + index);
+			return parseInt(e.parents('.add-rule-item').attr('index'));
+		},
+
+		getAddRuleRowIndex : function(e) {
+			e = $(e);
+			return parseInt(e.parents('.add-rule-item-row').attr('rowIndex'));
+		},
+
+		getAddRule : function(e) {
+			return this.model.attr('add.' + this.getAddRuleIndex(e));
 		},
 
 		getLevel : function(e) {
-			e = $(e);
-			var index = e.parents('.add-rule-item').attr('index');
-			var itemIndex = e.parents('.add-rule-item-row').attr('itemIndex');
-			return this.model.attr('add.' + index + '.levels.' + itemIndex);
+			var index = this.getAddRuleIndex(e);
+			var rowIndex = this.getAddRuleRowIndex(e);
+			return this.model.attr('add.' + index + '.levels.' + rowIndex);
 		}
 	});
 })();

@@ -2,20 +2,61 @@
 	"add" : [{
 		"selected" : true,
 		"total" : 30,
-		"levels" : [0, 5, 10, 20, 30],
-		"scores" : [200, 180, 150, 100]
+		"levels" : [{
+			"from": 0,
+			"to": 5,
+			"score": 200
+		},{
+			"from": 5,
+			"to": 10,
+			"score": 180
+		},{
+			"from": 10,
+			"to": 20,
+			"score": 150
+		},{
+			"from": 20,
+			"to": 30,
+			"score": 100
+		}]
 	}, {
 		"total" : 60,
-		"levels" : [0, 5, 10, 20, 30],
-		"scores" : [200, 180, 150, 100]
-	}, {
-		"total" : 70,
-		"levels" : [0, 5, 10, 20, 30],
-		"scores" : [200, 180, 150, 100]
+		"levels" : [{
+			"from": 0,
+			"to": 10,
+			"score": 200
+		},{
+			"from": 10,
+			"to": 20,
+			"score": 180
+		},{
+			"from": 20,
+			"to": 40,
+			"score": 150
+		},{
+			"from": 40,
+			"to": 60,
+			"score": 100
+		}]
 	}, {
 		"total" : 90,
-		"levels" : [0, 5, 10, 20, 30],
-		"scores" : [200, 180, 150, 100]
+		"levels" : [{
+			"from": 0,
+			"to": 15,
+			"score": 200
+		},{
+			"from": 15,
+			"to": 30,
+			"score": 180
+		},{
+			"from": 30,
+			"to": 60,
+			"score": 150
+		},{
+			"from": 60,
+			"to": 90,
+			"score": 100
+		}]
 	}
 	],
 	"reduce" : {
