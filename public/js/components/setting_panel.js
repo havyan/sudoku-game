@@ -1,8 +1,22 @@
 (function() {
 	can.Control('Components.SettingPanel', {}, {
 		init : function(element, options) {
+			var self = this;
 			var model = this.setRule(options.rule);
-			element.html(can.view('mst/setting_panel.mst', model));
+			element.html(can.view('mst/setting_panel.mst', model, {
+				disableLastTo : function(ruleRow) {
+					var isLast = false;
+					self.model.attr('add').forEach(function(addRule) {
+						var levels = addRule.attr('levels');
+						isLast = isLast || (levels.indexOf(ruleRow) === levels.length - 1);
+					});
+					if (isLast) {
+						return 'disabled="disabled"';
+					} else {
+						return '';
+					}
+				}
+			}));
 		},
 
 		getRule : function() {
@@ -38,25 +52,39 @@
 		},
 
 		'.setting-panel .delete-button click' : function() {
-			var index = this.getAddRuleIndex(this.element.find('[name=addRule]:checked'));
-			this.model.attr('add').splice(index, 1);
-			this.element.find('.add-rule-item[index=0] [name=addRule]').click();
+			if (this.model.attr('add').length > 1) {
+				var index = this.getAddRuleIndex(this.element.find('[name=addRule]:checked'));
+				this.model.attr('add').splice(index, 1);
+				this.model.attr('add.0.selected', true);
+			} else {
+				alert('不能删除最后一条规则！');
+			}
 		},
 
-		'.add-rule-item-actions .add-item-button click' : function(e) {
+		'.add-rule-row-actions .add-row-button click' : function(e) {
 			var addRule = this.getAddRule(e);
-			addRule.attr('levels').push({
-				from : '',
-				to : addRule.total,
-				score : ''
-			});
-			this.resetAddRule(addRule);
+			var levels = addRule.attr('levels');
+			if (levels.length < 4) {
+				addRule.attr('levels').push({
+					from : '',
+					to : addRule.total,
+					score : ''
+				});
+				this.resetAddRule(addRule);
+			} else {
+				alert('最多可以定制4行！');
+			}
 		},
 
-		'.add-rule-item-actions .delete-item-button click' : function(e) {
+		'.add-rule-row-actions .delete-row-button click' : function(e) {
 			var addRule = this.getAddRule(e);
-			addRule.attr('levels').pop();
-			this.resetAddRule(addRule);
+			var levels = addRule.attr('levels');
+			if (levels.length > 1) {
+				addRule.attr('levels').pop();
+				this.resetAddRule(addRule);
+			} else {
+				alert('不能删除最后一行！');
+			}
 		},
 
 		'.setting-save-action click' : function() {
@@ -67,11 +95,31 @@
 			this.getLevel(e).attr('from', this.getValue(e));
 		},
 
-		'.add-rule-to blur' : function(e) {
-			this.getLevel(e).attr('to', this.getValue(e));
-		},
-
 		'.add-rule-score blur' : function(e) {
+			var level = this.getLevel(e);
+			var value = this.getValue(e);
+			if ($.isNumeric(value)) {
+				level.attr('score', this.getValue(e));
+				var addRuleRowIndex = this.getAddRuleRowIndex(e);
+				var min = 0, max = Number.MAX_VALUE;
+				var levels = this.getAddRule(e).attr('levels');
+				for (var i = 0; i < addRuleRowIndex; i++) {
+					var score = levels.attr(i + '.score');
+					if ($.isNumeric(score)) {
+						max = Math.min(max, score);
+					}
+				}
+				for (var i = addRuleRowIndex + 1; i < levels.length; i++) {
+					var score = levels.attr(i + '.score');
+					if ($.isNumeric(score)) {
+						min = Math.max(min, score);
+					}
+				}
+				if (value <= min || value >= max) {
+					level.attr('score', '');
+					alert('您必须输入介于' + min + '和' + max + '之间的值！');
+				}
+			}
 			this.getLevel(e).attr('score', this.getValue(e));
 		},
 
@@ -91,14 +139,39 @@
 		},
 
 		'input[type=text] keydown' : function(e) {
-			return ((event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106));
+			return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106)
+					|| event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
 		},
 
-		'input.add-rule-to blur' : function(e) {
-			var addRuleRowIndex = this.getAddRuleRowIndex(e);
-			var levels = this.getAddRule(e).attr('levels');
-			if (addRuleRowIndex < levels.length - 1) {
-				levels.attr(addRuleRowIndex + 1).attr('from', this.getValue(e));
+		'.add-rule-to blur' : function(e) {
+			var level = this.getLevel(e);
+			var value = this.getValue(e);
+			if ($.isNumeric(value)) {
+				level.attr('to', this.getValue(e));
+				var addRuleRowIndex = this.getAddRuleRowIndex(e);
+				var addRule = this.getAddRule(e);
+				var min = 0, max = addRule.total;
+				var levels = addRule.attr('levels');
+				for (var i = 0; i < addRuleRowIndex; i++) {
+					var to = levels.attr(i + '.to');
+					if ($.isNumeric(to)) {
+						min = Math.max(min, to);
+					}
+				}
+				for (var i = addRuleRowIndex + 1; i < levels.length; i++) {
+					var to = levels.attr(i + '.to');
+					if ($.isNumeric(to)) {
+						max = Math.min(max, to);
+					}
+				}
+				if (value <= min || value >= max) {
+					level.attr('to', '');
+					alert('您必须输入介于' + min + '和' + max + '之间的值！');
+				} else {
+					if (addRuleRowIndex < levels.length - 1) {
+						levels.attr(addRuleRowIndex + 1).attr('from', this.getValue(e));
+					}
+				}
 			}
 		},
 
@@ -109,21 +182,28 @@
 
 		resetAddRule : function(addRule) {
 			var levels = addRule.attr('levels');
-			$.each(levels, function(index, level) {
-				if (index === 0) {
-					level.attr('from', 0);
-					level.attr('to', '');
-					level.attr('score', '');
-				} else if (index === (levels.length - 1)) {
-					level.attr('from', '');
-					level.attr('to', addRule.total);
-					level.attr('score', '');
-				} else {
-					level.attr('from', '');
-					level.attr('to', '');
-					level.attr('score', '');
-				}
-			});
+			if (levels.length > 1) {
+				$.each(levels, function(index, level) {
+					if (index === 0) {
+						level.attr('from', 0);
+						level.attr('to', '');
+						level.attr('score', '');
+					} else if (index === (levels.length - 1)) {
+						level.attr('from', '');
+						level.attr('to', addRule.total);
+						level.attr('score', '');
+					} else {
+						level.attr('from', '');
+						level.attr('to', '');
+						level.attr('score', '');
+					}
+				});
+			} else {
+				var level = levels.attr(0);
+				level.attr('from', 0);
+				level.attr('to', addRule.total);
+				level.attr('score', '');
+			}
 		},
 
 		getAddRuleIndex : function(e) {

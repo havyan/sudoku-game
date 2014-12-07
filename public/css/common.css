@@ -130,13 +130,13 @@ body {
 	margin-top: 5px;
 }
 
-.setting-panel .add-rule-item-actions {
+.setting-panel .add-rule-row-actions {
 	display: inline-block;
 	height: 16px;
 	width: 25%;
 }
 
-.setting-panel .add-rule-item-actions img {
+.setting-panel .add-rule-row-actions img {
 	height: 16px;
 	width: 16px;
 }
@@ -159,7 +159,7 @@ body {
 	margin-left: 10px;
 }
 
-.setting-panel .add-rule-item-actions .add-button {
+.setting-panel .add-rule-row-actions .add-button {
 	margin-left: 0px;
 }
 
