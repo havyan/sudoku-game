@@ -144,17 +144,20 @@
 .game-panel {
 	position: relative;
 	margin-top: 50px;
+	width: 1583px;
 }
 
 .game-state-area {
 	position: absolute;
 	top: 0px;
+	min-width: 230px;
 	right: 0px;
 	width: 13%;
 	border: solid gray 1px;
 	border-radius: 2px;
 	box-shadow: -2px 2px 2px gray;
 	padding: 10px;
+	transition: right 0.5s;
 }
 
 .game-state-area > * {
@@ -162,7 +165,7 @@
 }
 
 .game-player {
-	width: 32%;
+	width: 31%;
 	display: inline-block;
 	margin-top: 10px;
 }
@@ -170,11 +173,12 @@
 .game-player * {
 	margin: auto;
 	text-align: center;
+	font-size: 15px;
 }
 
 .game-player-icon img {
-	width: 48px;
-	height: 48px;
+	width: 32px;
+	height: 32px;
 }
 
 .game-state-separator {
@@ -190,10 +194,11 @@
 .game-ranking-table {
 	width: 90%;
 	text-align: center;
+	font-size: 14px;
 }
 
 .game-chat-messages {
-	height: 200px;
+	height: 150px;
 	padding: 0px 5px 5px 20px;
 	overflow-y: auto;
 	width: 80%;
@@ -201,7 +206,7 @@
 }
 
 .game-message-input {
-	height: 100px;
+	height: 80px;
 	display: block;
 	width: 80%;
 	border-radius: 5px;
