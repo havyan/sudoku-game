@@ -1,5 +1,9 @@
 (function() {
-	can.Control('Components.SettingPanel', {}, {
+	can.Control('Components.SettingPanel', {
+		defaults : {
+			maxLevelCount: 4
+		}
+	}, {
 		init : function(element, options) {
 			var self = this;
 			var model = this.setRule(options.rule);
@@ -64,7 +68,7 @@
 		'.add-rule-row-actions .add-row-button click' : function(e) {
 			var addRule = this.getAddRule(e);
 			var levels = addRule.attr('levels');
-			if (levels.length < 4) {
+			if (levels.length < this.options.maxLevelCount) {
 				addRule.attr('levels').push({
 					from : '',
 					to : addRule.total,
@@ -72,7 +76,7 @@
 				});
 				this.resetAddRule(addRule);
 			} else {
-				alert('最多可以定制4行！');
+				alert('最多可以定制' + this.options.maxLevelCount +'行！');
 			}
 		},
 

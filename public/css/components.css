@@ -116,6 +116,8 @@
 	margin-left: 10px;
 }
 
+.
+
 .setting-panel .add-rule-row-actions .add-button {
 	margin-left: 0px;
 }
@@ -137,4 +139,101 @@
 .setting-panel .setting-back-action {
 	background: #d58512;
 	color: #FFF;
+}
+
+.game-panel {
+	position: relative;
+	margin-top: 50px;
+}
+
+.game-state-area {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 13%;
+	border: solid gray 1px;
+	border-radius: 2px;
+	box-shadow: -2px 2px 2px gray;
+	padding: 10px;
+}
+
+.game-state-area > * {
+	margin: auto;
+}
+
+.game-player {
+	width: 32%;
+	display: inline-block;
+	margin-top: 10px;
+}
+
+.game-player * {
+	margin: auto;
+	text-align: center;
+}
+
+.game-player-icon img {
+	width: 48px;
+	height: 48px;
+}
+
+.game-state-separator {
+	width: 80%;
+	height: 2px;
+	background: gray;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	opacity: 0.5;
+}
+
+.game-ranking-table {
+	width: 90%;
+	text-align: center;
+}
+
+.game-chat-messages {
+	height: 200px;
+	padding: 0px 5px 5px 20px;
+	overflow-y: auto;
+	width: 80%;
+	font-size: 12px;
+}
+
+.game-message-input {
+	height: 100px;
+	display: block;
+	width: 80%;
+	border-radius: 5px;
+	box-shadow: 1px 1px 1px gray;
+	margin-bottom: 20px;
+}
+
+.game-state-actions {
+	width: 75%;
+	margin: auto;
+}
+
+.game-state-actions input {
+	width: 45%;
+}
+
+.game-quit-message-button {
+	float: right;
+}
+
+.game-state-hide-button {
+	position: absolute;
+	top: 48%;
+	left: -20px;
+	height: 40px;
+	line-height: 40px;
+	width: 20px;
+	font-size: 12px;
+	text-decoration: none;
+	border-radius: 2px 0px 0px 2px;
+	color: #FFF;
+	z-index: 999;
+	background: #96A4AD;
+	box-shadow: -2px 2px 2px gray;
 }

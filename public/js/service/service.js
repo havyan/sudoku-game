@@ -10,4 +10,16 @@
 			});
 		}
 	}, {});
+	
+	can.Model('Service.Game', {
+		getGame : function(id, success, error) {
+			return $.ajax({
+				type : 'GET',
+				url : '/games/' + id,
+				dataType : 'json',
+				success : success,
+				error : error
+			});
+		}
+	}, {});
 })();
