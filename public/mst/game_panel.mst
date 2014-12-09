@@ -1,0 +1,13 @@
+<div class="game-panel">
+	<div class="chessboard-area"></div>
+	<div class="game-state-area">
+		<div class="player-area">
+			{{#players}}
+			<div class="game-player">
+				<div class="game-player-icon"></div>
+				<div class="game-player-name">{{name}}</div>
+			</div>
+			{{/players}}
+		</div>
+	</div>
+</div>

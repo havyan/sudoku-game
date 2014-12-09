@@ -1,0 +1,140 @@
+
+.setting-panel .setting-title {
+	font-size: 25px;
+}
+
+.setting-panel .add-button {
+	margin-left: 30px;
+}
+
+.setting-panel>a {
+	line-height: 24px;
+	height: 24px;
+	text-decoration: none;
+	margin-left: 10px;
+}
+
+.setting-panel>a * {
+	vertical-align: middle;
+	color: #FFF;
+}
+
+.setting-panel .add-rule-separator {
+	height: 2px;
+	background: gray;
+	opacity: 0.3;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.setting-panel .add-rule-collapsed-button {
+	float: right;
+	text-decoration: none;
+	color: #FFF;
+	font-size: 14px;
+}
+
+.setting-panel .add-rule-item.collapsed .add-rule-content {
+	display: none;
+}
+
+.setting-panel .add-rule-item>label {
+	margin-left: 10px;
+}
+
+.setting-panel .add-rule-content {
+	position: relative;
+	width: 80%;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.setting-panel .add-rule {
+	margin-bottom: 20px;
+}
+
+.setting-panel input {
+	color: #96A4AD;
+	text-align: center;
+}
+
+.setting-panel .add-rule-list {
+	display: inline-block;
+	width: 50%;
+}
+
+.setting-panel .reduce-rule-row {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.setting-panel .reduce-rule-row label {
+	display: inline-block;
+	text-align: right;
+	width: 25%;
+}
+
+.setting-panel .reduce-rule-row input {
+	display: inline-block;
+	margin-left: 3%;
+	width: 25%;
+}
+
+.setting-panel .add-rule-list-label {
+	float: left;
+	width: 15%;
+	margin-top: 5px;
+}
+
+.setting-panel .add-rule-row-actions {
+	display: inline-block;
+	height: 16px;
+	width: 25%;
+}
+
+.setting-panel .add-rule-row-actions img {
+	height: 16px;
+	width: 16px;
+}
+
+.setting-panel .add-rule-item-row {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.setting-panel .add-rule-item-row .add-rule-from {
+	width: 22%;
+}
+
+.setting-panel .add-rule-item-row .add-rule-to {
+	width: 22%;
+}
+
+.setting-panel .add-rule-score {
+	width: 42%;
+	margin-left: 10px;
+}
+
+.setting-panel .add-rule-row-actions .add-button {
+	margin-left: 0px;
+}
+
+.setting-panel .setting-actions {
+	height: 30px;
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+.setting-panel .setting-actions .btn {
+	float: right;
+	margin-left: 30px;
+	height: 30px;
+	width: 15%;
+	box-shadow: 2px 2px 2px #888888;
+}
+
+.setting-panel .setting-back-action {
+	background: #d58512;
+	color: #FFF;
+}

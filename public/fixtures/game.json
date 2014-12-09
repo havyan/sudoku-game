@@ -1,0 +1,45 @@
+{
+	"players": [{
+		"id": "user1",
+		"name": "张三",
+		"grade": 7,
+		"points": 6200,
+		"rounds": 200,
+		"winrate": 90
+	},{
+		"id": "user2",
+		"name": "李四",
+		"grade": 8,
+		"points": 8200,
+		"rounds": 300,
+		"winrate": 90
+	},{
+		"id": "user3",
+		"name": "王麻子",
+		"grade": 3,
+		"points": 1200,
+		"rounds": 20,
+		"winrate": 50
+	},{
+		"id": "user4",
+		"name": "小明",
+		"grade": 3,
+		"points": 2200,
+		"rounds": 100,
+		"winrate": 30
+	},{
+		"id": "user5",
+		"name": "小红",
+		"grade": 5,
+		"points": 3600,
+		"rounds": 120,
+		"winrate": 70
+	},{
+		"id": "user6",
+		"name": "小胖",
+		"grade": 4,
+		"points": 2200,
+		"rounds": 130,
+		"winrate": 65
+	}]
+}
