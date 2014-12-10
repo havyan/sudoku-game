@@ -82,8 +82,9 @@
 }
 
 .setting-panel .add-rule-list-label {
-	float: left;
+	display: inline-block;
 	width: 15%;
+	vertical-align: top;
 	margin-top: 5px;
 }
 
