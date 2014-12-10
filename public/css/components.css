@@ -243,3 +243,38 @@
 	background: #96A4AD;
 	box-shadow: -2px 2px 2px gray;
 }
+
+.game-main-area {
+	min-height: 600px;
+}
+
+.game-waiting {
+	margin: auto;
+	position: relative;
+	text-align: center;
+	top: 250px;
+}
+
+.game-waiting-info {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+.game-start-button {
+	margin: auto;
+	display: block;
+	height: 30px;
+	width: 120px;
+	border-radius: 20px;
+	color: #96A4AD;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.game-countdown-number {
+	font-size: 250px;
+	font-style: bold;
+	position: relative;
+	top: 100px;
+	text-align: center;
+}

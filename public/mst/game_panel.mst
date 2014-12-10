@@ -1,5 +1,5 @@
 <div class="game-panel">
-	<div class="chessboard-area"></div>
+	<div class="game-main-area"></div>
 	<div class="game-state-area">
 		<div class="player-area">
 			{{#players}}
