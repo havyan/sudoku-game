@@ -12,6 +12,7 @@
 				ranking.push({
 					id: player.attr('id'),
 					name: player.attr('name'),
+					position: index + 1,
 					score: 0
 				});
 			});
