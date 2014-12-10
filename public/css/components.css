@@ -52,6 +52,7 @@
 
 .setting-panel .add-rule {
 	margin-bottom: 20px;
+	min-width: 600px;
 }
 
 .setting-panel input {
@@ -61,7 +62,7 @@
 
 .setting-panel .add-rule-list {
 	display: inline-block;
-	width: 50%;
+	width: 55%;
 }
 
 .setting-panel .reduce-rule-row {
@@ -83,7 +84,7 @@
 
 .setting-panel .add-rule-list-label {
 	display: inline-block;
-	width: 15%;
+	width: 18%;
 	vertical-align: top;
 	margin-top: 5px;
 }
@@ -91,7 +92,7 @@
 .setting-panel .add-rule-row-actions {
 	display: inline-block;
 	height: 16px;
-	width: 25%;
+	width: 15%;
 }
 
 .setting-panel .add-rule-row-actions img {
