@@ -4,6 +4,7 @@ html, body {
 	min-height: 900px;
 	min-width: 1200px;
 	color: #FFF;
+	overflow-x: hidden;
 }
 
 * {
