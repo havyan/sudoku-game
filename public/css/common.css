@@ -43,6 +43,20 @@ body {
 	height: 30px;
 }
 
+.scroll-panel::-webkit-scrollbar {
+  -webkit-appearance:none !important;
+  width: 11px !important;
+  border:2px solid white !important;
+  border-radius:8px !important;
+  background-color:#ccc !important
+}
+
+.scroll-panel::-webkit-scrollbar-thumb {
+  border-radius:8px !important;
+  border:2px solid white !important;
+  background-color:rgba(0,0,0,.5) !important
+}
+
 .btn {
 	display: inline-block;
 	*zoom: 1;

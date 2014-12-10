@@ -27,7 +27,7 @@
 	    	</tbody>
 		</table>
 		<div class="game-state-separator"></div>
-		<div class="game-chat-messages">
+		<div class="game-chat-messages scroll-panel">
 			{{#messages}}
 			<p>{{from}}: {{content}}</p>
 			{{/messages}}

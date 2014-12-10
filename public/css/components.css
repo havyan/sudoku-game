@@ -199,9 +199,9 @@
 
 .game-chat-messages {
 	height: 150px;
-	padding: 0px 5px 5px 20px;
+	padding: 0px 5px 5px 5px;
 	overflow-y: auto;
-	width: 80%;
+	width: 75%;
 	font-size: 12px;
 }
 
