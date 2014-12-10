@@ -24,14 +24,14 @@
 				from : '小明',
 				content : '我们是害虫'
 			},{
-				from : '小明',
-				content : '我们是害虫'
+				from : '张三',
+				content : '快点啊，我等你等到花儿也谢了。'
+			},{
+				from : '李四',
+				content : '我是七星瓢虫'
 			},{
 				from : '小明',
-				content : '我们是害虫'
-			},{
-				from : '小明',
-				content : '我们是害虫'
+				content : '你们的水平太差了，我后悔跟你们一起玩了。'
 			},{
 				from : '小明',
 				content : '我们是害虫'
