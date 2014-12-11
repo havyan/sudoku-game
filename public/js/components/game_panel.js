@@ -27,7 +27,7 @@
 				this.showOngoing(oldStatus === 'waiting');
 			}
 		},
-		
+
 		'.game-start-button click' : function() {
 			this.options.model.start();
 		},
@@ -37,26 +37,28 @@
 		},
 
 		showOngoing : function(countdown) {
-			var mainArea = $('.game-main-area');
-			var showChessbord = function() {};
-			if(countdown) {
-				mainArea.empty().html('<div class="game-countdown-number" style="display:none;"></div>');
+			$('.game-main-area').empty();
+			var countdownElement = $('.game-countdown-number');
+			var showChessbord = function() {
+			};
+			if (countdown) {
 				var leftSeconds = 5;
-				var countdownElement = mainArea.find('.game-countdown-number');
 				countdownElement.html(leftSeconds).fadeIn(500);
 				var nextNumber = function() {
 					countdownElement.hide();
-					countdownElement.html(--leftSeconds)
+					countdownElement.html(leftSeconds)
 					countdownElement.fadeIn(500);
-					if(leftSeconds > 0) {
+					if (leftSeconds >= 0) {
 						setTimeout(nextNumber, 1000);
 					} else {
-						setTimeout(function() {
-							countdownElement.remove();
-						}, 1000)
+						countdownElement.hide();
+						showChessbord();
 					}
+					leftSeconds--;
 				};
-				setTimeout(nextNumber, 1000);
+				nextNumber();
+			} else {
+				showChessbord();
 			}
 		}
 	});

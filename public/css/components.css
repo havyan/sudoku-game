@@ -274,7 +274,8 @@
 .game-countdown-number {
 	font-size: 250px;
 	font-style: bold;
-	position: relative;
-	top: 100px;
+	position: absolute;
+	top: 28%;
+	left: 42%;
 	text-align: center;
 }

@@ -1,5 +1,6 @@
 <div class="game-panel">
 	<div class="game-main-area"></div>
+	<div class="game-countdown-number" style="display:none;"></div>
 	<div class="game-state-area">
 		<div class="player-area">
 			{{#players}}
