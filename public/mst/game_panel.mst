@@ -27,13 +27,13 @@
 	    		{{/ranking}}
 	    	</tbody>
 		</table>
-		<div class="game-state-separator"></div>
+		<div class="game-state-separator light"></div>
 		<div class="game-chat-messages scroll-panel">
 			{{#messages}}
 			<p>{{from}}: {{content}}</p>
 			{{/messages}}
 		</div>
-		<div class="game-state-separator"></div>
+		<div class="game-state-separator light"></div>
 		<textarea class="game-message-input"></textarea>
 		<div class="game-state-actions">
 			<input class="btn game-quit-message-button" type="button" value="退出" />

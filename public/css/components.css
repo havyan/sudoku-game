@@ -157,7 +157,7 @@
 	border: solid gray 1px;
 	border-radius: 2px;
 	box-shadow: -2px 2px 2px gray;
-	padding: 10px;
+	padding: 10px 0px 10px 10px;
 	transition: right 0.5s;
 }
 
@@ -190,6 +190,12 @@
 	margin-top: 20px;
 	margin-bottom: 20px;
 	opacity: 0.5;
+}
+
+.game-state-separator.light {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	opacity: 0.2;
 }
 
 .game-ranking-table {
