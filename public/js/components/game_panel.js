@@ -28,8 +28,26 @@
 			}
 		},
 
+		'.game-player mouseenter' : function(e) {
+			var player = this.getPlayer(e);
+			$('body').append(can.view('mst/player_tip.mst', player));
+			var playerTip = $('.player-tip');
+			playerTip.css({
+				top : e.offset().top + e.outerHeight(),
+				left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
+			});
+		},
+
+		'.game-player mouseleave' : function(e) {
+			$('.player-tip').remove();
+		},
+
 		'.game-start-button click' : function() {
 			this.options.model.start();
+		},
+
+		getPlayer : function(e) {
+			return this.options.model.attr('players.' + e.attr('index'));
 		},
 
 		showWaiting : function() {

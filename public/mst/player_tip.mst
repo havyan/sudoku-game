@@ -1,0 +1,16 @@
+<div class="player-tip">
+	<div class="player-tip-content">
+		<div class="player-tip-row">
+			<div class="player-tip-name">段位</div><div class="player-tip-value">{{grade}}</div>
+		</div>
+		<div class="player-tip-row">
+			<div class="player-tip-name">积分</div><div class="player-tip-value">{{points}}</div>
+		</div>
+		<div class="player-tip-row">
+			<div class="player-tip-name">总局数</div><div class="player-tip-value">{{rounds}}</div>
+		</div>	
+		<div class="player-tip-row">
+			<div class="player-tip-name">胜率</div><div class="player-tip-value">{{winrate}}</div>
+		</div>		
+	</div>
+</div>

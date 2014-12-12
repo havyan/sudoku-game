@@ -3,12 +3,12 @@
 	<div class="game-countdown-number" style="display:none;"></div>
 	<div class="game-state-area">
 		<div class="player-area">
-			{{#players}}
-			<div class="game-player">
+			{{#each players}}
+			<div class="game-player" index="{{@index}}">
 				<div class="game-player-icon"><img src="images/user.png"></div>
 				<div class="game-player-name">{{name}}</div>
 			</div>
-			{{/players}}
+			{{/each}}
 		</div>
 		<div class="game-state-separator"></div>
 		<table class="game-ranking-table">
