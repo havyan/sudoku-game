@@ -177,9 +177,17 @@
 	font-size: 15px;
 }
 
+.game-player-icon {
+	background: #C7D2D6;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+}
+
 .game-player-icon img {
 	width: 32px;
 	height: 32px;
+	margin-top: 4px;
 }
 
 .game-state-separator {
