@@ -149,8 +149,8 @@
 }
 
 .game-state-area {
-	position: absolute;
-	top: 0px;
+	position: fixed;
+	top: 10%;
 	min-width: 230px;
 	right: 0px;
 	width: 13%;
