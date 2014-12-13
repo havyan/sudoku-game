@@ -3,11 +3,14 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg class="player-list-background" width="120px" height="120px" version="1.1" xmlns="http://www.w3.org/2000/svg">
 	<defs>
-		<linearGradient id="player_tip_bg" x1="0%" y1="0%" x2="0%" y2="100%">
+		<linearGradient id="player_tip_bg">
 			<stop offset="0%" style="stop-color:rgb(243,243,243);stop-opacity:1" />
 			<stop offset="100%" style="stop-color:rgb(214,214,214);stop-opacity:1" />
 		</linearGradient>
+		<filter id="player_tip_filter" x="0" y="0" width="200%" height="200%">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1" />
+		</filter>
 	</defs>
-	<path d="M60 0, 66 10, 118 10, A 2 2, 0, 0, 0, 120 12 L 120 118 A 2 2, 0, 0, 0, 118 120 H 2 A 2 2, 0, 0, 0, 0 118 V 12 A 2 2, 0, 0, 0, 2 10 H 54 L 60 0 Z" style="fill:url(#player_tip_bg);stroke:#000000;stroke-width:1">
+	<path d="M60 0, 66 10, 118 10, A 2 2, 0, 0, 0, 120 12 L 120 118 A 2 2, 0, 0, 0, 118 120 H 2 A 2 2, 0, 0, 0, 0 118 V 12 A 2 2, 0, 0, 0, 2 10 H 54 L 60 0 Z" style="fill:url(#player_tip_bg);stroke:#000000;stroke-width:1;">
 	</path>
 </svg>
