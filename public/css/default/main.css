@@ -1,0 +1,32 @@
+.game-entrance {
+	position: fixed;
+	margin: auto;
+	width: 300px;
+	height: 100px;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.game-entrance div {
+	margin: auto;
+	text-align: center;
+	color: #FFF;
+	margin-bottom: 20px;
+	font-size: 20px;
+}
+
+.game-entrance a {
+	padding: 0px;
+	text-decoration: none;
+	margin: auto;
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	width: 150px;
+	border-radius: 20px;
+	color: #96A4AD;
+	font-size: 16px;
+	font-weight: bold;
+}

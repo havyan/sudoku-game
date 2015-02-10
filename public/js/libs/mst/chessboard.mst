@@ -1,0 +1,18 @@
+<div class="chessboard-container">
+	<div class="game-timer-panel"></div>
+	<div class="active-status" active="{{active}}"></div>
+	<div class="chessboard-actions">
+		<div class="chessboard-edit-mode">
+			<a class="btn chessboard-submit-mode-action action-active">提交</a><a class="btn chessboard-draft-mode-action">草稿</a>
+		</div>
+		<div class="chessboard-view-mode">
+			<a class="btn chessboard-plain-mode-action action-active">普通</a><a class="btn chessboard-options-mode-action">候选</a>
+		</div>
+	</div>
+	<div class="chessboard-panel"></div>
+	{{#if active}}<input type="button" class="btn pass-action" value="PASS"/>{{/if}}
+	<div class="score-message correct-message"></div>
+	<div class="score-message incorrect-message"></div>
+	<div class="score-message timeout-message"></div>
+	<div class="score-message pass-message"></div>
+</div>

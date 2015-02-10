@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <script src="{{@basejs}}/js/libs3/jquery/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+    Users: {{userlist}}
+    <form action="{{@base}}/mongodb/user/save" method="post">
+        <label for="id">user.id</label><input id="id" name="id" />
+        <label for="name">user.name</label><input id="name" name="name" />
+        <label for="pwd">user.pwd</label><input id="pwd" name="pwd" />
+        <input type="submit" value="提交" />
+    </form>
+</body>
+</html>

@@ -1,0 +1,1 @@
+<div class="chess-cell-container" xy="{{xy}}" style="left: {{left}}; top: {{top}}; width: {{width}}; height: {{height}};"></div>

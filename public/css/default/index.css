@@ -1,0 +1,95 @@
+.login-form {
+	position: fixed;
+	margin: auto;
+	width: 300px;
+	height: 300px;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.login-icon {
+	width: 60px;
+	height: 60px;
+	background: #FFF url(../../imgs/default/user.png);
+	margin: auto;
+	border-radius: 30px;
+	outline: none;
+	border-color: rgba(255, 255, 255, .75);
+	box-shadow: 0 0 8px rgba(255, 255, 255, .5);
+	margin-bottom: 40px;
+}
+
+.login-user {
+	height: 40px;
+	border-radius: 5px;
+	background: #FFF;
+	margin-bottom: 40px;
+}
+
+.login-user-icon {
+	height: 34px;
+	width: 34px;
+	margin-top: 3px;
+	margin-left: 3px;
+	background: #FFF;
+	float: left;
+	background: #FFF;
+	float: left;
+	border-radius: 5px;
+}
+
+.login-user-icon img {
+	width: 100%;
+	height: 100%;
+}
+
+.login-user-field {
+	height: 38px;
+	margin-left: 3px;
+	width: calc(100% - 45px);
+	border-radius: 5px;
+	border-width: 0px;
+	font-size: 22px;
+}
+
+.login-user-field:focus {
+	outline: none;
+}
+
+.login-error {
+	background: red;
+	height: 25px;
+	font-size: 15px;
+	line-height: 25px;
+	color: #FFF;
+	border-radius: 5px;
+	padding-left: 34px;
+}
+
+.login-button {
+	height: 30px;
+	width: 100px;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+.login-button input {
+	width: 100%;
+	height: 100%;
+	border-radius: 15px;
+	color: #96A4AD;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.remember-me {
+	width: 100px;
+	margin: auto;
+	font-size: 8px;
+}
+
+.remember-me * {
+	vertical-align: middle;
+}

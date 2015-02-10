@@ -1,0 +1,45 @@
+<div class="setting-panel">
+	<label class="setting-title">每步时间</label>
+	<a class="add-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /><span>增加</span> </a>
+	<a class="delete-button" href="javascript:void(0);"> <img src="imgs/default/delete.png" /><span>删除</span> </a>
+	<div class="add-rule">
+		{{#each add}}
+		<div class="add-rule-separator"></div>
+		<div class="add-rule-item{{#if @index}} collapsed{{/if}}" index="{{@index}}">
+			<a class="add-rule-collapsed-button" href="javascript:void(0);">{{#if @index}}展开{{else}}收起{{/if}}</a>
+			<input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} /><label>{{total}}秒</label>
+			<div class="add-rule-content">
+				<div class="add-rule-list-label">加分设置</div>
+				<div class="add-rule-list">
+					{{#each levels}}
+					<div class="add-rule-item-row" rowIndex="{{@index}}">
+						<input type="text" class="add-rule-from" disabled="disabled" value="{{from}}" />-<input type="text" class="add-rule-to" value="{{to}}" {{disableLastTo this}} />
+						<input type="text" class="add-rule-score" value="{{score}}" />
+					</div>
+					{{/each}}
+				</div>
+				<div class="add-rule-row-actions">
+					<a class="add-row-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /></a>
+	                <a class="delete-row-button" href="javascript:void(0);"> <img src="imgs/default/delete.png" /></a>
+				</div>
+			</div>
+		</div>
+		{{/each}}
+		<div class="add-rule-separator"></div>
+	</div>
+	<label class="setting-title">减分规则</label>
+	<div class="reduce-rule">
+		{{#reduce}}
+		<div class="reduce-rule-row">
+			<label>答错或超时扣分分值</label><input type="text" class="reduce-rule-timeout-score" value="{{timeout}}" />
+		</div>
+		<div class="reduce-rule-row">
+			<label>Pass扣分分值</label><input type="text" class="reduce-rule-pass-score" value="{{pass}}" />
+		</div>
+		{{/reduce}}
+	</div>
+	<div class="setting-actions">
+		<input class="btn setting-back-action" type="button" value="返回" />
+		<input class="btn setting-save-action" type="button" value="保存" />
+	</div>
+</div>

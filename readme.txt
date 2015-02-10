@@ -1,0 +1,1 @@
+支持ie9+、chrome、firefox、opera、safari
