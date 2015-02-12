@@ -44,9 +44,6 @@
 		initActive : function() {
 			var self = this;
 			self.attr('active', self.attr('currentPlayer') === self.attr('account'));
-			this.bind('currentPlayer', function(ev, value) {
-				self.attr('active', value === self.attr('account'));
-			});
 		},
 
 		sortRanking : function() {
@@ -266,6 +263,7 @@
 			});
 			this.eventCenter.on('switch-player', function(account) {
 				self.attr('currentPlayer', account);
+				self.attr('active', account === self.attr('account'));
 			});
 			this.eventCenter.on('ellapsed-time', function(ellapsedTime) {
 				var remainingTime = self.attr('rule.add.total') - ellapsedTime;
@@ -289,6 +287,9 @@
 			});
 			this.eventCenter.on('game-over', function() {
 				self.attr('status', 'over');
+			});
+			this.eventCenter.on('game-destroyed', function() {
+				self.attr('status', 'destroyed');
 			});
 		},
 

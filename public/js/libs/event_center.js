@@ -9,7 +9,8 @@
 			                  'countdown-stage', 'cell-correct', 'cell-incorrect',
 			                  'switch-player', 'ellapsed-time', 'score-changed',
 			                  'game-over', 'puzzle-init', 'player-quit',
-			                  'max-timeout-reached', 'game-destroyed', 'quit-countdown-stage'];
+			                  'max-timeout-reached', 'game-destroyed', 'quit-countdown-stage',
+			                  'game-destroyed'];
 			gameTopics.forEach(function(gameTopic) {
 				self.socket.on(gameTopic, function(data) {
 					var args = JSON.parse(data);

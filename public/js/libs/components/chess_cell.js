@@ -50,14 +50,63 @@
 			if (this.options.parentModel.isDraft()) {
 				var draft = this.options.model.attr('draft');
 				var code = event.keyCode;
-				if (code === 46) {
-					this.options.parentModel.popDraft(this.options.xy);
-				} else if (code === 8) {
-					this.options.parentModel.clearDraft(this.options.xy);
-				} else if ((code > 64 && code < 91) || (code > 47 && code < 58)) {
-					this.options.parentModel.addDraft(this.options.xy, String.fromCharCode(event.keyCode));
-				} else if (code > 95 && code < 106) {
-					this.options.parentModel.addDraft(this.options.xy, code - 96);
+				var codeMap = {
+					normal : {
+						'192' : '`',
+						'188' : ',',
+						'190' : '.',
+						'191' : '/',
+						'186' : ';',
+						'222' : "'",
+						'219' : '[',
+						'221' : ']',
+						'220' : '\\',
+						'189' : '-',
+						'187' : '=',
+						'106' : '*',
+						'107' : '+',
+						'109' : '-',
+						'110' : '.',
+						'111' : '/'
+					},
+					shift : {
+						'192' : '~',
+						'188' : '<',
+						'190' : '>',
+						'191' : '?',
+						'186' : ':',
+						'222' : '"',
+						'219' : '{',
+						'221' : '}',
+						'220' : '|',
+						'48' : ')',
+						'49' : '!',
+						'50' : '@',
+						'51' : '#',
+						'52' : '$',
+						'53' : '%',
+						'54' : '^',
+						'55' : '&',
+						'56' : '*',
+						'57' : '('
+					}
+				};
+				if (event.shiftKey) {
+					if (codeMap.shift['' + code]) {
+						this.options.parentModel.addDraft(this.options.xy, codeMap.shift['' + code]);
+					}
+				} else {
+					if (codeMap.normal['' + code]) {
+						this.options.parentModel.addDraft(this.options.xy, codeMap.normal['' + code]);
+					} else if (code === 46) {
+						this.options.parentModel.popDraft(this.options.xy);
+					} else if (code === 8) {
+						this.options.parentModel.clearDraft(this.options.xy);
+					} else if ((code > 64 && code < 91) || (code > 47 && code < 58)) {
+						this.options.parentModel.addDraft(this.options.xy, String.fromCharCode(code));
+					} else if (code > 95 && code < 106) {
+						this.options.parentModel.addDraft(this.options.xy, code - 96);
+					}
 				}
 			}
 		},

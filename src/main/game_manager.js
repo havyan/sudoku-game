@@ -100,12 +100,14 @@ GameManager.prototype.destroyGame = function(gameId) {
 	var game = _.find(this.games, {
 		'id' : gameId
 	});
-	game.destroy();
-	var index = _.findIndex(this.games, {
-		'id' : gameId
-	});
-	this.games.splice(index, 1);
-	this.trigger('game-destroyed', game);
+	if (game) {
+		game.destroy();
+		var index = _.findIndex(this.games, {
+			'id' : gameId
+		});
+		this.games.splice(index, 1);
+		this.trigger('game-destroyed', game);
+	}
 };
 
 GameManager.prototype.getGame = function(id) {

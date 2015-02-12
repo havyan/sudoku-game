@@ -46,6 +46,8 @@
 				this.showOngoing();
 			} else if (newStatus === 'over') {
 				alert('Game Over!!!');
+			} else if (newStatus === 'destroyed') {
+				window.location.href = "/main";
 			}
 		},
 

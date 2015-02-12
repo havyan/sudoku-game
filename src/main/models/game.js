@@ -120,9 +120,9 @@ Game.prototype.nextPlayer = function() {
 						self.trigger('max-timeout-reached', currentPlayer);
 						var countdown = QUIT_COUNTDOWN_TOTAL;
 						self.timeoutTimer[currentPlayer] = setInterval(function() {
-							if (countdown >= 0) {
+							countdown--;
+							if (countdown > 0) {
 								self.trigger('quit-countdown-stage', currentPlayer, countdown);
-								countdown--;
 							} else {
 								clearInterval(self.timeoutTimer[currentPlayer]);
 								self.playerQuit(currentPlayer);
