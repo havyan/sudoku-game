@@ -102,6 +102,7 @@
 						this.options.parentModel.popDraft(this.options.xy);
 					} else if (code === 8) {
 						this.options.parentModel.clearDraft(this.options.xy);
+						return false;
 					} else if ((code > 64 && code < 91) || (code > 47 && code < 58)) {
 						this.options.parentModel.addDraft(this.options.xy, String.fromCharCode(code));
 					} else if (code > 95 && code < 106) {
