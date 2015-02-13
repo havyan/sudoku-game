@@ -15,12 +15,18 @@ var CAPACITY = 9;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var MAX_TIMEOUT_ROUNDS = 10;
+var PROPS = {
+	magnifier : 99,
+	impunity : 10,
+	delay : 10
+};
 
 var SCORE_TYPE = {
 	INCORRECT : "incorrect",
 	CORRECT : "correct",
 	TIMEOUT : "timeout",
-	PASS : "pass"
+	PASS : "pass",
+	IMPUNITY : "impunity"
 };
 
 var Game = function(mode) {
@@ -32,9 +38,12 @@ var Game = function(mode) {
 	this.mode = mode || GameMode.MODE9;
 	this.initCellValues = {};
 	this.userCellValues = {};
+	this.knownCellValues = {};
 	this.scores = {};
 	this.timeoutCounter = {};
 	this.timeoutTimer = {};
+	this.props = {};
+	this.changedScores = {};
 };
 
 Game.prototype.isWaiting = function() {
@@ -149,15 +158,22 @@ Game.prototype.updateScore = function(type, xy) {
 		score = -(rule.reduce.timeout);
 	} else if (type === SCORE_TYPE.PASS) {
 		score = -(rule.reduce.pass);
+	} else if (type === SCORE_TYPE.IMPUNITY) {
+		if (this.changedScores[account] && this.changedScores[account].changed < 0) {
+			score = -this.changedScores[account].changed;
+		}
 	}
-	var oldScore = this.scores[account] || 0;
-	this.scores[account] = oldScore + score;
-	this.trigger('score-changed', account, {
-		score : this.scores[account],
-		changed : score,
-		type : type,
-		xy : xy
-	});
+	if (score !== 0) {
+		var oldScore = this.scores[account] || 0;
+		this.scores[account] = oldScore + score;
+		this.changedScores[account] = {
+			score : this.scores[account],
+			changed : score,
+			type : type,
+			xy : xy
+		};
+		this.trigger('score-changed', account, this.changedScores[account]);
+	}
 	return score;
 };
 
@@ -177,6 +193,8 @@ Game.prototype.playerJoin = function(account, cb) {
 			cb(error);
 		} else {
 			self.players.push(user);
+			self.props[user.account] = _.cloneDeep(PROPS);
+			self.knownCellValues[user.account] = {};
 			self.trigger('player-joined', user.toJSON());
 			cb(null, user);
 		}
@@ -194,6 +212,8 @@ Game.prototype.playerQuit = function(account, cb) {
 	_.remove(this.players, function(player) {
 		return player.account === account;
 	});
+	delete this.props[account];
+	delete this.knownCellValues[account];
 	this.trigger('player-quit', account);
 	// TODO write back score to user
 	if (cb) {
@@ -233,7 +253,7 @@ Game.prototype.isFull = function() {
 	return this.players.length >= CAPACITY;
 };
 
-Game.prototype.toJSON = function() {
+Game.prototype.toJSON = function(account) {
 	return {
 		id : this.id,
 		mode : this.mode,
@@ -246,7 +266,10 @@ Game.prototype.toJSON = function() {
 		currentPlayer : this.currentPlayer,
 		messages : this.messages,
 		scores : this.scores,
-		status : this.status
+		status : this.status,
+		account : account ? account : undefined,
+		props : account ? this.props[account] : this.props,
+		knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues
 	};
 };
 
@@ -256,40 +279,100 @@ Game.prototype.findPlayer = function(account) {
 	});
 };
 
-Game.prototype.submit = function(xy, value) {
-	value = parseInt(value);
-	this.stopPlayerTimer();
-	var result = {};
-	var over = false;
-	if (this.answer[xy] === value) {
-		this.userCellValues[xy] = value;
-		this.trigger('cell-correct', xy, value);
-		result.score = this.updateScore(SCORE_TYPE.CORRECT, xy);
-		over = this.isOver();
-		result.success = true;
+Game.prototype.submit = function(account, xy, value, cb) {
+	this.timeoutCounter[account] = 0;
+	if (account === this.currentPlayer) {
+		value = parseInt(value);
+		this.stopPlayerTimer();
+		var result = {};
+		var over = false;
+		if (this.answer[xy] === value) {
+			this.userCellValues[xy] = value;
+			for (key in this.knownCellValues) {
+				delete this.knownCellValues[key][xy];
+			}
+			this.trigger('cell-correct', xy, value);
+			result.score = this.updateScore(SCORE_TYPE.CORRECT, xy);
+			over = this.isOver();
+			result.success = true;
+		} else {
+			this.trigger('cell-incorrect', xy);
+			result.score = this.updateScore(SCORE_TYPE.INCORRECT, xy);
+			result.success = false;
+		}
+		if (over) {
+			result.over = true;
+			this.status = OVER;
+			this.trigger('game-over');
+		} else {
+			this.nextPlayer();
+		}
+		cb(null, result);
 	} else {
-		this.trigger('cell-incorrect', xy);
-		result.score = this.updateScore(SCORE_TYPE.INCORRECT, xy);
-		result.success = false;
+		cb('You do not have permission now');
 	}
-	if (over) {
-		result.over = true;
-		this.status = OVER;
-		this.trigger('game-over');
-	} else {
-		this.nextPlayer();
-	}
-	return result;
 };
 
-Game.prototype.pass = function() {
-	this.stopPlayerTimer();
-	var score = this.updateScore(SCORE_TYPE.PASS);
-	this.nextPlayer();
-	return {
-		success : true,
-		score : score
-	};
+Game.prototype.autoSubmit = function(account, xy, cb) {
+	var self = this;
+	var props = this.props[account];
+	if (props.magnifier > 0) {
+		var value = this.answer[xy];
+		this.submit(account, xy, value, function(error, result) {
+			if (error) {
+				cb(error);
+			} else {
+				props.magnifier--;
+				self.trigger('magnifier-changed', props.magnifier);
+				cb(null, result);
+			}
+		});
+	} else {
+		cb('You do not have enough magnifiers');
+	}
+};
+
+Game.prototype.impunish = function(account, cb) {
+	if (account === this.currentPlayer) {
+		var props = this.props[account];
+		if (props.impunity > 0) {
+			props.impunity--;
+			this.updateScore(SCORE_TYPE.IMPUNITY);
+			cb(null);
+		} else {
+			cb('You do not have enough impunities');
+		}
+	} else {
+		cb('You do not have permission now');
+	}
+};
+
+Game.prototype.peep = function(account, xy, cb) {
+	this.timeoutCounter[account] = 0;
+	var self = this;
+	var props = this.props[account];
+	if (props.magnifier > 0) {
+		this.knownCellValues[account][xy] = this.answer[xy];
+		props.magnifier--;
+		cb(null, this.knownCellValues[account][xy]);
+	} else {
+		cb('You do not have enough magnifiers');
+	}
+};
+
+Game.prototype.pass = function(account, cb) {
+	this.timeoutCounter[account] = 0;
+	if (account === this.currentPlayer) {
+		this.stopPlayerTimer();
+		var score = this.updateScore(SCORE_TYPE.PASS);
+		this.nextPlayer();
+		cb(null, {
+			success : true,
+			score : score
+		});
+	} else {
+		cb('You do not have permission now');
+	}
 };
 
 Game.prototype.init = function(cb) {

@@ -5,6 +5,7 @@ var HttpError = function(message, status) {
 
 HttpError.NOT_FOUND = 404;
 HttpError.SERVER_ERROR = 500;
+HttpError.UNAUTHORIZED = 401;
 
 HttpError.prototype.__defineGetter__('message', function() {
 	return this.error.message;

@@ -74,6 +74,42 @@
 			});
 		},
 
+		autoSubmit : function(gameId, xy, success, error) {
+			return $.ajax({
+				type : 'post',
+				url : '/game/' + gameId + '/auto_submit',
+				data : {
+					xy : xy
+				},
+				dataType : 'json',
+				success : success,
+				error : error
+			});
+		},
+
+		peep : function(gameId, xy, success, error) {
+			return $.ajax({
+				type : 'post',
+				url : '/game/' + gameId + '/peep',
+				data : {
+					xy : xy
+				},
+				dataType : 'json',
+				success : success,
+				error : error
+			});
+		},
+
+		impunish : function(gameId, success, error) {
+			return $.ajax({
+				type : 'post',
+				url : '/game/' + gameId + '/impunity',
+				dataType : 'json',
+				success : success,
+				error : error
+			});
+		},
+
 		goahead : function(gameId, success, error) {
 			return $.ajax({
 				type : 'post',

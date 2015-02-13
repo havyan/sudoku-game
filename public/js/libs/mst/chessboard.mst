@@ -10,15 +10,17 @@
 		</div>
 	</div>
 	<ul class="props">
+		{{#props}}
 		<li class="magnifier prop-item">
-			<a><img src="/imgs/default/prop_magnifier.png"> x 100</a>
+			<a><img src="/imgs/default/prop_magnifier.png"> x {{magnifier}}</a>
 		</li>
 		<li class="impunity prop-item">
-			<a><img src="/imgs/default/prop_impunity.png"> x 10</a>
+			<a><img src="/imgs/default/prop_impunity.png"> x {{impunity}}</a>
 		</li>
 		<li class="delay prop-item">
-			<a><img src="/imgs/default/prop_delay.png"> x 10</a>
+			<a><img src="/imgs/default/prop_delay.png"> x {{delay}}</a>
 		</li>
+		{{/props}}
 	</ul>
 	<div class="chessboard-panel"></div>
 	{{#if active}}<input type="button" class="btn pass-action" value="PASS"/>{{/if}}
@@ -26,4 +28,5 @@
 	<div class="score-message incorrect-message"></div>
 	<div class="score-message timeout-message"></div>
 	<div class="score-message pass-message"></div>
+	<div class="score-message impunity-message"></div>
 </div>

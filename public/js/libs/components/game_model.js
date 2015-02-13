@@ -68,6 +68,7 @@
 			var cellDatas = {};
 			var initCellValues = this.attr('initCellValues');
 			var userCellValues = this.attr('userCellValues');
+			var knownCellValues = this.attr('knownCellValues');
 			var allCellOptions = this.calcAllCellOptions();
 			$.each(this.attr('mode'), function(index, position) {
 				var i = 0;
@@ -78,8 +79,8 @@
 						if (!cellDatas[xy]) {
 							cellDatas[xy] = {
 								xy : xy,
-								isInit : initCellValues.attr(xy) ? true : false,
-								value : initCellValues.attr(xy) || userCellValues.attr(xy),
+								type : initCellValues.attr(xy) ? 'init' : userCellValues.attr(xy) ? 'user' : knownCellValues.attr(xy) ? 'known' : '',
+								value : initCellValues.attr(xy) || userCellValues.attr(xy) || knownCellValues.attr(xy),
 								cellOptions : allCellOptions[xy] || [],
 								draft : []
 							};
@@ -95,15 +96,31 @@
 				self.attr('initCellValues').each(function(value, xy) {
 					var cellData = cellDatas.attr(xy);
 					if (cellData) {
-						cellData.attr('isInit', true);
+						cellData.attr('type', 'init');
 						cellData.attr('value', value);
 					}
+					self.attr('knownCellValues').removeAttr(xy);
 				});
 				self.resetAllCellOptions();
 			});
 			this.attr('userCellValues').bind('change', function(ev, xy, how, value) {
-				self.attr('cellDatas').attr(xy).attr('value', value);
+				var cellData = self.attr('cellDatas').attr(xy);
+				if (cellData) {
+					cellData.attr('type', 'user');
+					cellData.attr('value', value);
+				}
+				self.attr('knownCellValues').removeAttr(xy);
 				self.resetAllCellOptions();
+			});
+			this.attr('knownCellValues').bind('change', function(ev, xy, how, value) {
+				if (how !== 'remove') {
+					var cellData = self.attr('cellDatas').attr(xy);
+					if (cellData) {
+						cellData.attr('type', 'known');
+						cellData.attr('value', value);
+					}
+					self.resetAllCellOptions();
+				}
 			});
 		},
 
@@ -166,6 +183,23 @@
 			});
 		},
 
+		autoSubmit : function(xy) {
+			var self = this;
+			Rest.Game.autoSubmit(this.attr('id'), xy, function(result) {
+				self.attr('props.magnifier', self.attr('props.magnifier') - 1);
+			}, function() {
+			});
+		},
+
+		peep : function(xy) {
+			var self = this;
+			Rest.Game.peep(this.attr('id'), xy, function(result) {
+				self.attr('props.magnifier', self.attr('props.magnifier') - 1);
+				self.attr('knownCellValues').attr(xy, result.result);
+			}, function() {
+			});
+		},
+
 		goahead : function() {
 			Rest.Game.goahead(this.attr('id'), function(result) {
 			}, function() {
@@ -180,6 +214,17 @@
 
 		quit : function(success) {
 			Rest.Game.quit(this.attr('id'), function(result) {
+				if (success) {
+					success(result);
+				}
+			}, function() {
+			});
+		},
+
+		impunish : function(success) {
+			var self = this;
+			Rest.Game.impunish(this.attr('id'), function(result) {
+				self.attr('props.impunity', self.attr('props.impunity') - 1);
 				if (success) {
 					success(result);
 				}
@@ -405,7 +450,7 @@
 		},
 
 		getCellValue : function(xy) {
-			var cellValue = this.attr('initCellValues').attr(xy) || this.attr('userCellValues').attr(xy);
+			var cellValue = this.attr('initCellValues').attr(xy) || this.attr('userCellValues').attr(xy) || this.attr('knownCellValues').attr(xy);
 			var cellDatas = this.attr('cellDatas');
 			if (cellDatas) {
 				var cellData = cellDatas.attr(xy);
@@ -418,6 +463,10 @@
 				}
 			}
 			return cellValue;
+		},
+
+		getKnownCellValue : function(xy) {
+			return this.attr('knownCellValues').attr(xy);
 		},
 
 		getRealCellValue : function(xy) {

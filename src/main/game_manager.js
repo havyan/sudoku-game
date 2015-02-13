@@ -44,33 +44,45 @@ GameManager.prototype.playerQuit = function(account, cb) {
 	}
 };
 
-GameManager.prototype.submit = function(account, gameId, xy, value) {
+GameManager.prototype.submit = function(gameId, account, xy, value, cb) {
 	var self = this;
 	var game = this.getGame(gameId);
-	if (account === game.currentPlayer) {
-		var result = game.submit(xy, value);
-		if (result.over) {
+	var result = game.submit(account, xy, value, function(error, result) {
+		if (result && result.over) {
 			setTimeout(function() {
 				self.destroyGame(gameId);
 			}, 60000);
 		}
-		return result;
-	} else {
-		return {
-			error : 'You do not have permission now'
-		};
-	}
+		cb(error, result);
+	});
 };
 
-GameManager.prototype.pass = function(account, gameId) {
+GameManager.prototype.autoSubmit = function(gameId, account, xy, cb) {
+	var self = this;
 	var game = this.getGame(gameId);
-	if (account === game.currentPlayer) {
-		return game.pass();
-	} else {
-		return {
-			error : 'You do not have permission now'
-		};
-	}
+	var result = game.autoSubmit(account, xy, function(error, result) {
+		if (result && result.over) {
+			setTimeout(function() {
+				self.destroyGame(gameId);
+			}, 60000);
+		}
+		cb(error, result);
+	});
+};
+
+GameManager.prototype.peep = function(gameId, account, xy, cb) {
+	var game = this.getGame(gameId);
+	var result = game.peep(account, xy, cb);
+};
+
+GameManager.prototype.impunish = function(gameId, account, cb) {
+	var game = this.getGame(gameId);
+	var result = game.impunish(account, cb);
+};
+
+GameManager.prototype.pass = function(gameId, account, cb) {
+	var game = this.getGame(gameId);
+	game.pass(account, cb);
 };
 
 GameManager.prototype.goahead = function(account, gameId) {

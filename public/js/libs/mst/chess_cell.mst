@@ -1,5 +1,5 @@
 <div class="chess-cell {{cellClass}}" xy="{{xy}}" {{#unless value}}tabindex="-1"{{/unless}}>
-	<div class="chess-cell-value {{#if isInit}}init{{else}}user{{/if}} {{#value}}has-value{{/value}}">
+	<div class="chess-cell-value {{type}} {{#value}}has-value{{/value}}">
 		{{value}}
 	</div>
 	<div class="chess-cell-options">

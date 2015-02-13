@@ -513,6 +513,12 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	z-index: 100;
 }
 
+.chess-cell-value.known.has-value {
+	color: #607E02;
+	outline: 1px solid #607E02;
+	z-index: 100;
+}
+
 .chess-cell-options {
 	display: none;
 	color: #4193ec;
@@ -661,7 +667,7 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	font-size: 30px;
 }
 
-.timeout-message {
+.timeout-message, .impunity-message {
 	font-size: 40px;
 }
 
@@ -730,29 +736,34 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	position: absolute;
 	left: 0px;
 	bottom: 0px;
-	padding: 5px;
+	padding: 0px;
 	margin: 0px;
 	border-style: solid;
 	border-color: #D0D0D0;
-	border-width: 3px;
+	border-width: 1px;
 	z-index: 100;
 }
 
 .props li {
 	list-style: none;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	padding: 10px;
 	height: 32px;
 	opacity: 0.5;
 }
 
-.props li:hover {
+.props li.active {
+	background: white;
 	opacity: 1;
+	color: gray;
 }
 
 .props li a {
 	display: block;
 	height: 100%;
+	cursor: default;
+}
+
+.props li.active a {
 	cursor: pointer;
 }
 

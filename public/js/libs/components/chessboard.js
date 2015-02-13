@@ -155,8 +155,14 @@
 			this.options.model.pass();
 		},
 
-		'{model} active' : function() {
+		'{model} active' : function(model, e, active) {
 			this.numberPicker.hide();
+			this.element.find('.props .magnifier').removeClass('active');
+			if (active && model.attr('changedScore.changed') < 0 && model.attr('props.impunity') > 0) {
+				this.element.find('.props .impunity').addClass('active');
+			} else {
+				this.element.find('.props .impunity').removeClass('active');
+			}
 		},
 
 		'{model} editStatus' : function(model, e, status) {
@@ -194,6 +200,8 @@
 			var text = changedScore.changed > 0 ? '+' + changedScore.changed : '' + changedScore.changed;
 			if (changedScore.type === 'timeout') {
 				text = '超时 ' + text;
+			} else if (changedScore.type === 'impunity') {
+				text = '免罚 ' + text;
 			}
 			var chessboardElement = this.element.find('.chessboard-container');
 			var messageElement = this.element.find('.' + changedScore.type + '-message');
@@ -225,18 +233,16 @@
 			var container = element.parent();
 			var xy = container.attr('xy');
 			if (model.isDraft()) {
-				// var options = _.difference([1, 2, 3, 4, 5, 6, 7, 8, 9], model.attr('cellDatas.' + xy + '.draft').attr());
-				// if (!model.getRealCellValue(xy)) {
-				// this.showNumberPicker(container, options, function(value) {
-				// model.addDraft(xy, value);
-				// });
-				// }
+
 			} else if (model.isActive()) {
-				if (model.getCellValue(xy) === undefined) {
+				if (model.getKnownCellValue(xy) !== undefined) {
+					model.submit(xy, model.getKnownCellValue(xy));
+					model.attr('active', false);
+				} else if (model.getCellValue(xy) === undefined) {
 					var cellOptions = model.calcCellOptions(xy);
 					this.showNumberPicker(container, cellOptions, function(value) {
-						model.attr('active', false);
 						model.submit(xy, value);
+						model.attr('active', false);
 					});
 				}
 			}
@@ -245,6 +251,41 @@
 				event.stopPropagation();
 			} else if (window.event) {
 				window.event.cancelBubble = true;
+			}
+		},
+
+		'.chess-cell focus' : function(element, event) {
+			var model = this.options.model;
+			var container = element.parent();
+			var xy = container.attr('xy');
+			this.lastChassCell = this.chessCells[xy];
+			if (model.isDraft() || model.isActive()) {
+				if (model.attr('props.magnifier') > 0) {
+					this.element.find('.props .magnifier').addClass('active');
+				}
+			}
+		},
+
+		'.chess-cell blur' : function(element, event) {
+			this.element.find('.props .magnifier').removeClass('active');
+		},
+
+		'.magnifier click' : function(element, event) {
+			if (this.options.model.isDraft()) {
+				this.options.model.peep(this.lastChassCell.options.xy);
+			} else {
+				if (this.options.model.isActive() && this.lastChassCell) {
+					this.options.model.autoSubmit(this.lastChassCell.options.xy);
+				}
+			}
+		},
+
+		'.impunity click' : function(element, event) {
+			var self = this;
+			if (this.options.model.isActive() && this.options.model.attr('changedScore.changed') < 0) {
+				this.options.model.impunish(function() {
+					self.element.find('.props .impunity').removeClass('active');
+				});
 			}
 		},
 

@@ -7,8 +7,7 @@ module.exports = function(router) {
 	router.get('/game/:id', function(req, res, next) {
 		var game = global.gameManager.getGame(req.params.id);
 		if (game) {
-			game = game.toJSON();
-			game.account = req.session.account;
+			game = game.toJSON(req.session.account);
 			res.send(game);
 		} else {
 			winston.error('No game for id: ' + req.params.id);
@@ -34,7 +33,48 @@ module.exports = function(router) {
 	});
 
 	router.post('/game/:id/submit', function(req, res, next) {
-		res.send(global.gameManager.submit(req.session.account, req.params.id, req.body.xy, req.body.value));
+		global.gameManager.submit(req.params.id, req.session.account, req.body.xy, req.body.value, function(error, result) {
+			if (error) {
+				next(new HttpError(error, HttpError.UNAUTHORIZED));
+			} else {
+				res.send(result);
+			}
+		});
+	});
+
+	router.post('/game/:id/auto_submit', function(req, res, next) {
+		global.gameManager.autoSubmit(req.params.id, req.session.account, req.body.xy, function(error, result) {
+			if (error) {
+				next(new HttpError(error, HttpError.UNAUTHORIZED));
+			} else {
+				res.send(result);
+			}
+		});
+	});
+
+	router.post('/game/:id/impunity', function(req, res, next) {
+		global.gameManager.impunish(req.params.id, req.session.account, function(error) {
+			if (error) {
+				next(new HttpError(error, HttpError.UNAUTHORIZED));
+			} else {
+				res.send({
+					status : 'ok'
+				});
+			}
+		});
+	});
+
+	router.post('/game/:id/peep', function(req, res, next) {
+		global.gameManager.peep(req.params.id, req.session.account, req.body.xy, function(error, result) {
+			if (error) {
+				next(new HttpError(error, HttpError.UNAUTHORIZED));
+			} else {
+				res.send({
+					status : 'ok',
+					result : result
+				});
+			}
+		});
 	});
 
 	router.post('/game/:id/goahead', function(req, res, next) {
@@ -47,7 +87,7 @@ module.exports = function(router) {
 	router.post('/game/:id/quit', function(req, res, next) {
 		global.gameManager.playerQuit(req.session.account, function(error) {
 			if (error) {
-				// TODO handle error
+				next(new HttpError(error));
 			} else {
 				winston.info(req.session.account + ' quits from game!!');
 				res.send({
@@ -58,7 +98,13 @@ module.exports = function(router) {
 	});
 
 	router.post('/game/:id/pass', function(req, res, next) {
-		res.send(global.gameManager.pass(req.session.account, req.params.id));
+		global.gameManager.pass(req.params.id, req.session.account, function(error, result) {
+			if (error) {
+				next(new HttpError(error, HttpError.UNAUTHORIZED));
+			} else {
+				res.send(result);
+			}
+		});
 	});
 };
 
