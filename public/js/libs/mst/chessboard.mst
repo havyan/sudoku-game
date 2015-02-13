@@ -13,8 +13,8 @@
 		<li class="magnifier prop-item">
 			<a><img src="/imgs/default/prop_magnifier.png"> x 100</a>
 		</li>
-		<li class="recover prop-item">
-			<a><img src="/imgs/default/prop_recover.png"> x 10</a>
+		<li class="impunity prop-item">
+			<a><img src="/imgs/default/prop_impunity.png"> x 10</a>
 		</li>
 		<li class="delay prop-item">
 			<a><img src="/imgs/default/prop_delay.png"> x 10</a>
