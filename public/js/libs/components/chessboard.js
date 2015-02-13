@@ -190,7 +190,7 @@
 			}, 2000);
 		},
 
-		'{model} scoreChangedInfo' : function(model, e, changedScore) {
+		'{model} changedScore' : function(model, e, changedScore) {
 			var text = changedScore.changed > 0 ? '+' + changedScore.changed : '' + changedScore.changed;
 			if (changedScore.type === 'timeout') {
 				text = '超时 ' + text;
