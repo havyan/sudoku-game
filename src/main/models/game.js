@@ -79,7 +79,7 @@ Game.prototype.setStatus = function(account, status) {
 Game.prototype.goahead = function(account) {
 	if (this.timeoutTimer[account]) {
 		clearInterval(this.timeoutTimer[account]);
-		this.timeoutTimer[account] = 0;
+		this.timeoutCounter[account] = 0;
 	}
 };
 
