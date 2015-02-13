@@ -272,7 +272,7 @@
 			this.eventCenter.on('score-changed', function(account, info) {
 				self.attr('scores').attr(account, parseInt(info.score));
 				if (account === self.attr('account')) {
-					self.attr('scoreChangedInfo', info);
+					self.attr('changedScore', info);
 				}
 			});
 			this.eventCenter.on('max-timeout-reached', function(account) {
