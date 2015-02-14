@@ -398,7 +398,7 @@ Game.prototype.pass = function(account, cb) {
 Game.prototype.delay = function(account, cb) {
 	var self = this;
 	this.timeoutCounter[account] = 0;
-	this.timeoutCounter[account] = 0;
+	this.stopDelayTimer();
 	if (account === this.currentPlayer) {
 		var props = this.props[account];
 		if (props.delay > 0) {
