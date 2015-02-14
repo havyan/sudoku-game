@@ -30,7 +30,7 @@
 		<div class="game-state-separator light"></div>
 		<div class="game-chat-messages scroll-panel">
 			{{#messages}}
-			<p>{{from}}: {{content}}</p>
+			<p>{{from}}: {{{formatMessage this}}}</p>
 			{{/messages}}
 		</div>
 		<div class="game-state-separator light"></div>

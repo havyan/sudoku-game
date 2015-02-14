@@ -1,7 +1,17 @@
 (function() {
 	can.Control('Components.GamePanel', {}, {
 		init : function(element, options) {
-			element.html(can.view('/js/libs/mst/game_panel.mst', options.model));
+			element.html(can.view('/js/libs/mst/game_panel.mst', options.model, {
+				formatMessage : function(message) {
+					if (message.content) {
+						return message.content.split('\n').reduce(function(previous, current) {
+							return previous + '<br>' + current;
+						});
+					} else {
+						return message.content;
+					}
+				}
+			}));
 			if (options.model.attr('status') === 'waiting') {
 				this.showWaiting();
 			} else if (options.model.attr('status') === 'ongoing') {

@@ -728,7 +728,7 @@ to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
 	width: 88px;
 	height: 88px;
 	left: 0px;
-	right: 0px;
+	top: 0px;
 	background: url(../../imgs/default/delay.png);
 	background-size: 88px 88px;
 	z-index: 1000;
@@ -763,8 +763,8 @@ to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
 
 .props {
 	position: absolute;
-	left: 0px;
-	bottom: 0px;
+	left: 10px;
+	bottom: 10px;
 	padding: 0px;
 	margin: 0px;
 	border-style: solid;
