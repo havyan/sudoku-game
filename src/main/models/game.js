@@ -14,6 +14,7 @@ var PREFIX = "game";
 var CAPACITY = 9;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
+var DELAY_COUNTDOWN_TOTAL = 60;
 var MAX_TIMEOUT_ROUNDS = 10;
 var PROPS = {
 	magnifier : 99,
@@ -35,6 +36,7 @@ var Game = function(mode) {
 	this.players = [];
 	this.messages = [];
 	this.status = WAITING;
+	this.delayed = false;
 	this.mode = mode || GameMode.MODE9;
 	this.initCellValues = {};
 	this.userCellValues = {};
@@ -44,6 +46,9 @@ var Game = function(mode) {
 	this.timeoutTimer = {};
 	this.props = {};
 	this.changedScores = {};
+	this.playerTimer = {
+		ellapsedTime : 0
+	};
 };
 
 Game.prototype.isWaiting = function() {
@@ -114,7 +119,7 @@ Game.prototype.nextPlayer = function() {
 		};
 		self.trigger('ellapsed-time', self.playerTimer.ellapsedTime);
 		self.playerTimer.timer = setInterval(function() {
-			if (!self.playerTimer.stopped) {
+			if (!self.playerTimer.stopped && !self.delayed) {
 				self.playerTimer.ellapsedTime++;
 				self.trigger('ellapsed-time', self.playerTimer.ellapsedTime);
 				if (self.playerTimer.ellapsedTime === self.rule.add.total) {
@@ -179,11 +184,20 @@ Game.prototype.updateScore = function(type, xy) {
 
 Game.prototype.stopPlayerTimer = function() {
 	if (this.playerTimer) {
+		this.stopDelayTimer();
 		this.playerTimer.stopped = true;
 		if (this.playerTimer.timer) {
 			clearInterval(this.playerTimer.timer);
 		}
 	}
+};
+
+Game.prototype.stopDelayTimer = function() {
+	this.delayed = false;
+	if (this.delayTimer) {
+		clearInterval(this.delayTimer);
+	}
+	this.trigger('game-delay-cancelled');
 };
 
 Game.prototype.playerJoin = function(account, cb) {
@@ -267,9 +281,13 @@ Game.prototype.toJSON = function(account) {
 		messages : this.messages,
 		scores : this.scores,
 		status : this.status,
+		delayed : this.delayed,
+		delayCountdownStage : this.delayCountdownStage,
 		account : account ? account : undefined,
 		props : account ? this.props[account] : this.props,
-		knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues
+		knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues,
+		changedScore : account ? this.changedScores[account] : this.changedScores,
+		remainingTime : this.rule.add.total - this.playerTimer.ellapsedTime
 	};
 };
 
@@ -315,6 +333,7 @@ Game.prototype.submit = function(account, xy, value, cb) {
 
 Game.prototype.autoSubmit = function(account, xy, cb) {
 	var self = this;
+	this.timeoutCounter[account] = 0;
 	var props = this.props[account];
 	if (props.magnifier > 0) {
 		var value = this.answer[xy];
@@ -333,6 +352,7 @@ Game.prototype.autoSubmit = function(account, xy, cb) {
 };
 
 Game.prototype.impunish = function(account, cb) {
+	this.timeoutCounter[account] = 0;
 	if (account === this.currentPlayer) {
 		var props = this.props[account];
 		if (props.impunity > 0) {
@@ -370,6 +390,36 @@ Game.prototype.pass = function(account, cb) {
 			success : true,
 			score : score
 		});
+	} else {
+		cb('You do not have permission now');
+	}
+};
+
+Game.prototype.delay = function(account, cb) {
+	var self = this;
+	this.timeoutCounter[account] = 0;
+	this.timeoutCounter[account] = 0;
+	if (account === this.currentPlayer) {
+		var props = this.props[account];
+		if (props.delay > 0) {
+			this.delayed = true;
+			props.delay--;
+			var countdown = DELAY_COUNTDOWN_TOTAL;
+			self.delayCountdownStage = countdown;
+			self.trigger('delay-countdown-stage', countdown);
+			this.trigger('game-delayed', countdown);
+			self.delayTimer = setInterval(function() {
+				countdown--;
+				self.delayCountdownStage = countdown;
+				self.trigger('delay-countdown-stage', countdown);
+				if (countdown === 0) {
+					self.stopDelayTimer();
+				}
+			}, 1000);
+			cb();
+		} else {
+			cb('You do not have enough delay cards');
+		}
 	} else {
 		cb('You do not have permission now');
 	}

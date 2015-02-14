@@ -85,6 +85,11 @@ GameManager.prototype.pass = function(gameId, account, cb) {
 	game.pass(account, cb);
 };
 
+GameManager.prototype.delay = function(gameId, account, cb) {
+	var game = this.getGame(gameId);
+	game.delay(account, cb);
+};
+
 GameManager.prototype.goahead = function(account, gameId) {
 	this.getGame(gameId).goahead(account);
 };

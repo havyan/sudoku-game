@@ -138,6 +138,16 @@
 				success : success,
 				error : error
 			});
+		},
+
+		delay : function(gameId, success, error) {
+			return $.ajax({
+				type : 'post',
+				url : '/game/' + gameId + '/delay',
+				dataType : 'json',
+				success : success,
+				error : error
+			});
 		}
 	}, {});
 })();

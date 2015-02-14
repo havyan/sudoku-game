@@ -210,11 +210,11 @@
 	top: 2%;
 	width: 64px;
 	height: 64px;
-	background: url(../../imgs/default/light_off.png)
+	background: url(../../imgs/default/light_off.png);
 }
 
 .active-status[active=true] {
-	background: url(../../imgs/default/light_on.png)
+	background: url(../../imgs/default/light_on.png);
 }
 
 .game-state-separator.light {
@@ -498,6 +498,18 @@ from {box-shadow: 0px 0px 0px 0px red;z-index: 999;}
 to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 }
 
+@keyframes known-cell
+{
+from {box-shadow: 0px 0px 0px 0px #607E02;z-index: 999;}
+to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
+}
+
+@-webkit-keyframes known-cell
+{
+from {box-shadow: 0px 0px 0px 0px #607E02;z-index: 999;}
+to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
+}
+
 .correct {
 	animation: correct 1s;
 	-webkit-animation: correct 1s;	
@@ -506,6 +518,11 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 .incorrect {
 	animation: incorrect 1s;
 	-webkit-animation: incorrect 1s;	
+}
+
+.known-cell {
+	animation: known-cell 1s;
+	-webkit-animation: known-cell 1s;
 }
 
 .chess-cell-value.user.has-value {
@@ -691,6 +708,7 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	height: 88px;
 	border-radius: 44px;
 	background: #E3E9E9;
+	position: relative;
 }
 
 .game-timer-background {
@@ -703,6 +721,17 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	color: #6B7D91;
 	box-shadow: 1px 1px 1px 1px #999;
 	background: white;
+}
+
+.game-timer-delay {
+	position: absolute;
+	width: 88px;
+	height: 88px;
+	left: 0px;
+	right: 0px;
+	background: url(../../imgs/default/delay.png);
+	background-size: 88px 88px;
+	z-index: 1000;
 }
 
 .game-timer-background svg {

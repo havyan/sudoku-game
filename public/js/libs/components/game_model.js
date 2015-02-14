@@ -221,6 +221,17 @@
 			});
 		},
 
+		delay : function(success) {
+			var self = this;
+			Rest.Game.delay(this.attr('id'), function(result) {
+				self.attr('props.delay', self.attr('props.delay') - 1);
+				if (success) {
+					success(result);
+				}
+			}, function() {
+			});
+		},
+
 		impunish : function(success) {
 			var self = this;
 			Rest.Game.impunish(this.attr('id'), function(result) {
@@ -308,7 +319,9 @@
 			});
 			this.eventCenter.on('switch-player', function(account) {
 				self.attr('currentPlayer', account);
+				self.attr('active', false);
 				self.attr('active', account === self.attr('account'));
+				self.attr('delayed', false);
 			});
 			this.eventCenter.on('ellapsed-time', function(ellapsedTime) {
 				var remainingTime = self.attr('rule.add.total') - ellapsedTime;
@@ -335,6 +348,15 @@
 			});
 			this.eventCenter.on('game-destroyed', function() {
 				self.attr('status', 'destroyed');
+			});
+			this.eventCenter.on('game-delayed', function() {
+				self.attr('delayed', true);
+			});
+			this.eventCenter.on('delay-countdown-stage', function(stage) {
+				self.attr('delayCountdownStage', stage);
+			});
+			this.eventCenter.on('game-delay-cancelled', function() {
+				self.attr('delayed', false);
 			});
 		},
 

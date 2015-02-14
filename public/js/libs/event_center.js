@@ -10,7 +10,8 @@
 			                  'switch-player', 'ellapsed-time', 'score-changed',
 			                  'game-over', 'puzzle-init', 'player-quit',
 			                  'max-timeout-reached', 'game-destroyed', 'quit-countdown-stage',
-			                  'game-destroyed'];
+			                  'game-destroyed', 'game-delayed', 'delay-countdown-stage',
+			                  'game-delay-cancelled'];
 			gameTopics.forEach(function(gameTopic) {
 				self.socket.on(gameTopic, function(data) {
 					var args = JSON.parse(data);

@@ -4,9 +4,15 @@
 	}, {
 		init : function(element, options) {
 			element.html(can.view('/js/libs/mst/game_timer.mst', options.model));
+			this.element.find('.game-timer-delay').css('opacity', options.model.attr('delayCountdownStage') / 60);
+			this.render(options.model, options.model.attr('remainingTime'));
 		},
 
 		'{model} remainingTime' : function(model, e, remainingTime) {
+			this.render(model, remainingTime);
+		},
+
+		render : function(model, remainingTime) {
 			if (model.isActive()) {
 				var totalTime = model.totalTime();
 				var ellapsedTime = totalTime - remainingTime;
@@ -36,6 +42,10 @@
 			if (!active) {
 				this.resetBackground();
 			}
+		},
+
+		'{model} delayCountdownStage' : function(model, e, stage) {
+			this.element.find('.game-timer-delay').css('opacity', stage / 60);
 		},
 
 		resetBackground : function() {

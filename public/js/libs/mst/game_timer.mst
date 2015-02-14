@@ -7,4 +7,7 @@
 	<div class="remaining-time">
 		{{remainingTime}}
 	</div>
+	{{#delayed}}
+	<div class="game-timer-delay"></div>
+	{{/delayed}}
 </div>

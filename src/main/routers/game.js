@@ -106,5 +106,17 @@ module.exports = function(router) {
 			}
 		});
 	});
+
+	router.post('/game/:id/delay', function(req, res, next) {
+		global.gameManager.delay(req.params.id, req.session.account, function(error) {
+			if (error) {
+				next(new HttpError(error, HttpError.UNAUTHORIZED));
+			} else {
+				res.send({
+					status : 'ok'
+				});
+			}
+		});
+	});
 };
 

@@ -92,6 +92,12 @@
 			this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
 				model : this.options.model
 			});
+			if (this.options.model.isActive() && this.options.model.attr('changedScore.changed') < 0 && this.options.model.attr('props.impunity') > 0) {
+				this.element.find('.props .impunity').addClass('active');
+			}
+			if (this.options.model.isActive() && !this.options.model.attr('delayed') && this.options.model.attr('props.delay') > 0) {
+				this.element.find('.props .delay').addClass('active');
+			}
 		},
 
 		getDimension : function() {
@@ -163,6 +169,11 @@
 			} else {
 				this.element.find('.props .impunity').removeClass('active');
 			}
+			if (active && model.attr('props.delay') > 0) {
+				this.element.find('.props .delay').addClass('active');
+			} else {
+				this.element.find('.props .delay').removeClass('active');
+			}
 		},
 
 		'{model} editStatus' : function(model, e, status) {
@@ -184,7 +195,21 @@
 		},
 
 		'{model.userCellValues} change' : function(userCellValues, e, xy) {
+			var self = this;
 			this.chessCells[xy].element.addClass('correct');
+			setTimeout(function() {
+				self.chessCells[xy].element.removeClass('correct');
+			}, 2000);
+		},
+
+		'{model.knownCellValues} change' : function(userCellValues, e, xy, how) {
+			if (how !== 'remove') {
+				var self = this;
+				this.chessCells[xy].element.addClass('known-cell');
+				setTimeout(function() {
+					self.chessCells[xy].element.removeClass('known-cell');
+				}, 2000);
+			}
 		},
 
 		'{model} incorrect' : function(model, e, data) {
@@ -277,6 +302,15 @@
 				if (this.options.model.isActive() && this.lastChassCell) {
 					this.options.model.autoSubmit(this.lastChassCell.options.xy);
 				}
+			}
+		},
+
+		'.delay click' : function(element, event) {
+			var self = this;
+			if (this.options.model.isActive() && this.options.model.attr('props.delay') > 0) {
+				this.options.model.delay(function() {
+					self.element.find('.props .delay').removeClass('active');
+				});
 			}
 		},
 
