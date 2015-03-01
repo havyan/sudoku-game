@@ -150,10 +150,12 @@ Game.prototype.nextPlayer = function() {
 	}, 1000);
 };
 
-Game.prototype.updateScore = function(type, xy) {
+Game.prototype.updateScore = function(type, account, xy) {
 	var rule = this.rule,
-	    score = 0,
-	    account = this.currentPlayer;
+	    score = 0;
+	if (!account) {
+		account = this.currentPlayer;
+	}
 	if (type === SCORE_TYPE.CORRECT) {
 		var time = this.playerTimer.ellapsedTime;
 		score = _.find(rule.add.levels, function(level) {
@@ -241,8 +243,10 @@ Game.prototype.addMessage = function(account, message, cb) {
 		if (error) {
 			cb(error);
 		} else {
+			var date = new Date();
 			message = {
 				from : user.name,
+				date : date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
 				content : message
 			};
 			self.messages.push(message);
@@ -310,12 +314,12 @@ Game.prototype.submit = function(account, xy, value, cb) {
 				delete this.knownCellValues[key][xy];
 			}
 			this.trigger('cell-correct', xy, value);
-			result.score = this.updateScore(SCORE_TYPE.CORRECT, xy);
+			result.score = this.updateScore(SCORE_TYPE.CORRECT, this.currentPlayer, xy);
 			over = this.isOver();
 			result.success = true;
 		} else {
 			this.trigger('cell-incorrect', xy);
-			result.score = this.updateScore(SCORE_TYPE.INCORRECT, xy);
+			result.score = this.updateScore(SCORE_TYPE.INCORRECT, this.currentPlayer, xy);
 			result.success = false;
 		}
 		if (over) {
@@ -353,17 +357,13 @@ Game.prototype.autoSubmit = function(account, xy, cb) {
 
 Game.prototype.impunish = function(account, cb) {
 	this.timeoutCounter[account] = 0;
-	if (account === this.currentPlayer) {
-		var props = this.props[account];
-		if (props.impunity > 0) {
-			props.impunity--;
-			this.updateScore(SCORE_TYPE.IMPUNITY);
-			cb(null);
-		} else {
-			cb('You do not have enough impunities');
-		}
+	var props = this.props[account];
+	if (props.impunity > 0) {
+		props.impunity--;
+		this.updateScore(SCORE_TYPE.IMPUNITY, account);
+		cb(null);
 	} else {
-		cb('You do not have permission now');
+		cb('You do not have enough impunities');
 	}
 };
 

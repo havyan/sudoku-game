@@ -53,7 +53,7 @@ module.exports = function(router) {
 	});
 
 	router.post('/game/:id/impunity', function(req, res, next) {
-		global.gameManager.impunish(req.params.id, req.session.account, function(error) {
+		global.gameManager.impunish(req.params.id, req.body.account, function(error) {
 			if (error) {
 				next(new HttpError(error, HttpError.UNAUTHORIZED));
 			} else {

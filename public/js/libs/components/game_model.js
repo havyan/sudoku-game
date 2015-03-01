@@ -234,7 +234,7 @@
 
 		impunish : function(success) {
 			var self = this;
-			Rest.Game.impunish(this.attr('id'), function(result) {
+			Rest.Game.impunish(this.attr('id'), this.attr('account'), function(result) {
 				self.attr('props.impunity', self.attr('props.impunity') - 1);
 				if (success) {
 					success(result);

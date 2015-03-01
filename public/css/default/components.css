@@ -246,6 +246,18 @@
 	margin-bottom: 20px;
 }
 
+.game-message-item {
+	margin-bottom: 5px;
+}
+
+.game-message-item-header {
+	color: rgb(65, 147, 236);
+}
+
+.game-message-item-content {
+	padding-left: 5px;
+}
+
 .game-state-actions {
 	width: 75%;
 	margin: auto;

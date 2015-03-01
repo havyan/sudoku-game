@@ -94,6 +94,8 @@
 				if (event.shiftKey) {
 					if (codeMap.shift['' + code]) {
 						this.options.parentModel.addDraft(this.options.xy, codeMap.shift['' + code]);
+					} else if (code > 64 && code < 91) {
+						this.options.parentModel.addDraft(this.options.xy, String.fromCharCode(code));
 					}
 				} else {
 					if (codeMap.normal['' + code]) {
@@ -103,7 +105,12 @@
 					} else if (code === 8) {
 						this.options.parentModel.clearDraft(this.options.xy);
 						return false;
-					} else if ((code > 64 && code < 91) || (code > 47 && code < 58)) {
+					} else if (code === 32) {
+						this.options.parentModel.addDraft(this.options.xy, ' ');
+						return false;
+					} else if (code > 64 && code < 91) {
+						this.options.parentModel.addDraft(this.options.xy, String.fromCharCode(code + 32));
+					} else if (code > 47 && code < 58) {
 						this.options.parentModel.addDraft(this.options.xy, String.fromCharCode(code));
 					} else if (code > 95 && code < 106) {
 						this.options.parentModel.addDraft(this.options.xy, code - 96);

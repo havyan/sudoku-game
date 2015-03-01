@@ -92,7 +92,7 @@
 			this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
 				model : this.options.model
 			});
-			if (this.options.model.isActive() && this.options.model.attr('changedScore.changed') < 0 && this.options.model.attr('props.impunity') > 0) {
+			if (this.options.model.attr('changedScore.changed') < 0 && this.options.model.attr('props.impunity') > 0) {
 				this.element.find('.props .impunity').addClass('active');
 			}
 			if (this.options.model.isActive() && !this.options.model.attr('delayed') && this.options.model.attr('props.delay') > 0) {
@@ -164,11 +164,6 @@
 		'{model} active' : function(model, e, active) {
 			this.numberPicker.hide();
 			this.element.find('.props .magnifier').removeClass('active');
-			if (active && model.attr('changedScore.changed') < 0 && model.attr('props.impunity') > 0) {
-				this.element.find('.props .impunity').addClass('active');
-			} else {
-				this.element.find('.props .impunity').removeClass('active');
-			}
 			if (active && model.attr('props.delay') > 0) {
 				this.element.find('.props .delay').addClass('active');
 			} else {
@@ -250,6 +245,11 @@
 			setTimeout(function() {
 				messageElement.fadeOut();
 			}, 1000);
+			if (changedScore.changed < 0 && model.attr('props.impunity') > 0) {
+				this.element.find('.props .impunity').addClass('active');
+			} else {
+				this.element.find('.props .impunity').removeClass('active');
+			}
 		},
 
 		'.chess-cell click' : function(element, event) {
@@ -259,7 +259,7 @@
 			var xy = container.attr('xy');
 			if (model.isDraft()) {
 
-			} else if (model.isActive()) {
+			} else if (model.isActive() && model.isPlain()) {
 				if (model.getKnownCellValue(xy) !== undefined) {
 					model.submit(xy, model.getKnownCellValue(xy));
 					model.attr('active', false);
@@ -283,7 +283,7 @@
 			var model = this.options.model;
 			var container = element.parent();
 			var xy = container.attr('xy');
-			this.lastChassCell = this.chessCells[xy];
+			this.selectedChassCell = this.chessCells[xy];
 			if (model.isDraft() || model.isActive()) {
 				if (model.attr('props.magnifier') > 0) {
 					this.element.find('.props .magnifier').addClass('active');
@@ -296,18 +296,21 @@
 		},
 
 		'.magnifier click' : function(element, event) {
-			if (this.options.model.isDraft()) {
-				this.options.model.peep(this.lastChassCell.options.xy);
-			} else {
-				if (this.options.model.isActive() && this.lastChassCell) {
-					this.options.model.autoSubmit(this.lastChassCell.options.xy);
+			if (this.selectedChassCell) {
+				if (this.options.model.isDraft()) {
+					this.options.model.peep(this.selectedChassCell.options.xy);
+				} else {
+					if (this.options.model.isActive()) {
+						this.options.model.autoSubmit(this.selectedChassCell.options.xy);
+					}
 				}
+				this.selectedChassCell = null;
 			}
 		},
 
 		'.delay click' : function(element, event) {
 			var self = this;
-			if (this.options.model.isActive() && this.options.model.attr('props.delay') > 0) {
+			if (element.hasClass('active')) {
 				this.options.model.delay(function() {
 					self.element.find('.props .delay').removeClass('active');
 				});
@@ -316,7 +319,7 @@
 
 		'.impunity click' : function(element, event) {
 			var self = this;
-			if (this.options.model.isActive() && this.options.model.attr('changedScore.changed') < 0) {
+			if (element.hasClass('active')) {
 				this.options.model.impunish(function() {
 					self.element.find('.props .impunity').removeClass('active');
 				});

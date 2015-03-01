@@ -100,11 +100,14 @@
 			});
 		},
 
-		impunish : function(gameId, success, error) {
+		impunish : function(gameId, account, success, error) {
 			return $.ajax({
 				type : 'post',
 				url : '/game/' + gameId + '/impunity',
 				dataType : 'json',
+				data : {
+					account : account
+				},
 				success : success,
 				error : error
 			});
