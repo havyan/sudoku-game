@@ -47,13 +47,21 @@
 			this.model.attr('add').push({
 				total : 30,
 				levels : [{
-					from : 0,
-					to : 5,
-					score : 200
+					"from" : 0,
+					"to" : 5,
+					"score" : 200
 				}, {
-					from : 5,
-					to : 10,
-					score : 100
+					"from" : 5,
+					"to" : 10,
+					"score" : 180
+				}, {
+					"from" : 10,
+					"to" : 20,
+					"score" : 150
+				}, {
+					"from" : 20,
+					"to" : 30,
+					"score" : 100
 				}]
 			});
 		},
@@ -199,6 +207,21 @@
 			}
 		},
 
+		'.add-rule-item-header > label span click' : function(e) {
+			e.closest('.add-rule-item-header').addClass('edit');
+			e.parent().find('input').focus();
+		},
+
+		'.add-rule-item-header > label input blur' : function(e) {
+			var addRule = this.getAddRule(e),
+			    total = parseInt(e.val());
+			if (total !== addRule.attr('total')) {
+				addRule.attr('total', total);
+				this.resetAddRule(addRule);
+			}
+			e.closest('.add-rule-item-header').removeClass('edit');
+		},
+
 		getValue : function(e) {
 			var value = $(e).val();
 			return $.isNumeric(value) ? parseInt(value) : '';
@@ -250,4 +273,4 @@
 			return this.model.attr('add.' + index + '.levels.' + rowIndex);
 		}
 	});
-})(); 
+})();

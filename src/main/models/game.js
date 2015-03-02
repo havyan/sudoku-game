@@ -443,13 +443,7 @@ Game.prototype.init = function(cb) {
 
 Game.prototype.destroy = function() {
 	this.stopPlayerTimer();
-	delete this.players;
-	delete this.messages;
 	this.status = DESTROYED;
-	delete this.mode;
-	delete this.initCellValues;
-	delete this.userCellValues;
-	delete this.scores;
 	this.trigger('game-destroyed');
 };
 

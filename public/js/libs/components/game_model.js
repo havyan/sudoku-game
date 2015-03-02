@@ -69,6 +69,7 @@
 			var initCellValues = this.attr('initCellValues');
 			var userCellValues = this.attr('userCellValues');
 			var knownCellValues = this.attr('knownCellValues');
+			var drafts = this.retrieveDrafts();
 			var allCellOptions = this.calcAllCellOptions();
 			$.each(this.attr('mode'), function(index, position) {
 				var i = 0;
@@ -82,7 +83,7 @@
 								type : initCellValues.attr(xy) ? 'init' : userCellValues.attr(xy) ? 'user' : knownCellValues.attr(xy) ? 'known' : '',
 								value : initCellValues.attr(xy) || userCellValues.attr(xy) || knownCellValues.attr(xy),
 								cellOptions : allCellOptions[xy] || [],
-								draft : []
+								draft : drafts[xy] ? drafts[xy] : []
 							};
 						}
 						j++;
@@ -91,6 +92,12 @@
 				}
 			});
 			this.attr('cellDatas', cellDatas);
+			this.attr('cellDatas').each(function(cellData, xy) {
+				cellData.attr('draft').bind('change', function() {
+					drafts[xy] = cellData.attr('draft').attr();
+					self.saveDrafts(drafts);
+				});
+			});
 			this.bind('initCellValues', function() {
 				var cellDatas = self.attr('cellDatas');
 				self.attr('initCellValues').each(function(value, xy) {
@@ -124,6 +131,23 @@
 			});
 		},
 
+		deleteDrafts : function() {
+			window.localStorage.removeItem(this.attr('id') + '_' + this.attr('account') + '_drafts');
+		},
+
+		retrieveDrafts : function() {
+			var drafts = window.localStorage.getItem(this.attr('id') + '_' + this.attr('account') + '_drafts');
+			if (drafts) {
+				return JSON.parse(drafts);
+			} else {
+				return {};
+			}
+		},
+
+		saveDrafts : function(drafts) {
+			window.localStorage.setItem(this.attr('id') + '_' + this.attr('account') + '_drafts', JSON.stringify(drafts));
+		},
+
 		start : function(success, error) {
 			Rest.Game.setStatus(this.attr('id'), 'loading', success, error);
 		},
@@ -140,6 +164,7 @@
 				position : this.attr('ranking').length + 1,
 				score : 0
 			});
+			this.sortRanking();
 		},
 
 		removePlayer : function(account) {
@@ -151,6 +176,7 @@
 				return e.account === account;
 			});
 			this.attr('ranking').splice(index, 1);
+			this.sortRanking();
 		},
 
 		addMessage : function(message) {
@@ -295,6 +321,7 @@
 				self.removePlayer(account);
 				if (self.attr('account') === account) {
 					self.attr('quit', true);
+					self.destroy();
 				}
 			});
 			this.eventCenter.on('message-added', function(message) {
@@ -348,6 +375,7 @@
 			});
 			this.eventCenter.on('game-destroyed', function() {
 				self.attr('status', 'destroyed');
+				self.destroy();
 			});
 			this.eventCenter.on('game-delayed', function() {
 				self.attr('delayed', true);
@@ -497,6 +525,10 @@
 
 		existsCell : function(xy) {
 			return this.attr('cellDatas').attr(xy) !== undefined;
+		},
+		
+		destroy : function() {
+			this.deleteDrafts();
 		}
 	});
 })();

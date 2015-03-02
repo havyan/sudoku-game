@@ -37,8 +37,29 @@
 	display: none;
 }
 
-.setting-panel .add-rule-item > label {
-	margin-left: 10px;
+.setting-panel .add-rule-item-header * {
+	vertical-align: middle;
+}
+
+.setting-panel .add-rule-item-header > label {
+	margin-left: 5px;
+}
+
+.setting-panel .add-rule-item-header > label * {
+	vertical-align: middle;
+}
+
+.setting-panel .add-rule-item-header > label input {
+	display: none;
+	width: 30px;
+}
+
+.setting-panel .add-rule-item-header.edit > label input {
+	display: inline-block;
+}
+
+.setting-panel .add-rule-item-header.edit > label span {
+	display: none;
 }
 
 .setting-panel .add-rule-content {

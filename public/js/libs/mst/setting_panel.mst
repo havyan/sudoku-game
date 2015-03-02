@@ -7,7 +7,10 @@
 		<div class="add-rule-separator"></div>
 		<div class="add-rule-item{{#if @index}} collapsed{{/if}}" index="{{@index}}">
 			<a class="add-rule-collapsed-button" href="javascript:void(0);">{{#if @index}}展开{{else}}收起{{/if}}</a>
-			<input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} /><label>{{total}}秒</label>
+			<div class="add-rule-item-header">
+				<input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} />
+				<label><span>{{total}}</span><input type="text" value="{{total}}" />秒</label>
+			</div>
 			<div class="add-rule-content">
 				<div class="add-rule-list-label">加分设置</div>
 				<div class="add-rule-list">

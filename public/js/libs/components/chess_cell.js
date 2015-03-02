@@ -4,6 +4,7 @@
 			element.html(can.view('/js/libs/mst/chess_cell.mst', options.model));
 			element.find('.chess-cell').addClass(options.cellClass);
 			this.setCellOptions(options.model.attr('cellOptions'));
+			this.setDraft(this.options.model.attr('draft'));
 		},
 
 		resetView : function() {
