@@ -254,10 +254,19 @@ Game.prototype.addMessage = function(account, message, cb) {
 		if (error) {
 			cb(error);
 		} else {
-			var date = new Date();
+			var convert = function(value) {
+				return value >= 10 ? value : '0' + value;
+			};
+			var now = new Date(),
+			    year = now.getFullYear(),
+			    month = convert(now.getMonth() + 1),
+			    date = convert(now.getDate()),
+			    hours = convert(now.getHours()),
+			    minutes = convert(now.getMinutes()),
+			    seconds = convert(now.getSeconds());
 			message = {
 				from : user.name,
-				date : date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+				date : year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds,
 				content : message
 			};
 			self.messages.push(message);
