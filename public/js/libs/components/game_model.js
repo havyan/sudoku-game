@@ -18,38 +18,42 @@
 			this.attr('viewStatus', 'plain');
 		},
 
+		initActive : function() {
+			var self = this;
+			self.attr('active', self.attr('currentPlayer') === self.attr('account'));
+		},
+
 		initRanking : function() {
 			var self = this;
+			this.resetRanking();
+			this.attr('scores').bind('change', function(ev, attr, how, value) {
+				self.resetRanking();
+			});
+		},
+
+		resetRanking : function() {
+			var self = this;
 			var players = this.attr('players');
+			var quitPlayers = this.attr('quitPlayers');
 			var scores = this.attr('scores');
 			var ranking = [];
 			$.each(players, function(index, player) {
 				ranking.push({
 					account : player.attr('account'),
 					name : player.attr('name'),
-					position : index + 1,
-					score : scores[player.attr('account')] || 0,
+					score : scores[player.attr('account')] || 0
 				});
 			});
-			this.attr('ranking', ranking);
-			this.sortRanking();
-			this.attr('scores').bind('change', function(ev, attr, how, value) {
-				_.find(self.attr('ranking'), function(e) {
-					return e.attr('account') === attr;
-				}).attr('score', value);
-				self.sortRanking();
-			});
-		},
-
-		initActive : function() {
-			var self = this;
-			self.attr('active', self.attr('currentPlayer') === self.attr('account'));
-		},
-
-		sortRanking : function() {
-			var ranking = this.attr('ranking').attr();
 			ranking.sort(function(source, dest) {
 				return dest.score - source.score;
+			});
+			$.each(quitPlayers, function(index, quitPlayer) {
+				ranking.push({
+					account : quitPlayer.attr('account'),
+					name : quitPlayer.attr('name'),
+					score : scores[quitPlayer.attr('account')] || 0,
+					type : 'quit'
+				});
 			});
 			$.each(ranking, function(index, e) {
 				e.position = index + 1;
@@ -158,25 +162,18 @@
 
 		addPlayer : function(player) {
 			this.attr('players').push(player);
-			this.attr('ranking').push({
-				account : player.account,
-				name : player.name,
-				position : this.attr('ranking').length + 1,
-				score : 0
-			});
-			this.sortRanking();
+			this.resetRanking();
 		},
 
-		removePlayer : function(account) {
+		playerQuit : function(account) {
 			var index = _.findIndex(this.attr('players'), function(player) {
 				return player.account === account;
 			});
+			if (this.attr('status') === 'ongoing') {
+				this.attr('quitPlayers').unshift(this.attr('players.' + index).attr());
+			}
 			this.attr('players').splice(index, 1);
-			index = _.findIndex(this.attr('ranking'), function(e) {
-				return e.account === account;
-			});
-			this.attr('ranking').splice(index, 1);
-			this.sortRanking();
+			this.resetRanking();
 		},
 
 		addMessage : function(message) {
@@ -318,7 +315,7 @@
 				self.addPlayer(player);
 			});
 			this.eventCenter.on('player-quit', function(account) {
-				self.removePlayer(account);
+				self.playerQuit(account);
 				if (self.attr('account') === account) {
 					self.attr('quit', true);
 					self.destroy();
@@ -526,7 +523,7 @@
 		existsCell : function(xy) {
 			return this.attr('cellDatas').attr(xy) !== undefined;
 		},
-		
+
 		destroy : function() {
 			this.deleteDrafts();
 		}

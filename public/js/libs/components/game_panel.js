@@ -161,7 +161,11 @@
 		},
 
 		getPlayer : function(e) {
-			return this.options.model.attr('players.' + e.attr('index'));
+			if (e.hasClass('quit')) {
+				return this.options.model.attr('quitPlayers.' + e.data('index'));
+			} else {
+				return this.options.model.attr('players.' + e.data('index'));
+			}
 		},
 
 		showWaiting : function() {

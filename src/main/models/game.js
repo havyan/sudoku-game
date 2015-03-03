@@ -34,6 +34,7 @@ var Game = function(mode) {
 	this.$ = new Observable();
 	this.id = PREFIX + Date.now();
 	this.players = [];
+	this.quitPlayers = [];
 	this.messages = [];
 	this.status = WAITING;
 	this.delayed = false;
@@ -53,6 +54,10 @@ var Game = function(mode) {
 
 Game.prototype.isWaiting = function() {
 	return this.status === WAITING;
+};
+
+Game.prototype.isOngoing = function() {
+	return this.status === ONGOING;
 };
 
 Game.prototype.setStatus = function(account, status) {
@@ -225,11 +230,17 @@ Game.prototype.playerQuit = function(account, cb) {
 	} else {
 		this.stopPlayerTimer();
 	}
-	_.remove(this.players, function(player) {
+	var quitPlayers = _.remove(this.players, function(player) {
 		return player.account === account;
 	});
+	if (this.isOngoing() && quitPlayers.length > 0) {
+		this.quitPlayers.unshift(quitPlayers[0]);
+	}
 	delete this.props[account];
 	delete this.knownCellValues[account];
+	delete this.timeoutCounter[account];
+	delete this.timeoutTimer[account];
+	delete this.changedScores[account];
 	this.trigger('player-quit', account);
 	// TODO write back score to user
 	if (cb) {
@@ -279,6 +290,9 @@ Game.prototype.toJSON = function(account) {
 		initCellValues : this.initCellValues,
 		userCellValues : this.userCellValues,
 		players : this.players.map(function(player) {
+			return player.toJSON();
+		}),
+		quitPlayers : this.quitPlayers.map(function(player) {
 			return player.toJSON();
 		}),
 		currentPlayer : this.currentPlayer,
