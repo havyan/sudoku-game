@@ -11,13 +11,13 @@
 	</div>
 	<ul class="props">
 		{{#props}}
-		<li class="magnifier prop-item">
+		<li class="magnifier prop-item {{#unless magnifier}}empty{{/unless}}">
 			<a><img src="/imgs/default/prop_magnifier.png"> x {{magnifier}}</a>
 		</li>
-		<li class="impunity prop-item">
+		<li class="impunity prop-item {{#unless impunity}}empty{{/unless}}">
 			<a><img src="/imgs/default/prop_impunity.png"> x {{impunity}}</a>
 		</li>
-		<li class="delay prop-item">
+		<li class="delay prop-item {{#unless delay}}empty{{/unless}}">
 			<a><img src="/imgs/default/prop_delay.png"> x {{delay}}</a>
 		</li>
 		{{/props}}

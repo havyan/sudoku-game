@@ -18,8 +18,17 @@
 				this.showOngoing();
 			}
 			this.initDialog();
+			this.initEvents();
 			this.messageToBottom();
 			this.activePlayer(options.model.attr('currentPlayer'));
+		},
+
+		initEvents : function() {
+			$(document.body).keydown(function(e) {
+				if (e.keyCode === 8) {
+					return false;
+				}
+			});
 		},
 
 		initDialog : function() {

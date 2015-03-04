@@ -5,9 +5,14 @@ var User = require('../models/user');
 module.exports = function(router) {
 	/* GET home page. */
 	router.get('/', function(req, res) {
-		res.render('index', {
-			error : false
-		});
+		if (req.cookies.account) {
+			req.session.account = req.cookies.account;
+			res.redirect('/main');
+		} else {
+			res.render('index', {
+				error : false
+			});
+		}
 	});
 
 	/* GET login page. */
@@ -15,9 +20,14 @@ module.exports = function(router) {
 		if (req.session.account) {
 			res.redirect('/main');
 		} else {
-			res.render('index', {
-				error : req.query.nouser === 'true'
-			});
+			if (req.cookies.account) {
+				req.session.account = req.cookies.account;
+				res.redirect('/main');
+			} else {
+				res.render('index', {
+					error : req.query.nouser === 'true'
+				});
+			}
 		}
 	});
 
@@ -28,6 +38,11 @@ module.exports = function(router) {
 				return;
 			}
 			if (user) {
+				if (req.body.remember_me) {
+					res.cookie('account', user.account, {
+						maxAge : 3600000 * 24 * 30
+					});
+				}
 				req.session.account = user.account;
 				res.redirect('/main');
 			} else {
@@ -38,6 +53,7 @@ module.exports = function(router) {
 
 	router.get('/logout', function(req, res) {
 		req.session.account = undefined;
+		res.clearCookie('account');
 		res.redirect('/');
 	});
 
