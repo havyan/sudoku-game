@@ -9,8 +9,8 @@
 			<a class="btn chessboard-plain-mode-action action-active">普通</a><a class="btn chessboard-options-mode-action">候选</a>
 		</div>
 	</div>
-	<ul class="props">
-		{{#props}}
+	<ul class="prop">
+		{{#prop}}
 		<li class="magnifier prop-item {{#unless magnifier}}empty{{/unless}}">
 			<a><img src="/imgs/default/prop_magnifier.png"> x {{magnifier}}</a>
 		</li>
@@ -20,7 +20,7 @@
 		<li class="delay prop-item {{#unless delay}}empty{{/unless}}">
 			<a><img src="/imgs/default/prop_delay.png"> x {{delay}}</a>
 		</li>
-		{{/props}}
+		{{/prop}}
 	</ul>
 	<div class="chessboard-panel"></div>
 	{{#if active}}<input type="button" class="btn pass-action" value="PASS"/>{{/if}}

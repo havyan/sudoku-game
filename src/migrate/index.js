@@ -1,11 +1,14 @@
 var readline = require('readline');
 var fs = require('fs');
 var _ = require('lodash');
+var async = require('async');
 var winston = require('winston');
 var Rule = require('../main/models/rule');
 var User = require('../main/models/user');
 var Puzzle = require('../main/models/puzzle');
+var Prop = require('../main/models/prop');
 var GameMode = require('../main/models/game_mode');
+var PROP = require('./predefined/prop.json');
 
 module.exports = function() {
 	winston.info('Start to do db migration');
@@ -20,16 +23,50 @@ module.exports = function() {
 	});
 
 	var users = require('./predefined/users.json');
-	users.forEach(function(user) {
-		User.findOneByAccount(user.account, function(error, find) {
-			if (error) {
-				winston.error('Error happens when getting user from db: ' + error);
-			}
-			if (!find) {
-				winston.info('Create user [' + user.name + '] from predefined');
-				User.create(user);
-			}
+	async.eachSeries(users, function(user, cb) {
+		async.series([
+		function(cb) {
+			User.findOneByAccount(user.account, function(error, find) {
+				if (error) {
+					winston.error('Error happens when getting user from db: ' + error);
+					cb(error);
+				} else {
+					if (!find) {
+						winston.info('Create user [' + user.name + '] from predefined');
+						User.create(user, function(error) {
+							cb(error);
+						});
+					} else {
+						cb();
+					}
+				}
+			});
+		},
+		function(cb) {
+			Prop.findOneByAccount(user.account, function(error, find) {
+				if (error) {
+					winston.error('Error happens when getting prop from db: ' + error);
+					cb(error);
+				} else {
+					if (!find) {
+						winston.info('Create prop for account [' + user.account + '] from predefined');
+						var prop = _.cloneDeep(PROP);
+						prop.account = user.account;
+						Prop.create(prop, function(error) {
+							cb(error);
+						});
+					} else {
+						cb();
+					}
+				}
+			});
+		}], function(error) {
+			cb(error);
 		});
+	}, function(error) {
+		if (error) {
+			winston.error('Error happens when initialize users: ' + error);
+		}
 	});
 
 	var rl = readline.createInterface({

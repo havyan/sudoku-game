@@ -92,11 +92,11 @@
 			this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
 				model : this.options.model
 			});
-			if (this.options.model.attr('changedScore.changed') < 0 && this.options.model.attr('props.impunity') > 0) {
-				this.element.find('.props .impunity').addClass('active');
+			if (this.options.model.attr('changedScore.changed') < 0 && this.options.model.attr('prop.impunity') > 0) {
+				this.element.find('.prop .impunity').addClass('active');
 			}
-			if (this.options.model.isActive() && !this.options.model.attr('delayed') && this.options.model.attr('props.delay') > 0) {
-				this.element.find('.props .delay').addClass('active');
+			if (this.options.model.isActive() && !this.options.model.attr('delayed') && this.options.model.attr('prop.delay') > 0) {
+				this.element.find('.prop .delay').addClass('active');
 			}
 		},
 
@@ -163,11 +163,11 @@
 
 		'{model} active' : function(model, e, active) {
 			this.numberPicker.hide();
-			this.element.find('.props .magnifier').removeClass('active');
-			if (active && model.attr('props.delay') > 0) {
-				this.element.find('.props .delay').addClass('active');
+			this.element.find('.prop .magnifier').removeClass('active');
+			if (active && model.attr('prop.delay') > 0) {
+				this.element.find('.prop .delay').addClass('active');
 			} else {
-				this.element.find('.props .delay').removeClass('active');
+				this.element.find('.prop .delay').removeClass('active');
 			}
 		},
 
@@ -245,10 +245,10 @@
 			setTimeout(function() {
 				messageElement.fadeOut();
 			}, 1000);
-			if (changedScore.changed < 0 && model.attr('props.impunity') > 0) {
-				this.element.find('.props .impunity').addClass('active');
+			if (changedScore.changed < 0 && model.attr('prop.impunity') > 0) {
+				this.element.find('.prop .impunity').addClass('active');
 			} else {
-				this.element.find('.props .impunity').removeClass('active');
+				this.element.find('.prop .impunity').removeClass('active');
 			}
 		},
 
@@ -285,14 +285,14 @@
 			var xy = container.attr('xy');
 			this.selectedChassCell = this.chessCells[xy];
 			if (model.isDraft() || model.isActive()) {
-				if (model.attr('props.magnifier') > 0) {
-					this.element.find('.props .magnifier').addClass('active');
+				if (model.attr('prop.magnifier') > 0) {
+					this.element.find('.prop .magnifier').addClass('active');
 				}
 			}
 		},
 
 		'.chess-cell blur' : function(element, event) {
-			this.element.find('.props .magnifier').removeClass('active');
+			this.element.find('.prop .magnifier').removeClass('active');
 		},
 
 		'.magnifier click' : function(element, event) {
@@ -312,7 +312,7 @@
 			var self = this;
 			if (element.hasClass('active')) {
 				this.options.model.delay(function() {
-					self.element.find('.props .delay').removeClass('active');
+					self.element.find('.prop .delay').removeClass('active');
 				});
 			}
 		},
@@ -321,7 +321,7 @@
 			var self = this;
 			if (element.hasClass('active')) {
 				this.options.model.impunish(function() {
-					self.element.find('.props .impunity').removeClass('active');
+					self.element.find('.prop .impunity').removeClass('active');
 				});
 			}
 		},
