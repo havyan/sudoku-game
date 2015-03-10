@@ -1,0 +1,18 @@
+[
+  {
+    "type": "magnifier",
+    "name": "放大镜",
+    "func": "显示选中格子的答案",
+    "price": 100
+  }, {
+    "type": "impunity",
+    "name": "免罚卡",
+    "func": "补回答错或不答所扣的分数",
+    "price": 200
+  }, {
+    "type": "delay",
+    "name": "延时卡",
+    "func": "延时60s，一轮中自己只能用一次",
+    "price": 50
+  }
+]

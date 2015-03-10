@@ -24,6 +24,7 @@ body {
 	float: right;
 	line-height: 32px;
 	height: 32px;
+	margin-left: 20px;
 	text-decoration: none;
 }
 
@@ -34,7 +35,6 @@ body {
 }
 
 .logout-button {
-	margin-left: 20px;
 	margin-right: 20%;
 }
 

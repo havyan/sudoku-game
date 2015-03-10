@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/propstore.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-2.1.1.min.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs/propstore.js"></script>
+  </head>
+  <body>
+    <div class="welcome">
+      欢迎{{userName}}, 余额{{money}}天才币
+    </div>
+    <div class="main">
+      <div class="navigator">
+        <div class="item store active">
+          道具商城
+        </div>
+        <div class="item my-prop">
+          我的道具
+        </div>
+      </div>
+      <div class="center">
+        <div class="store card active">
+          {{#types}}
+          <div class="item">
+            <div class="icon">
+              <img src="/imgs/default/prop_{{type}}.png">
+            </div>
+            <div>
+              名称：{{name}}
+            </div>
+            <div>
+              功能：{{func}}
+            </div>
+            <div>
+              价格：{{price}}天才币
+            </div>
+            <div class="count">
+              购买数量：<img src="/imgs/default/subtract.png" />
+              <input type="text" />
+              <img src="/imgs/default/plus.png" />
+            </div>
+            <div class="total">
+            	所需天才币：<span>200</span>
+            </div>
+            <div class="actions">
+              <input type="button" class="btn" value="兑换" />
+            </div>
+          </div>
+          {{/types}}
+        </div>
+        <div class="card my-prop">
+          {{#props}}
+          <div class="item">
+            <img src="/imgs/default/prop_{{type}}.png"> X {{value}}
+            <div>
+              名称：{{name}}
+            </div>
+            <div>
+              功能：{{func}}
+            </div>
+          </div>
+          {{/props}}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+.welcome {
+	margin-top: 20px;
+	margin-right: 10%;
+	float: right;
+}
+
+.navigator {
+	float: left;
+	width: 12%;
+	margin-left: 10%;
+}
+
+.navigator .item {
+	cursor: pointer;
+	font-size: 1.2em;
+	color: white;
+	text-align: center;
+	background: gray;
+	margin-bottom: 20px;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.navigator .item.active {
+	background: white;
+	color: gray;
+}
+
+.main {
+	position: relative;
+	top: 60px;
+	clear: both;
+}
+
+.main .center {
+	margin-left: 25%;
+}
+
+.main .center .card {
+	display: none;
+	width: 80%;
+}
+
+.main .center .card.active {
+	display: block;
+}
+
+.main .center .store .item {
+	display: inline-block;
+	width: 30%;
+}
+
+.main .center .store .item .count img {
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+}
+
+.main .center .store .item .count input {
+	width: 40px;
+	vertical-align: middle;
+}
+
+.main .center .store .item .actions input{
+	font-size: 14px;
+	margin-left: 20%;
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
+.main .center .item > * {
+	margin-bottom: 15px;
+}
