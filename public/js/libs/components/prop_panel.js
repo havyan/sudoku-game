@@ -24,14 +24,14 @@
       var value = parseInt(valueElement.val());
       if (value > 0) {
         valueElement.val(parseInt(valueElement.val()) - 1);
-        this.resetItemTotal(element);
+        this.resetItem(element);
       }
     },
 
     '.container .store .count .plus click' : function(element) {
       var valueElement = element.siblings('input');
       valueElement.val(parseInt(valueElement.val()) + 1);
-      this.resetItemTotal(element);
+      this.resetItem(element);
     },
 
     '.container .store .count input keydown' : function(element, event) {
@@ -39,15 +39,16 @@
     },
 
     '.container .store .count input blur' : function(element, event) {
-      this.resetItemTotal(element);
+      this.resetItem(element);
     },
 
-    resetItemTotal : function(element) {
+    resetItem : function(element) {
       var type = _.find(this.model.attr('types'), {
         type : element.closest('.store-item').data('type')
       });
       var count = parseInt(element.closest('.count').find('input').val());
       element.closest('.count').siblings('.total').find('span').html(count * type.price);
+      element.closest('.store-item').find('.buy').attr('disabled', count <= 0);
     },
 
     '.bottom-actions .back click' : function() {
