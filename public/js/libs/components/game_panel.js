@@ -26,7 +26,9 @@
     initEvents : function() {
       $(document.body).keydown(function(e) {
         if (e.keyCode === 8) {
-          return false;
+          if (!$(e.target).hasClass('game-message-input')) {
+            return false;
+          }
         }
       });
     },
