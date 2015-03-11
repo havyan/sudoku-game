@@ -1,3 +1,12 @@
+.setting-top-actions {
+	margin-bottom: 20px;
+}
+
+.setting-top-actions input {
+	width: 16%;
+	font-size: 1em;
+}
+
 .setting-panel .setting-title {
 	font-size: 25px;
 }

@@ -1,3 +1,6 @@
+<div class="setting-top-actions">
+  <input class="btn reset-prop-action" type="button" value="重置道具" />
+</div>
 <div class="setting-panel">
 	<label class="setting-title">每步时间</label>
 	<a class="add-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /><span>增加</span> </a>

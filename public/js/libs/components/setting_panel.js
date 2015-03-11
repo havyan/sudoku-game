@@ -102,6 +102,13 @@
       }
     },
 
+    '.reset-prop-action click' : function() {
+      Rest.Prop.reset(function() {
+        alert('重置道具成功!!!');
+      }, function() {
+      });
+    },
+
     '.setting-save-action click' : function() {
       var self = this;
       var rule = this.getRule();

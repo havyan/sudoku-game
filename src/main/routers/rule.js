@@ -4,7 +4,7 @@ var Rule = require('../models/rule');
 
 module.exports = function(router) {
 	/* GET System Rule. */
-	router.get('/rule', function(req, res) {
+	router.get('/rule', function(req, res, next) {
 		Rule.getRule(function(error, rule) {
 			if (error) {
 				next(new HttpError(error));
@@ -15,7 +15,7 @@ module.exports = function(router) {
 	});
 
 	/* GET System Rule. */
-	router.put('/rule', function(req, res) {
+	router.put('/rule', function(req, res, next) {
 		Rule.updateRule(JSON.parse(req.body.data), function(error) {
 			if (error) {
 				next(new HttpError(error));

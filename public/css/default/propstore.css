@@ -32,42 +32,64 @@
 	clear: both;
 }
 
-.main .center {
+.main .container {
 	margin-left: 25%;
 }
 
-.main .center .card {
+.main .container .card {
 	display: none;
 	width: 80%;
 }
 
-.main .center .card.active {
+.main .container .card.active {
 	display: block;
 }
 
-.main .center .store .item {
+.main .container .item {
 	display: inline-block;
 	width: 30%;
 }
 
-.main .center .store .item .count img {
+.main .container .store .item .count img {
 	width: 20px;
 	height: 20px;
 	vertical-align: middle;
+	cursor: pointer;
 }
 
-.main .center .store .item .count input {
+.main .container .store .item .count input {
 	width: 40px;
 	vertical-align: middle;
+	text-align: center;
 }
 
-.main .center .store .item .actions input{
+.main .container .store .item .actions input{
 	font-size: 14px;
 	margin-left: 20%;
 	padding-left: 25px;
 	padding-right: 25px;
 }
 
-.main .center .item > * {
+.main .container .item > * {
 	margin-bottom: 15px;
+}
+
+.main .container .my-prop .my-count * {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+.bottom-actions {
+	position: relative;
+	top: 150px;
+}
+
+.bottom-actions .back {
+	background: #d58512;
+	color: #FFF;
+	float: right;
+	margin-right: 20%;
+	height: 30px;
+	width: 5%;
+	box-shadow: 2px 2px 2px #888888;
 }
