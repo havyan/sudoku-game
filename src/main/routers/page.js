@@ -8,6 +8,8 @@ module.exports = function(router) {
     if (req.cookies.account) {
       req.session.account = req.cookies.account;
       res.redirect('/main');
+    } else if (req.session.account) {
+      res.redirect('/main');
     } else {
       res.render('index', {
         error : false
