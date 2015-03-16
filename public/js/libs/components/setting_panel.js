@@ -122,10 +122,10 @@
       if (this.changed) {
         var confirmed = confirm('设置已被修改，是否放弃？');
         if (confirmed) {
-          window.history.back();
+          window.location.href = "/main";
         }
       } else {
-        window.history.back();
+        window.location.href = "/main";
       }
     },
 

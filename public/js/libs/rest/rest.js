@@ -151,6 +151,26 @@
         success : success,
         error : error
       });
+    },
+
+    setOptionsOnce : function(gameId, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/game/' + gameId + '/options_once',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    setOptionsAlways : function(gameId, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/game/' + gameId + '/options_always',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
     }
   }, {});
 

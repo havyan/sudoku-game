@@ -1,6 +1,8 @@
 {
-	"magnifier": 99,
-	"impunity": 10,
-	"delay": 10,
-	"money": 50000
+  "magnifier": 99,
+  "impunity": 10,
+  "delay": 10,
+  "options_once": 10,
+  "options_always": 2,
+  "money": 50000
 }

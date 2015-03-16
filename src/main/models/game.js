@@ -42,6 +42,8 @@ var Game = function(mode) {
   this.timeoutCounter = {};
   this.timeoutTimer = {};
   this.props = [];
+  this.optionsOnce = {};
+  this.optionsAlways = {};
   this.changedScores = {};
   this.playerTimer = {
     ellapsedTime : 0
@@ -109,6 +111,7 @@ Game.prototype.nextPlayer = function() {
     var playerIndex = _.findIndex(this.players, function(player) {
       return player.account === self.currentPlayer;
     });
+    self.optionsOnce[this.currentPlayer] = false;
     this.currentPlayer = this.players[++playerIndex % this.players.length].account;
   } else {
     this.currentPlayer = this.players[0].account;
@@ -322,7 +325,9 @@ Game.prototype.toJSON = function(account) {
     }),
     knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues,
     changedScore : account ? this.changedScores[account] : this.changedScores,
-    remainingTime : this.rule.add.total - this.playerTimer.ellapsedTime
+    remainingTime : this.rule.add.total - this.playerTimer.ellapsedTime,
+    optionsOnce : account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
+    optionsAlways : account ? this.optionsAlways[account] ? true : false : this.optionsAlways
   };
 };
 
@@ -493,6 +498,58 @@ Game.prototype.delay = function(account, cb) {
     }
   } else {
     cb('You do not have permission now');
+  }
+};
+
+Game.prototype.setOptionsOnce = function(account, cb) {
+  var self = this;
+  if (account === this.currentPlayer) {
+    var prop = _.find(this.props, {
+      account : account
+    });
+    var options_once = prop.options_once;
+    if (options_once > 0) {
+      prop.options_once = options_once - 1;
+      prop.save(function(error) {
+        if (error) {
+          winston.error('Error when updating prop: ' + error);
+          cb(error);
+        } else {
+          self.optionsOnce[account] = true;
+          cb();
+        }
+      });
+    } else {
+      cb('You do not have enough cards');
+    }
+  } else {
+    cb('You do not have permission now');
+  }
+};
+
+Game.prototype.setOptionsAlways = function(account, cb) {
+  var self = this;
+  if (self.optionsAlways[account]) {
+    cb('You have already used this type of card, only one time is allowed during one game.');
+  } else {
+    var prop = _.find(this.props, {
+      account : account
+    });
+    var options_always = prop.options_always;
+    if (options_always > 0) {
+      prop.options_always = options_always - 1;
+      prop.save(function(error) {
+        if (error) {
+          winston.error('Error when updating prop: ' + error);
+          cb(error);
+        } else {
+          self.optionsAlways[account] = true;
+          cb();
+        }
+      });
+    } else {
+      cb('You do not have enough cards');
+    }
   }
 };
 

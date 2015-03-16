@@ -7,6 +7,7 @@
       this.initRanking();
       this.initMessages();
       this.initCellDatas();
+      this.initOptions();
       this.initActive();
     },
 
@@ -16,6 +17,25 @@
       }
       this.attr('editStatus', 'submit');
       this.attr('viewStatus', 'plain');
+    },
+
+    initOptions : function() {
+      var self = this;
+      this.resetOptions();
+      this.bind('optionsOnce', function(ev, attr, how, value) {
+        self.resetOptions();
+      });
+      this.bind('optionsAlways', function(ev, attr, how, value) {
+        self.resetOptions();
+      });
+    },
+
+    resetOptions : function() {
+      this.attr('optionsEnabled', this.attr('optionsOnce') || this.attr('optionsAlways'));
+    },
+
+    isOptionsEnabled : function() {
+      return this.attr('optionsEnabled');
     },
 
     initActive : function() {
@@ -255,6 +275,30 @@
       });
     },
 
+    setOptionsOnce : function(success) {
+      var self = this;
+      Rest.Game.setOptionsOnce(this.attr('id'), function(result) {
+        self.attr('optionsOnce', true);
+        self.attr('prop.options_once', self.attr('prop.options_once') - 1);
+        if (success) {
+          success(result);
+        }
+      }, function() {
+      });
+    },
+
+    setOptionsAlways : function(success) {
+      var self = this;
+      Rest.Game.setOptionsAlways(this.attr('id'), function(result) {
+        self.attr('optionsAlways', true);
+        self.attr('prop.options_always', self.attr('prop.options_always') - 1);
+        if (success) {
+          success(result);
+        }
+      }, function() {
+      });
+    },
+
     impunish : function(success) {
       var self = this;
       Rest.Game.impunish(this.attr('id'), this.attr('account'), function(result) {
@@ -343,6 +387,7 @@
       });
       this.eventCenter.on('switch-player', function(account) {
         self.attr('currentPlayer', account);
+        self.attr('optionsOnce', false);
         self.attr('active', false);
         self.attr('active', account === self.attr('account'));
         self.attr('delayed', false);

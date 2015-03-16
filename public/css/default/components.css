@@ -834,8 +834,8 @@ to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
 
 .prop li {
 	list-style: none;
-	padding: 10px;
-	height: 32px;
+	padding: 8px 16px 8px 16px;
+	height: 24px;
 }
 
 .prop li.active {
@@ -869,8 +869,9 @@ to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
 }
 
 .prop li a img {
-	width: 32px;
-	height: 32px;
+	width: 24px;
+	height: 24px;
+	margin-right: 5px;
 }
 
 .prop li * {

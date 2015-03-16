@@ -38,7 +38,7 @@
 
 .main .container .card {
 	display: none;
-	width: 80%;
+	width: 85%;
 }
 
 .main .container .card.active {
@@ -47,7 +47,9 @@
 
 .main .container .item {
 	display: inline-block;
-	width: 30%;
+	margin-bottom: 20px;
+	vertical-align: top;
+	width: 32%;
 }
 
 .main .container .store .item .count img {

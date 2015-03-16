@@ -52,7 +52,7 @@
     },
 
     '.bottom-actions .back click' : function() {
-      window.history.back();
+      window.location.href = "/main";
     },
 
     '.container .actions .buy click' : function(element) {
