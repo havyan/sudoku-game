@@ -18,7 +18,7 @@ var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var DELAY_COUNTDOWN_TOTAL = 60;
 var DESTROY_COUNTDOWN_TOTAL = 120;
-var MAX_TIMEOUT_ROUNDS = 2;
+var MAX_TIMEOUT_ROUNDS = 10;
 
 var SCORE_TYPE = {
   INCORRECT : "incorrect",
@@ -433,6 +433,10 @@ Game.prototype.over = function(cb) {
   var index = 0;
   async.eachSeries(this.players, function(player, cb) {
     player.points = player.points + 100 * (self.results.length + 1);
+    player.rounds = player.rounds + 1;
+    if (index === self.players.length - 1) {
+      player.wintimes = player.wintimes + 1;
+    }
     player.save(function(error) {
       if (error) {
         cb(error);
