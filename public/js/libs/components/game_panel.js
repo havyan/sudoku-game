@@ -17,7 +17,6 @@
       } else if (options.model.attr('status') === 'ongoing') {
         this.showOngoing();
       }
-      this.initDialog();
       this.initEvents();
       this.messageToBottom();
       this.activePlayer(options.model.attr('currentPlayer'));
@@ -28,20 +27,6 @@
         if (e.keyCode === 8) {
           if (!$(e.target).hasClass('game-message-input')) {
             return false;
-          }
-        }
-      });
-    },
-
-    initDialog : function() {
-      var self = this;
-      $(".max-timeout-dialog").dialog({
-        autoOpen : false,
-        modal : true,
-        buttons : {
-          "继续" : function() {
-            self.options.model.goahead();
-            $(this).dialog("close");
           }
         }
       });
@@ -65,8 +50,6 @@
         this.showLoading();
       } else if (newStatus === 'ongoing') {
         this.showOngoing();
-      } else if (newStatus === 'over') {
-        alert('Game Over!!!');
       } else if (newStatus === 'destroyed') {
         window.location.href = "/main";
       }
@@ -89,8 +72,22 @@
     },
 
     '{model} maxTimeoutReached' : function() {
-      $('.max-timeout-countdown-number').html(20);
-      $(".max-timeout-dialog").dialog("open");
+      var self = this;
+      Dialog.showDialog({
+        title : '确认',
+        content : '游戏将在<span class="max-timeout-countdown-number">20</span>秒后退出，是否继续？',
+        autoClose : false,
+        actions : [{
+          name : '继续',
+          btnClass : 'btn-primary',
+          callback : function() {
+            var element = $(this);
+            self.options.model.goahead(function() {
+              element.closest('.modal').modal('hide');
+            });
+          }
+        }]
+      });
     },
 
     '{model} quitCountdownStage' : function(model, e, newStage) {
@@ -99,6 +96,20 @@
 
     '{model} quit' : function() {
       window.location.href = "/main";
+    },
+
+    '{model} results' : function(model, e, results) {
+      Dialog.showDialog({
+        title : '排行榜',
+        template : '/js/libs/mst/results.mst',
+        data : model,
+        autoClose : false,
+        actions : [{
+          name : '确定',
+          btnClass : 'btn-primary',
+          dismiss : true
+        }]
+      });
     },
 
     messageToBottom : function() {
@@ -116,7 +127,15 @@
 
     '.game-player mouseenter' : function(e) {
       var player = this.getPlayer(e);
-      $('body').append(can.view('/js/libs/mst/player_tip.mst', player));
+      $('body').append(can.view('/js/libs/mst/player_tip.mst', player, {
+        calcWinrate : function(player) {
+          if (player.rounds > 0) {
+            return Math.round(player.wintimes / player.rounds * 100) + '%';
+          } else {
+            return '0%';
+          }
+        }
+      }));
       var playerTip = $('.player-tip');
       playerTip.css({
         top : e.offset().top + e.outerHeight(),
@@ -150,13 +169,13 @@
     },
 
     '.game-quit-button click' : function() {
+      var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
-        var confirmed = confirm('游戏中，是否强行退出游戏?');
-        if (confirmed) {
-          this.options.model.quit(function() {
+        Dialog.showConfirm('游戏中，是否强行退出游戏?', function() {
+          self.options.model.quit(function() {
             window.location.href = "/main";
           });
-        }
+        });
       } else {
         this.options.model.quit(function() {
           window.location.href = "/main";

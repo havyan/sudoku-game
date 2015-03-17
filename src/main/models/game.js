@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var winston = require('winston');
+var async = require('async');
 var Observable = require('../base/observable');
 var Rule = require('./rule');
 var User = require('./user');
@@ -16,6 +17,7 @@ var CAPACITY = 9;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var DELAY_COUNTDOWN_TOTAL = 60;
+var DESTROY_COUNTDOWN_TOTAL = 120;
 var MAX_TIMEOUT_ROUNDS = 10;
 
 var SCORE_TYPE = {
@@ -43,6 +45,7 @@ var Game = function(mode) {
   this.timeoutTimer = {};
   this.props = [];
   this.optionsOnce = {};
+  this.results = [];
   this.optionsAlways = {};
   this.changedScores = {};
   this.playerTimer = {
@@ -228,6 +231,7 @@ Game.prototype.playerJoin = function(account, cb) {
 };
 
 Game.prototype.playerQuit = function(account, cb) {
+  var self = this;
   if (this.players.length > 1) {
     if (this.currentPlayer === account) {
       this.nextPlayer();
@@ -235,12 +239,52 @@ Game.prototype.playerQuit = function(account, cb) {
   } else {
     this.stopPlayerTimer();
   }
-  var quitPlayers = _.remove(this.players, function(player) {
+
+  if (this.isOngoing()) {
+    var quitPlayer = _.find(this.players, {
+      account : account
+    });
+    quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
+    quitPlayer.save(function(error) {
+      if (error) {
+        cb(error);
+      } else {
+        self.quitPlayers.unshift(quitPlayer);
+        self.results.unshift(self.createResult(quitPlayer, 'quit'));
+        self.removePlayer(account);
+        self.trigger('player-quit', account);
+        if (self.players.length <= 0) {
+          self.destroy();
+        }
+        cb();
+      }
+    });
+  } else {
+    this.removePlayer(account);
+    this.trigger('player-quit', account);
+    if (self.players.length <= 0) {
+      self.destroy();
+    }
+    cb();
+  }
+};
+
+Game.prototype.createResult = function(player, status) {
+  return {
+    playerName : player.name,
+    score : status === 'quit' ? '离线' : this.scores[player.account],
+    status : status,
+    points : player.points,
+    money : _.find(this.props, {
+      account : player.account
+    }).money
+  };
+};
+
+Game.prototype.removePlayer = function(account) {
+  _.remove(this.players, function(player) {
     return player.account === account;
   });
-  if (this.isOngoing() && quitPlayers.length > 0) {
-    this.quitPlayers.unshift(quitPlayers[0]);
-  }
   _.remove(this.props, function(prop) {
     return prop.account === account;
   });
@@ -248,11 +292,6 @@ Game.prototype.playerQuit = function(account, cb) {
   delete this.timeoutCounter[account];
   delete this.timeoutTimer[account];
   delete this.changedScores[account];
-  this.trigger('player-quit', account);
-  // TODO write back score to user
-  if (cb) {
-    cb();
-  }
 };
 
 Game.prototype.addMessage = function(account, message, cb) {
@@ -360,15 +399,63 @@ Game.prototype.submit = function(account, xy, value, cb) {
     }
     if (over) {
       result.over = true;
-      this.status = OVER;
-      this.trigger('game-over');
+      this.over(function(error) {
+        if (error) {
+          cb(error);
+        } else {
+          cb(null, result);
+        }
+      });
     } else {
       this.nextPlayer();
+      cb(null, result);
     }
-    cb(null, result);
   } else {
     cb('You do not have permission now');
   }
+};
+
+Game.prototype.over = function(cb) {
+  var self = this;
+  this.players.sort(function(source, dest) {
+    var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
+    var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;
+    return sourceScore - destScore;
+  });
+  var index = 0;
+  async.eachSeries(this.players, function(player, cb) {
+    player.points = player.points + 100 * (self.results.length + 1);
+    player.save(function(error) {
+      if (error) {
+        cb(error);
+      } else {
+        self.results.unshift(self.createResult(player, 'normal'));
+        index++;
+        cb();
+      }
+    });
+  }, function(error) {
+    if (error) {
+      cb(error);
+    } else {
+      self.status = OVER;
+      self.results.forEach(function(result, index) {
+        result.rank = index + 1;
+      });
+      self.trigger('game-over', self.results);
+      var countdown = DESTROY_COUNTDOWN_TOTAL;
+      self.trigger('destroy-countdown-stage', countdown);
+      var destroyTimer = setInterval(function() {
+        countdown--;
+        self.trigger('destroy-countdown-stage', countdown);
+        if (countdown === 0) {
+          clearInterval(destroyTimer);
+          self.destroy();
+        }
+      }, 1000);
+      cb();
+    }
+  });
 };
 
 Game.prototype.autoSubmit = function(account, xy, cb) {

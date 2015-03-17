@@ -5,7 +5,7 @@
 		"grade": 7,
 		"points": 6200,
 		"rounds": 200,
-		"winrate": 90,
+		"wintimes": 90,
 		"score": 0
 	},{
 		"id": "user2",
@@ -13,7 +13,7 @@
 		"grade": 8,
 		"points": 8200,
 		"rounds": 300,
-		"winrate": 90,
+		"wintimes": 90,
 		"score": 0
 	},{
 		"id": "user3",
@@ -21,7 +21,7 @@
 		"grade": 3,
 		"points": 1200,
 		"rounds": 20,
-		"winrate": 50,
+		"wintimes": 50,
 		"score": 0
 	},{
 		"id": "user4",
@@ -29,7 +29,7 @@
 		"grade": 3,
 		"points": 2200,
 		"rounds": 100,
-		"winrate": 30,
+		"wintimes": 30,
 		"score": 0
 	},{
 		"id": "user5",
@@ -37,7 +37,7 @@
 		"grade": 5,
 		"points": 3600,
 		"rounds": 120,
-		"winrate": 70,
+		"wintimes": 70,
 		"score": 0
 	},{
 		"id": "user6",
@@ -45,7 +45,7 @@
 		"grade": 4,
 		"points": 2200,
 		"rounds": 130,
-		"winrate": 65,
+		"wintimes": 65,
 		"score": 0
 	}]
 }

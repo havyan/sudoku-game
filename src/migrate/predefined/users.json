@@ -4,91 +4,91 @@
 		"name": "张三",
 		"grade": 0,
 		"points": 0,
-		"rounds": 0,
-		"winrate": 90
+		"rounds": 10,
+		"wintimes": 6
 	}, {
 		"account": "lisi",
 		"name": "李四",
 		"grade": 1,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 90
+		"wintimes": 0
 	}, {
 		"account": "wangmazi",
 		"name": "王麻子",
 		"grade": 2,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 50
+		"wintimes": 0
 	}, {
 		"account": "xiaoming",
 		"name": "小明",
 		"grade": 3,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 30
+		"wintimes": 0
 	}, {
 		"account": "xiaohong",
 		"name": "小红",
 		"grade": 4,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 70
+		"wintimes": 0
 	}, {
 		"account": "xiaoqiang",
 		"name": "小强",
 		"grade": 5,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 65
+		"wintimes": 65
 	}, {
 		"account": "xiaofang",
 		"name": "小Fang",
 		"grade": 6,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 65
+		"wintimes": 0
 	}, {
 		"account": "tom",
 		"name": "Tom",
 		"grade": 7,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 50
+		"wintimes": 0
 	}, {
 		"account": "lucy",
 		"name": "Lucy",
 		"grade": 8,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 30
+		"wintimes": 0
 	}, {
 		"account": "kobe",
 		"name": "Kobe",
 		"grade": 9,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 70
+		"wintimes": 0
 	}, {
 		"account": "james",
 		"name": "James",
 		"grade": 10,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 65
+		"wintimes": 0
 	}, {
 		"account": "lily",
 		"name": "Lily",
 		"grade": 11,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 65
+		"wintimes": 0
 	}, {
 		"account": "EEE",
 		"name": "EEE",
 		"grade": 12,
 		"points": 0,
 		"rounds": 0,
-		"winrate": 65
+		"wintimes": 0
 	}
 ]

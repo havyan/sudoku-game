@@ -243,8 +243,11 @@
       });
     },
 
-    goahead : function() {
+    goahead : function(success) {
       Rest.Game.goahead(this.attr('id'), function(result) {
+        if (success) {
+          success();
+        }
       }, function() {
       });
     },
@@ -412,8 +415,9 @@
           self.attr('quitCountdownStage', stage);
         }
       });
-      this.eventCenter.on('game-over', function() {
+      this.eventCenter.on('game-over', function(results) {
         self.attr('status', 'over');
+        self.attr('results', results);
       });
       this.eventCenter.on('game-destroyed', function() {
         self.attr('status', 'destroyed');

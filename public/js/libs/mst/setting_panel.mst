@@ -1,5 +1,5 @@
 <div class="setting-top-actions">
-  <input class="btn reset-prop-action" type="button" value="重置道具" />
+  <input class="button reset-prop-action" type="button" value="重置道具" />
 </div>
 <div class="setting-panel">
 	<label class="setting-title">每步时间</label>
@@ -45,7 +45,7 @@
 		{{/reduce}}
 	</div>
 	<div class="setting-actions">
-		<input class="btn setting-back-action" type="button" value="返回" />
-		<input class="btn setting-save-action" type="button" value="保存" />
+		<input class="button setting-back-action" type="button" value="返回" />
+		<input class="button setting-save-action" type="button" value="保存" />
 	</div>
 </div>

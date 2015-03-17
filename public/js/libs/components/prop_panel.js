@@ -63,7 +63,7 @@
       });
       var count = parseInt(element.closest('.store-item').find('.count input').val());
       if (type.price * count > money) {
-        alert('天才币余额不足，请充值。');
+        Dialog.showMessage('天才币余额不足，请充值。');
       } else {
         Rest.Prop.buy(type.attr('type'), count, function(result) {
           if (result.success) {
@@ -71,9 +71,9 @@
             _.find(self.model.attr('props'), {
               type : type.attr('type')
             }).attr('value', result.count);
-            alert('购买成功');
+            Dialog.showMessage('购买成功');
           } else {
-            alert('购买失败: ' + result.reason);
+            Dialog.showMessage('购买失败: ' + result.reason);
           }
         }, function() {
         });

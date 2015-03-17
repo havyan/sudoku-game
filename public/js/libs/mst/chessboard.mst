@@ -3,34 +3,34 @@
   <div class="active-status" active="{{active}}"></div>
   <div class="chessboard-actions">
     <div class="chessboard-edit-mode">
-      <a class="btn chessboard-submit-mode-action action-active">提交</a><a class="btn chessboard-draft-mode-action">草稿</a>
+      <a class="button chessboard-submit-mode-action action-active">提交</a><a class="button chessboard-draft-mode-action">草稿</a>
     </div>
     <div class="chessboard-view-mode">
-      <a class="btn chessboard-plain-mode-action action-active">普通</a><a class="btn chessboard-options-mode-action" {{#unless optionsEnabled}}disabled="true"{{/unless}}>候选</a>
+      <a class="button chessboard-plain-mode-action action-active">普通</a><a class="button chessboard-options-mode-action" {{#unless optionsEnabled}}disabled="true"{{/unless}}>候选</a>
     </div>
   </div>
   <ul class="prop">
     {{#prop}}
     <li class="magnifier prop-item {{#unless magnifier}}empty{{/unless}}">
-      <a><img src="/imgs/default/prop_magnifier.png"> x {{magnifier}}</a>
+      <div class="prop-item-content"><img src="/imgs/default/prop_magnifier.png"> x {{magnifier}}</div>
     </li>
     <li class="impunity prop-item {{#unless impunity}}empty{{/unless}}">
-      <a><img src="/imgs/default/prop_impunity.png"> x {{impunity}}</a>
+      <div class="prop-item-content"><img src="/imgs/default/prop_impunity.png"> x {{impunity}}</div>
     </li>
     <li class="delay prop-item {{#unless delay}}empty{{/unless}}">
-      <a><img src="/imgs/default/prop_delay.png"> x {{delay}}</a>
+      <div class="prop-item-content"><img src="/imgs/default/prop_delay.png"> x {{delay}}</div>
     </li>
     <li class="options_once prop-item {{#unless options_once}}empty{{/unless}}">
-      <a><img src="/imgs/default/prop_options_once.png"> x {{options_once}}</a>
+      <div class="prop-item-content"><img src="/imgs/default/prop_options_once.png"> x {{options_once}}</div>
     </li>
     <li class="options_always prop-item {{#unless options_always}}empty{{/unless}}">
-      <a><img src="/imgs/default/prop_options_always.png"> x {{options_always}}</a>
+      <div class="prop-item-content"><img src="/imgs/default/prop_options_always.png"> x {{options_always}}</div>
     </li>
     {{/prop}}
   </ul>
   <div class="chessboard-panel"></div>
   {{#if active}}
-  <input type="button" class="btn pass-action" value="PASS"/>
+  <input type="button" class="button pass-action" value="PASS"/>
   {{/if}} <div class="score-message correct-message"></div>
   <div class="score-message incorrect-message"></div>
   <div class="score-message timeout-message"></div>

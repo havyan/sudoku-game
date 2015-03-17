@@ -29,7 +29,7 @@ EventCenter.prototype.bind = function() {
 		});
 	});
 
-	gameManager.on('game-destroyed', function(game) {
+	gameManager.on('game-removed', function(game) {
 		delete self.roomEmitters[game.id];
 	});
 };

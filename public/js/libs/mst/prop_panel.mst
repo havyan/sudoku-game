@@ -35,7 +35,7 @@
           所需天才币：<span>0</span>
         </div>
         <div class="actions">
-          <input type="button" class="btn buy" value="兑换" disabled="true"/>
+          <input type="button" class="button buy" value="兑换" disabled="true"/>
         </div>
       </div>
       {{/types}}
@@ -58,5 +58,5 @@
   </div>
 </div>
 <div class="bottom-actions">
-  <input class="btn back" type="button" value="返回" />
+  <input class="button back" type="button" value="返回" />
 </div>

@@ -14,13 +14,11 @@ GameManager.prototype.playerJoin = function(account, cb) {
   if (!lastGame || !(lastGame.isWaiting()) || lastGame.isFull()) {
     this.createGame(function(game) {
       setTimeout(function() {
-        self.destroyGame(game.id);
+        game.destroy();
       }, GAME_TIMEOUT);
 
-      game.on('player-quit', function() {
-        if (game.players.length === 0) {
-          self.destroyGame(game.id);
-        }
+      game.on('game-destroyed', function() {
+        self.removeGame(game.id);
       });
 
       game.playerJoin(account, function(error, user) {
@@ -38,36 +36,20 @@ GameManager.prototype.playerQuit = function(account, cb) {
   var self = this;
   var game = this.findGameByUser(account);
   if (game) {
-    game.playerQuit(account, function() {
-      cb();
-    });
+    game.playerQuit(account, cb);
   }
 };
 
 GameManager.prototype.submit = function(gameId, account, xy, value, cb) {
   var self = this;
   var game = this.getGame(gameId);
-  var result = game.submit(account, xy, value, function(error, result) {
-    if (result && result.over) {
-      setTimeout(function() {
-        self.destroyGame(gameId);
-      }, 60000);
-    }
-    cb(error, result);
-  });
+  var result = game.submit(account, xy, value, cb);
 };
 
 GameManager.prototype.autoSubmit = function(gameId, account, xy, cb) {
   var self = this;
   var game = this.getGame(gameId);
-  var result = game.autoSubmit(account, xy, function(error, result) {
-    if (result && result.over) {
-      setTimeout(function() {
-        self.destroyGame(gameId);
-      }, 60000);
-    }
-    cb(error, result);
-  });
+  var result = game.autoSubmit(account, xy, cb);
 };
 
 GameManager.prototype.peep = function(gameId, account, xy, cb) {
@@ -123,17 +105,14 @@ GameManager.prototype.createGame = function(cb) {
   return game;
 };
 
-GameManager.prototype.destroyGame = function(gameId) {
-  var game = _.find(this.games, {
+GameManager.prototype.removeGame = function(gameId) {
+  var index = _.findIndex(this.games, {
     'id' : gameId
   });
-  if (game) {
-    game.destroy();
-    var index = _.findIndex(this.games, {
-      'id' : gameId
-    });
+  if (index >= 0) {
+    var game = this.games[index];
     this.games.splice(index, 1);
-    this.trigger('game-destroyed', game);
+    this.trigger('game-removed', game);
   }
 };
 

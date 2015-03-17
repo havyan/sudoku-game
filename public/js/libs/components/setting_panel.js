@@ -72,7 +72,7 @@
         this.model.attr('add').splice(index, 1);
         this.model.attr('add.0.selected', true);
       } else {
-        alert('不能删除最后一条规则！');
+        Dialog.showMessage('不能删除最后一条规则！');
       }
     },
 
@@ -87,7 +87,7 @@
         });
         this.resetAddRule(addRule);
       } else {
-        alert('最多可以定制' + this.options.maxLevelCount + '行！');
+        Dialog.showMessage('最多可以定制' + this.options.maxLevelCount + '行！');
       }
     },
 
@@ -98,14 +98,17 @@
         addRule.attr('levels').pop();
         this.resetAddRule(addRule);
       } else {
-        alert('不能删除最后一行！');
+        Dialog.showMessage('不能删除最后一行！');
       }
     },
 
     '.reset-prop-action click' : function() {
-      Rest.Prop.reset(function() {
-        alert('重置道具成功!!!');
-      }, function() {
+      Dialog.showConfirm('你确认要重置所有道具吗？', function() {
+        $(this).closest('.modal').modal('hide');
+        Rest.Prop.reset(function() {
+          Dialog.showMessage('重置道具成功!!!');
+        }, function() {
+        });
       });
     },
 
@@ -114,16 +117,15 @@
       var rule = this.getRule();
       Rest.Rule.updateRule(rule, function(res) {
         self.changed = false;
-        alert('更新规则成功');
+        Dialog.showMessage('更新规则成功');
       });
     },
 
     '.setting-back-action click' : function() {
       if (this.changed) {
-        var confirmed = confirm('设置已被修改，是否放弃？');
-        if (confirmed) {
+        Dialog.showConfirm('设置已被修改，是否放弃？', function() {
           window.location.href = "/main";
-        }
+        });
       } else {
         window.location.href = "/main";
       }
@@ -156,7 +158,7 @@
         }
         if (value <= min || value >= max) {
           level.attr('score', '');
-          alert('您必须输入介于' + min + '和' + max + '之间的值！');
+          Dialog.showMessage('您必须输入介于' + min + '和' + max + '之间的值！');
         }
       }
       this.getLevel(e).attr('score', this.getValue(e));
@@ -205,7 +207,7 @@
         }
         if (value <= min || value >= max) {
           level.attr('to', '');
-          alert('您必须输入介于' + min + '和' + max + '之间的值！');
+          Dialog.showMessage('您必须输入介于' + min + '和' + max + '之间的值！');
         } else {
           if (addRuleRowIndex < levels.length - 1) {
             levels.attr(addRuleRowIndex + 1).attr('from', this.getValue(e));

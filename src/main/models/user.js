@@ -7,7 +7,7 @@ var UserSchema = new Schema({
 	grade : Number,
 	points : Number,
 	rounds : Number,
-	winrate : Number
+	wintimes : Number
 });
 
 UserSchema.statics.findOneByName = function(name, cb) {
