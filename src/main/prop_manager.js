@@ -39,7 +39,7 @@ PropManager.prototype.getPropData = function(account, cb) {
 
 PropManager.prototype.buy = function(account, type, count, cb) {
   var game = global.gameManager.findGameByUser(account);
-  if (game) {
+  if (game && !game.isOver()) {
     cb(null, {
       success : false,
       reason : '游戏进行中，不能购买。',

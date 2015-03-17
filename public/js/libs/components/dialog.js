@@ -2,7 +2,7 @@
   can.Control('Dialog', {
 
     showMessage : function(message) {
-      this.showDialog({
+      return this.showDialog({
         title : '消息',
         content : message,
         autoClose : true,
@@ -18,7 +18,7 @@
     },
 
     showConfirm : function(message, confirmCallback, cancelCallback) {
-      this.showDialog({
+      return this.showDialog({
         title : '确认',
         content : message,
         autoClose : false,
@@ -37,6 +37,9 @@
     showDialog : function(options) {
       if (!options.id) {
         options.id = "dialog" + Date.now();
+      }
+      if (options.disposable === undefined) {
+        options.disposable = true;
       }
       if (options.actions) {
         options.actions.forEach(function(action) {
@@ -68,6 +71,7 @@
         });
       }
       dialogElement.modal();
+      return dialogElement;
     }
   }, {});
 })();

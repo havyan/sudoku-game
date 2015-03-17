@@ -378,6 +378,10 @@
 	text-align: center;
 }
 
+.destroy-countdown-number {
+	color: red;
+}
+
 .player-tip {
 	position: absolute;
 	z-index: 999;

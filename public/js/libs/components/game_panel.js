@@ -94,20 +94,30 @@
       $('.max-timeout-countdown-number').html(newStage);
     },
 
+    '{model} destroyCountdownStage' : function(model, e, newStage) {
+      $('.destroy-countdown-number').html(newStage);
+    },
+
     '{model} quit' : function() {
       window.location.href = "/main";
     },
 
     '{model} results' : function(model, e, results) {
-      Dialog.showDialog({
+      var dialog = Dialog.showDialog({
         title : '排行榜',
         template : '/js/libs/mst/results.mst',
         data : model,
         autoClose : false,
         actions : [{
-          name : '确定',
-          btnClass : 'btn-primary',
+          name : '关闭',
           dismiss : true
+        }, {
+          name : '退出',
+          btnClass : 'btn-primary',
+          callback : function() {
+            $(this).closest('.modal').modal('hide');
+            window.location.href = "/main";
+          }
         }]
       });
     },

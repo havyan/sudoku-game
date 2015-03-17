@@ -432,6 +432,9 @@
       this.eventCenter.on('game-delay-cancelled', function() {
         self.attr('delayed', false);
       });
+      this.eventCenter.on('destroy-countdown-stage', function(stage) {
+        self.attr('destroyCountdownStage', stage);
+      });
     },
 
     setCellOptions : function(xy, cellOptions) {

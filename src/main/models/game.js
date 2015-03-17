@@ -18,7 +18,7 @@ var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var DELAY_COUNTDOWN_TOTAL = 60;
 var DESTROY_COUNTDOWN_TOTAL = 120;
-var MAX_TIMEOUT_ROUNDS = 10;
+var MAX_TIMEOUT_ROUNDS = 2;
 
 var SCORE_TYPE = {
   INCORRECT : "incorrect",
@@ -59,6 +59,10 @@ Game.prototype.isWaiting = function() {
 
 Game.prototype.isOngoing = function() {
   return this.status === ONGOING;
+};
+
+Game.prototype.isOver = function() {
+  return this.status === OVER;
 };
 
 Game.prototype.setStatus = function(account, status) {
@@ -146,7 +150,11 @@ Game.prototype.nextPlayer = function() {
                 self.trigger('quit-countdown-stage', currentPlayer, countdown);
               } else {
                 clearInterval(self.timeoutTimer[currentPlayer]);
-                self.playerQuit(currentPlayer);
+                self.playerQuit(currentPlayer, function(error) {
+                  if (error) {
+                    winston.error('Error happen when player quit for timeout: ' + error);
+                  }
+                });
               }
             }, 1000);
           }
@@ -322,7 +330,7 @@ Game.prototype.addMessage = function(account, message, cb) {
   });
 };
 
-Game.prototype.isOver = function() {
+Game.prototype.checkOver = function() {
   var over = true;
   for (xy in this.answer) {
     over = over && ((this.userCellValues[xy] || this.initCellValues[xy]) === this.answer[xy]);
@@ -390,7 +398,7 @@ Game.prototype.submit = function(account, xy, value, cb) {
       }
       this.trigger('cell-correct', xy, value);
       result.score = this.updateScore(SCORE_TYPE.CORRECT, this.currentPlayer, xy);
-      over = this.isOver();
+      over = this.checkOver();
       result.success = true;
     } else {
       this.trigger('cell-incorrect', xy);

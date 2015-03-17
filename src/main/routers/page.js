@@ -61,7 +61,7 @@ module.exports = function(router) {
 
   router.get('/main', function(req, res, next) {
     var game = global.gameManager.findGameByUser(req.session.account);
-    if (game) {
+    if (game && game.isOngoing()) {
       res.redirect('/gameroom/' + game.id);
     } else {
       User.findOneByAccount(req.session.account, function(error, user) {
