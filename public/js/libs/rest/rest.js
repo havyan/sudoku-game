@@ -209,4 +209,16 @@
       });
     }
   }, {});
+
+  can.Model('Rest.User', {
+    resetMoney : function(success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/reset_money',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
 })();

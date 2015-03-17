@@ -112,6 +112,16 @@
       });
     },
 
+    '.reset-money-action click' : function() {
+      Dialog.showConfirm('你确认要重置天才币吗？', function() {
+        $(this).closest('.modal').modal('hide');
+        Rest.User.resetMoney(function() {
+          Dialog.showMessage('重置天才币成功!!!');
+        }, function() {
+        });
+      });
+    },
+
     '.setting-save-action click' : function() {
       var self = this;
       var rule = this.getRule();

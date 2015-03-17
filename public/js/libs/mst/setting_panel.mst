@@ -1,5 +1,6 @@
 <div class="setting-top-actions">
   <input class="button reset-prop-action" type="button" value="重置道具" />
+  <input class="button reset-money-action" type="button" value="重置天才币" />
 </div>
 <div class="setting-panel">
 	<label class="setting-title">每步时间</label>

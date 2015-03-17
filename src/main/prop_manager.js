@@ -19,7 +19,7 @@ PropManager.prototype.getPropData = function(account, cb) {
         } else {
           var data = {
             userName : user.name,
-            money : prop.money,
+            money : user.money,
             types : _.cloneDeep(PROP_TYPES),
             props : PROP_TYPES.map(function(type) {
               return {
@@ -46,34 +46,46 @@ PropManager.prototype.buy = function(account, type, count, cb) {
       gameId : game.id
     });
   } else {
-    Prop.findOneByAccount(account, function(error, prop) {
+    User.findOneByAccount(account, function(error, user) {
       if (error) {
         cb(error);
       } else {
-        var propType = _.find(PROP_TYPES, {
-          type : type
-        });
-        if (propType.price * count > prop.money) {
-          cb(null, {
-            success : false,
-            reason : '天才币余额不足，请充值。'
-          });
-        } else {
-          prop.set(type, prop[type] + count);
-          prop.money = prop.money - propType.price * count;
-          prop.save(function(error) {
-            if (error) {
-              cb(error);
-            } else {
+        Prop.findOneByAccount(account, function(error, prop) {
+          if (error) {
+            cb(error);
+          } else {
+            var propType = _.find(PROP_TYPES, {
+              type : type
+            });
+            if (propType.price * count > user.money) {
               cb(null, {
-                success : true,
-                money : prop.money,
-                type : type,
-                count : prop[type]
+                success : false,
+                reason : '天才币余额不足，请充值。'
+              });
+            } else {
+              prop.set(type, prop[type] + count);
+              user.money = user.money - propType.price * count;
+              user.save(function(error) {
+                if (error) {
+                  cb(error);
+                } else {
+                  prop.save(function(error) {
+                    if (error) {
+                      cb(error);
+                    } else {
+                      cb(null, {
+                        success : true,
+                        money : user.money,
+                        type : type,
+                        count : prop[type]
+                      });
+                    }
+                  });
+                }
               });
             }
-          });
-        }
+          }
+        });
       }
     });
   }

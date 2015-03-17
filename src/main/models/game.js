@@ -62,7 +62,7 @@ Game.prototype.isOngoing = function() {
 };
 
 Game.prototype.isOver = function() {
-  return this.status === OVER;
+  return this.status === OVER || this.status === DESTROYED;
 };
 
 Game.prototype.setStatus = function(account, status) {
@@ -283,9 +283,7 @@ Game.prototype.createResult = function(player, status) {
     score : status === 'quit' ? '离线' : this.scores[player.account],
     status : status,
     points : player.points,
-    money : _.find(this.props, {
-      account : player.account
-    }).money
+    money : player.money
   };
 };
 

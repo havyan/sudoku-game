@@ -1,6 +1,7 @@
 var HttpError = require('../http_error');
 var winston = require('winston');
 var User = require('../models/user');
+var Prop = require('../models/prop');
 
 module.exports = function(router) {
   /* GET home page. */
@@ -108,7 +109,15 @@ module.exports = function(router) {
   });
 
   router.get('/user', function(req, res, next) {
-    res.render('user', {});
+    User.findOneByAccount(req.session.account, function(error, user) {
+      if (error) {
+        next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
+      } else if (user) {
+        res.render('user', user.toJSON());
+      } else {
+        next(new HttpError('No user found for account ' + req.body.account, HttpError.NOT_FOUND));
+      }
+    });
   });
 };
 

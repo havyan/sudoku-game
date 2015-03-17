@@ -10,8 +10,7 @@ var PropSchema = new Schema({
   impunity : Number,
   delay : Number,
   options_once : Number,
-  options_always : Number,
-  money : Number
+  options_always : Number
 });
 
 PropSchema.statics.findOneByAccount = function(account, cb) {
