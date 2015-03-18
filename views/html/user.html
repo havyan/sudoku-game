@@ -20,18 +20,59 @@
           <span class="name">用户名：</span><span class="value">{{name}}</span>
         </div>
         <div class="info-row">
-          <span class="name">状态：</span><span class="value">冻结</span>
+          <span class="name">状态：</span><span class="value">正常</span>
         </div>
         <div class="info-row">
           <span class="name">级别：</span><span class="value">七段</span>
         </div>
+        <div class="info-row points-row">
+          <span class="name">积分：</span><span class="value">{{points}}</span>
+          <input class="button modify-button" type="button" value="更改" />
+          <input class="value-field" type="text" value="{{points}}" />
+          <input class="button confirm" type="button" value="确认" />
+          <input class="button cancel" type="button" value="取消" />
+        </div>
+        <div class="info-row money-row">
+          <span class="name">天才币：</span><span class="value">{{money}}</span>
+          <input class="button modify-button" type="button" value="更改" />
+          <input class="value-field" type="text" value="{{money}}" />
+          <input class="button confirm" type="button" value="确认" />
+          <input class="button cancel" type="button" value="取消" />
+        </div>
+        <div class="info-row">
+          <span class="name">完成局数：</span><span class="value">{{rounds}}</span>
+        </div>
+        <div class="info-row">
+          <span class="name">胜率：</span><span class="value">{{winrate}}</span>
+        </div>
+        <div class="info-row">
+          <span class="name">邮箱：</span><span class="value">havyan@gmail.com</span>
+        </div>
+        <div class="info-row">
+          <span class="name">注册时间：</span><span class="value">2014年1月1日08:00</span>
+        </div>
+        <div class="info-row">
+          <span class="name">上次登录时间：</span><span class="value">2014年1月1日08:00</span>
+        </div>
+        <div class="info-row">
+          <span class="name">上次登录IP：</span><span class="value">168.12.1.1</span>
+        </div>
+        <div class="info-row">
+          <span class="name">注册IP：</span><span class="value">168.3.1.1</span>
+        </div>
       </div>
-      <div class="icon"></div>
+      <div class="icon">
+        <img src="/imgs/default/user.png">
+        <input class="button delete-icon-button" type="button" value="删除头像" />
+      </div>
       <div class="actions">
         <input class="button freeze-button" type="button" value="冻结" />
         <input class="button unfreeze-button" type="button" value="解冻" />
         <input class="button block-button" type="button" value="封IP" />
       </div>
+    </div>
+    <div class="bottom">
+      <input class="button close-button" type="button" value="关闭" />
     </div>
   </body>
 </html>

@@ -423,6 +423,7 @@ Game.prototype.submit = function(account, xy, value, cb) {
 
 Game.prototype.over = function(cb) {
   var self = this;
+  this.stopPlayerTimer();
   this.players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
     var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;

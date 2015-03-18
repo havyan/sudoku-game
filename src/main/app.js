@@ -14,7 +14,6 @@ var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
 var PropManager = require('./prop_manager');
-var UserManager = require('./user_manager');
 
 // Initialize db
 migrate();
@@ -24,7 +23,6 @@ config.initialize(app);
 
 global.gameManager = new GameManager();
 global.propManager = new PropManager();
-global.userManager = new UserManager();
 
 //app.use(favicon(app.get('conf.path.favicon')));
 app.use(cookieParser());

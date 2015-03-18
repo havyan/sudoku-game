@@ -219,6 +219,32 @@
         success : success,
         error : error
       });
+    },
+
+    setMoney : function(money, success, error) {
+      return $.ajax({
+        type : 'put',
+        url : '/user/money',
+        dataType : 'json',
+        data : {
+          money : money
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    setPoints : function(points, success, error) {
+      return $.ajax({
+        type : 'put',
+        url : '/user/points',
+        dataType : 'json',
+        data : {
+          points : points
+        },
+        success : success,
+        error : error
+      });
     }
   }, {});
 })();

@@ -25,6 +25,12 @@ UserSchema.statics.findOneByAccount = function(account, cb) {
   }, cb);
 };
 
+UserSchema.statics.updateByAccount = function(account, data, cb) {
+  this.update({
+    account : account
+  }, data, cb);
+};
+
 UserSchema.statics.resetMoney = function(cb) {
   this.find(function(error, users) {
     if (error) {
