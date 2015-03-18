@@ -252,6 +252,7 @@ Game.prototype.playerQuit = function(account, cb) {
     var quitPlayer = _.find(this.players, {
       account : account
     });
+    quitPlayer.rounds = quitPlayer.rounds + 1;
     quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
     quitPlayer.save(function(error) {
       if (error) {
