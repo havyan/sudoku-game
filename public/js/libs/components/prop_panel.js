@@ -30,8 +30,11 @@
 
     '.container .store .count .plus click' : function(element) {
       var valueElement = element.siblings('input');
-      valueElement.val(parseInt(valueElement.val()) + 1);
-      this.resetItem(element);
+      var value = parseInt(valueElement.val());
+      if (value < 999) {
+        valueElement.val(value + 1);
+        this.resetItem(element);
+      }
     },
 
     '.container .store .count input keydown' : function(element, event) {
@@ -39,6 +42,10 @@
     },
 
     '.container .store .count input blur' : function(element, event) {
+      var value = parseInt(element.val());
+      if (value > 999) {
+        element.val(999);
+      }
       this.resetItem(element);
     },
 

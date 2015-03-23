@@ -48,7 +48,7 @@
     },
 
     '.chess-cell keydown' : function(element, event) {
-      if (this.options.parentModel.isDraft()) {
+      if (this.options.parentModel.isDraft() && this.options.parentModel.isPlain()) {
         var draft = this.options.model.attr('draft');
         var code = event.keyCode;
         var codeMap = {

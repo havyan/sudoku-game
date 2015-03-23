@@ -113,9 +113,7 @@ module.exports = function(router) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
       } else if (user) {
-        var userJSON = user.toJSON();
-        userJSON.winrate = userJSON.rounds > 0 ? Math.round(userJSON.wintimes / userJSON.rounds * 100) + '%' : '0%';
-        res.render('user', userJSON);
+        res.render('user', user);
       } else {
         next(new HttpError('No user found for account ' + req.body.account, HttpError.NOT_FOUND));
       }

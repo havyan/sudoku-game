@@ -44,4 +44,8 @@ UserSchema.statics.resetMoney = function(cb) {
   });
 };
 
+UserSchema.virtual('winrate').get(function() {
+  return this.rounds > 0 ? Math.round(this.wintimes / this.rounds * 100) : 0;
+});
+
 module.exports = mongoose.model('User', UserSchema);

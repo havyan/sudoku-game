@@ -352,10 +352,14 @@ Game.prototype.toJSON = function(account) {
     initCellValues : this.initCellValues,
     userCellValues : this.userCellValues,
     players : this.players.map(function(player) {
-      return player.toJSON();
+      return player.toJSON({
+        virtuals : true
+      });
     }),
     quitPlayers : this.quitPlayers.map(function(player) {
-      return player.toJSON();
+      return player.toJSON({
+        virtuals : true
+      });
     }),
     currentPlayer : this.currentPlayer,
     messages : this.messages,

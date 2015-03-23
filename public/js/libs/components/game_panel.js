@@ -137,15 +137,7 @@
 
     '.game-player mouseenter' : function(e) {
       var player = this.getPlayer(e);
-      $('body').append(can.view('/js/libs/mst/player_tip.mst', player, {
-        calcWinrate : function(player) {
-          if (player.rounds > 0) {
-            return Math.round(player.wintimes / player.rounds * 100) + '%';
-          } else {
-            return '0%';
-          }
-        }
-      }));
+      $('body').append(can.view('/js/libs/mst/player_tip.mst', player));
       var playerTip = $('.player-tip');
       playerTip.css({
         top : e.offset().top + e.outerHeight(),

@@ -17,6 +17,23 @@
       });
     },
 
+    showError : function(message) {
+      return this.showDialog({
+        title : '错误',
+        content : message,
+        autoClose : true,
+        disposable : true,
+        actions : [{
+          name : '关闭',
+          dismiss : true,
+          btnClass : 'btn-danger',
+          callback : function(e) {
+            $(this).closest('.modal').modal('hide');
+          }
+        }]
+      });
+    },
+
     showConfirm : function(message, confirmCallback, cancelCallback) {
       return this.showDialog({
         title : '确认',
