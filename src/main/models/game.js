@@ -133,7 +133,7 @@ Game.prototype.nextPlayer = function() {
       if (!self.playerTimer.stopped && !self.delayed) {
         self.playerTimer.ellapsedTime++;
         self.trigger('ellapsed-time', self.playerTimer.ellapsedTime);
-        if (self.playerTimer.ellapsedTime === self.rule.add.total) {
+        if (self.playerTimer.ellapsedTime === self.rule.score.add.total) {
           var currentPlayer = self.currentPlayer;
           self.stopPlayerTimer();
           self.updateScore(SCORE_TYPE.TIMEOUT);
@@ -173,7 +173,7 @@ Game.prototype.updateScore = function(type, account, xy) {
   }
   if (type === SCORE_TYPE.CORRECT) {
     var time = this.playerTimer.ellapsedTime;
-    score = _.find(rule.add.levels, function(level) {
+    score = _.find(rule.score.add.levels, function(level) {
       return time >= level.from && time < level.to;
     }).score;
   } else if (type === SCORE_TYPE.INCORRECT || type === SCORE_TYPE.TIMEOUT) {
@@ -375,7 +375,7 @@ Game.prototype.toJSON = function(account) {
     }),
     knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues,
     changedScore : account ? this.changedScores[account] : this.changedScores,
-    remainingTime : this.rule.add.total - this.playerTimer.ellapsedTime,
+    remainingTime : this.rule.score.add.total - this.playerTimer.ellapsedTime,
     optionsOnce : account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
     optionsAlways : account ? this.optionsAlways[account] ? true : false : this.optionsAlways
   };
@@ -663,7 +663,7 @@ Game.prototype.init = function(cb) {
       cb(error);
     } else {
       var ruleJSON = rule.toJSON();
-      ruleJSON.add = _.find(ruleJSON.add, function(e) {
+      ruleJSON.score.add = _.find(ruleJSON.score.add, function(e) {
         return e.selected;
       });
       self.rule = ruleJSON;
