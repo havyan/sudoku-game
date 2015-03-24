@@ -1,3 +1,93 @@
+.setting-panel .navigator {
+	float: left;
+	width: 12%;
+	margin-left: 10%;
+}
+
+.setting-panel .navigator .item {
+	cursor: pointer;
+	font-size: 1.2em;
+	color: white;
+	text-align: center;
+	background: gray;
+	margin-bottom: 20px;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.setting-panel .navigator .item.active {
+	background: white;
+	color: gray;
+}
+
+.setting-panel .setting-container {
+	margin-left: 27%;
+	width: 43%;
+}
+
+.setting-panel .grade-table {
+	width: 35%;
+}
+
+.setting-panel .grade-table * {
+	font-size: 16px;
+}
+
+.setting-panel .grade-table tr {
+	height: 30px;
+	line-height: 30px;
+}
+
+.setting-panel .grade-table .name {
+	width: 80px;
+}
+
+.setting-panel .grade-table .value {
+	text-align: right;
+	width: 100px;
+	position: relative;
+}
+
+.grade-table .value input {
+	display: none;
+	width: 80px;
+	text-align: right;
+	height: 25px;
+	line-height: 25px;
+	vertical-align: middle;
+}
+
+.grade-table .value input.invalid {
+	border: 1px solid red;
+}
+
+.grade-table .value.edit input {
+	display: inline-block;
+}
+
+.grade-table .value.edit span {
+	display: none;
+}
+
+.grade-table .value .error {
+	color: red;
+	position: absolute;
+	left: 105%;
+	white-space: nowrap;
+	top: 0px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+}
+
+.setting-panel .setting-container .item {
+	display: none;
+}
+
+.setting-panel .setting-container .item.active {
+	display: block;
+}
+
 .setting-top-actions {
 	margin-bottom: 20px;
 }
@@ -16,14 +106,14 @@
 	margin-left: 30px;
 }
 
-.setting-panel > a {
+.setting-score > a {
 	line-height: 24px;
 	height: 24px;
 	text-decoration: none;
 	margin-left: 10px;
 }
 
-.setting-panel > a * {
+.setting-score > a * {
 	vertical-align: middle;
 	color: #FFF;
 }
@@ -148,15 +238,15 @@
 	margin-left: 10px;
 }
 
-.
-
 .setting-panel .add-rule-row-actions .add-button {
 	margin-left: 0px;
 }
 
 .setting-panel .setting-actions {
 	height: 30px;
-	margin-top: 20px;
+	width: 43%;
+	margin: auto;
+	margin-top: 30px;
 	margin-bottom: 30px;
 }
 
@@ -169,8 +259,9 @@
 }
 
 .setting-panel .setting-back-action {
-	background: #d58512;
-	color: #FFF;
+	color: #fff;
+	background: #f0ad4e;
+	border-color: #eea236;
 }
 
 .game-panel {
@@ -209,11 +300,11 @@
 
 .game-player.quit img {
 	-webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%);
-    filter: gray;
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+	filter: grayscale(100%);
+	filter: gray;
 }
 
 .game-player.quit * {
@@ -549,48 +640,79 @@
 
 @keyframes correct
 {
-from {box-shadow: 0px 0px 0px 0px #05B522;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px #05B522;z-index: 999;}
+from {
+	box-shadow: 0px 0px 0px 0px #05B522;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px #05B522;
+	z-index: 999;
+}
 }
 
-@-webkit-keyframes correct
-{
-from {box-shadow: 0px 0px 0px 0px #05B522;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px #05B522;z-index: 999;}
+@-webkit-keyframes
+correct {from {
+	box-shadow: 0px 0px 0px 0px #05B522;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px #05B522;
+	z-index: 999;
+}
 }
 
-@keyframes incorrect
-{
-from {box-shadow: 0px 0px 0px 0px red;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
+@keyframes
+incorrect {from {
+	box-shadow: 0px 0px 0px 0px red;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px red;
+	z-index: 999;
+}
 }
 
-@-webkit-keyframes incorrect
-{
-from {box-shadow: 0px 0px 0px 0px red;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
+@-webkit-keyframes
+incorrect {from {
+	box-shadow: 0px 0px 0px 0px red;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px red;
+	z-index: 999;
+}
 }
 
-@keyframes known-cell
-{
-from {box-shadow: 0px 0px 0px 0px #607E02;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
+@keyframes
+known-cell {from {
+	box-shadow: 0px 0px 0px 0px #607E02;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px #607E02;
+	z-index: 999;
+}
 }
 
-@-webkit-keyframes known-cell
-{
-from {box-shadow: 0px 0px 0px 0px #607E02;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
+@-webkit-keyframes
+known-cell {from {
+	box-shadow: 0px 0px 0px 0px #607E02;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px #607E02;
+	z-index: 999;
+}
 }
 
 .correct {
 	animation: correct 1s;
-	-webkit-animation: correct 1s;	
+	-webkit-animation: correct 1s;
 }
 
 .incorrect {
 	animation: incorrect 1s;
-	-webkit-animation: incorrect 1s;	
+	-webkit-animation: incorrect 1s;
 }
 
 .known-cell {
@@ -637,7 +759,6 @@ to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
 	float: left;
 	text-align: center;
 }
-
 
 .chess-cell-draft {
 	display: none;
@@ -865,11 +986,11 @@ to {box-shadow: 0px 0px 5px 5px #607E02;z-index: 999;}
 
 .prop li.prop-item.empty img {
 	-webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%);
-    filter: gray;
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+	filter: grayscale(100%);
+	filter: gray;
 }
 
 .prop li .prop-item-content {

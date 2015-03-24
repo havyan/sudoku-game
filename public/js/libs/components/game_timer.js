@@ -24,7 +24,7 @@
         var path = 'M' + radius + ' ' + radius + ' L ' + radius + ' 0 ';
         path += 'A ' + radius + ' ' + radius + ' 0 ' + ((remainingTime > totalTime / 2) ? 1 : 0) + ' 0 ' + x + ' ' + y + ' ';
         path += 'L ' + radius + ' ' + radius + ' Z';
-        var levels = model.attr('rule.add.levels');
+        var levels = model.attr('rule.score.add.levels');
         var levelIndex = _.findIndex(levels, function(level) {
           return ellapsedTime >= level.attr('from') && ellapsedTime < level.attr('to');
         });

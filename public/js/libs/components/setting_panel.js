@@ -13,7 +13,7 @@
       element.html(can.view('/js/libs/mst/setting_panel.mst', model, {
         disableLastTo : function(ruleRow) {
           var isLast = false;
-          self.model.attr('add').forEach(function(addRule) {
+          self.model.attr('score.add').forEach(function(addRule) {
             var levels = addRule.attr('levels');
             isLast = isLast || (levels.indexOf(ruleRow) === levels.length - 1);
           });
@@ -36,6 +36,11 @@
       return this.model;
     },
 
+    '.navigator .item click' : function(e) {
+      e.addClass('active').siblings('.item').removeClass('active');
+      this.element.find('.setting-container .item').removeClass('active').filter('.' + e.data('target')).addClass('active');
+    },
+
     '.add-rule-collapsed-button click' : function(e) {
       e = $(e);
       var text = e.html();
@@ -44,7 +49,7 @@
     },
 
     '.setting-panel .add-button click' : function() {
-      this.model.attr('add').push({
+      this.model.attr('score.add').push({
         total : 30,
         levels : [{
           "from" : 0,
@@ -67,10 +72,10 @@
     },
 
     '.setting-panel .delete-button click' : function() {
-      if (this.model.attr('add').length > 1) {
+      if (this.model.attr('score.add').length > 1) {
         var index = this.getAddRuleIndex(this.element.find('[name=addRule]:checked'));
-        this.model.attr('add').splice(index, 1);
-        this.model.attr('add.0.selected', true);
+        this.model.attr('score.add').splice(index, 1);
+        this.model.attr('score.add.0.selected', true);
       } else {
         Dialog.showMessage('不能删除最后一条规则！');
       }
@@ -175,21 +180,21 @@
     },
 
     '.reduce-rule-timeout-score blur' : function(e) {
-      this.model.attr('reduce').attr('timeout', this.getValue(e));
+      this.model.attr('score.reduce').attr('timeout', this.getValue(e));
     },
 
     '.reduce-rule-pass-score blur' : function(e) {
-      this.model.attr('reduce').attr('pass', this.getValue(e));
+      this.model.attr('score.reduce').attr('pass', this.getValue(e));
     },
 
     'input[name=addRule] click' : function(e) {
       var index = this.getAddRuleIndex(e);
-      $.each(this.model.attr('add'), function(i, addRule) {
+      $.each(this.model.attr('score.add'), function(i, addRule) {
         addRule.attr('selected', i === index);
       });
     },
 
-    'input[type=text] keydown' : function(e) {
+    'input[type=text] keydown' : function(e, event) {
       return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
     },
 
@@ -283,13 +288,41 @@
     },
 
     getAddRule : function(e) {
-      return this.model.attr('add.' + this.getAddRuleIndex(e));
+      return this.model.attr('score.add.' + this.getAddRuleIndex(e));
     },
 
     getLevel : function(e) {
       var index = this.getAddRuleIndex(e);
       var rowIndex = this.getAddRuleRowIndex(e);
-      return this.model.attr('add.' + index + '.levels.' + rowIndex);
+      return this.model.attr('score.add.' + index + '.levels.' + rowIndex);
+    },
+
+    '.grade-table .value span click' : function(e) {
+      var grade = parseInt(e.closest('tr').data('grade'));
+      if (grade > 0) {
+        e.closest('.value').addClass('edit').find('input').val(this.model.attr('grade.' + grade)).focus();
+      }
+    },
+
+    '.grade-table .value input keydown' : function(e, event) {
+      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+    },
+
+    '.grade-table .value input blur' : function(e) {
+      var value = parseInt(e.val());
+      var grade = parseInt(e.closest('tr').data('grade'));
+      var beforValue = grade > 0 ? this.model.attr('grade.' + (grade - 1)) : 0;
+      var afterValue = grade < 9 ? this.model.attr('grade.' + (grade + 1)) : 9999999999;
+      if (value <= beforValue || value >= afterValue) {
+        e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
+        e.closest('.grade-table').find('.value').removeClass('edit');
+        e.closest('.value').addClass('edit');
+        e.addClass('invalid').focus();
+      } else {
+        e.siblings('.error').empty();
+        e.removeClass('invalid').closest('.value').removeClass('edit');
+        this.model.attr('grade.' + grade, value);
+      }
     }
   });
 })();

@@ -177,9 +177,9 @@ Game.prototype.updateScore = function(type, account, xy) {
       return time >= level.from && time < level.to;
     }).score;
   } else if (type === SCORE_TYPE.INCORRECT || type === SCORE_TYPE.TIMEOUT) {
-    score = -(rule.reduce.timeout);
+    score = -(rule.score.reduce.timeout);
   } else if (type === SCORE_TYPE.PASS) {
-    score = -(rule.reduce.pass);
+    score = -(rule.score.reduce.pass);
   } else if (type === SCORE_TYPE.IMPUNITY) {
     if (this.changedScores[account] && this.changedScores[account].changed < 0) {
       score = -this.changedScores[account].changed;
@@ -254,6 +254,9 @@ Game.prototype.playerQuit = function(account, cb) {
     });
     quitPlayer.rounds = quitPlayer.rounds + 1;
     quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
+    player.grade = _.findKey(this.rule.grade, function(value) {
+      return value > player.points;
+    });
     quitPlayer.save(function(error) {
       if (error) {
         cb(error);
@@ -352,14 +355,10 @@ Game.prototype.toJSON = function(account) {
     initCellValues : this.initCellValues,
     userCellValues : this.userCellValues,
     players : this.players.map(function(player) {
-      return player.toJSON({
-        virtuals : true
-      });
+      return player.toJSON();
     }),
     quitPlayers : this.quitPlayers.map(function(player) {
-      return player.toJSON({
-        virtuals : true
-      });
+      return player.toJSON();
     }),
     currentPlayer : this.currentPlayer,
     messages : this.messages,
@@ -437,6 +436,9 @@ Game.prototype.over = function(cb) {
   var index = 0;
   async.eachSeries(this.players, function(player, cb) {
     player.points = player.points + 100 * (self.results.length + 1);
+    player.grade = _.findKey(self.rule.grade, function(value) {
+      return value > player.points;
+    });
     player.rounds = player.rounds + 1;
     if (index === self.players.length - 1) {
       player.wintimes = player.wintimes + 1;
@@ -675,6 +677,7 @@ Game.prototype.init = function(cb) {
 Game.prototype.destroy = function() {
   this.stopPlayerTimer();
   this.status = DESTROYED;
+  winston.info('Game [' + this.id + '] destoryed');
   this.trigger('game-destroyed');
 };
 

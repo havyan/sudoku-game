@@ -353,7 +353,7 @@
     },
 
     totalTime : function() {
-      return this.attr('rule.add.total');
+      return this.attr('rule.score.add.total');
     },
 
     initEvents : function() {
@@ -396,7 +396,7 @@
         self.attr('delayed', false);
       });
       this.eventCenter.on('ellapsed-time', function(ellapsedTime) {
-        var remainingTime = self.attr('rule.add.total') - ellapsedTime;
+        var remainingTime = self.attr('rule.score.add.total') - ellapsedTime;
         self.attr('remainingTime', remainingTime);
       });
       this.eventCenter.on('score-changed', function(account, info) {
