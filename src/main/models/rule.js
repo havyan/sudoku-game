@@ -35,7 +35,6 @@ RuleSchema.statics.updateRule = function(rule, cb) {
   this.update({
     '_id' : id
   }, rule, cb);
-  //TODO update user grade
 };
 
 var Rule = mongoose.model('Rule', RuleSchema);

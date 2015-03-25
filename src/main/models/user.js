@@ -60,6 +60,25 @@ UserSchema.statics.updateByAccount = function(account, data, cb) {
   }
 };
 
+UserSchema.statics.updateAllGrades = function(cb) {
+  var self = this;
+  Rule.getRule(function(error, rule) {
+    if (error) {
+      cb(error);
+    } else {
+      self.find({}, function(error, users) {
+        async.each(users, function(user, cb) {
+          var ceilingIndex = _.findIndex(rule.grade, function(e) {
+            return e.floor > user.points;
+          });
+          user.grade = rule.grade[ceilingIndex - 1].code;
+          user.save(cb);
+        }, cb);
+      });
+    }
+  });
+};
+
 UserSchema.statics.resetMoney = function(cb) {
   this.find(function(error, users) {
     if (error) {

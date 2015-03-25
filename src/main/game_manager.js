@@ -122,6 +122,12 @@ GameManager.prototype.getGame = function(id) {
   });
 };
 
+GameManager.prototype.existsGame = function() {
+  return _.find(this.games, function(game) {
+    return !game.isOver();
+  }) != undefined;
+};
+
 GameManager.prototype.setGameStatus = function(account, id, status) {
   var game = this.getGame(id);
   if (game) {

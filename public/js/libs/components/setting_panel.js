@@ -132,7 +132,11 @@
       var rule = this.getRule();
       Rest.Rule.updateRule(rule, function(res) {
         self.changed = false;
-        Dialog.showMessage('更新规则成功');
+        if (res.success) {
+          Dialog.showMessage('更新规则成功');
+        } else {
+          Dialog.showError(res.reason);
+        }
       });
     },
 
