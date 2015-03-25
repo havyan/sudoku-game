@@ -9,6 +9,7 @@
       this.initCellDatas();
       this.initOptions();
       this.initActive();
+      this.initZoom();
     },
 
     initStatus : function() {
@@ -28,6 +29,11 @@
       this.bind('optionsAlways', function(ev, attr, how, value) {
         self.resetOptions();
       });
+    },
+
+    initZoom : function() {
+      var zoom = window.localStorage.getItem(this.attr('account') + '_game_zoom');
+      this.attr('zoom', zoom ? parseFloat(zoom) : 1);
     },
 
     resetOptions : function() {
@@ -178,6 +184,24 @@
 
     sendMessage : function(message, success, error) {
       Rest.Game.sendMessage(this.attr('id'), message, success, error);
+    },
+
+    zoomin : function() {
+      if (this.attr('zoom') > 1) {
+        this.setZoom(this.attr('zoom') - 0.1);
+      }
+    },
+
+    zoomout : function() {
+      if (this.attr('zoom') < 2) {
+        this.setZoom(this.attr('zoom') + 0.1);
+      }
+    },
+
+    setZoom : function(zoom) {
+      zoom = parseFloat(zoom.toFixed(1));
+      this.attr('zoom', zoom);
+      window.localStorage.setItem(this.attr('account') + '_game_zoom', zoom);
     },
 
     addPlayer : function(player) {

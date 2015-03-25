@@ -150,6 +150,7 @@
       if (cellSize * dimension.width > window.innerWidth) {
         cellSize = Math.floor((window.innerWidth - 60) / dimension.width);
       }
+      cellSize = cellSize * this.options.model.attr('zoom');
       this.element.find('.chessboard-container').css({
         'width' : (cellSize * dimension.width) + 'px',
         'height' : (cellSize * dimension.height) + 'px'
@@ -175,6 +176,14 @@
       if (this.options.model.isOptionsEnabled()) {
         this.options.model.toOptions();
       }
+    },
+
+    '.game-zoom-out-button click' : function() {
+      this.options.model.zoomout();
+    },
+
+    '.game-zoom-in-button click' : function() {
+      this.options.model.zoomin();
     },
 
     '.pass-action click' : function() {
@@ -297,6 +306,10 @@
       } else if (window.event) {
         window.event.cancelBubble = true;
       }
+    },
+
+    '{model} zoom' : function() {
+      this.resize();
     },
 
     '.chess-cell focus' : function(element, event) {

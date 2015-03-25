@@ -38,7 +38,7 @@
     },
 
     '.container .store .count input keydown' : function(element, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8;
+      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
     },
 
     '.container .store .count input blur' : function(element, event) {

@@ -298,9 +298,9 @@
     },
 
     '.grade-table .value span click' : function(e) {
-      var grade = parseInt(e.closest('tr').data('grade'));
-      if (grade > 0) {
-        e.closest('.value').addClass('edit').find('input').val(this.model.attr('grade.' + grade)).focus();
+      var index = parseInt(e.closest('tr').data('index'));
+      if (index > 0) {
+        e.closest('.value').addClass('edit').find('input').val(this.model.attr('grade.' + index + '.floor')).focus();
       }
     },
 
@@ -310,9 +310,9 @@
 
     '.grade-table .value input blur' : function(e) {
       var value = parseInt(e.val());
-      var grade = parseInt(e.closest('tr').data('grade'));
-      var beforValue = grade > 0 ? this.model.attr('grade.' + (grade - 1)) : 0;
-      var afterValue = grade < 9 ? this.model.attr('grade.' + (grade + 1)) : 9999999999;
+      var index = parseInt(e.closest('tr').data('index'));
+      var beforValue = index > 0 ? this.model.attr('grade.' + (index - 1) + '.floor') : 0;
+      var afterValue = index < this.model.attr('grade').length - 1 ? this.model.attr('grade.' + (index + 1) + '.floor') : 9999999999;
       if (value <= beforValue || value >= afterValue) {
         e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
         e.closest('.grade-table').find('.value').removeClass('edit');
@@ -321,7 +321,7 @@
       } else {
         e.siblings('.error').empty();
         e.removeClass('invalid').closest('.value').removeClass('edit');
-        this.model.attr('grade.' + grade, value);
+        this.model.attr('grade.' + index + '.floor', value);
       }
     }
   });

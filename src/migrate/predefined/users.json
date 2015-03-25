@@ -98,7 +98,7 @@
   }, {
     "account": "EEE",
     "name": "EEE",
-    "grade": 12,
+    "grade": "12",
     "points": 0,
     "rounds": 0,
     "wintimes": 0,

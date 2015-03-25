@@ -18,11 +18,11 @@ module.exports = function(router) {
   router.put('/user/points', function(req, res, next) {
     User.updateByAccount(req.session.account, {
       points : req.body.points
-    }, function(error) {
+    }, function(error, result) {
       if (error) {
         next(new HttpError(error));
       } else {
-        res.send({
+        res.send( result ? result : {
           status : 'ok'
         });
       }
@@ -32,11 +32,11 @@ module.exports = function(router) {
   router.put('/user/money', function(req, res, next) {
     User.updateByAccount(req.session.account, {
       money : req.body.money
-    }, function(error) {
+    }, function(error, result) {
       if (error) {
         next(new HttpError(error));
       } else {
-        res.send({
+        res.send( result ? result : {
           status : 'ok'
         });
       }

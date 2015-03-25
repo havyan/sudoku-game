@@ -71,7 +71,6 @@
       </div>
     </div>
     {{/score}}
-    {{#grade}}
     <div class="setting-grade item">
       <table class="grade-table">
         <thead>
@@ -79,80 +78,17 @@
           <th class="value">积分</th>
         </thead>
         <tbody>
-          <tr data-grade="0">
-            <td class="name">新手</td>
-            <td class="value"><span>{{0}}</span>
-            <input type="text" value="{{0}}" />
-            <div class="error"></div>
-            </td>
+          {{#each grade}}
+          <tr data-grade="{{code}}" data-index="{{@index}}">
+            <td class="name">{{name}}</td>
+            <td class="value"><span>{{floor}}</span>
+            <input type="text" value="{{floor}}" />
+            <div class="error"></div></td>
           </tr>
-          <tr data-grade="1">
-            <td class="name">一段</td>
-            <td class="value"><span>{{1}}</span>
-            <input type="text" value="{{1}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
-          <tr data-grade="2">
-            <td class="name">二段</td>
-            <td class="value"><span>{{2}}</span>
-            <input type="text" value="{{2}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
-          <tr data-grade="3">
-            <td class="name">三段</td>
-            <td class="value"><span>{{3}}</span>
-            <input type="text" value="{{3}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
-          <tr data-grade="4">
-            <td class="name">四段</td>
-            <td class="value"><span>{{4}}</span>
-            <input type="text" value="{{4}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
-          <tr data-grade="5">
-            <td class="name">五段</td>
-            <td class="value"><span>{{5}}</span>
-            <input type="text" value="{{5}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
-          <tr data-grade="6">
-            <td class="name">六段</td>
-            <td class="value"><span>{{6}}</span>
-            <input type="text" value="{{6}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
-          <tr data-grade="7">
-            <td class="name">七段</td>
-            <td class="value"><span>{{7}}</span>
-            <input type="text" value="{{7}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
-          <tr data-grade="8">
-            <td class="name">八段</td>
-            <td class="value"><span>{{8}}</span>
-            <input type="text" value="{{8}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
-          <tr data-grade="9">
-            <td class="name">九段</td>
-            <td class="value"><span>{{9}}</span>
-            <input type="text" value="{{9}}" />
-            <div class="error"></div>
-            </td>
-          </tr>
+          {{/each}}
         </tbody>
       </table>
     </div>
-    {{/grade}}
     <div class="setting-game-view item"></div>
   </div>
   <div class="setting-actions">

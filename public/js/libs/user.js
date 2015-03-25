@@ -11,7 +11,7 @@
       },
 
       '.value-field keydown' : function(element, event) {
-        return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8;
+        return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
       },
 
       '.info-row .cancel click' : function(element) {
@@ -22,10 +22,13 @@
         Dialog.showConfirm('您确定要修改积分吗？', function() {
           $(this).closest('.modal').modal('hide');
           var value = parseInt(element.siblings('.value-field').val());
-          Rest.User.setPoints(value, function() {
+          Rest.User.setPoints(value, function(result) {
             Dialog.showMessage('修改积分成功!!!');
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
+            if (result && result.grade_name) {
+              element.closest('.info').find('.info-row.grade .value').html(result.grade_name);
+            }
           }, function() {
           });
         });
@@ -35,7 +38,7 @@
         Dialog.showConfirm('您确定要修改天才币吗？', function() {
           $(this).closest('.modal').modal('hide');
           var value = parseInt(element.siblings('.value-field').val());
-          Rest.User.setMoney(value, function() {
+          Rest.User.setMoney(value, function(result) {
             Dialog.showMessage('修改天才币成功!!!');
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');

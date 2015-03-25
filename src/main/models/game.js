@@ -241,7 +241,7 @@ Game.prototype.playerJoin = function(account, cb) {
 Game.prototype.playerQuit = function(account, cb) {
   var self = this;
   if (this.players.length > 1) {
-    if (this.currentPlayer === account) {
+    if (this.currentPlayer === account && this.isOngoing()) {
       this.nextPlayer();
     }
   } else {
@@ -254,9 +254,10 @@ Game.prototype.playerQuit = function(account, cb) {
     });
     quitPlayer.rounds = quitPlayer.rounds + 1;
     quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
-    player.grade = _.findKey(this.rule.grade, function(value) {
-      return value > player.points;
+    var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
+      return e.floor > quitPlayer.points;
     });
+    quitPlayer.grade = this.rule.grade[ceilingIndex - 1].code;
     quitPlayer.save(function(error) {
       if (error) {
         cb(error);
@@ -436,9 +437,10 @@ Game.prototype.over = function(cb) {
   var index = 0;
   async.eachSeries(this.players, function(player, cb) {
     player.points = player.points + 100 * (self.results.length + 1);
-    player.grade = _.findKey(self.rule.grade, function(value) {
-      return value > player.points;
+    var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
+      return e.floor > player.points;
     });
+    player.grade = self.rule.grade[ceilingIndex - 1].code;
     player.rounds = player.rounds + 1;
     if (index === self.players.length - 1) {
       player.wintimes = player.wintimes + 1;
@@ -664,11 +666,10 @@ Game.prototype.init = function(cb) {
     if (error) {
       cb(error);
     } else {
-      var ruleJSON = rule.toJSON();
-      ruleJSON.score.add = _.find(ruleJSON.score.add, function(e) {
+      rule.score.add = _.find(rule.score.add, function(e) {
         return e.selected;
       });
-      self.rule = ruleJSON;
+      self.rule = rule;
       cb();
     }
   });
