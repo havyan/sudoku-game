@@ -525,16 +525,22 @@
 	margin: 0 auto;
 }
 
-.chessboard-container .game-zoom-bar {
+.chessboard-container .game-zoom {
 	position: absolute;
 	left: -10%;
-	top: 45%;
+	top: 40%;
 }
 
-.chessboard-container .game-zoom-bar .button {
+.chessboard-container .game-zoom .button {
 	display: block;
 	width: 35px;
-	margin-bottom: 30px;
+}
+
+.chessboard-container .game-zoom-bar {
+	margin: auto;
+	height: 120px;
+	width: 5px;
+	background: white;
 }
 
 .chessboard-actions {

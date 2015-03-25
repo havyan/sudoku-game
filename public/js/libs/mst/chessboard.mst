@@ -1,6 +1,7 @@
 <div class="chessboard-container">
-  <div class="game-zoom-bar">
+  <div class="game-zoom">
     <input class="button game-zoom-out-button" type="button" value="+" />
+    <div class="game-zoom-bar"></div>
     <input class="button game-zoom-in-button" type="button" value="-" />
   </div>
   <div class="game-timer-panel"></div>
