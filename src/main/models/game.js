@@ -72,9 +72,10 @@ Game.prototype.setStatus = function(account, status) {
   var self = this;
   if (oldStatus === WAITING && status === LOADING) {
     var player = self.findPlayer(account);
-    Puzzle.findRandomOneByLevel(Puzzle.LEVELS[parseInt(player.grade)], function(error, puzzle) {
+    //TODO for test, remove it in the future
+    var grade = account === 'EEE' ? 12 : parseInt(player.grade);
+    Puzzle.findRandomOneByLevel(Puzzle.LEVELS[grade], function(error, puzzle) {
       if (error) {
-        // TODO handle error.
         winston.error(error);
       } else {
         puzzleJson = puzzle.toJSON();
@@ -150,7 +151,7 @@ Game.prototype.nextPlayer = function() {
                 self.trigger('quit-countdown-stage', currentPlayer, countdown);
               } else {
                 clearInterval(self.timeoutTimer[currentPlayer]);
-                self.playerQuit(currentPlayer, function(error) {
+                self.playerQuit(currentPlayer, 'offline', function(error) {
                   if (error) {
                     winston.error('Error happen when player quit for timeout: ' + error);
                   }
@@ -238,7 +239,7 @@ Game.prototype.playerJoin = function(account, cb) {
   });
 };
 
-Game.prototype.playerQuit = function(account, cb) {
+Game.prototype.playerQuit = function(account, status, cb) {
   var self = this;
   if (this.players.length > 1) {
     if (this.currentPlayer === account && this.isOngoing()) {
@@ -263,9 +264,12 @@ Game.prototype.playerQuit = function(account, cb) {
         cb(error);
       } else {
         self.quitPlayers.unshift(quitPlayer);
-        self.results.unshift(self.createResult(quitPlayer, 'quit'));
+        self.results.unshift(self.createResult(quitPlayer, status));
         self.removePlayer(account);
-        self.trigger('player-quit', account);
+        self.trigger('player-quit', {
+          account : account,
+          status : status
+        });
         if (self.players.length <= 0) {
           self.destroy();
         }
@@ -274,7 +278,10 @@ Game.prototype.playerQuit = function(account, cb) {
     });
   } else {
     this.removePlayer(account);
-    this.trigger('player-quit', account);
+    this.trigger('player-quit', {
+      account : account,
+      status : status
+    });
     if (self.players.length <= 0) {
       self.destroy();
     }
@@ -285,7 +292,7 @@ Game.prototype.playerQuit = function(account, cb) {
 Game.prototype.createResult = function(player, status) {
   return {
     playerName : player.name,
-    score : status === 'quit' ? '离线' : this.scores[player.account],
+    score : status === 'quit' ? '退出' : status === 'offline' ? '离线' : this.scores[player.account],
     status : status,
     points : player.points,
     money : player.money

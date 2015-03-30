@@ -111,7 +111,7 @@
       } else {
         this.element.find('.prop .options_once').removeClass('active');
       }
-      if (!this.options.model.attr('optionsEnabled') && this.options.model.attr('prop.options_always') > 0) {
+      if (this.options.model.attr('prop.options_always') > 0) {
         this.element.find('.prop .options_always').addClass('active');
       } else {
         this.element.find('.prop .options_always').removeClass('active');

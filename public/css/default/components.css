@@ -951,6 +951,10 @@ to {
 	height: 100%;
 }
 
+.game-results-table * {
+	text-align: center;
+}
+
 .remaining-time {
 	position: absolute;
 	z-index: 100;

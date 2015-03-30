@@ -77,7 +77,7 @@
         ranking.push({
           account : quitPlayer.attr('account'),
           name : quitPlayer.attr('name'),
-          score : '离线',
+          score : quitPlayer.status === 'quit' ? '退出' : '离线',
           type : 'quit'
         });
       });
@@ -209,12 +209,14 @@
       this.resetRanking();
     },
 
-    playerQuit : function(account) {
+    playerQuit : function(account, status) {
       var index = _.findIndex(this.attr('players'), function(player) {
         return player.account === account;
       });
       if (this.attr('status') === 'ongoing') {
-        this.attr('quitPlayers').unshift(this.attr('players.' + index).attr());
+        var quitPlayer = this.attr('players.' + index).attr();
+        quitPlayer.status = status;
+        this.attr('quitPlayers').unshift(quitPlayer);
       }
       this.attr('players').splice(index, 1);
       this.resetRanking();
@@ -385,8 +387,9 @@
       this.eventCenter.on('player-joined', function(player) {
         self.addPlayer(player);
       });
-      this.eventCenter.on('player-quit', function(account) {
-        self.playerQuit(account);
+      this.eventCenter.on('player-quit', function(data) {
+        var account = data.account;
+        self.playerQuit(account, data.status);
         if (self.attr('account') === account) {
           self.attr('quit', true);
           self.destroy();

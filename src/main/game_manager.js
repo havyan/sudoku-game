@@ -36,7 +36,7 @@ GameManager.prototype.playerQuit = function(account, cb) {
   var self = this;
   var game = this.findGameByUser(account);
   if (game) {
-    game.playerQuit(account, cb);
+    game.playerQuit(account, 'quit', cb);
   }
 };
 
