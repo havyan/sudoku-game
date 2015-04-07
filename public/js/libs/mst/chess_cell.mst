@@ -1,21 +1,21 @@
-<div class="chess-cell {{cellClass}}" xy="{{xy}}" {{#unless value}}tabindex="-1"{{/unless}}>
-	<div class="chess-cell-value {{type}} {{#value}}has-value{{/value}}">
-		{{value}}
-	</div>
-	<div class="chess-cell-options">
-		<div class="chess-cell-no-options" active="false">
-			X
-		</div>
-		<div class="chess-cell-options-cell" index="0"></div>
-		<div class="chess-cell-options-cell" index="1"></div>
-		<div class="chess-cell-options-cell" index="2"></div>
-		<div class="chess-cell-options-cell" index="3"></div>
-	</div>
-	<div class="chess-cell-draft">
-		<div class="chess-cell-draft-one" active="false"></div>
-		<div class="chess-cell-draft-cell" index="0"></div>
-		<div class="chess-cell-draft-cell" index="1"></div>
-		<div class="chess-cell-draft-cell" index="2"></div>
-		<div class="chess-cell-draft-cell" index="3"></div>
-	</div>
+<div class="chess-cell" data-xy="{{xy}}" {{#unless value}}tabindex="-1"{{/unless}}>
+  <div class="chess-cell-value {{type}} {{#value}}has-value{{/value}}">
+    {{value}}
+  </div>
+  <div class="chess-cell-options">
+    <div class="chess-cell-no-options" active="false">
+      X
+    </div>
+    <div class="chess-cell-options-cell" index="0"></div>
+    <div class="chess-cell-options-cell" index="1"></div>
+    <div class="chess-cell-options-cell" index="2"></div>
+    <div class="chess-cell-options-cell" index="3"></div>
+  </div>
+  <div class="chess-cell-draft">
+    <div class="chess-cell-draft-one" active="false"></div>
+    <div class="chess-cell-draft-cell" index="0"></div>
+    <div class="chess-cell-draft-cell" index="1"></div>
+    <div class="chess-cell-draft-cell" index="2"></div>
+    <div class="chess-cell-draft-cell" index="3"></div>
+  </div>
 </div>

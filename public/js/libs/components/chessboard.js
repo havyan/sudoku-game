@@ -4,7 +4,7 @@
       var self = this;
       this.render();
       this.initEvents();
-      this.resize();
+      this.resetChessCellsFont();
     },
 
     initEvents : function() {
@@ -15,7 +15,7 @@
         if (e.keyCode >= 37 && e.keyCode <= 40) {
           var activeElement = $(document.activeElement);
           if (activeElement.hasClass('chess-cell')) {
-            var xy = activeElement.attr('xy');
+            var xy = activeElement.data('xy');
             var splits = xy.split(',');
             var x = parseInt(splits[0]);
             var y = parseInt(splits[1]);
@@ -52,41 +52,32 @@
     render : function() {
       var self = this;
       var mode = this.options.model.attr('mode');
-      var cellDatas = this.options.model.attr('cellDatas');
-      this.element.html(can.view('/js/libs/mst/chessboard.mst', this.options.model));
-      this.chessCells = {};
-      var chessboardElement = this.element.find('.chessboard-panel');
       var dimension = this.getDimension();
       var cellWidth = 100 / dimension.width;
       var cellHeight = 100 / dimension.height;
-      $.each(mode, function(index, position) {
-        var startX = cellWidth * position.x;
-        var startY = cellHeight * position.y;
-        var i = 0;
-        while (i < 9) {
-          var j = 0;
-          while (j < 9) {
-            var xy = (position.x + i) + ',' + (position.y + j);
-            if (!self.chessCells[xy]) {
-              chessboardElement.append(can.view('/js/libs/mst/chess_cell_container.mst', {
-                xy : xy,
-                left : (startX + cellWidth * i) + '%',
-                top : (startY + cellHeight * j) + '%',
-                width : cellWidth + '%',
-                height : cellHeight + '%'
-              }));
-              self.chessCells[xy] = new ChessCell(chessboardElement.find('[xy="' + xy + '"]'), {
-                model : cellDatas.attr(xy),
-                parent : self,
-                parentModel : self.options.model,
-                xy : xy,
-                cellClass : "chess-cell-" + (i % 3) + '-' + (j % 3),
-              });
-            }
-            j++;
-          }
-          i++;
+      this.element.html(can.view('/js/libs/mst/chessboard.mst', this.options.model, {
+        chessboardLayout : function() {
+          var chessboardSize = self.getChessboardSize();
+          return 'width: ' + chessboardSize.width + 'px; ' + 'height: ' + chessboardSize.height + 'px; ';
+        },
+        chessCellContainerLayout : function(cellData) {
+          return 'left: ' + (cellData.x * cellWidth) + '%; top: ' + (cellData.y * cellHeight) + '%; width: ' + cellWidth + '%; height: ' + cellHeight + '%;';
+        },
+
+        cellContainerClass : function(cellData) {
+          return "chess-cell-container-" + (cellData.x % 3) + '-' + (cellData.y % 3);
         }
+      }));
+      this.chessCells = {};
+      this.element.find('.chess-cell-container').each(function() {
+        var container = $(this);
+        var xy = container.data('xy');
+        self.chessCells[xy] = new ChessCell(container, {
+          model : self.options.model.findCellData(xy),
+          parent : self,
+          parentModel : self.options.model,
+          xy : xy
+        });
       });
       this.numberPicker = new NumberPicker(this.element.find('.chessboard-container'), {});
       this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
@@ -145,19 +136,31 @@
     },
 
     resize : function() {
+      var chessboardSize = this.getChessboardSize();
+      this.element.find('.chessboard-container').css({
+        'width' : chessboardSize.width + 'px',
+        'height' : chessboardSize.height + 'px'
+      });
+      this.resetChessCellsFont();
+    },
+
+    resetChessCellsFont : function() {
+      for (var key in this.chessCells) {
+        this.chessCells[key].resetFont();
+      }
+    },
+
+    getChessboardSize : function() {
       var dimension = this.getDimension();
       var cellSize = Math.floor((window.innerHeight - 60) / dimension.height);
       if (cellSize * dimension.width > window.innerWidth) {
         cellSize = Math.floor((window.innerWidth - 60) / dimension.width);
       }
       cellSize = cellSize * this.options.model.attr('zoom');
-      this.element.find('.chessboard-container').css({
-        'width' : (cellSize * dimension.width) + 'px',
-        'height' : (cellSize * dimension.height) + 'px'
-      });
-      for (var key in this.chessCells) {
-        this.chessCells[key].resetFont();
-      }
+      return {
+        width : cellSize * dimension.width,
+        height : cellSize * dimension.height
+      };
     },
 
     '.chessboard-submit-mode-action click' : function() {
@@ -285,7 +288,7 @@
       var model = this.options.model;
       var self = this;
       var container = element.parent();
-      var xy = container.attr('xy');
+      var xy = container.data('xy');
       if (model.isDraft()) {
 
       } else if (model.isActive() && model.isPlain()) {
@@ -308,14 +311,19 @@
       }
     },
 
-    '{model} zoom' : function() {
+    '{model} zoom' : function(model, e, zoom) {
+      this.element.find('.game-zoom-bar').val(zoom);
       this.resize();
+    },
+
+    '.game-zoom-bar change' : function() {
+      this.options.model.setZoom(parseFloat(this.element.find('.game-zoom-bar').val()));
     },
 
     '.chess-cell focus' : function(element, event) {
       var model = this.options.model;
       var container = element.parent();
-      var xy = container.attr('xy');
+      var xy = container.data('xy');
       this.selectedChassCell = this.chessCells[xy];
       if (model.isDraft() || model.isActive()) {
         if (model.attr('prop.magnifier') > 0) {

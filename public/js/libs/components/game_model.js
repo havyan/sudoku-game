@@ -95,7 +95,7 @@
 
     initCellDatas : function() {
       var self = this;
-      var cellDatas = {};
+      var cellDatas = [];
       var initCellValues = this.attr('initCellValues');
       var userCellValues = this.attr('userCellValues');
       var knownCellValues = this.attr('knownCellValues');
@@ -106,15 +106,21 @@
         while (i < 9) {
           var j = 0;
           while (j < 9) {
-            var xy = (position.x + i) + ',' + (position.y + j);
-            if (!cellDatas[xy]) {
-              cellDatas[xy] = {
+            var x = position.x + i;
+            var y = position.y + j;
+            var xy = x + ',' + y;
+            if (!_.find(cellDatas, {
+              xy : xy
+            })) {
+              cellDatas.push({
+                x : x,
+                y : y,
                 xy : xy,
                 type : initCellValues.attr(xy) ? 'init' : userCellValues.attr(xy) ? 'user' : knownCellValues.attr(xy) ? 'known' : '',
                 value : initCellValues.attr(xy) || userCellValues.attr(xy) || knownCellValues.attr(xy),
                 cellOptions : allCellOptions[xy] || [],
                 draft : drafts[xy] ? drafts[xy] : []
-              };
+              });
             }
             j++;
           }
@@ -129,9 +135,8 @@
         });
       });
       this.bind('initCellValues', function() {
-        var cellDatas = self.attr('cellDatas');
         self.attr('initCellValues').each(function(value, xy) {
-          var cellData = cellDatas.attr(xy);
+          var cellData = self.findCellData(xy);
           if (cellData) {
             cellData.attr('type', 'init');
             cellData.attr('value', value);
@@ -141,7 +146,7 @@
         self.resetAllCellOptions();
       });
       this.attr('userCellValues').bind('change', function(ev, xy, how, value) {
-        var cellData = self.attr('cellDatas').attr(xy);
+        var cellData = self.findCellData(xy);
         if (cellData) {
           cellData.attr('type', 'user');
           cellData.attr('value', value);
@@ -151,13 +156,19 @@
       });
       this.attr('knownCellValues').bind('change', function(ev, xy, how, value) {
         if (how !== 'remove') {
-          var cellData = self.attr('cellDatas').attr(xy);
+          var cellData = self.findCellData(xy);
           if (cellData) {
             cellData.attr('type', 'known');
             cellData.attr('value', value);
           }
           self.resetAllCellOptions();
         }
+      });
+    },
+
+    findCellData : function(xy) {
+      return _.find(this.attr('cellDatas'), {
+        xy : xy
       });
     },
 
@@ -186,14 +197,14 @@
       Rest.Game.sendMessage(this.attr('id'), message, success, error);
     },
 
-    zoomin : function() {
+    zoomout : function() {
       if (this.attr('zoom') > 1) {
         this.setZoom(this.attr('zoom') - 0.1);
       }
     },
 
-    zoomout : function() {
-      if (this.attr('zoom') < 2) {
+    zoomin : function() {
+      if (this.attr('zoom') < 1.5) {
         this.setZoom(this.attr('zoom') + 0.1);
       }
     },
@@ -228,7 +239,7 @@
     },
 
     addDraft : function(xy, value) {
-      var draft = this.attr('cellDatas').attr(xy).attr('draft');
+      var draft = this.findCellData(xy).attr('draft');
       if (draft.length < 4) {
         draft.push(value);
       }
@@ -236,12 +247,12 @@
     },
 
     popDraft : function(xy) {
-      this.attr('cellDatas').attr(xy).attr('draft').pop();
+      this.findCellData(xy).attr('draft').pop();
       this.resetAllCellOptions();
     },
 
     clearDraft : function(xy) {
-      var draft = this.attr('cellDatas').attr(xy).attr('draft');
+      var draft = this.findCellData(xy).attr('draft');
       draft.splice(0, draft.length);
       this.resetAllCellOptions();
     },
@@ -465,7 +476,7 @@
     },
 
     setCellOptions : function(xy, cellOptions) {
-      var cellData = this.attr('cellDatas').attr(xy);
+      var cellData = this.findCellData(xy);
       var currentCellOptions = cellData.attr('cellOptions');
       if (currentCellOptions.length === cellOptions.length) {
         var same = true;
@@ -577,9 +588,8 @@
 
     getCellValue : function(xy) {
       var cellValue = this.attr('initCellValues').attr(xy) || this.attr('userCellValues').attr(xy) || this.attr('knownCellValues').attr(xy);
-      var cellDatas = this.attr('cellDatas');
-      if (cellDatas) {
-        var cellData = cellDatas.attr(xy);
+      var cellData = this.findCellData(xy);
+      if (cellData) {
         var cellValue = cellData.attr('value');
         if (cellValue === undefined && this.attr('editStatus') === 'draft') {
           var draft = cellData.attr('draft');
@@ -600,7 +610,7 @@
     },
 
     existsCell : function(xy) {
-      return this.attr('cellDatas').attr(xy) !== undefined;
+      return this.findCellData(xy) !== undefined;
     },
 
     destroy : function() {

@@ -91,7 +91,7 @@ Game.prototype.setStatus = function(account, status) {
             clearInterval(countDownTimer);
             setTimeout(function() {
               self.start();
-            }, 5000);
+            }, 2000);
             self.status = ONGOING;
             self.trigger('status-changed', self.status, status);
           }

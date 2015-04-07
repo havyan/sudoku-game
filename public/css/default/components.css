@@ -527,20 +527,24 @@
 
 .chessboard-container .game-zoom {
 	position: absolute;
-	left: -10%;
+	left: -20%;
 	top: 40%;
 }
 
 .chessboard-container .game-zoom .button {
 	display: block;
-	width: 35px;
+	width: 32px;
+	margin: auto;
+	border-radius: 8px;
+	text-align: center;
 }
 
 .chessboard-container .game-zoom-bar {
 	margin: auto;
-	height: 120px;
-	width: 5px;
-	background: white;
+	height: 150px;
+	width: 150px;
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
 }
 
 .chessboard-actions {
@@ -594,47 +598,47 @@
 	color: #FD8C04 !important;
 }
 
-.chess-cell-0-0 {
+.chess-cell-container-0-0 .chess-cell {
 	top: 8%;
 	left: 8%;
 }
 
-.chess-cell-1-0 {
+.chess-cell-container-1-0 .chess-cell {
 	top: 8%;
 	left: 5%;
 }
 
-.chess-cell-2-0 {
+.chess-cell-container-2-0 .chess-cell {
 	top: 8%;
 	left: 2%;
 }
 
-.chess-cell-0-1 {
+.chess-cell-container-0-1 .chess-cell {
 	top: 5%;
 	left: 8%;
 }
 
-.chess-cell-1-1 {
+.chess-cell-container-1-1 .chess-cell {
 	top: 5%;
 	left: 5%;
 }
 
-.chess-cell-2-1 {
+.chess-cell-container-2-1 .chess-cell {
 	top: 5%;
 	left: 2%;
 }
 
-.chess-cell-0-2 {
+.chess-cell-container-0-2 .chess-cell {
 	top: 2%;
 	left: 8%;
 }
 
-.chess-cell-1-2 {
+.chess-cell-container-1-2 .chess-cell {
 	top: 2%;
 	left: 5%;
 }
 
-.chess-cell-2-2 {
+.chess-cell-container-2-2 .chess-cell {
 	top: 2%;
 	left: 2%;
 }
