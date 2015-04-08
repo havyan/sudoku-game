@@ -10,25 +10,30 @@ var GameManager = function() {
 
 GameManager.prototype.playerJoin = function(account, cb) {
   var self = this;
-  var lastGame = _.last(this.games);
-  if (!lastGame || !(lastGame.isWaiting()) || lastGame.isFull()) {
-    this.createGame(function(game) {
-      setTimeout(function() {
-        game.destroy();
-      }, GAME_TIMEOUT);
-
-      game.on('game-destroyed', function() {
-        self.removeGame(game.id);
-      });
-
-      game.playerJoin(account, function(error, user) {
-        cb(error, game);
-      });
-    });
+  var game = this.findGameByUser(account);
+  if (game) {
+    cb(null, game);
   } else {
-    lastGame.playerJoin(account, function(error, user) {
-      cb(error, lastGame);
-    });
+    var lastGame = _.last(this.games);
+    if (!lastGame || !(lastGame.isWaiting()) || lastGame.isFull()) {
+      this.createGame(function(game) {
+        setTimeout(function() {
+          game.destroy();
+        }, GAME_TIMEOUT);
+
+        game.on('game-destroyed', function() {
+          self.removeGame(game.id);
+        });
+
+        game.playerJoin(account, function(error, user) {
+          cb(error, game);
+        });
+      });
+    } else {
+      lastGame.playerJoin(account, function(error, user) {
+        cb(error, lastGame);
+      });
+    }
   }
 };
 

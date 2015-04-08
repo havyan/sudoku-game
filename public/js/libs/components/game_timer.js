@@ -49,7 +49,7 @@
     },
 
     resetBackground : function() {
-      this.element.find('.game-timer-background').css('background', 'white').find('path').attr('d', 'M0 0 Z').attr('fill', '');
+      this.element.find('.game-timer-background').css('background', 'white').find('path').attr('d', 'M0 0 Z').attr('fill', '#FFFFFF');
     }
   });
 })();
