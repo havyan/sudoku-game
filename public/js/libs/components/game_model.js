@@ -2,6 +2,7 @@
   can.Model('Models.GameModel', {}, {
     init : function(game, eventCenter) {
       this.eventCenter = eventCenter;
+      this.initDimension();
       this.initEvents();
       this.initStatus();
       this.initRanking();
@@ -10,6 +11,20 @@
       this.initOptions();
       this.initActive();
       this.initZoom();
+    },
+
+    initDimension : function() {
+      var mode = this.attr('mode');
+      var maxX = 0;
+      var maxY = 0;
+      $.each(mode, function(index, xy) {
+        maxX = Math.max(maxX, xy.x);
+        maxY = Math.max(maxY, xy.y);
+      });
+      this.attr('dimension', {
+        width : maxX + 9,
+        height : maxY + 9
+      });
     },
 
     initStatus : function() {
@@ -95,6 +110,7 @@
 
     initCellDatas : function() {
       var self = this;
+      var dimension = this.dimension;
       var cellDatas = [];
       var initCellValues = this.attr('initCellValues');
       var userCellValues = this.attr('userCellValues');
@@ -106,16 +122,18 @@
         while (i < 9) {
           var j = 0;
           while (j < 9) {
-            var x = position.x + i;
-            var y = position.y + j;
+            var x = position.x + j;
+            var y = position.y + i;
             var xy = x + ',' + y;
+            var index = y * dimension.width + x;
             if (!_.find(cellDatas, {
-              xy : xy
+              index : index
             })) {
               cellDatas.push({
                 x : x,
                 y : y,
                 xy : xy,
+                index : index,
                 type : initCellValues.attr(xy) ? 'init' : userCellValues.attr(xy) ? 'user' : knownCellValues.attr(xy) ? 'known' : '',
                 value : initCellValues.attr(xy) || userCellValues.attr(xy) || knownCellValues.attr(xy),
                 cellOptions : allCellOptions[xy] || [],
@@ -127,6 +145,7 @@
           i++;
         }
       });
+      cellDatas = _.sortBy(cellDatas, 'index');
       this.attr('cellDatas', cellDatas);
       this.attr('cellDatas').each(function(cellData, xy) {
         cellData.attr('draft').bind('change', function() {
@@ -167,9 +186,25 @@
     },
 
     findCellData : function(xy) {
-      return _.find(this.attr('cellDatas'), {
-        xy : xy
-      });
+      var cellDatas = this.attr('cellDatas');
+      if (cellDatas) {
+        var splits = xy.split(','),
+            index = parseInt(splits[1]) * this.dimension.width + parseInt(splits[0]),
+            start = 0,
+            end = cellDatas.length - 1;
+        // Can be _.sortedIndex
+        while (start <= end) {
+          var middle = Math.floor((start + end) / 2),
+              middleCellData = cellDatas[middle];
+          if (middleCellData.index === index) {
+            return cellDatas.attr(middle);
+          } else if (middleCellData.index > index) {
+            end = middle - 1;
+          } else {
+            start = middle + 1;
+          }
+        }
+      }
     },
 
     deleteDrafts : function() {

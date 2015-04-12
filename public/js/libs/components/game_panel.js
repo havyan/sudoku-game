@@ -116,7 +116,9 @@
           btnClass : 'btn-primary',
           callback : function() {
             $(this).closest('.modal').modal('hide');
-            window.location.href = "/main";
+            model.quit(function() {
+              window.location.href = "/main";
+            });
           }
         }]
       });

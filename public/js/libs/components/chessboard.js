@@ -52,7 +52,7 @@
     render : function() {
       var self = this;
       var mode = this.options.model.attr('mode');
-      var dimension = this.getDimension();
+      var dimension = this.options.model.attr('dimension');
       var cellWidth = 100 / dimension.width;
       var cellHeight = 100 / dimension.height;
       this.element.html(can.view('/js/libs/mst/chessboard.mst', this.options.model, {
@@ -102,25 +102,11 @@
       } else {
         this.element.find('.prop .options_once').removeClass('active');
       }
-      if (this.options.model.attr('prop.options_always') > 0) {
+      if (this.options.model.attr('prop.options_always') > 0 && !this.options.model.attr('optionsAlways')) {
         this.element.find('.prop .options_always').addClass('active');
       } else {
         this.element.find('.prop .options_always').removeClass('active');
       }
-    },
-
-    getDimension : function() {
-      var mode = this.options.model.attr('mode');
-      var maxX = 0;
-      var maxY = 0;
-      $.each(mode, function(index, xy) {
-        maxX = Math.max(maxX, xy.x);
-        maxY = Math.max(maxY, xy.y);
-      });
-      return {
-        width : maxX + 9,
-        height : maxY + 9
-      };
     },
 
     toDraftMode : function() {
@@ -151,7 +137,7 @@
     },
 
     getChessboardSize : function() {
-      var dimension = this.getDimension();
+      var dimension = this.options.model.attr('dimension');
       var cellSize = Math.floor((window.innerHeight - 60) / dimension.height);
       if (cellSize * dimension.width > window.innerWidth) {
         cellSize = Math.floor((window.innerWidth - 60) / dimension.width);
