@@ -55,8 +55,8 @@
       var marker = this.element.find('.zoom-marker');
       var total = marker.closest('.zoom-ruler').height();
       var top = ((model.attr('max') - value) / (model.attr('max') - model.attr('min')) * total - (marker.height() / 2));
-      marker.css('top', top + 'px');
-      this.element.find('.zoom-value').css('height', (total - top - marker.height() / 2) + 'px');
+      marker.css('top', top.toFixed(2) + 'px');
+      this.element.find('.zoom-value').css('height', (total - top - marker.height() / 2).toFixed(2) + 'px');
     },
 
     initEvents : function() {
@@ -78,7 +78,7 @@
             ui.position.top = rulerHeight;
             valueHeight = 0;
           }
-          $value.css('height', valueHeight + 'px');
+          $value.css('height', valueHeight.toFixed(2) + 'px');
         },
         stop : function(event, ui) {
           var markerHeight = marker.height();
