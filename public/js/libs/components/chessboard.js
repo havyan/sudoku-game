@@ -80,6 +80,15 @@
         });
       });
       this.numberPicker = new NumberPicker(this.element.find('.chessboard-container'), {});
+      this.zoomBar = new ZoomBar(this.element.find('.game-zoom'), {
+        min : 1.0,
+        max : 1.5,
+        step : 0.1,
+        value : this.options.model.attr('zoom'),
+        callback : function(zoom) {
+          self.options.model.setZoom(zoom);
+        }
+      });
       this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
         model : this.options.model
       });
@@ -165,14 +174,6 @@
       if (this.options.model.isOptionsEnabled()) {
         this.options.model.toOptions();
       }
-    },
-
-    '.game-zoom-out-button click' : function() {
-      this.options.model.zoomout();
-    },
-
-    '.game-zoom-in-button click' : function() {
-      this.options.model.zoomin();
     },
 
     '.pass-action click' : function() {

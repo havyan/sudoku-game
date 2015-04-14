@@ -232,18 +232,6 @@
       Rest.Game.sendMessage(this.attr('id'), message, success, error);
     },
 
-    zoomout : function() {
-      if (this.attr('zoom') > 1) {
-        this.setZoom(this.attr('zoom') - 0.1);
-      }
-    },
-
-    zoomin : function() {
-      if (this.attr('zoom') < 1.5) {
-        this.setZoom(this.attr('zoom') + 0.1);
-      }
-    },
-
     setZoom : function(zoom) {
       zoom = parseFloat(zoom.toFixed(1));
       this.attr('zoom', zoom);
