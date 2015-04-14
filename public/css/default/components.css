@@ -529,6 +529,8 @@
 	position: absolute;
 	left: -16%;
 	top: 36%;
+	cursor: pointer;
+	z-index: 100;
 }
 
 .chessboard-actions {
@@ -834,6 +836,8 @@ to {
 	position: absolute;
 	top: 0px;
 	left: 0px;
+	cursor: pointer;
+	z-index: 100;
 }
 
 .number-picker {
@@ -1113,4 +1117,14 @@ to {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	cursor: pointer;
+}
+
+.chessboard-container.big .game-timer-panel {
+	left: -18%;
+	top: 21%;
+}
+
+.chessboard-container.big .chessboard-actions {
+	left: 0%;
+	top: 26%;
 }

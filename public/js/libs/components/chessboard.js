@@ -47,6 +47,7 @@
           }
         }
       });
+      this.element.find('.game-timer-panel, .game-zoom, .chessboard-actions, .prop').draggable();
     },
 
     render : function() {
@@ -93,6 +94,7 @@
         model : this.options.model
       });
       this.resetPropStatus();
+      this.layout();
     },
 
     resetPropStatus : function() {
@@ -300,7 +302,16 @@
 
     '{model} zoom' : function(model, e, zoom) {
       this.element.find('.game-zoom-bar').val(zoom);
+      this.layout();
       this.resize();
+    },
+
+    layout : function() {
+      if (this.options.model.attr('zoom') >= 1.3) {
+        this.element.find('.chessboard-container').addClass('big');
+      } else {
+        this.element.find('.chessboard-container').removeClass('big');
+      }
     },
 
     '.game-zoom-bar change' : function() {
