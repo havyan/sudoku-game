@@ -31,7 +31,10 @@
     '.container .store .count .plus click' : function(element) {
       var valueElement = element.siblings('input');
       var value = parseInt(valueElement.val());
-      if (value < 999) {
+      var current = _.find(this.model.attr('props'), {
+        type : element.closest('.store-item').data('type')
+      }).value;
+      if (value < (999 - current)) {
         valueElement.val(value + 1);
         this.resetItem(element);
       }
@@ -43,8 +46,11 @@
 
     '.container .store .count input blur' : function(element, event) {
       var value = parseInt(element.val());
-      if (value > 999) {
-        element.val(999);
+      var current = _.find(this.model.attr('props'), {
+        type : element.closest('.store-item').data('type')
+      }).value;
+      if (value > (999 - current)) {
+        element.val(999 - current);
       }
       this.resetItem(element);
     },
@@ -65,11 +71,18 @@
     '.container .actions .buy click' : function(element) {
       var self = this;
       var money = this.model.attr('money');
+      var $value = element.closest('.store-item').find('.count input');
       var type = _.find(this.model.attr('types'), {
         type : element.closest('.store-item').data('type')
       });
-      var count = parseInt(element.closest('.store-item').find('.count input').val());
-      if (type.price * count > money) {
+      var count = parseInt($value.val());
+      var current = _.find(this.model.attr('props'), {
+        type : element.closest('.store-item').data('type')
+      }).value;
+      if ((count + current) > 999) {
+        Dialog.showMessage('单个道具最多只能买999个。');
+        $value.val(999 - current);
+      } else if (type.price * count > money) {
         Dialog.showMessage('天才币余额不足，请充值。');
       } else {
         Rest.Prop.buy(type.attr('type'), count, function(result) {

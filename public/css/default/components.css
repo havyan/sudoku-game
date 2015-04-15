@@ -984,7 +984,24 @@ to {
 .prop li {
 	list-style: none;
 	padding: 8px 16px 8px 16px;
-	height: 24px;
+	position: relative;
+}
+
+.prop li .prop-item-tip {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	display: none;
+	background: #E3E9E9;
+	color: #5a5e65;
+	font-size: 20px;
+	font-weight: bold;
+	border: 1px solid #D0D0D0;
+	z-index: 100;
 }
 
 .prop li.active {
@@ -1127,4 +1144,27 @@ to {
 .chessboard-container.big .chessboard-actions {
 	left: 0%;
 	top: 26%;
+}
+
+.chessboard-container.big .prop {
+	font-size: 0px;
+	width: 138px;
+	left: -2%;
+	bottom: 20%;
+}
+
+.chessboard-container.big .prop li {
+	display: inline-block;
+	padding: 5px;
+}
+
+.chessboard-container.big .prop li .prop-item-content img {
+	margin: 0px;
+	width: 36px;
+	height: 36px;
+}
+
+.chessboard-container.big .prop li:hover .prop-item-tip {
+	display: block;
+	opacity: 1;
 }
