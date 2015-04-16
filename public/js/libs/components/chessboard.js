@@ -85,7 +85,7 @@
         min : 1.0,
         max : 1.5,
         step : 0.1,
-        value : this.options.model.attr('zoom'),
+        value : this.options.model.attr('ui.zoom'),
         callback : function(zoom) {
           self.options.model.setZoom(zoom);
         }
@@ -153,7 +153,7 @@
       if (cellSize * dimension.width > window.innerWidth) {
         cellSize = Math.floor((window.innerWidth - 60) / dimension.width);
       }
-      cellSize = cellSize * this.options.model.attr('zoom');
+      cellSize = cellSize * this.options.model.attr('ui.zoom');
       return {
         width : cellSize * dimension.width,
         height : cellSize * dimension.height
@@ -300,14 +300,14 @@
       }
     },
 
-    '{model} zoom' : function(model, e, zoom) {
+    '{model.ui} zoom' : function(model, e, zoom) {
       this.element.find('.game-zoom-bar').val(zoom);
       this.layout();
       this.resize();
     },
 
     layout : function() {
-      if (this.options.model.attr('zoom') >= 1.3) {
+      if (this.options.model.attr('ui.zoom') >= 1.3) {
         this.element.find('.chessboard-container').addClass('big');
       } else {
         this.element.find('.chessboard-container').removeClass('big');

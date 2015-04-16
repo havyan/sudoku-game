@@ -79,7 +79,9 @@ module.exports = function(router) {
 
   /* GET Setting page. */
   router.get('/setting', function(req, res) {
-    res.render('setting', {});
+    res.render('setting', {
+      account : req.session.account
+    });
   });
 
   /* GET Game page. */

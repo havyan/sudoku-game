@@ -6,14 +6,17 @@
   }, {
     init : function(element, options) {
       var self = this;
-      var model = this.setRule(options.rule);
-      model.bind('change', function() {
-        self.changed = true;
+      var model = this.initModel(options.rule);
+      model.attr('rule').bind('change', function() {
+        self.ruleChanged = true;
+      });
+      model.attr('ui').bind('change', function() {
+        self.uiChanged = true;
       });
       element.html(can.view('/js/libs/mst/setting_panel.mst', model, {
         disableLastTo : function(ruleRow) {
           var isLast = false;
-          self.model.attr('score.add').forEach(function(addRule) {
+          self.model.attr('rule.score.add').forEach(function(addRule) {
             var levels = addRule.attr('levels');
             isLast = isLast || (levels.indexOf(ruleRow) === levels.length - 1);
           });
@@ -27,13 +30,25 @@
     },
 
     getRule : function() {
-      var rule = this.model.attr();
+      var rule = this.model.attr('rule').attr();
       return rule;
     },
 
-    setRule : function(rule) {
-      this.model = new can.Model(rule);
+    initModel : function(rule) {
+      var account = $('body').data('account');
+      var ui = window.localStorage.getItem(account + '_ui');
+      this.model = new can.Model({
+        rule : rule,
+        account : account,
+        ui : ui ? JSON.parse(ui) : {
+          zoom : 1.0
+        }
+      });
       return this.model;
+    },
+
+    saveUI : function() {
+      window.localStorage.setItem(this.model.attr('account') + '_ui', JSON.stringify(this.model.attr('ui').attr()));
     },
 
     '.navigator .item click' : function(e) {
@@ -49,7 +64,7 @@
     },
 
     '.setting-panel .add-button click' : function() {
-      this.model.attr('score.add').push({
+      this.model.attr('rule.score.add').push({
         total : 30,
         levels : [{
           "from" : 0,
@@ -72,10 +87,10 @@
     },
 
     '.setting-panel .delete-button click' : function() {
-      if (this.model.attr('score.add').length > 1) {
+      if (this.model.attr('rule.score.add').length > 1) {
         var index = this.getAddRuleIndex(this.element.find('[name=addRule]:checked'));
-        this.model.attr('score.add').splice(index, 1);
-        this.model.attr('score.add.0.selected', true);
+        this.model.attr('rule.score.add').splice(index, 1);
+        this.model.attr('rule.score.add.0.selected', true);
       } else {
         Dialog.showMessage('不能删除最后一条规则！');
       }
@@ -130,18 +145,26 @@
     '.setting-save-action click' : function() {
       var self = this;
       var rule = this.getRule();
-      Rest.Rule.updateRule(rule, function(res) {
-        self.changed = false;
-        if (res.success) {
-          Dialog.showMessage('更新规则成功');
-        } else {
-          Dialog.showError(res.reason);
-        }
-      });
+      if (this.uiChanged) {
+        self.saveUI();
+        this.uiChanged = false;
+      }
+      if (this.ruleChanged) {
+        Rest.Rule.updateRule(rule, function(res) {
+          self.ruleChanged = false;
+          if (res.success) {
+            Dialog.showMessage('更新规则成功');
+          } else {
+            Dialog.showError(res.reason);
+          }
+        });
+      } else {
+        Dialog.showMessage('更新规则成功');
+      }
     },
 
     '.setting-back-action click' : function() {
-      if (this.changed) {
+      if (this.ruleChanged || this.uiChanged) {
         Dialog.showConfirm('设置已被修改，是否放弃？', function() {
           window.location.href = "/main";
         });
@@ -160,8 +183,8 @@
       if ($.isNumeric(value)) {
         level.attr('score', this.getValue(e));
         var addRuleRowIndex = this.getAddRuleRowIndex(e);
-        var min = 0,
-            max = Number.MAX_VALUE;
+        var min = 0;
+        var max = Number.MAX_VALUE;
         var levels = this.getAddRule(e).attr('levels');
         for (var i = 0; i < addRuleRowIndex; i++) {
           var score = levels.attr(i + '.score');
@@ -184,16 +207,16 @@
     },
 
     '.reduce-rule-timeout-score blur' : function(e) {
-      this.model.attr('score.reduce').attr('timeout', this.getValue(e));
+      this.model.attr('rule.score.reduce').attr('timeout', this.getValue(e));
     },
 
     '.reduce-rule-pass-score blur' : function(e) {
-      this.model.attr('score.reduce').attr('pass', this.getValue(e));
+      this.model.attr('rule.score.reduce').attr('pass', this.getValue(e));
     },
 
     'input[name=addRule] click' : function(e) {
       var index = this.getAddRuleIndex(e);
-      $.each(this.model.attr('score.add'), function(i, addRule) {
+      $.each(this.model.attr('rule.score.add'), function(i, addRule) {
         addRule.attr('selected', i === index);
       });
     },
@@ -209,8 +232,8 @@
         level.attr('to', this.getValue(e));
         var addRuleRowIndex = this.getAddRuleRowIndex(e);
         var addRule = this.getAddRule(e);
-        var min = 0,
-            max = addRule.total;
+        var min = 0;
+        var max = addRule.total;
         var levels = addRule.attr('levels');
         for (var i = 0; i < addRuleRowIndex; i++) {
           var to = levels.attr(i + '.to');
@@ -292,19 +315,19 @@
     },
 
     getAddRule : function(e) {
-      return this.model.attr('score.add.' + this.getAddRuleIndex(e));
+      return this.model.attr('rule.score.add.' + this.getAddRuleIndex(e));
     },
 
     getLevel : function(e) {
       var index = this.getAddRuleIndex(e);
       var rowIndex = this.getAddRuleRowIndex(e);
-      return this.model.attr('score.add.' + index + '.levels.' + rowIndex);
+      return this.model.attr('rule.score.add.' + index + '.levels.' + rowIndex);
     },
 
     '.grade-table .value span click' : function(e) {
       var index = parseInt(e.closest('tr').data('index'));
       if (index > 0) {
-        e.closest('.value').addClass('edit').find('input').val(this.model.attr('grade.' + index + '.floor')).focus();
+        e.closest('.value').addClass('edit').find('input').val(this.model.attr('rule.grade.' + index + '.floor')).focus();
       }
     },
 
@@ -315,8 +338,8 @@
     '.grade-table .value input blur' : function(e) {
       var value = parseInt(e.val());
       var index = parseInt(e.closest('tr').data('index'));
-      var beforValue = index > 0 ? this.model.attr('grade.' + (index - 1) + '.floor') : 0;
-      var afterValue = index < this.model.attr('grade').length - 1 ? this.model.attr('grade.' + (index + 1) + '.floor') : 9999999999;
+      var beforValue = index > 0 ? this.model.attr('rule.grade.' + (index - 1) + '.floor') : 0;
+      var afterValue = index < this.model.attr('rule.grade').length - 1 ? this.model.attr('rule.grade.' + (index + 1) + '.floor') : 9999999999;
       if (isNaN(value) || value <= beforValue || value >= afterValue) {
         e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
         e.closest('.grade-table').find('.value').removeClass('edit');
@@ -325,8 +348,12 @@
       } else {
         e.siblings('.error').empty();
         e.removeClass('invalid').closest('.value').removeClass('edit');
-        this.model.attr('grade.' + index + '.floor', value);
+        this.model.attr('rule.grade.' + index + '.floor', value);
       }
+    },
+
+    '.ui-value-zoom input change' : function(e, event) {
+      this.model.attr('ui.zoom', parseFloat(e.val()));
     }
   });
 })();

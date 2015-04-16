@@ -10,7 +10,7 @@
       this.initCellDatas();
       this.initOptions();
       this.initActive();
-      this.initZoom();
+      this.initUI();
     },
 
     initDimension : function() {
@@ -46,9 +46,11 @@
       });
     },
 
-    initZoom : function() {
-      var zoom = window.localStorage.getItem(this.attr('account') + '_game_zoom');
-      this.attr('zoom', zoom ? parseFloat(zoom) : 1);
+    initUI : function() {
+      var ui = window.localStorage.getItem(this.attr('account') + '_ui');
+      this.attr('ui', ui ? JSON.parse(ui) : {
+        zoom : 1
+      });
     },
 
     resetOptions : function() {
@@ -234,8 +236,8 @@
 
     setZoom : function(zoom) {
       zoom = parseFloat(zoom.toFixed(1));
-      this.attr('zoom', zoom);
-      window.localStorage.setItem(this.attr('account') + '_game_zoom', zoom);
+      this.attr('ui.zoom', zoom);
+      window.localStorage.setItem(this.attr('account') + '_ui', JSON.stringify(this.attr('ui').attr()));
     },
 
     addPlayer : function(player) {
