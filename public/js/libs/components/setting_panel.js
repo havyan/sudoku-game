@@ -342,11 +342,13 @@
       var afterValue = index < this.model.attr('rule.grade').length - 1 ? this.model.attr('rule.grade.' + (index + 1) + '.floor') : 9999999999;
       if (isNaN(value) || value <= beforValue || value >= afterValue) {
         e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
+        this.element.find('.setting-save-action').attr('disabled', true);
         e.closest('.grade-table').find('.value').removeClass('edit');
         e.closest('.value').addClass('edit');
         e.addClass('invalid').focus();
       } else {
         e.siblings('.error').empty();
+        this.element.find('.setting-save-action').removeAttr('disabled');
         e.removeClass('invalid').closest('.value').removeClass('edit');
         this.model.attr('rule.grade.' + index + '.floor', value);
       }

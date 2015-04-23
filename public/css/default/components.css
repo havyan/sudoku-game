@@ -291,6 +291,7 @@
 .game-panel {
 	position: relative;
 	margin-top: 30px;
+	margin-bottom: 50px;
 }
 
 .game-state-area {

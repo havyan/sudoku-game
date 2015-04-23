@@ -36,7 +36,7 @@ module.exports = function(router) {
       if (error) {
         next(new HttpError(error));
       } else {
-        res.send( result ? result : {
+        res.send({
           status : 'ok'
         });
       }
