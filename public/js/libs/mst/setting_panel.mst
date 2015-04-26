@@ -13,7 +13,7 @@
   <div class="setting-container">
     {{#rule}}
     {{#score}}
-    <div class="setting-main item active">
+    <div class="setting-main item active" data-nav="main">
       <div class="setting-top-actions">
         <input class="button reset-prop-action" type="button" value="重置道具" />
         <input class="button reset-money-action" type="button" value="重置天才币" />
@@ -72,7 +72,7 @@
       </div>
     </div>
     {{/score}}
-    <div class="setting-grade item">
+    <div class="setting-grade item" data-nav="grade">
       <table class="grade-table">
         <thead>
           <th class="name">段位</th>
@@ -92,7 +92,7 @@
     </div>
     {{/rule}}
     {{#ui}}
-    <div class="setting-game-ui item">
+    <div class="setting-game-ui item" data-nav="game-ui">
       <div class="ui-form">
         <div class="ui-row">
           <div class="ui-name ui-name-zoom">

@@ -109,6 +109,7 @@
       } else {
         Dialog.showMessage('最多可以定制' + this.options.maxLevelCount + '行！');
       }
+      this.validate();
     },
 
     '.add-rule-row-actions .delete-row-button click' : function(e) {
@@ -120,6 +121,7 @@
       } else {
         Dialog.showMessage('不能删除最后一行！');
       }
+      this.validate();
     },
 
     '.reset-prop-action click' : function() {
@@ -144,22 +146,30 @@
 
     '.setting-save-action click' : function() {
       var self = this;
-      var rule = this.getRule();
-      if (this.uiChanged) {
-        self.saveUI();
-        this.uiChanged = false;
-      }
-      if (this.ruleChanged) {
-        Rest.Rule.updateRule(rule, function(res) {
-          self.ruleChanged = false;
-          if (res.success) {
-            Dialog.showMessage('更新规则成功');
-          } else {
-            Dialog.showError(res.reason);
-          }
-        });
+      if (this.validate()) {
+        var rule = this.getRule();
+        if (this.uiChanged) {
+          self.saveUI();
+          this.uiChanged = false;
+        }
+        if (this.ruleChanged) {
+          Rest.Rule.updateRule(rule, function(res) {
+            self.ruleChanged = false;
+            if (res.success) {
+              Dialog.showMessage('更新规则成功');
+            } else {
+              Dialog.showError(res.reason);
+            }
+          });
+        } else {
+          Dialog.showMessage('更新规则成功');
+        }
       } else {
-        Dialog.showMessage('更新规则成功');
+        var $invalid = this.element.find('input.invalid:first');
+        if ($invalid.length > 0) {
+          this.element.find('.navigator .item.' + $invalid.closest('[data-nav]').data('nav')).click();
+          $invalid.focus();
+        }
       }
     },
 
@@ -342,20 +352,49 @@
       var afterValue = index < this.model.attr('rule.grade').length - 1 ? this.model.attr('rule.grade.' + (index + 1) + '.floor') : 9999999999;
       if (isNaN(value) || value <= beforValue || value >= afterValue) {
         e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
-        this.element.find('.setting-save-action').attr('disabled', true);
         e.closest('.grade-table').find('.value').removeClass('edit');
         e.closest('.value').addClass('edit');
         e.addClass('invalid').focus();
       } else {
         e.siblings('.error').empty();
-        this.element.find('.setting-save-action').removeAttr('disabled');
         e.removeClass('invalid').closest('.value').removeClass('edit');
         this.model.attr('rule.grade.' + index + '.floor', value);
       }
     },
 
     '.ui-value-zoom input change' : function(e, event) {
-      this.model.attr('ui.zoom', parseFloat(e.val()));
+      var value = parseFloat(e.val());
+      if (isNaN(value)) {
+        value = this.model.attr('ui.zoom');
+        e.val(value);
+      } else {
+        if (value < 1) {
+          value = 1;
+          e.val(value);
+        } else if (value > 1.5) {
+          value = 1.5;
+          e.val(value);
+        }
+      }
+      this.model.attr('ui.zoom', value);
+    },
+
+    'input blur' : function() {
+      this.validate();
+    },
+
+    validate : function() {
+      var valid = true;
+      this.element.find('input[type=text]').each(function() {
+        var $e = $(this);
+        if (_.isEmpty($e.val())) {
+          valid = false;
+          $e.addClass('invalid');
+        } else {
+          $e.removeClass('invalid');
+        }
+      });
+      return valid;
     }
   });
 })();

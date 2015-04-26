@@ -57,8 +57,9 @@
 	vertical-align: middle;
 }
 
-.grade-table .value input.invalid {
+input.invalid, input:focus.invalid {
 	border: 1px solid red;
+	outline: 1px solid red;
 }
 
 .grade-table .value.edit input {
