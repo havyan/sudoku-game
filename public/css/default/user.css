@@ -1,0 +1,114 @@
+.main {
+	width: 50%;
+	margin: auto;
+	margin-top: 20px;
+}
+
+.info {
+	width: 50%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.icon {
+	width: 20%;
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 20px;
+}
+
+.icon > * {
+	display: block;
+	margin: auto;
+}
+
+.icon img {
+	background: white;
+	border: 1px solid gray;
+	margin-bottom: 5px;
+}
+
+.info-row * {
+	font-size: 1.2em;
+	vertical-align: middle;
+}
+
+.info-row {
+	margin-bottom: 10px;
+}
+
+.info-row .name {
+	margin-right: 10px;
+}
+
+.info-row .value {
+	margin-right: 10px;
+}
+
+.info-row input {
+	font-size: 0.8em;
+}
+
+.info-row .value-field {
+	display: none;
+}
+
+.info-row .confirm {
+	display: none;
+}
+
+.info-row .cancel {
+	display: none;
+}
+
+.info-row.edit .modify-button {
+	display: none;
+}
+
+.info-row.edit .value {
+	display: none;
+}
+
+.info-row.edit .value-field {
+	display: inline;
+}
+
+.info-row.edit .confirm {
+	display: inline;
+}
+
+.info-row.edit .cancel {
+	display: inline;
+}
+
+.info-row .value-field {
+	width: 70px;
+	height: 25px;
+	text-align: center;
+	font-size: 1em;
+} 
+
+.actions {
+	margin-top: 10px;
+}
+
+.actions input {
+	width: 12%;
+	margin-right: 20px;
+	font-size: 1em;
+}
+
+.bottom {
+	width: 50%;
+	margin: auto;
+	margin-top: 20px;
+}
+
+.bottom .close-button {
+	float: right;
+	width: 12%;
+	font-size: 1em;
+	color: #fff;
+	background: #f0ad4e;
+	border-color: #eea236;
+}

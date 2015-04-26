@@ -4,7 +4,13 @@
 	<div class="game-state-area">
 		<div class="player-area">
 			{{#each players}}
-			<div class="game-player" index="{{@index}}" account="{{account}}">
+			<div class="game-player" data-index="{{@index}}" account="{{account}}">
+				<div class="game-player-icon"><img src="/imgs/default/user.png"></div>
+				<div class="game-player-name">{{name}}</div>
+			</div>
+			{{/each}}
+			{{#each quitPlayers}}
+			<div class="game-player quit" data-index="{{@index}}" account="{{account}}">
 				<div class="game-player-icon"><img src="/imgs/default/user.png"></div>
 				<div class="game-player-name">{{name}}</div>
 			</div>
@@ -19,7 +25,7 @@
 	    	</thead>
 	    	<tbody>
 	    		{{#ranking}}
-	    		<tr>
+	    		<tr class="{{type}}">
 	    			<td>{{position}}</td>
 	    			<td>{{name}}</td>
 	    			<td>{{score}}</td>
@@ -30,18 +36,18 @@
 		<div class="game-state-separator light"></div>
 		<div class="game-chat-messages scroll-panel">
 			{{#messages}}
-			<p>{{from}}: {{content}}</p>
+			<div class="game-message-item">
+				<div class="game-message-item-header">{{from}} ({{date}}):</div>
+				<div class="game-message-item-content">{{{formatMessage this}}}</div>
+			</div>
 			{{/messages}}
 		</div>
 		<div class="game-state-separator light"></div>
 		<textarea class="game-message-input"></textarea>
 		<div class="game-state-actions">
-			<input class="btn game-quit-button" type="button" value="退出" />
-			<input class="btn game-send-message-button" type="button" value="发送" />
+			<input class="button game-quit-button" type="button" value="退出" />
+			<input class="button game-send-message-button" type="button" value="发送" />
 		</div>
 		<a class="game-state-hide-button" href="javascript:void(0);">>></a>
-	</div>
-	<div class="max-timeout-dialog" title="确认">
-		<p>游戏将在<span class="max-timeout-countdown-number">20</span>秒后退出，是否继续？</p>
 	</div>
 </div>

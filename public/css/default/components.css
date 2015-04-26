@@ -1,3 +1,104 @@
+.setting-panel .navigator {
+	float: left;
+	width: 12%;
+	margin-left: 10%;
+}
+
+.setting-panel .navigator .item {
+	cursor: pointer;
+	font-size: 1.2em;
+	color: white;
+	text-align: center;
+	background: gray;
+	margin-bottom: 20px;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.setting-panel .navigator .item.active {
+	background: white;
+	color: gray;
+}
+
+.setting-panel .setting-container {
+	margin-left: 27%;
+	width: 43%;
+}
+
+.setting-panel .grade-table {
+	width: 35%;
+}
+
+.setting-panel .grade-table * {
+	font-size: 16px;
+}
+
+.setting-panel .grade-table tr {
+	height: 30px;
+	line-height: 30px;
+}
+
+.setting-panel .grade-table .name {
+	width: 80px;
+}
+
+.setting-panel .grade-table .value {
+	text-align: right;
+	width: 100px;
+	position: relative;
+}
+
+.grade-table .value input {
+	display: none;
+	width: 80px;
+	text-align: right;
+	height: 25px;
+	line-height: 25px;
+	vertical-align: middle;
+}
+
+input.invalid, input:focus.invalid {
+	border: 1px solid red;
+	outline: 1px solid red;
+}
+
+.grade-table .value.edit input {
+	display: inline-block;
+}
+
+.grade-table .value.edit span {
+	display: none;
+}
+
+.grade-table .value .error {
+	color: red;
+	position: absolute;
+	left: 105%;
+	white-space: nowrap;
+	top: 0px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+}
+
+.setting-panel .setting-container .item {
+	display: none;
+}
+
+.setting-panel .setting-container .item.active {
+	display: block;
+}
+
+.setting-top-actions {
+	margin-bottom: 20px;
+}
+
+.setting-top-actions input {
+	width: 16%;
+	font-size: 1em;
+	margin-right: 20px;
+}
+
 .setting-panel .setting-title {
 	font-size: 25px;
 }
@@ -6,14 +107,14 @@
 	margin-left: 30px;
 }
 
-.setting-panel > a {
+.setting-score > a {
 	line-height: 24px;
 	height: 24px;
 	text-decoration: none;
 	margin-left: 10px;
 }
 
-.setting-panel > a * {
+.setting-score > a * {
 	vertical-align: middle;
 	color: #FFF;
 }
@@ -37,8 +138,29 @@
 	display: none;
 }
 
-.setting-panel .add-rule-item > label {
-	margin-left: 10px;
+.setting-panel .add-rule-item-header * {
+	vertical-align: middle;
+}
+
+.setting-panel .add-rule-item-header > label {
+	margin-left: 5px;
+}
+
+.setting-panel .add-rule-item-header > label * {
+	vertical-align: middle;
+}
+
+.setting-panel .add-rule-item-header > label input {
+	display: none;
+	width: 30px;
+}
+
+.setting-panel .add-rule-item-header.edit > label input {
+	display: inline-block;
+}
+
+.setting-panel .add-rule-item-header.edit > label span {
+	display: none;
 }
 
 .setting-panel .add-rule-content {
@@ -117,19 +239,19 @@
 	margin-left: 10px;
 }
 
-.
-
 .setting-panel .add-rule-row-actions .add-button {
 	margin-left: 0px;
 }
 
 .setting-panel .setting-actions {
 	height: 30px;
-	margin-top: 20px;
+	width: 43%;
+	margin: auto;
+	margin-top: 30px;
 	margin-bottom: 30px;
 }
 
-.setting-panel .setting-actions .btn {
+.setting-panel .setting-actions .button {
 	float: right;
 	margin-left: 30px;
 	height: 30px;
@@ -138,13 +260,39 @@
 }
 
 .setting-panel .setting-back-action {
-	background: #d58512;
-	color: #FFF;
+	color: #fff;
+	background: #f0ad4e;
+	border-color: #eea236;
+}
+
+.setting-panel .ui-row {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.setting-panel .ui-row .ui-name {
+	width: 20%;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 16px;
+	text-align: right;
+}
+
+.setting-panel .ui-row .ui-value {
+	width: 40%;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 20px;
+}
+
+.setting-panel .ui-row .ui-value-zoom input {
+	width: 60px;
 }
 
 .game-panel {
 	position: relative;
 	margin-top: 30px;
+	margin-bottom: 50px;
 }
 
 .game-state-area {
@@ -174,6 +322,19 @@
 	margin: auto;
 	text-align: center;
 	font-size: 15px;
+}
+
+.game-player.quit img {
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+	filter: grayscale(100%);
+	filter: gray;
+}
+
+.game-player.quit * {
+	color: gray;
 }
 
 .game-player-icon {
@@ -210,11 +371,11 @@
 	top: 2%;
 	width: 64px;
 	height: 64px;
-	background: url(../../imgs/default/light_off.png)
+	background: url(../../imgs/default/light_off.png);
 }
 
 .active-status[active=true] {
-	background: url(../../imgs/default/light_on.png)
+	background: url(../../imgs/default/light_on.png);
 }
 
 .game-state-separator.light {
@@ -227,6 +388,16 @@
 	width: 90%;
 	text-align: center;
 	font-size: 14px;
+	border-collapse: separate;
+	border-spacing: 2px;
+}
+
+.game-ranking-table th {
+	text-align: center;
+}
+
+.game-ranking-table .quit {
+	color: gray;
 }
 
 .game-chat-messages {
@@ -244,6 +415,21 @@
 	border-radius: 5px;
 	box-shadow: 1px 1px 1px gray;
 	margin-bottom: 20px;
+	color: black;
+	padding: 3px;
+	resize: none;
+}
+
+.game-message-item {
+	margin-bottom: 5px;
+}
+
+.game-message-item-header {
+	color: rgb(65, 147, 236);
+}
+
+.game-message-item-content {
+	padding-left: 5px;
 }
 
 .game-state-actions {
@@ -310,6 +496,10 @@
 	text-align: center;
 }
 
+.destroy-countdown-number {
+	color: red;
+}
+
 .player-tip {
 	position: absolute;
 	z-index: 999;
@@ -359,6 +549,14 @@
 	min-width: 660px;
 	min-height: 660px;
 	margin: 0 auto;
+}
+
+.chessboard-container .game-zoom {
+	position: absolute;
+	left: -16%;
+	top: 36%;
+	cursor: pointer;
+	z-index: 100;
 }
 
 .chessboard-actions {
@@ -412,47 +610,47 @@
 	color: #FD8C04 !important;
 }
 
-.chess-cell-0-0 {
+.chess-cell-container-0-0 .chess-cell {
 	top: 8%;
 	left: 8%;
 }
 
-.chess-cell-1-0 {
+.chess-cell-container-1-0 .chess-cell {
 	top: 8%;
 	left: 5%;
 }
 
-.chess-cell-2-0 {
+.chess-cell-container-2-0 .chess-cell {
 	top: 8%;
 	left: 2%;
 }
 
-.chess-cell-0-1 {
+.chess-cell-container-0-1 .chess-cell {
 	top: 5%;
 	left: 8%;
 }
 
-.chess-cell-1-1 {
+.chess-cell-container-1-1 .chess-cell {
 	top: 5%;
 	left: 5%;
 }
 
-.chess-cell-2-1 {
+.chess-cell-container-2-1 .chess-cell {
 	top: 5%;
 	left: 2%;
 }
 
-.chess-cell-0-2 {
+.chess-cell-container-0-2 .chess-cell {
 	top: 2%;
 	left: 8%;
 }
 
-.chess-cell-1-2 {
+.chess-cell-container-1-2 .chess-cell {
 	top: 2%;
 	left: 5%;
 }
 
-.chess-cell-2-2 {
+.chess-cell-container-2-2 .chess-cell {
 	top: 2%;
 	left: 2%;
 }
@@ -476,40 +674,94 @@
 
 @keyframes correct
 {
-from {box-shadow: 0px 0px 0px 0px #05B522;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px #05B522;z-index: 999;}
+from {
+	box-shadow: 0px 0px 0px 0px #05B522;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px #05B522;
+	z-index: 999;
+}
 }
 
-@-webkit-keyframes correct
-{
-from {box-shadow: 0px 0px 0px 0px #05B522;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px #05B522;z-index: 999;}
+@-webkit-keyframes
+correct {from {
+	box-shadow: 0px 0px 0px 0px #05B522;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px #05B522;
+	z-index: 999;
+}
 }
 
-@keyframes incorrect
-{
-from {box-shadow: 0px 0px 0px 0px red;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
+@keyframes
+incorrect {from {
+	box-shadow: 0px 0px 0px 0px red;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px red;
+	z-index: 999;
+}
 }
 
-@-webkit-keyframes incorrect
-{
-from {box-shadow: 0px 0px 0px 0px red;z-index: 999;}
-to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
+@-webkit-keyframes
+incorrect {from {
+	box-shadow: 0px 0px 0px 0px red;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px red;
+	z-index: 999;
+}
+}
+
+@keyframes
+known-cell {from {
+	box-shadow: 0px 0px 0px 0px #607E02;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px #607E02;
+	z-index: 999;
+}
+}
+
+@-webkit-keyframes
+known-cell {from {
+	box-shadow: 0px 0px 0px 0px #607E02;
+	z-index: 999;
+}
+to {
+	box-shadow: 0px 0px 5px 5px #607E02;
+	z-index: 999;
+}
 }
 
 .correct {
 	animation: correct 1s;
-	-webkit-animation: correct 1s;	
+	-webkit-animation: correct 1s;
 }
 
 .incorrect {
 	animation: incorrect 1s;
-	-webkit-animation: incorrect 1s;	
+	-webkit-animation: incorrect 1s;
+}
+
+.known-cell {
+	animation: known-cell 1s;
+	-webkit-animation: known-cell 1s;
 }
 
 .chess-cell-value.user.has-value {
 	color: #05B522;
+	z-index: 100;
+}
+
+.chess-cell-value.known.has-value {
+	color: #607E02;
+	outline: 1px solid #607E02;
 	z-index: 100;
 }
 
@@ -541,7 +793,6 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	float: left;
 	text-align: center;
 }
-
 
 .chess-cell-draft {
 	display: none;
@@ -611,6 +862,8 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	position: absolute;
 	top: 0px;
 	left: 0px;
+	cursor: pointer;
+	z-index: 100;
 }
 
 .number-picker {
@@ -661,7 +914,7 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	font-size: 30px;
 }
 
-.timeout-message {
+.timeout-message, .impunity-message {
 	font-size: 40px;
 }
 
@@ -685,6 +938,7 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	height: 88px;
 	border-radius: 44px;
 	background: #E3E9E9;
+	position: relative;
 }
 
 .game-timer-background {
@@ -699,9 +953,24 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 	background: white;
 }
 
+.game-timer-delay {
+	position: absolute;
+	width: 88px;
+	height: 88px;
+	left: 0px;
+	top: 0px;
+	background: url(../../imgs/default/delay.png);
+	background-size: 88px 88px;
+	z-index: 1000;
+}
+
 .game-timer-background svg {
 	width: 100%;
 	height: 100%;
+}
+
+.game-results-table * {
+	text-align: center;
 }
 
 .remaining-time {
@@ -724,4 +993,204 @@ to {box-shadow: 0px 0px 5px 5px red;z-index: 999;}
 .max-timeout-countdown-number {
 	color: red;
 	font-weight: bold;
+}
+
+.prop {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	padding: 0px;
+	margin: 0px;
+	border-style: solid;
+	border-color: #D0D0D0;
+	border-width: 1px;
+	z-index: 100;
+}
+
+.prop li {
+	list-style: none;
+	padding: 8px 16px 8px 16px;
+	position: relative;
+}
+
+.prop li .prop-item-tip {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	display: none;
+	background: #E3E9E9;
+	color: #5a5e65;
+	font-size: 20px;
+	font-weight: bold;
+	border: 1px solid #D0D0D0;
+	z-index: 100;
+}
+
+.prop li.active {
+	background: white;
+	color: gray;
+}
+
+.prop li.prop-item.empty {
+	background: none;
+	opacity: 0.5;
+	color: gray;
+}
+
+.prop li.prop-item.empty img {
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+	filter: grayscale(100%);
+	filter: gray;
+}
+
+.prop li .prop-item-content {
+	display: block;
+	height: 100%;
+	cursor: default;
+}
+
+.prop li.active .prop-item-content {
+	cursor: pointer;
+}
+
+.prop li .prop-item-content img {
+	width: 24px;
+	height: 24px;
+	margin-right: 5px;
+}
+
+.prop li * {
+	vertical-align: middle;
+}
+
+.zoom-bar {
+	width: 26px;
+	height: 220px;
+	border: 2px solid #afb0b3;
+	background: white;
+}
+
+.zoom-bar .zoom-button {
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border-radius: 0px;
+	height: 24px;
+	padding: 0px;
+	line-height: 24px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #5a5e65;
+	text-align: center;
+	cursor: pointer;
+}
+
+.zoom-bar .zoom-in-button {
+	border-bottom: 1px solid #afb0b3;
+}
+
+.zoom-bar .zoom-out-button {
+	border-top: 1px solid #afb0b3;
+}
+
+.zoom-bar .zoom-area {
+	width: 100%;
+	height: 172px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	overflow: hidden;
+}
+
+.zoom-bar .zoom-ruler {
+	height: 152px;
+	margin: auto;
+	margin-top: 10px;
+	width: 18px;
+	position: relative;
+}
+
+.zoom-bar .zoom-line {
+	width: 8px;
+	height: 152px;
+	background: #e5e9f2;
+	border: 1px solid #d9dfeb;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	margin: auto;
+	z-index: 9;
+	position: relative;
+}
+
+.zoom-bar .zoom-value {
+	width: 100%;
+	height: 0px;
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	background: #0c88e8;
+}
+
+.zoom-bar .zoom-scale {
+	width: 100%;
+	height: 2px;
+	background: #d9dfeb;
+	position: absolute;
+	left: 0px;
+}
+
+.zoom-bar .zoom-marker {
+	width: 24px;
+	height: 10px;
+	border: 1px solid #afb0b3;
+	position: absolute;
+	background: white;
+	left: -3px;
+	z-index: 10;
+	color: red;
+	line-height: 10px;
+	font-weight: 900;
+	text-align: center;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	cursor: pointer;
+}
+
+.chessboard-container.big .game-timer-panel {
+	left: -18%;
+	top: 21%;
+}
+
+.chessboard-container.big .chessboard-actions {
+	left: 0%;
+	top: 26%;
+}
+
+.chessboard-container.big .prop {
+	font-size: 0px;
+	width: 138px;
+	left: -2%;
+	bottom: 20%;
+}
+
+.chessboard-container.big .prop li {
+	display: inline-block;
+	padding: 5px;
+}
+
+.chessboard-container.big .prop li .prop-item-content img {
+	margin: 0px;
+	width: 36px;
+	height: 36px;
+}
+
+.chessboard-container.big .prop li:hover .prop-item-tip {
+	display: block;
+	opacity: 1;
 }

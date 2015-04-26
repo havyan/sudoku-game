@@ -8,11 +8,27 @@ html, body {
 
 * {
 	font-family: "Arial", "STHeiti ", "Microsoft YaHei";
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
 }
 
 body {
 	background: -webkit-radial-gradient(#C7D2D6, #96A4AD);
 	background: radial-gradient(#C7D2D6, #96A4AD);
+}
+
+input {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	color: black;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
 }
 
 .header {
@@ -24,6 +40,7 @@ body {
 	float: right;
 	line-height: 32px;
 	height: 32px;
+	margin-left: 20px;
 	text-decoration: none;
 }
 
@@ -34,7 +51,6 @@ body {
 }
 
 .logout-button {
-	margin-left: 20px;
 	margin-right: 20%;
 }
 
@@ -43,20 +59,31 @@ body {
 }
 
 .scroll-panel::-webkit-scrollbar {
-  -webkit-appearance:none !important;
-  width: 11px !important;
-  border:2px solid white !important;
-  border-radius:8px !important;
-  background-color:#ccc !important
+	-webkit-appearance: none !important;
+	width: 11px !important;
+	border: 2px solid white !important;
+	border-radius: 8px !important;
+	background-color: #ccc !important
 }
 
 .scroll-panel::-webkit-scrollbar-thumb {
-  border-radius:8px !important;
-  border:2px solid white !important;
-  background-color:rgba(0,0,0,.5) !important
+	border-radius: 8px !important;
+	border: 2px solid white !important;
+	background-color: rgba(0,0,0,.5) !important
 }
 
-.btn {
+label {
+	display: inline;
+	max-width: 100%;
+	margin-bottom: 0px;
+	font-weight: normal;
+}
+
+.modal {
+	color: black;
+}
+
+.button {
 	display: inline-block;
 	*zoom: 1;
 	padding: 4px 12px;
@@ -85,4 +112,20 @@ body {
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
 	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.button:hover, .button:focus, .button:active, .button.active, .button.disabled, .button[disabled] {
+	color: #333333;
+	background-color: #e3e3e3;
+	*background-color: #d9d9d9;
+}
+
+.button.disabled, .button[disabled] {
+	cursor: default;
+	background-image: none;
+	opacity: 0.65;
+	filter: alpha(opacity=65);
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
 }

@@ -1,4 +1,4 @@
 <div class="game-waiting">
 	<div class="game-waiting-info">用户{{#each players}}{{#if @index}}, {{/if}}{{name}}{{/each}}已进入游戏</div>
-	<input class="btn game-start-button" type="button" value="开始" />
+	<input class="button game-start-button" type="button" value="开始" />
 </div>

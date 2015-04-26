@@ -1,0 +1,19 @@
+<div class="zoom-bar">
+  <div class="zoom-in-button zoom-button">
+    +
+  </div>
+  <div class="zoom-area">
+    <div class="zoom-ruler">
+      {{#scales}}
+      <div class="zoom-scale" style="top: {{top}}" data-value="{{value}}"></div>
+      {{/scales}}
+      <div class="zoom-line">
+      	<div class="zoom-value"></div>
+      </div>
+      <div class="zoom-marker"></div>
+    </div>
+  </div>
+  <div class="zoom-out-button zoom-button">
+    -
+  </div>
+</div>

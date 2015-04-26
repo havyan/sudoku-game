@@ -15,7 +15,8 @@
 		"mongoose": "^3.8.20",
 		"serve-favicon": "^2.1.7",
 		"winston": "^0.8.3",
-		"lodash": "^2.4.1"
+		"lodash": "^2.4.1",
+		"async" : "^0.9.0"
 	},
 	"devDependencies": {
 		"chai": "^1.10.0",

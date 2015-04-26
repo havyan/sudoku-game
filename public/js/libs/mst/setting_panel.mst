@@ -1,45 +1,113 @@
 <div class="setting-panel">
-	<label class="setting-title">每步时间</label>
-	<a class="add-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /><span>增加</span> </a>
-	<a class="delete-button" href="javascript:void(0);"> <img src="imgs/default/delete.png" /><span>删除</span> </a>
-	<div class="add-rule">
-		{{#each add}}
-		<div class="add-rule-separator"></div>
-		<div class="add-rule-item{{#if @index}} collapsed{{/if}}" index="{{@index}}">
-			<a class="add-rule-collapsed-button" href="javascript:void(0);">{{#if @index}}展开{{else}}收起{{/if}}</a>
-			<input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} /><label>{{total}}秒</label>
-			<div class="add-rule-content">
-				<div class="add-rule-list-label">加分设置</div>
-				<div class="add-rule-list">
-					{{#each levels}}
-					<div class="add-rule-item-row" rowIndex="{{@index}}">
-						<input type="text" class="add-rule-from" disabled="disabled" value="{{from}}" />-<input type="text" class="add-rule-to" value="{{to}}" {{disableLastTo this}} />
-						<input type="text" class="add-rule-score" value="{{score}}" />
-					</div>
-					{{/each}}
-				</div>
-				<div class="add-rule-row-actions">
-					<a class="add-row-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /></a>
-	                <a class="delete-row-button" href="javascript:void(0);"> <img src="imgs/default/delete.png" /></a>
-				</div>
-			</div>
-		</div>
-		{{/each}}
-		<div class="add-rule-separator"></div>
-	</div>
-	<label class="setting-title">减分规则</label>
-	<div class="reduce-rule">
-		{{#reduce}}
-		<div class="reduce-rule-row">
-			<label>答错或超时扣分分值</label><input type="text" class="reduce-rule-timeout-score" value="{{timeout}}" />
-		</div>
-		<div class="reduce-rule-row">
-			<label>Pass扣分分值</label><input type="text" class="reduce-rule-pass-score" value="{{pass}}" />
-		</div>
-		{{/reduce}}
-	</div>
-	<div class="setting-actions">
-		<input class="btn setting-back-action" type="button" value="返回" />
-		<input class="btn setting-save-action" type="button" value="保存" />
-	</div>
+  <div class="navigator">
+    <div class="item main active" data-target="setting-main">
+      游戏设置
+    </div>
+    <div class="item grade" data-target="setting-grade">
+      段位积分
+    </div>
+    <div class="item game-ui" data-target="setting-game-ui">
+      游戏界面
+    </div>
+  </div>
+  <div class="setting-container">
+    {{#rule}}
+    {{#score}}
+    <div class="setting-main item active" data-nav="main">
+      <div class="setting-top-actions">
+        <input class="button reset-prop-action" type="button" value="重置道具" />
+        <input class="button reset-money-action" type="button" value="重置天才币" />
+      </div>
+      <div class="setting-score">
+        <label class="setting-title">每步时间</label>
+        <a class="add-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /><span>增加</span> </a>
+        <a class="delete-button" href="javascript:void(0);"> <img src="imgs/default/delete.png" /><span>删除</span> </a>
+        <div class="add-rule">
+          {{#each add}}
+          <div class="add-rule-separator"></div>
+          <div class="add-rule-item{{#if @index}} collapsed{{/if}}" index="{{@index}}">
+            <a class="add-rule-collapsed-button" href="javascript:void(0);">{{#if @index}}展开{{else}}收起{{/if}}</a>
+            <div class="add-rule-item-header">
+              <input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} />
+              <label><span>{{total}}</span>
+                <input type="text" value="{{total}}" />
+                秒</label>
+            </div>
+            <div class="add-rule-content">
+              <div class="add-rule-list-label">
+                加分设置
+              </div>
+              <div class="add-rule-list">
+                {{#each levels}}
+                <div class="add-rule-item-row" rowIndex="{{@index}}">
+                  <input type="text" class="add-rule-from" disabled="disabled" value="{{from}}" />
+                  -
+                  <input type="text" class="add-rule-to" value="{{to}}" {{disableLastTo this}} />
+                  <input type="text" class="add-rule-score" value="{{score}}" />
+                </div>
+                {{/each}}
+              </div>
+              <div class="add-rule-row-actions">
+                <a class="add-row-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /></a>
+                <a class="delete-row-button" href="javascript:void(0);"> <img src="imgs/default/delete.png" /></a>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+          <div class="add-rule-separator"></div>
+        </div>
+        <label class="setting-title">减分规则</label>
+        <div class="reduce-rule">
+          {{#reduce}}
+          <div class="reduce-rule-row">
+            <label>答错或超时扣分分值</label>
+            <input type="text" class="reduce-rule-timeout-score" value="{{timeout}}" />
+          </div>
+          <div class="reduce-rule-row">
+            <label>Pass扣分分值</label>
+            <input type="text" class="reduce-rule-pass-score" value="{{pass}}" />
+          </div>
+          {{/reduce}}
+        </div>
+      </div>
+    </div>
+    {{/score}}
+    <div class="setting-grade item" data-nav="grade">
+      <table class="grade-table">
+        <thead>
+          <th class="name">段位</th>
+          <th class="value">积分</th>
+        </thead>
+        <tbody>
+          {{#each grade}}
+          <tr data-grade="{{code}}" data-index="{{@index}}">
+            <td class="name">{{name}}</td>
+            <td class="value"><span>{{floor}}</span>
+            <input type="text" value="{{floor}}" />
+            <div class="error"></div></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    {{/rule}}
+    {{#ui}}
+    <div class="setting-game-ui item" data-nav="game-ui">
+      <div class="ui-form">
+        <div class="ui-row">
+          <div class="ui-name ui-name-zoom">
+            缩放
+          </div>
+          <div class="ui-value ui-value-zoom">
+            <input type="number" min="1.0" max="1.5" step="0.1" value="{{zoom}}" />
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/ui}}
+  </div>
+  <div class="setting-actions">
+    <input class="button setting-back-action" type="button" value="返回" />
+    <input class="button setting-save-action" type="button" value="保存" />
+  </div>
 </div>

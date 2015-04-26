@@ -1,18 +1,55 @@
-<div class="chessboard-container">
-	<div class="game-timer-panel"></div>
-	<div class="active-status" active="{{active}}"></div>
-	<div class="chessboard-actions">
-		<div class="chessboard-edit-mode">
-			<a class="btn chessboard-submit-mode-action action-active">提交</a><a class="btn chessboard-draft-mode-action">草稿</a>
-		</div>
-		<div class="chessboard-view-mode">
-			<a class="btn chessboard-plain-mode-action action-active">普通</a><a class="btn chessboard-options-mode-action">候选</a>
-		</div>
-	</div>
-	<div class="chessboard-panel"></div>
-	{{#if active}}<input type="button" class="btn pass-action" value="PASS"/>{{/if}}
-	<div class="score-message correct-message"></div>
-	<div class="score-message incorrect-message"></div>
-	<div class="score-message timeout-message"></div>
-	<div class="score-message pass-message"></div>
+<div class="chessboard-container" style="{{chessboardLayout this}}">
+  <div class="game-zoom">
+  </div>
+  <div class="game-timer-panel"></div>
+  <div class="active-status" active="{{active}}"></div>
+  <div class="chessboard-actions">
+    <div class="chessboard-edit-mode">
+      <a class="button chessboard-submit-mode-action action-active">提交</a><a class="button chessboard-draft-mode-action">草稿</a>
+    </div>
+    <div class="chessboard-view-mode">
+      <a class="button chessboard-plain-mode-action action-active">普通</a><a class="button chessboard-options-mode-action" {{#unless optionsEnabled}}disabled="true"{{/unless}}>候选</a>
+    </div>
+  </div>
+  <ul class="prop">
+    {{#prop}}
+    <li class="magnifier prop-item {{#unless magnifier}}empty{{/unless}}">
+      <div class="prop-item-content"><img src="/imgs/default/prop_magnifier.png"> x {{magnifier}}
+      </div>
+      <div class="prop-item-tip">{{magnifier}}</div>
+    </li>
+    <li class="impunity prop-item {{#unless impunity}}empty{{/unless}}">
+      <div class="prop-item-content"><img src="/imgs/default/prop_impunity.png"> x {{impunity}}
+      </div>
+      <div class="prop-item-tip">{{impunity}}</div>
+    </li>
+    <li class="delay prop-item {{#unless delay}}empty{{/unless}}">
+      <div class="prop-item-content"><img src="/imgs/default/prop_delay.png"> x {{delay}}
+      </div>
+      <div class="prop-item-tip">{{delay}}</div>
+    </li>
+    <li class="options_once prop-item {{#unless options_once}}empty{{/unless}}">
+      <div class="prop-item-content"><img src="/imgs/default/prop_options_once.png"> x {{options_once}}
+      </div>
+      <div class="prop-item-tip">{{options_once}}</div>
+    </li>
+    <li class="options_always prop-item {{#unless options_always}}empty{{/unless}}">
+      <div class="prop-item-content"><img src="/imgs/default/prop_options_always.png"> x {{options_always}}
+      </div>
+      <div class="prop-item-tip">{{options_always}}</div>
+    </li>
+    {{/prop}}
+  </ul>
+  <div class="chessboard-panel">
+    {{#cellDatas}}
+    <div class="chess-cell-container {{cellContainerClass this}}" data-xy="{{xy}}" style="{{chessCellContainerLayout this}}"></div>
+    {{/cellDatas}}
+  </div>
+  {{#if active}}
+  <input type="button" class="button pass-action" value="PASS"/>
+  {{/if}} <div class="score-message correct-message"></div>
+  <div class="score-message incorrect-message"></div>
+  <div class="score-message timeout-message"></div>
+  <div class="score-message pass-message"></div>
+  <div class="score-message impunity-message"></div>
 </div>
