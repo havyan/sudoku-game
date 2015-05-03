@@ -13,8 +13,8 @@ html, body {
 }
 
 body {
-	background: -webkit-radial-gradient(#C7D2D6, #96A4AD);
-	background: radial-gradient(#C7D2D6, #96A4AD);
+	background: url(../../imgs/default/main_bg.png) no-repeat;
+	background-size: cover;
 }
 
 input {
@@ -32,26 +32,76 @@ a:hover {
 }
 
 .header {
-	margin-top: 10px;
-	height: 32px;
+	margin-top: 40px;
+	height: 130px;
 }
 
-.header a {
-	float: right;
-	line-height: 32px;
-	height: 32px;
-	margin-left: 20px;
-	text-decoration: none;
+.header-user {
+	float: left;
+	width: 20%;
+	text-align: center;
+	margin-top: 5px;
 }
 
-.header a * {
+.header-user-icon {
+	display: inline-block;
+	width: 110px;
+	height:110px;
+	border:5px solid #C4B098;
+	border-radius: 60px;
 	vertical-align: middle;
-	margin-left: 5px;
-	color: #FFF;
 }
 
-.logout-button {
-	margin-right: 20%;
+.header-user-icon img {
+	width: 102px;
+	height: 102px;
+	margin-top: 4px;
+	border-radius: 51px;
+	background-color: #C4B098;
+}
+
+.header-user-info {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: left;
+	color: red;
+	margin-left: 5px;
+}
+
+.header-user-info p {
+	margin: 0px;
+	line-height: 40px;
+	font-size: 16px;
+}
+
+.header-actions {
+	background: url(../../imgs/default/header_bg.png) no-repeat;
+	margin-left: 20%;
+	width: 80%;
+	height: 130px;
+	background-position: 0px -17px;
+}
+
+.header-actions a {
+	float: left;
+	height: 97px;
+	width: 93px;
+	vertical-align: middle;
+	margin-top: 16px;
+	margin-left: 63px;
+	line-height: 97px;
+	color: white;
+	font-size: 18px;
+	text-align: center;
+	background-image: url(../../imgs/default/header_action_bg.png);
+}
+
+.header-actions a:hover {
+	color: #FFF000
+}
+
+.header-actions a:first-of-type {
+	margin-left: 45px;
 }
 
 .footer {

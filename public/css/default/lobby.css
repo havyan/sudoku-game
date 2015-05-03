@@ -1,0 +1,13 @@
+.lobby-nav {
+	width: 20%;
+	float: left;
+	text-align: center;
+}
+
+.lobby-rooms {
+	width: 278px;
+	height: 879px;
+	display: inline-block;
+	background: url(../../imgs/default/lobby_nav_bg.png) no-repeat;
+}
+

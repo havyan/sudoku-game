@@ -1,149 +1,169 @@
 var _ = require('lodash');
 var Observable = require('./base/observable');
-var Game = require('./models/game');
-var GAME_TIMEOUT = 10 * 60 * 60 * 1000;
+var RoomDAO = require('./daos/room');
+var Room = require('./models/room');
 
 var GameManager = function() {
   this.$ = new Observable();
-  this.games = [];
+  this.rooms = [];
 };
 
-GameManager.prototype.playerJoin = function(account, cb) {
+GameManager.prototype.init = function(cb) {
+  var self = this;
+  RoomDAO.all(function(error, rooms) {
+    if (error) {
+      cb(error);
+    } else {
+      if (rooms) {
+        rooms.forEach(function(room) {
+          self.rooms.push(new Room(room.id, room.name));
+        });
+      }
+      self.trigger('game-manager-init');
+      cb();
+    }
+  });
+};
+
+GameManager.prototype.getLobbyData = function() {
+  return {
+    rooms : this.rooms.map(function(room) {
+      return room.toJSON();
+    })
+  };
+};
+
+GameManager.prototype.playerJoin = function(gameId, account, params, cb) {
   var self = this;
   var game = this.findGameByUser(account);
   if (game) {
-    cb(null, game);
+    cb(null, {
+      status : 'playing',
+      gameId : game.id
+    });
   } else {
-    var lastGame = _.last(this.games);
-    if (!lastGame || !(lastGame.isWaiting()) || lastGame.isFull()) {
-      this.createGame(function(game) {
-        setTimeout(function() {
-          game.destroy();
-        }, GAME_TIMEOUT);
-
-        game.on('game-destroyed', function() {
-          self.removeGame(game.id);
+    game = this.findGame(gameId);
+    if (game) {
+      if (game.isEmpty()) {
+        game.init(account, params, function(error) {
+          if (error) {
+            cb(error);
+          } else {
+            game.playerJoin(account, cb);
+          }
         });
-
-        game.playerJoin(account, function(error, user) {
-          cb(error, game);
-        });
-      });
+      } else {
+        game.playerJoin(account, cb);
+      }
     } else {
-      lastGame.playerJoin(account, function(error, user) {
-        cb(error, lastGame);
-      });
+      cb("No game for id: " + gameId);
     }
   }
 };
 
 GameManager.prototype.playerQuit = function(account, cb) {
-  var self = this;
   var game = this.findGameByUser(account);
   if (game) {
     game.playerQuit(account, 'quit', cb);
   }
 };
 
+GameManager.prototype.findRoom = function(roomId) {
+  return _.find(this.rooms, {
+    id : roomId
+  });
+};
+
+GameManager.prototype.findRoomByGameId = function(gameId) {
+  return _.find(this.rooms, function(room) {
+    return room.hasGame(gameId);
+  });
+};
+
+GameManager.prototype.findGame = function(gameId) {
+  return this.findRoomByGameId(gameId).findGame(gameId);
+};
+
 GameManager.prototype.submit = function(gameId, account, xy, value, cb) {
   var self = this;
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   var result = game.submit(account, xy, value, cb);
 };
 
 GameManager.prototype.autoSubmit = function(gameId, account, xy, cb) {
   var self = this;
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   var result = game.autoSubmit(account, xy, cb);
 };
 
 GameManager.prototype.peep = function(gameId, account, xy, cb) {
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   var result = game.peep(account, xy, cb);
 };
 
 GameManager.prototype.impunish = function(gameId, account, cb) {
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   var result = game.impunish(account, cb);
 };
 
 GameManager.prototype.pass = function(gameId, account, cb) {
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   game.pass(account, cb);
 };
 
 GameManager.prototype.delay = function(gameId, account, cb) {
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   game.delay(account, cb);
 };
 
 GameManager.prototype.setOptionsOnce = function(gameId, account, cb) {
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   game.setOptionsOnce(account, cb);
 };
 
 GameManager.prototype.setOptionsAlways = function(gameId, account, cb) {
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   game.setOptionsAlways(account, cb);
 };
 
 GameManager.prototype.goahead = function(account, gameId) {
-  this.getGame(gameId).goahead(account);
+  this.findGame(gameId).goahead(account);
 };
 
 GameManager.prototype.addMessage = function(gameId, account, message, cb) {
   var self = this;
-  var game = this.getGame(gameId);
+  var game = this.findGame(gameId);
   game.addMessage(account, message, function(error, message) {
     cb(error, message);
   });
 };
 
-GameManager.prototype.createGame = function(cb) {
-  var self = this;
-  var game = new Game();
-  this.games.push(game);
-  game.init(function() {
-    self.trigger('game-created', game);
-    cb(game);
-  });
-  return game;
-};
-
-GameManager.prototype.removeGame = function(gameId) {
-  var index = _.findIndex(this.games, {
-    'id' : gameId
-  });
-  if (index >= 0) {
-    var game = this.games[index];
-    this.games.splice(index, 1);
-    this.trigger('game-removed', game);
-  }
-};
-
-GameManager.prototype.getGame = function(id) {
+GameManager.prototype.findGame = function(id) {
   return _.find(this.games, {
     'id' : id
   });
 };
 
-GameManager.prototype.existsGame = function() {
+GameManager.prototype.hasLiveGame = function() {
   return _.find(this.games, function(game) {
-    return !game.isOver();
+    return !(game.isOver() || game.isEmpty());
   }) != undefined;
 };
 
 GameManager.prototype.setGameStatus = function(account, id, status) {
-  var game = this.getGame(id);
+  var game = this.findGame(id);
   if (game) {
     game.setStatus(account, status);
   }
 };
 
 GameManager.prototype.findGameByUser = function(account) {
-  return _.find(this.games, function(game) {
-    return game.findPlayer(account);
+  var room = _.find(this.rooms, function(room) {
+    return room.findGameByUser(account);
   });
+  if (room) {
+    return room.findGameByUser(account);
+  }
 };
 
 _.merge(GameManager.prototype, Observable.general);

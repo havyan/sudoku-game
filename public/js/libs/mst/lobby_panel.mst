@@ -1,0 +1,9 @@
+<div class="lobby-nav">
+  <div class="lobby-rooms">
+    {{#rooms}}
+    <div>
+      {{name}}
+    </div>
+    {{/rooms}}
+  </div>
+</div>

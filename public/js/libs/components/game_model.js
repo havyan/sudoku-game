@@ -1,7 +1,7 @@
 (function() {
   can.Model('Models.GameModel', {}, {
-    init : function(game, eventCenter) {
-      this.eventCenter = eventCenter;
+    init : function(game, eventReceiver) {
+      this.eventReceiver = eventReceiver;
       this.initDimension();
       this.initEvents();
       this.initStatus();
@@ -420,10 +420,10 @@
 
     initEvents : function() {
       var self = this;
-      this.eventCenter.on('player-joined', function(player) {
+      this.eventReceiver.on('player-joined', function(player) {
         self.addPlayer(player);
       });
-      this.eventCenter.on('player-quit', function(data) {
+      this.eventReceiver.on('player-quit', function(data) {
         var account = data.account;
         self.playerQuit(account, data.status);
         if (self.attr('account') === account) {
@@ -431,71 +431,71 @@
           self.destroy();
         }
       });
-      this.eventCenter.on('message-added', function(message) {
+      this.eventReceiver.on('message-added', function(message) {
         self.addMessage(message);
       });
-      this.eventCenter.on('status-changed', function(status) {
+      this.eventReceiver.on('status-changed', function(status) {
         self.attr('status', status);
       });
-      this.eventCenter.on('puzzle-init', function(initCellValues) {
+      this.eventReceiver.on('puzzle-init', function(initCellValues) {
         self.attr('initCellValues', initCellValues);
       });
-      this.eventCenter.on('countdown-stage', function(stage) {
+      this.eventReceiver.on('countdown-stage', function(stage) {
         self.attr('countdownStage', stage);
       });
-      this.eventCenter.on('cell-correct', function(xy, value) {
+      this.eventReceiver.on('cell-correct', function(xy, value) {
         self.attr('userCellValues').attr(xy, parseInt(value));
       });
-      this.eventCenter.on('cell-incorrect', function(xy) {
+      this.eventReceiver.on('cell-incorrect', function(xy) {
         self.attr('incorrect', {
           xy : xy
         });
       });
-      this.eventCenter.on('switch-player', function(account) {
+      this.eventReceiver.on('switch-player', function(account) {
         self.attr('currentPlayer', account);
         self.attr('optionsOnce', false);
         self.attr('active', false);
         self.attr('active', account === self.attr('account'));
         self.attr('delayed', false);
       });
-      this.eventCenter.on('ellapsed-time', function(ellapsedTime) {
+      this.eventReceiver.on('ellapsed-time', function(ellapsedTime) {
         var remainingTime = self.attr('rule.score.add.total') - ellapsedTime;
         self.attr('remainingTime', remainingTime);
       });
-      this.eventCenter.on('score-changed', function(account, info) {
+      this.eventReceiver.on('score-changed', function(account, info) {
         self.attr('scores').attr(account, parseInt(info.score));
         if (account === self.attr('account')) {
           self.attr('changedScore', info);
         }
       });
-      this.eventCenter.on('max-timeout-reached', function(account) {
+      this.eventReceiver.on('max-timeout-reached', function(account) {
         if (self.attr('account') === account) {
           self.attr('maxTimeoutReached', Date.now());
         }
       });
-      this.eventCenter.on('quit-countdown-stage', function(account, stage) {
+      this.eventReceiver.on('quit-countdown-stage', function(account, stage) {
         if (self.attr('account') === account) {
           self.attr('quitCountdownStage', stage);
         }
       });
-      this.eventCenter.on('game-over', function(results) {
+      this.eventReceiver.on('game-over', function(results) {
         self.attr('status', 'over');
         self.attr('results', results);
       });
-      this.eventCenter.on('game-destroyed', function() {
+      this.eventReceiver.on('game-destroyed', function() {
         self.attr('status', 'destroyed');
         self.destroy();
       });
-      this.eventCenter.on('game-delayed', function() {
+      this.eventReceiver.on('game-delayed', function() {
         self.attr('delayed', true);
       });
-      this.eventCenter.on('delay-countdown-stage', function(stage) {
+      this.eventReceiver.on('delay-countdown-stage', function(stage) {
         self.attr('delayCountdownStage', stage);
       });
-      this.eventCenter.on('game-delay-cancelled', function() {
+      this.eventReceiver.on('game-delay-cancelled', function() {
         self.attr('delayed', false);
       });
-      this.eventCenter.on('destroy-countdown-stage', function(stage) {
+      this.eventReceiver.on('destroy-countdown-stage', function(stage) {
         self.attr('destroyCountdownStage', stage);
       });
     },

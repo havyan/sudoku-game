@@ -2,11 +2,12 @@ var _ = require('lodash');
 var winston = require('winston');
 var async = require('async');
 var Observable = require('../base/observable');
-var Rule = require('./rule');
-var User = require('./user');
-var Prop = require('./prop');
-var Puzzle = require('./puzzle');
+var RuleDAO = require('../daos/rule');
+var UserDAO = require('../daos/user');
+var PropDAO = require('../daos/prop');
+var PuzzleDAO = require('../daos/puzzle');
 var GameMode = require('./game_mode');
+var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
 var ONGOING = "ongoing";
@@ -14,6 +15,7 @@ var DESTROYED = "destroyed";
 var OVER = "over";
 var PREFIX = "game";
 var CAPACITY = 9;
+var GAME_TIMEOUT = 10 * 60 * 60 * 1000;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var DELAY_COUNTDOWN_TOTAL = 60;
@@ -28,15 +30,22 @@ var SCORE_TYPE = {
   IMPUNITY : "impunity"
 };
 
-var Game = function(mode) {
+var Game = function(room, index, mode) {
   this.$ = new Observable();
-  this.id = PREFIX + Date.now();
+  this.room = room;
+  this.id = room.id + '-' + index + '-' + Date.now();
+  this.mode = mode || GameMode.MODE9;
+  this.status = EMPTY;
+};
+
+Game.prototype.init = function(account, params, cb) {
+  var self = this;
+  this.banker = account;
   this.players = [];
   this.quitPlayers = [];
   this.messages = [];
   this.status = WAITING;
   this.delayed = false;
-  this.mode = mode || GameMode.MODE9;
   this.initCellValues = {};
   this.userCellValues = {};
   this.knownCellValues = {};
@@ -51,6 +60,26 @@ var Game = function(mode) {
   this.playerTimer = {
     ellapsedTime : 0
   };
+  this.params = _.merge({}, params);
+  //TODO
+  RuleDAO.getRule(function(error, rule) {
+    if (error) {
+      cb(error);
+    } else {
+      rule.score.add = _.find(rule.score.add, function(e) {
+        return e.selected;
+      });
+      self.rule = rule;
+      cb();
+    }
+  });
+  setTimeout(function() {
+    self.destroy();
+  }, GAME_TIMEOUT);
+};
+
+Game.prototype.isEmpty = function() {
+  return this.status === EMPTY;
 };
 
 Game.prototype.isWaiting = function() {
@@ -74,7 +103,7 @@ Game.prototype.setStatus = function(account, status) {
     var player = self.findPlayer(account);
     //TODO for test, remove it in the future
     var grade = account === 'EEE' ? 12 : parseInt(player.grade);
-    Puzzle.findRandomOneByLevel(Puzzle.LEVELS[grade], function(error, puzzle) {
+    PuzzleDAO.findRandomOneByLevel(PuzzleDAO.LEVELS[grade], function(error, puzzle) {
       if (error) {
         winston.error(error);
       } else {
@@ -220,13 +249,13 @@ Game.prototype.stopDelayTimer = function() {
 
 Game.prototype.playerJoin = function(account, cb) {
   var self = this;
-  User.findOneByAccount(account, function(error, user) {
+  UserDAO.findOneByAccount(account, function(error, user) {
     if (error) {
       cb(error);
     } else {
       self.players.push(user);
       self.knownCellValues[user.account] = {};
-      Prop.findOneByAccount(account, function(error, prop) {
+      PropDAO.findOneByAccount(account, function(error, prop) {
         if (error) {
           cb(error);
         } else {
@@ -314,7 +343,7 @@ Game.prototype.removePlayer = function(account) {
 
 Game.prototype.addMessage = function(account, message, cb) {
   var self = this;
-  User.findOneByAccount(account, function(error, user) {
+  UserDAO.findOneByAccount(account, function(error, user) {
     if (error) {
       cb(error);
     } else {
@@ -356,7 +385,13 @@ Game.prototype.isFull = function() {
 };
 
 Game.prototype.toJSON = function(account) {
-  return {
+  return this.status === EMPTY ? {
+    roomId : this.room.id,
+    id : this.id,
+    mode : this.mode,
+    status : this.status
+  } : {
+    roomId : this.room.id,
     id : this.id,
     mode : this.mode,
     rule : this.rule,
@@ -385,6 +420,29 @@ Game.prototype.toJSON = function(account) {
     remainingTime : this.rule.score.add.total - this.playerTimer.ellapsedTime,
     optionsOnce : account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
     optionsAlways : account ? this.optionsAlways[account] ? true : false : this.optionsAlways
+  };
+};
+
+Game.prototype.toSimpleJSON = function() {
+  var self = this;
+  return this.status === EMPTY ? {
+    roomId : this.room.id,
+    id : this.id,
+    mode : _.findKey(GameMode, function(value) {
+      return value === self.mode;
+    }),
+    status : this.status
+  } : {
+    roomId : this.room.id,
+    id : this.id,
+    mode : _.findKey(GameMode, function(value) {
+      return value === self.mode;
+    }),
+    players : this.players.map(function(player) {
+      return player.toJSON();
+    }),
+    currentPlayer : this.currentPlayer,
+    status : this.status,
   };
 };
 
@@ -665,21 +723,6 @@ Game.prototype.setOptionsAlways = function(account, cb) {
       cb('You do not have enough cards');
     }
   }
-};
-
-Game.prototype.init = function(cb) {
-  var self = this;
-  Rule.getRule(function(error, rule) {
-    if (error) {
-      cb(error);
-    } else {
-      rule.score.add = _.find(rule.score.add, function(e) {
-        return e.selected;
-      });
-      self.rule = rule;
-      cb();
-    }
-  });
 };
 
 Game.prototype.destroy = function() {

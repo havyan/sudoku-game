@@ -247,4 +247,16 @@
       });
     }
   }, {});
+
+  can.Model('Rest.Lobby', {
+    getData : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/lobby/data',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
 })();

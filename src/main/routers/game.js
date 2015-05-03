@@ -5,7 +5,7 @@ var Game = require('../models/game');
 module.exports = function(router) {
   /* GET Game. */
   router.get('/game/:id', function(req, res, next) {
-    var game = global.gameManager.getGame(req.params.id);
+    var game = global.gameManager.findGame(req.params.id);
     if (game) {
       game = game.toJSON(req.session.account);
       res.send(game);

@@ -1,5 +1,6 @@
 var winston = require('winston');
 var express = require('express');
+var async = require('async');
 var app = express();
 var path = require('path');
 var hbs = require('hbs');
@@ -73,5 +74,12 @@ app.use(function(err, req, res, next) {
     error : env === 'development' ? (err.error || err) : {}
   });
 });
+
+app.init = function(cb) {
+  async.series([
+  function(cb) {
+    global.gameManager.init(cb);
+  }], cb);
+};
 
 module.exports = app;

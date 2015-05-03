@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/main.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/lobby.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-2.1.1.min.js"></script>
+    <script src="{{@basejs}}/libs3/lodash.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs3/socket.io-1.2.1.min.js"></script>
+    <script src="{{@basejs}}/libs/observable.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/event_center.js"></script>
+    <script src="{{@basejs}}/libs/components/lobby_model.js"></script>
+    <script src="{{@basejs}}/libs/components/lobby_panel.js"></script>
+    <script src="{{@basejs}}/libs/main.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <div class="header-user">
+        <div class="header-user-icon">
+          <img src="{{@baseimg}}/user.png"></img>
+        </div>
+        <div class="header-user-info">
+          <p>
+            昵称：{{userName}}
+          </p>
+          <p>
+            天才币：{{money}}
+          </p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a class="user-button" href="/user">个人信息</a>
+        <a class="propstore-button" href="/propstore">道具</a>
+        <a class="setting-button" href="/setting">管理</a>
+        <a class="logout-button" href="/logout">注销</a>
+      </div>
+    </div>
+    <div id="lobby" class="lobby"></div>
+  </body>
+</html>

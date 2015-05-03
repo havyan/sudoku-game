@@ -3,21 +3,38 @@ var fs = require('fs');
 var _ = require('lodash');
 var async = require('async');
 var winston = require('winston');
-var Rule = require('../main/models/rule');
-var User = require('../main/models/user');
-var Puzzle = require('../main/models/puzzle');
-var Prop = require('../main/models/prop');
+var RuleDAO = require('../main/daos/rule');
+var UserDAO = require('../main/daos/user');
+var PuzzleDAO = require('../main/daos/puzzle');
+var PropDAO = require('../main/daos/prop');
+var RoomDAO = require('../main/daos/room');
 var GameMode = require('../main/models/game_mode');
 
 module.exports = function() {
   winston.info('Start to do db migration');
-  Rule.getRule(function(error, rule) {
+  RuleDAO.getRule(function(error, rule) {
     if (error) {
       winston.error('Error happens when getting rule from db: ' + error);
     }
     if (!rule) {
       winston.info('Create rule from predefined');
-      Rule.create(require('./predefined/rule.json'));
+      RuleDAO.create(require('./predefined/rule.json'));
+    }
+  });
+
+  var rooms = require('./predefined/rooms.json');
+  async.eachSeries(rooms, function(room, cb) {
+    RoomDAO.findOneByName(room.name, function(error, find) {
+      if (!find) {
+        winston.info('Create room from predefined');
+        RoomDAO.create(room, cb);
+      } else {
+        cb();
+      }
+    });
+  }, function(error) {
+    if (error) {
+      winston.error('Error happens when initialize rooms: ' + error);
     }
   });
 
@@ -25,16 +42,14 @@ module.exports = function() {
   async.eachSeries(users, function(user, cb) {
     async.series([
     function(cb) {
-      User.findOneByAccount(user.account, function(error, find) {
+      UserDAO.findOneByAccount(user.account, function(error, find) {
         if (error) {
           winston.error('Error happens when getting user from db: ' + error);
           cb(error);
         } else {
           if (!find) {
             winston.info('Create user [' + user.name + '] from predefined');
-            User.create(user, function(error) {
-              cb(error);
-            });
+            UserDAO.create(user, cb);
           } else {
             cb();
           }
@@ -42,16 +57,14 @@ module.exports = function() {
       });
     },
     function(cb) {
-      Prop.findOneByAccount(user.account, function(error, find) {
+      PropDAO.findOneByAccount(user.account, function(error, find) {
         if (error) {
           winston.error('Error happens when getting prop from db: ' + error);
           cb(error);
         } else {
           if (!find) {
             winston.info('Create prop for account [' + user.account + '] from predefined');
-            Prop.createDefault(user.account, function(error) {
-              cb(error);
-            });
+            PropDAO.createDefault(user.account, cb);
           } else {
             cb();
           }
@@ -85,10 +98,10 @@ module.exports = function() {
       if (puzzle && !(_.isEmpty(puzzle.question)) && !(_.isEmpty(puzzle.answer))) {
         rl.pause();
         var newPuzzle = _.cloneDeep(puzzle);
-        Puzzle.findOneBySource(newPuzzle.source, function(error, find) {
+        PuzzleDAO.findOneBySource(newPuzzle.source, function(error, find) {
           if (!find) {
             winston.info('Create new puzzle: ' + JSON.stringify(newPuzzle));
-            Puzzle.create(newPuzzle, function(error) {
+            PuzzleDAO.create(newPuzzle, function(error) {
               if (error) {
                 winston.error("initialize puzzle error: " + error);
               }

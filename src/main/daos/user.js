@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var _ = require('lodash');
 var async = require('async');
 var Schema = mongoose.Schema;
-var Rule = require('./rule');
+var RuleDAO = require('./rule');
 var MONEY = 50000;
 
 var UserSchema = new Schema({
@@ -30,7 +30,7 @@ UserSchema.statics.findOneByAccount = function(account, cb) {
 UserSchema.statics.updateByAccount = function(account, data, cb) {
   var self = this;
   if (data.points !== undefined) {
-    Rule.getRule(function(error, rule) {
+    RuleDAO.getRule(function(error, rule) {
       if (error) {
         cb(error);
       } else {
@@ -47,7 +47,7 @@ UserSchema.statics.updateByAccount = function(account, data, cb) {
             cb(null, {
               status : 'ok',
               grade : data.grade,
-              grade_name : Rule.GRADE_NAMES[data.grade]
+              grade_name : RuleDAO.GRADE_NAMES[data.grade]
             });
           }
         });
@@ -62,7 +62,7 @@ UserSchema.statics.updateByAccount = function(account, data, cb) {
 
 UserSchema.statics.updateAllGrades = function(cb) {
   var self = this;
-  Rule.getRule(function(error, rule) {
+  RuleDAO.getRule(function(error, rule) {
     if (error) {
       cb(error);
     } else {
@@ -97,7 +97,7 @@ UserSchema.virtual('winrate').get(function() {
 });
 
 UserSchema.virtual('grade_name').get(function() {
-  return Rule.GRADE_NAMES[this.grade];
+  return RuleDAO.GRADE_NAMES[this.grade];
 });
 
 UserSchema.set('toJSON', {
