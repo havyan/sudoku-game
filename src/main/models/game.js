@@ -14,7 +14,7 @@ var ONGOING = "ongoing";
 var DESTROYED = "destroyed";
 var OVER = "over";
 var PREFIX = "game";
-var CAPACITY = 9;
+var CAPACITY = 4;
 var GAME_TIMEOUT = 10 * 60 * 60 * 1000;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
@@ -40,8 +40,7 @@ var Game = function(room, index, mode) {
 
 Game.prototype.init = function(account, params, cb) {
   var self = this;
-  this.banker = account;
-  this.players = [];
+  this.players = new Array(4);
   this.quitPlayers = [];
   this.messages = [];
   this.status = WAITING;
@@ -394,11 +393,12 @@ Game.prototype.toJSON = function(account) {
     roomId : this.room.id,
     id : this.id,
     mode : this.mode,
+    params : this.params,
     rule : this.rule,
     initCellValues : this.initCellValues,
     userCellValues : this.userCellValues,
     players : this.players.map(function(player) {
-      return player.toJSON();
+      return player ? player.toJSON() : null;
     }),
     quitPlayers : this.quitPlayers.map(function(player) {
       return player.toJSON();
@@ -435,11 +435,12 @@ Game.prototype.toSimpleJSON = function() {
   } : {
     roomId : this.room.id,
     id : this.id,
+    params : this.params,
     mode : _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
     players : this.players.map(function(player) {
-      return player.toJSON();
+      return player ? player.toJSON() : null;
     }),
     currentPlayer : this.currentPlayer,
     status : this.status,

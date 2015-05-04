@@ -1,9 +1,59 @@
 <div class="lobby-nav">
-  <div class="lobby-rooms">
+  <div class="lobby-nav-rooms">
     {{#rooms}}
-    <div>
+    <div class="lobby-nav-room" data-id="{{id}}">
       {{name}}
     </div>
     {{/rooms}}
   </div>
+</div>
+<div class="lobby-content">
+  {{#rooms}}
+  <div class="lobby-room" data-id="{{id}}">
+    {{#games}}
+    <div class="lobby-game">
+      <div class="lobby-table">
+        <div class="lobby-table-content">
+          空桌
+        </div>
+      </div>
+      {{#if players}}
+      {{#if players.0}}
+      {{#players.0}}
+      <div class="lobby-player existent north" data-index="0" data-id="{{id}}"></div>
+      {{/players.0}}
+      {{else}}
+      <div class="lobby-player empty north" data-index="0"></div>
+      {{/if}}
+      {{#if players.1}}
+      {{#players.1}}
+      <div class="lobby-player existent east" data-index="1" data-id="{{id}}"></div>
+      {{/players.1}}
+      {{else}}
+      <div class="lobby-player empty east" data-index="1"></div>
+      {{/if}}
+      {{#if players.2}}
+      {{#players.2}}
+      <div class="lobby-player existent south" data-index="2" data-id="{{id}}"></div>
+      {{/players.2}}
+      {{else}}
+      <div class="lobby-player empty south" data-index="2"></div>
+      {{/if}}
+      {{#if players.3}}
+      {{#players.3}}
+      <div class="lobby-player existent east" data-index="3" data-id="{{id}}"></div>
+      {{/players.3}}
+      {{else}}
+      <div class="lobby-player empty east" data-index="3"></div>
+      {{/if}}
+      {{else}}
+      <div class="lobby-player empty north" data-index="0"></div>
+      <div class="lobby-player empty east" data-index="1"></div>
+      <div class="lobby-player empty south" data-index="2"></div>
+      <div class="lobby-player empty west" data-index="3"></div>
+      {{/if}}
+    </div>
+    {{/games}}
+  </div>
+  {{/rooms}}
 </div>

@@ -13,7 +13,7 @@ html, body {
 }
 
 body {
-	background: url(../../imgs/default/main_bg.png) no-repeat;
+	background: url(../../imgs/default/main_bg.png);
 	background-size: cover;
 }
 
@@ -79,7 +79,6 @@ a:hover {
 	margin-left: 20%;
 	width: 80%;
 	height: 130px;
-	background-position: 0px -17px;
 }
 
 .header-actions a {
@@ -97,11 +96,11 @@ a:hover {
 }
 
 .header-actions a:hover {
-	color: #FFF000
+	color: #FFF000;
 }
 
 .header-actions a:first-of-type {
-	margin-left: 45px;
+	margin-left: 42px;
 }
 
 .footer {

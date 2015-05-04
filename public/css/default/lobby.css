@@ -1,13 +1,103 @@
-.lobby-nav {
-	width: 20%;
-	float: left;
-	text-align: center;
+.lobby {
+  margin-top: 30px;
 }
 
-.lobby-rooms {
-	width: 278px;
-	height: 879px;
-	display: inline-block;
-	background: url(../../imgs/default/lobby_nav_bg.png) no-repeat;
+.lobby-nav {
+  width: 20%;
+  float: left;
+  text-align: center;
+}
+
+.lobby-nav-rooms {
+  width: 278px;
+  height: 879px;
+  display: inline-block;
+  background: url(../../imgs/default/lobby_nav_bg.png) no-repeat;
+}
+
+.lobby-nav-room {
+  width: 173px;
+  height: 51px;
+  line-height: 51px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  background: url(../../imgs/default/lobby_nav_room_bg.png) no-repeat;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.lobby-nav-room.active {
+  color: #FFF000;
+}
+
+.lobby-content {
+  width: 80%;
+  margin-left: 20%;
+}
+
+.lobby-room {
+  display: none;
+}
+
+.lobby-room.active {
+  display: block;
+}
+
+.lobby-game {
+  display: inline-block;
+  width: 360px;
+  height: 380px;
+  position: relative;
+  margin: 25px;
+}
+
+.lobby-table {
+  width: 135px;
+  height: 133px;
+  background: url(../../imgs/default/lobby_table.png) no-repeat;
+  position: absolute;
+  top: 120px;
+  left: 112px;
+  text-align: center;
+  display: table;
+}
+
+.lobby-table-content {
+	display: table-cell;
+	height: 133px;
+	vertical-align: middle;
+}
+
+.lobby-player {
+  position: absolute;
+}
+
+.lobby-player.empty {
+  background: url(../../imgs/default/lobby_seat.png) no-repeat;
+  width: 47px;
+  height: 45px;
+  cursor: pointer;
+}
+
+.lobby-player.empty.north {
+  top: 35px;
+  left: 156px;
+}
+
+.lobby-player.empty.east {
+  top: 164px;
+  left: 287px;
+}
+
+.lobby-player.empty.south {
+  top: 293px;
+  left: 156px;
+}
+
+.lobby-player.empty.west {
+  top: 164px;
+  left: 25px;
 }
 
