@@ -1,6 +1,8 @@
 var _ = require('lodash');
 var Observable = require('./base/observable');
 var RoomDAO = require('./daos/room');
+var RuleDAO = require('./daos/rule');
+var UserDAO = require('./daos/user');
 var Room = require('./models/room');
 
 var GameManager = function() {
@@ -25,12 +27,27 @@ GameManager.prototype.init = function(cb) {
   });
 };
 
-GameManager.prototype.getLobbyData = function() {
-  return {
+GameManager.prototype.getLobbyData = function(account, cb) {
+  var result = {
     rooms : this.rooms.map(function(room) {
       return room.toJSON();
     })
   };
+  UserDAO.findOneByAccount(account, function(error, user) {
+    if (error) {
+      cb(error);
+    } else {
+      result.user = user.toJSON();
+      RuleDAO.getRule(function(error, rule) {
+        if (error) {
+          cb(error);
+        } else {
+          result.rule = rule;
+          cb(null, result);
+        }
+      });
+    }
+  });
 };
 
 GameManager.prototype.playerJoin = function(gameId, account, params, cb) {

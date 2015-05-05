@@ -65,9 +65,9 @@
 }
 
 .lobby-table-content {
-	display: table-cell;
-	height: 133px;
-	vertical-align: middle;
+  display: table-cell;
+  height: 133px;
+  vertical-align: middle;
 }
 
 .lobby-player {
@@ -78,6 +78,9 @@
   background: url(../../imgs/default/lobby_seat.png) no-repeat;
   width: 47px;
   height: 45px;
+}
+
+.lobby-game.empty .lobby-player.north {
   cursor: pointer;
 }
 
@@ -101,3 +104,76 @@
   left: 25px;
 }
 
+.lobby-game-form .modal-dialog {
+  width: 700px;
+  height: 500px;
+  background: url(../../imgs/default/lobby_game_form_bg.png) no-repeat;
+  background-size: 700px 500px;
+  overflow: hidden;
+  color: white;
+  font-size: 16px;
+}
+
+.lobby-game-form .close {
+  width: 30px;
+  height: 30px;
+  margin-top: 28px;
+  margin-right: 28px;
+  background: url(../../imgs/default/lobby_game_form_close.png) no-repeat;
+  background-size: 30px 30px;
+}
+
+.lobby-game-form .content {
+  width: 400px;
+  height: 350px;
+  margin: auto;
+  margin-top: 70px;
+}
+
+.lobby-game-form .name {
+  width: 30%;
+  text-align: left;
+}
+
+.lobby-game-form .value {
+  width: 65%;
+}
+
+.lobby-game-form .value > * {
+  vertical-align: middle;
+}
+
+.lobby-game-form .value select {
+	width: 100%;
+	border-radius: 5px;
+	color: blue;
+}
+
+.lobby-game-form .value input[type=radio]:last-of-type {
+	margin-left: 10px;
+}
+
+.lobby-game-form .lobby-game-form-row > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.lobby-game-form .lobby-game-form-row {
+  margin-bottom: 30px;
+}
+
+.lobby-game-form  .confirm {
+	width: 131px;
+	height: 51px;
+	line-height: 51px;
+	background: url(../../imgs/default/form_confirm.png) no-repeat;
+	margin: auto;
+	display: block;
+	border: none;
+	outline: none;
+	padding: 0px;
+}
+
+.lobby-game-form  .confirm:hover {
+	color: #FFF000
+}

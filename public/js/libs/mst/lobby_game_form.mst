@@ -1,0 +1,73 @@
+<div class="modal fade lobby-game-form" tabindex="-1" aria-hidden="false" data-backdrop="static" data-backdrop=static data-keyboard=false>
+  <div class="modal-dialog">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+    <div class="content">
+      <div class="lobby-game-form-row">
+        <div class="name">
+          题目等级
+        </div>
+        <div class="value">
+          <select >
+            <option>入门级</option>
+          </select>
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          每步时间
+        </div>
+        <div class="value">
+          <select >
+            <option>入门级</option>
+          </select>
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          每局时间
+        </div>
+        <div class="value">
+          <select >
+            <option>入门级</option>
+          </select>
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          每局人数
+        </div>
+        <div class="value">
+          <select >
+            <option>入门级</option>
+          </select>
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          开始方式
+        </div>
+        <div class="value">
+          <input type="radio" name="start_mode" value="auto" />
+          人齐自动开始
+          <input type="radio" name="start_mode" value="manual" />
+          庄家手动开始
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          等待时间
+        </div>
+        <div class="value">
+          <select >
+            <option>入门级</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="lobby-game-form-bottom">
+      <button type="button" class="confirm">
+        确认
+      </button>
+    </div>
+  </div>
+</div>

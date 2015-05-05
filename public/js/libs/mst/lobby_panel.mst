@@ -11,7 +11,7 @@
   {{#rooms}}
   <div class="lobby-room" data-id="{{id}}">
     {{#games}}
-    <div class="lobby-game">
+    <div class="lobby-game {{status}}">
       <div class="lobby-table">
         <div class="lobby-table-content">
           空桌

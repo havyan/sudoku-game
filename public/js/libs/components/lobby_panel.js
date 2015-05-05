@@ -18,6 +18,10 @@
 
     '{model} selectedRoom' : function(model, e, selectedRoom) {
       this.selectRoom(selectedRoom);
+    },
+    
+    '.lobby-game.empty .lobby-player.north click' : function() {
+    	var gameForm = new LobbyGameForm(this.element, {});
     }
   });
 })();
