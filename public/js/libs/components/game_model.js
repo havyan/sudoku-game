@@ -81,11 +81,13 @@
       var scores = this.attr('scores');
       var ranking = [];
       $.each(players, function(index, player) {
-        ranking.push({
-          account : player.attr('account'),
-          name : player.attr('name'),
-          score : scores[player.attr('account')] || 0
-        });
+        if (player) {
+          ranking.push({
+            account : player.attr('account'),
+            name : player.attr('name'),
+            score : scores[player.attr('account')] || 0
+          });
+        }
       });
       ranking.sort(function(source, dest) {
         return dest.score - source.score;
@@ -240,27 +242,33 @@
       window.localStorage.setItem(this.attr('account') + '_ui', JSON.stringify(this.attr('ui').attr()));
     },
 
-    addPlayer : function(player) {
-      this.attr('players').push(player);
+    setPlayer : function(index, player) {
+      this.attr('players').attr(index, player);
       this.resetRanking();
     },
 
     playerQuit : function(account, status) {
       var index = _.findIndex(this.attr('players'), function(player) {
-        return player.account === account;
+        return player && player.account === account;
       });
       if (this.attr('status') === 'ongoing') {
         var quitPlayer = this.attr('players.' + index).attr();
         quitPlayer.status = status;
         this.attr('quitPlayers').unshift(quitPlayer);
       }
-      this.attr('players').splice(index, 1);
+      this.attr('players').attr(index, null);
       this.resetRanking();
     },
 
     addMessage : function(message) {
       this.attr('messages').push(message);
       this.attr('messagesStamp', Date.now());
+    },
+
+    getRealPlayers : function() {
+      return _.filter(this.attr('players'), function(player) {
+        return player;
+      });
     },
 
     addDraft : function(xy, value) {
@@ -420,8 +428,8 @@
 
     initEvents : function() {
       var self = this;
-      this.eventReceiver.on('player-joined', function(player) {
-        self.addPlayer(player);
+      this.eventReceiver.on('player-joined', function(index, player) {
+        self.setPlayer(index, player);
       });
       this.eventReceiver.on('player-quit', function(data) {
         var account = data.account;

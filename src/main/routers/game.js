@@ -26,9 +26,21 @@ module.exports = function(router) {
     global.gameManager.addMessage(req.params.id, req.session.account, req.body.message, function(error, message) {
       if (error) {
         next(new HttpError(error));
-        return;
+      } else {
+        res.send(message);
       }
-      res.send(message);
+    });
+  });
+
+  router.post('/game/:id/player', function(req, res, next) {
+    var index = parseInt(req.body.index);
+    var params = JSON.parse(req.body.params);
+    global.gameManager.playerJoin(req.params.id, req.session.account, index, params, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(result);
+      }
     });
   });
 

@@ -34,6 +34,20 @@
       });
     },
 
+    playerJoin : function(id, index, params, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/game/' + id + '/player',
+        data : {
+          index : index,
+          params : JSON.stringify(params || {})
+        },
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     sendMessage : function(gameId, message, success, error) {
       return $.ajax({
         type : 'post',

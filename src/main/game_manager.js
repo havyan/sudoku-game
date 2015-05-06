@@ -50,7 +50,7 @@ GameManager.prototype.getLobbyData = function(account, cb) {
   });
 };
 
-GameManager.prototype.playerJoin = function(gameId, account, params, cb) {
+GameManager.prototype.playerJoin = function(gameId, account, index, params, cb) {
   var self = this;
   var game = this.findGameByUser(account);
   if (game) {
@@ -66,11 +66,11 @@ GameManager.prototype.playerJoin = function(gameId, account, params, cb) {
           if (error) {
             cb(error);
           } else {
-            game.playerJoin(account, cb);
+            game.playerJoin(account, 0, cb);
           }
         });
       } else {
-        game.playerJoin(account, cb);
+        game.playerJoin(account, index, cb);
       }
     } else {
       cb("No game for id: " + gameId);
@@ -152,12 +152,6 @@ GameManager.prototype.addMessage = function(gameId, account, message, cb) {
   var game = this.findGame(gameId);
   game.addMessage(account, message, function(error, message) {
     cb(error, message);
-  });
-};
-
-GameManager.prototype.findGame = function(id) {
-  return _.find(this.games, {
-    'id' : id
   });
 };
 

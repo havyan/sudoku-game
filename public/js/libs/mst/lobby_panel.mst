@@ -11,46 +11,34 @@
   {{#rooms}}
   <div class="lobby-room" data-id="{{id}}">
     {{#games}}
-    <div class="lobby-game {{status}}">
+    <div class="lobby-game {{status}}" data-id="{{id}}">
       <div class="lobby-table">
         <div class="lobby-table-content">
-          空桌
+          {{tableInfo this}}
         </div>
       </div>
       {{#if players}}
-      {{#if players.0}}
-      {{#players.0}}
-      <div class="lobby-player existent north" data-index="0" data-id="{{id}}"></div>
-      {{/players.0}}
+      {{#each players}}
+      {{#if this}}
+      <div class="lobby-player existent player-{{@index}}" data-index="{{@index}}" data-id="{{id}}">
+        {{#unless @index}}
+        <div class="banker">
+          庄家
+        </div>
+        {{/unless}}
+        <div class="lobby-user-icon">
+          <img src="/imgs/default/user.png"></img>
+        </div>
+      </div>
       {{else}}
-      <div class="lobby-player empty north" data-index="0"></div>
+      <div class="lobby-player empty player-{{@index}}" data-index="{{@index}}"></div>
       {{/if}}
-      {{#if players.1}}
-      {{#players.1}}
-      <div class="lobby-player existent east" data-index="1" data-id="{{id}}"></div>
-      {{/players.1}}
+      {{/each}}
       {{else}}
-      <div class="lobby-player empty east" data-index="1"></div>
-      {{/if}}
-      {{#if players.2}}
-      {{#players.2}}
-      <div class="lobby-player existent south" data-index="2" data-id="{{id}}"></div>
-      {{/players.2}}
-      {{else}}
-      <div class="lobby-player empty south" data-index="2"></div>
-      {{/if}}
-      {{#if players.3}}
-      {{#players.3}}
-      <div class="lobby-player existent east" data-index="3" data-id="{{id}}"></div>
-      {{/players.3}}
-      {{else}}
-      <div class="lobby-player empty east" data-index="3"></div>
-      {{/if}}
-      {{else}}
-      <div class="lobby-player empty north" data-index="0"></div>
-      <div class="lobby-player empty east" data-index="1"></div>
-      <div class="lobby-player empty south" data-index="2"></div>
-      <div class="lobby-player empty west" data-index="3"></div>
+      <div class="lobby-player empty player-0" data-index="0"></div>
+      <div class="lobby-player empty player-1" data-index="1"></div>
+      <div class="lobby-player empty player-2" data-index="2"></div>
+      <div class="lobby-player empty player-3" data-index="3"></div>
       {{/if}}
     </div>
     {{/games}}

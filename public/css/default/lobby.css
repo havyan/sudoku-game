@@ -20,6 +20,7 @@
   height: 51px;
   line-height: 51px;
   color: white;
+  font-size: 18px;
   text-align: center;
   cursor: pointer;
   background: url(../../imgs/default/lobby_nav_room_bg.png) no-repeat;
@@ -80,26 +81,26 @@
   height: 45px;
 }
 
-.lobby-game.empty .lobby-player.north {
+.lobby-game.empty .lobby-player.player-0 {
   cursor: pointer;
 }
 
-.lobby-player.empty.north {
+.lobby-player.empty.player-0 {
   top: 35px;
   left: 156px;
 }
 
-.lobby-player.empty.east {
+.lobby-player.empty.player-1 {
   top: 164px;
   left: 287px;
 }
 
-.lobby-player.empty.south {
+.lobby-player.empty.player-2 {
   top: 293px;
   left: 156px;
 }
 
-.lobby-player.empty.west {
+.lobby-player.empty.player-3 {
   top: 164px;
   left: 25px;
 }
@@ -176,4 +177,32 @@
 
 .lobby-game-form  .confirm:hover {
 	color: #FFF000
+}
+
+.lobby-user-icon {
+	display: inline-block;
+	width: 70px;
+	height:70px;
+	border:3px solid #C4B098;
+	border-radius: 38px;
+	text-align: center;
+}
+
+.lobby-user-icon img {
+	width: 64px;
+	height: 64px;
+	margin-top: 3px;
+	border-radius: 31px;
+	background-color: #C4B098;
+}
+
+.lobby-player.existent .banker {
+	text-align: center;
+	color: #FFF000;
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+
+.lobby-player.existent.player-0 {
+	left: 142px;
 }

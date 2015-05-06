@@ -15,7 +15,7 @@ var DESTROYED = "destroyed";
 var OVER = "over";
 var PREFIX = "game";
 var CAPACITY = 4;
-var GAME_TIMEOUT = 10 * 60 * 60 * 1000;
+var GAME_TIMEOUT = 10 * 60 * 60;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var DELAY_COUNTDOWN_TOTAL = 60;
@@ -40,7 +40,9 @@ var Game = function(room, index, mode) {
 
 Game.prototype.init = function(account, params, cb) {
   var self = this;
-  this.players = new Array(4);
+  this.capacity = params.capacity || CAPACITY;
+  this.duration = params.duration || GAME_TIMEOUT;
+  this.players = new Array(CAPACITY);
   this.quitPlayers = [];
   this.messages = [];
   this.status = WAITING;
@@ -59,22 +61,27 @@ Game.prototype.init = function(account, params, cb) {
   this.playerTimer = {
     ellapsedTime : 0
   };
-  this.params = _.merge({}, params);
-  //TODO
   RuleDAO.getRule(function(error, rule) {
     if (error) {
       cb(error);
     } else {
-      rule.score.add = _.find(rule.score.add, function(e) {
-        return e.selected;
+      var add = rule.score.add;
+      rule.score.add = _.find(add, function(e) {
+        return e.total === params.stepTime;
       });
+      if (!rule.score.add) {
+        rule.score.add = _.find(add, function(e) {
+          return e.selected;
+        });
+      }
       self.rule = rule;
+      self.trigger('init', self.toSimpleJSON());
       cb();
     }
   });
   setTimeout(function() {
     self.destroy();
-  }, GAME_TIMEOUT);
+  }, this.duration * 1000);
 };
 
 Game.prototype.isEmpty = function() {
@@ -246,25 +253,36 @@ Game.prototype.stopDelayTimer = function() {
   this.trigger('game-delay-cancelled');
 };
 
-Game.prototype.playerJoin = function(account, cb) {
+Game.prototype.playerJoin = function(account, index, cb) {
   var self = this;
-  UserDAO.findOneByAccount(account, function(error, user) {
-    if (error) {
-      cb(error);
+  if (this.isFull()) {
+    cb('Game is full, please join another game.');
+  } else {
+    if (index < 0 || index > this.players.length - 1) {
+      cb('Index ' + index + ' is not valid');
     } else {
-      self.players.push(user);
-      self.knownCellValues[user.account] = {};
-      PropDAO.findOneByAccount(account, function(error, prop) {
+      UserDAO.findOneByAccount(account, function(error, user) {
         if (error) {
           cb(error);
         } else {
-          self.props.push(prop);
-          self.trigger('player-joined', user.toJSON());
-          cb(null, user);
+          self.players[index] = user;
+          self.knownCellValues[user.account] = {};
+          PropDAO.findOneByAccount(account, function(error, prop) {
+            if (error) {
+              cb(error);
+            } else {
+              self.props.push(prop);
+              self.trigger('player-joined', index, user.toJSON());
+              cb(null, {
+                status : 'ok',
+                gameId : self.id
+              });
+            }
+          });
         }
       });
     }
-  });
+  }
 };
 
 Game.prototype.playerQuit = function(account, status, cb) {
@@ -380,7 +398,9 @@ Game.prototype.checkOver = function() {
 };
 
 Game.prototype.isFull = function() {
-  return this.players.length >= CAPACITY;
+  return _.filter(this.players, function(player) {
+    return player != null;
+  }).length === this.capacity;
 };
 
 Game.prototype.toJSON = function(account) {
@@ -393,7 +413,8 @@ Game.prototype.toJSON = function(account) {
     roomId : this.room.id,
     id : this.id,
     mode : this.mode,
-    params : this.params,
+    duration : this.duration,
+    capacity : this.capacity,
     rule : this.rule,
     initCellValues : this.initCellValues,
     userCellValues : this.userCellValues,
@@ -435,7 +456,8 @@ Game.prototype.toSimpleJSON = function() {
   } : {
     roomId : this.room.id,
     id : this.id,
-    params : this.params,
+    duration : this.duration,
+    capacity : this.capacity,
     mode : _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
@@ -449,7 +471,7 @@ Game.prototype.toSimpleJSON = function() {
 
 Game.prototype.findPlayer = function(account) {
   return _.find(this.players, function(player) {
-    return player.account === account;
+    return player && player.account === account;
   });
 };
 

@@ -85,17 +85,6 @@ module.exports = function(router) {
   });
 
   /* GET Game page. */
-  router.get('/table', function(req, res, next) {
-    global.gameManager.playerJoin(req.session.account, function(error, game) {
-      if (error) {
-        next(new HttpError('Error when adding account' + req.session.account + ' to game: ' + error));
-        return;
-      }
-      res.redirect('/table/' + game.id);
-    });
-  });
-
-  /* GET Game page. */
   router.get('/table/:id', function(req, res) {
     res.render('table', {});
   });

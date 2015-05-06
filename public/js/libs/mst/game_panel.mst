@@ -4,10 +4,12 @@
 	<div class="game-state-area">
 		<div class="player-area">
 			{{#each players}}
+			{{#if this}}
 			<div class="game-player" data-index="{{@index}}" account="{{account}}">
 				<div class="game-player-icon"><img src="/imgs/default/user.png"></div>
 				<div class="game-player-name">{{name}}</div>
 			</div>
+			{{/if}}
 			{{/each}}
 			{{#each quitPlayers}}
 			<div class="game-player quit" data-index="{{@index}}" account="{{account}}">
