@@ -17,8 +17,8 @@ EventCenter.prototype.initEvents = function() {
     });
 
     room.on('game-reset', function(newGame, oldGame) {
-      delete self.roomEmitters[oldGame.id];
       self.bindGame(newGame);
+      self.systemEmitter.emit('game-reset', JSON.stringify([oldGame.id, newGame.toSimpleJSON()]));
     });
   });
 };

@@ -1,7 +1,7 @@
 (function() {
   can.Construct('EventReceiver', {
     createSystemEventReceiver : function() {
-      var topics = ['game-init', 'game-player-joined']; 
+      var topics = ['game-init', 'game-player-joined', 'game-reset']; 
       return new EventReceiver('/events/system', topics);
     },
 

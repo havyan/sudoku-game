@@ -2,15 +2,15 @@
   can.Control('Components.LobbyPanel', {}, {
     init : function(element, options) {
       element.html(can.view('/js/libs/mst/lobby_panel.mst', options.model, {
-      	tableInfo: function(game) {
-      		if(game.status === 'empty') {
-      			return '空桌';
-      		} else if (game.status === 'waiting') {
-      			return '等待开始';
-      		} else if (game.status === 'ongoing') {
-      			return '';
-      		}
-      	}
+        tableInfo : function(game) {
+          if (game.status === 'empty') {
+            return '空桌';
+          } else if (game.status === 'waiting') {
+            return '等待开始';
+          } else if (game.status === 'ongoing') {
+            return '';
+          }
+        }
       }));
       this.selectRoom(options.model.attr('selectedRoom'));
     },
@@ -30,14 +30,24 @@
       this.selectRoom(selectedRoom);
     },
 
-    '.lobby-game.empty .lobby-player.player-0 click' : function(e) {
+    '.lobby-game.empty .lobby-player.banker click' : function(e) {
       var gameId = e.closest('.lobby-game').data('id');
       var gameForm = new LobbyGameForm(this.element, {
+        user : this.options.model.attr('user').attr(),
+        rule : this.options.model.attr('rule').attr(),
+        levels : this.options.model.attr('levels').attr(),
         callback : function(params) {
           Rest.Game.playerJoin(gameId, 0, params, function(result) {
             window.location.href = '/table/' + result.gameId;
           });
         }
+      });
+    },
+
+    '.lobby-game.waiting .lobby-player.empty.normal click' : function(e) {
+      var gameId = e.closest('.lobby-game').data('id');
+      Rest.Game.playerJoin(gameId, e.data('index'), {}, function(result) {
+        window.location.href = '/table/' + result.gameId;
       });
     }
   });

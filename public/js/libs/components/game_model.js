@@ -11,6 +11,7 @@
       this.initOptions();
       this.initActive();
       this.initUI();
+      this.initManualStart();
     },
 
     initDimension : function() {
@@ -25,6 +26,13 @@
         width : maxX + 9,
         height : maxY + 9
       });
+    },
+
+    initManualStart : function() {
+      var index = _.findIndex(this.attr('players'), {
+        account : this.attr('account')
+      });
+      this.attr('manualStart', index === 0 && this.attr('startMode') === 'manual');
     },
 
     initStatus : function() {

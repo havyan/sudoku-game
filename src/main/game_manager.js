@@ -3,6 +3,7 @@ var Observable = require('./base/observable');
 var RoomDAO = require('./daos/room');
 var RuleDAO = require('./daos/rule');
 var UserDAO = require('./daos/user');
+var PuzzleDAO = require('./daos/puzzle');
 var Room = require('./models/room');
 
 var GameManager = function() {
@@ -31,7 +32,8 @@ GameManager.prototype.getLobbyData = function(account, cb) {
   var result = {
     rooms : this.rooms.map(function(room) {
       return room.toJSON();
-    })
+    }),
+    levels : PuzzleDAO.LEVELS
   };
   UserDAO.findOneByAccount(account, function(error, user) {
     if (error) {
@@ -164,7 +166,7 @@ GameManager.prototype.hasLiveGame = function() {
 GameManager.prototype.setGameStatus = function(account, id, status) {
   var game = this.findGame(id);
   if (game) {
-    game.setStatus(account, status);
+    game.setStatus(status);
   }
 };
 

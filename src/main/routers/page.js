@@ -61,7 +61,7 @@ module.exports = function(router) {
 
   router.get('/main', function(req, res, next) {
     var game = global.gameManager.findGameByUser(req.session.account);
-    if (game && game.isOngoing()) {
+    if (game && (game.isOngoing() || game.isWaiting())) {
       res.redirect('/table/' + game.id);
     } else {
       UserDAO.findOneByAccount(req.session.account, function(error, user) {

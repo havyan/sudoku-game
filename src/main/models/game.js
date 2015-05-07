@@ -15,12 +15,17 @@ var DESTROYED = "destroyed";
 var OVER = "over";
 var PREFIX = "game";
 var CAPACITY = 4;
+var DEFAULT_LEVEL = 'DDD';
 var GAME_TIMEOUT = 10 * 60 * 60;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var DELAY_COUNTDOWN_TOTAL = 60;
 var DESTROY_COUNTDOWN_TOTAL = 120;
 var MAX_TIMEOUT_ROUNDS = 10;
+var START_MODE = {
+  MANUAL : 'manual',
+  AUTO : 'auto'
+};
 
 var SCORE_TYPE = {
   INCORRECT : "incorrect",
@@ -36,13 +41,15 @@ var Game = function(room, index, mode) {
   this.id = room.id + '-' + index + '-' + Date.now();
   this.mode = mode || GameMode.MODE9;
   this.status = EMPTY;
+  this.players = new Array(CAPACITY);
 };
 
 Game.prototype.init = function(account, params, cb) {
   var self = this;
   this.capacity = params.capacity || CAPACITY;
   this.duration = params.duration || GAME_TIMEOUT;
-  this.players = new Array(CAPACITY);
+  this.level = params.level || DEFAULT_LEVEL;
+  this.startMode = params.startMode || START_MODE.MANUAL;
   this.quitPlayers = [];
   this.messages = [];
   this.status = WAITING;
@@ -100,16 +107,13 @@ Game.prototype.isOver = function() {
   return this.status === OVER || this.status === DESTROYED;
 };
 
-Game.prototype.setStatus = function(account, status) {
+Game.prototype.setStatus = function(status) {
   var oldStatus = this.status;
   this.status = status;
   this.trigger('status-changed', status, oldStatus);
   var self = this;
   if (oldStatus === WAITING && status === LOADING) {
-    var player = self.findPlayer(account);
-    //TODO for test, remove it in the future
-    var grade = account === 'EEE' ? 12 : parseInt(player.grade);
-    PuzzleDAO.findRandomOneByLevel(PuzzleDAO.LEVELS[grade], function(error, puzzle) {
+    PuzzleDAO.findRandomOneByLevel(this.level, function(error, puzzle) {
       if (error) {
         winston.error(error);
       } else {
@@ -151,11 +155,15 @@ Game.prototype.nextPlayer = function() {
   var self = this;
   this.stopPlayerTimer();
   if (this.currentPlayer) {
-    var playerIndex = _.findIndex(this.players, function(player) {
+    var currentIndex = _.findIndex(this.players, function(player) {
       return player.account === self.currentPlayer;
     });
     self.optionsOnce[this.currentPlayer] = false;
-    this.currentPlayer = this.players[++playerIndex % this.players.length].account;
+    var nextIndex = (currentIndex + 1) % this.players.length;
+    while (!this.players[nextIndex] && nextIndex !== currentIndex) {
+      nextIndex = (nextIndex + 1) % this.players.length;
+    }
+    this.currentPlayer = this.players[nextIndex].account;
   } else {
     this.currentPlayer = this.players[0].account;
   }
@@ -273,6 +281,9 @@ Game.prototype.playerJoin = function(account, index, cb) {
             } else {
               self.props.push(prop);
               self.trigger('player-joined', index, user.toJSON());
+              if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
+                self.setStatus(LOADING);
+              }
               cb(null, {
                 status : 'ok',
                 gameId : self.id
@@ -287,7 +298,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
 
 Game.prototype.playerQuit = function(account, status, cb) {
   var self = this;
-  if (this.players.length > 1) {
+  if (this.playersCount() > 1) {
     if (this.currentPlayer === account && this.isOngoing()) {
       this.nextPlayer();
     }
@@ -296,9 +307,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
   }
 
   if (this.isOngoing()) {
-    var quitPlayer = _.find(this.players, {
-      account : account
-    });
+    var quitPlayer = this.findPlayer(account);
     quitPlayer.rounds = quitPlayer.rounds + 1;
     quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
     var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
@@ -316,7 +325,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
           account : account,
           status : status
         });
-        if (self.players.length <= 0) {
+        if (self.playersCount() <= 0) {
           self.destroy();
         }
         cb();
@@ -328,11 +337,21 @@ Game.prototype.playerQuit = function(account, status, cb) {
       account : account,
       status : status
     });
-    if (self.players.length <= 0) {
+    if (self.playersCount() <= 0) {
       self.destroy();
     }
     cb();
   }
+};
+
+Game.prototype.playersCount = function() {
+  return this.getRealPlayers().length;
+};
+
+Game.prototype.getRealPlayers = function() {
+  return _.filter(this.players, function(player) {
+    return player;
+  });
 };
 
 Game.prototype.createResult = function(player, status) {
@@ -346,9 +365,12 @@ Game.prototype.createResult = function(player, status) {
 };
 
 Game.prototype.removePlayer = function(account) {
-  _.remove(this.players, function(player) {
-    return player.account === account;
+  var index = _.findIndex(this.players, function(player) {
+    return player && player.account === account;
   });
+  if (index >= 0) {
+    this.players[index] = null;
+  }
   _.remove(this.props, function(prop) {
     return prop.account === account;
   });
@@ -398,9 +420,7 @@ Game.prototype.checkOver = function() {
 };
 
 Game.prototype.isFull = function() {
-  return _.filter(this.players, function(player) {
-    return player != null;
-  }).length === this.capacity;
+  return this.playersCount() === this.capacity;
 };
 
 Game.prototype.toJSON = function(account) {
@@ -408,11 +428,15 @@ Game.prototype.toJSON = function(account) {
     roomId : this.room.id,
     id : this.id,
     mode : this.mode,
-    status : this.status
+    status : this.status,
+    players : this.players.map(function(player) {
+      return player ? player.toJSON() : null;
+    })
   } : {
     roomId : this.room.id,
     id : this.id,
     mode : this.mode,
+    startMode : this.startMode,
     duration : this.duration,
     capacity : this.capacity,
     rule : this.rule,
@@ -452,10 +476,14 @@ Game.prototype.toSimpleJSON = function() {
     mode : _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
-    status : this.status
+    status : this.status,
+    players : this.players.map(function(player) {
+      return player ? player.toJSON() : null;
+    })
   } : {
     roomId : this.room.id,
     id : this.id,
+    startMode : this.startMode,
     duration : this.duration,
     capacity : this.capacity,
     mode : _.findKey(GameMode, function(value) {
@@ -516,21 +544,22 @@ Game.prototype.submit = function(account, xy, value, cb) {
 
 Game.prototype.over = function(cb) {
   var self = this;
+  var players = this.getRealPlayers();
   this.stopPlayerTimer();
-  this.players.sort(function(source, dest) {
+  players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
     var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;
     return sourceScore - destScore;
   });
   var index = 0;
-  async.eachSeries(this.players, function(player, cb) {
+  async.eachSeries(players, function(player, cb) {
     player.points = player.points + 100 * (self.results.length + 1);
     var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
       return e.floor > player.points;
     });
     player.grade = self.rule.grade[ceilingIndex - 1].code;
     player.rounds = player.rounds + 1;
-    if (index === self.players.length - 1) {
+    if (index === players - 1) {
       player.wintimes = player.wintimes + 1;
     }
     player.save(function(error) {

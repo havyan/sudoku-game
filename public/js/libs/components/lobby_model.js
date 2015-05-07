@@ -26,10 +26,31 @@
       this.eventReceiver.on('game-player-joined', function(gameId, index, player) {
         self.setPlayer(gameId, index, player);
       });
+      this.eventReceiver.on('game-player-quit', function(gameId, data) {
+        self.playerQuit(gameId, data.account);
+      });
+      this.eventReceiver.on('game-reset', function(gameId, newGame) {
+        self.replaceGame(gameId, newGame);
+      });
+    },
+
+    playerQuit : function(gameId, account) {
+      var game = this.findGame(gameId);
+      if (game) {
+        var index = _.findIndex(game.attr('players'), function(player) {
+          return player && player.account === account;
+        });
+        if (index >= 0) {
+          this.attr('players').attr(index, null);
+        }
+      }
+      this.replaceGame(gameId, game.attr());
     },
 
     setPlayer : function(gameId, index, player) {
-      this.findGame(gameId).attr('players').attr(index, player);
+      var game = this.findGame(gameId);
+      game.attr('players').attr(index, player);
+      this.replaceGame(gameId, game.attr());
     },
 
     findRoomByGameId : function(gameId) {

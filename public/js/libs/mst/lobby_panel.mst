@@ -17,29 +17,23 @@
           {{tableInfo this}}
         </div>
       </div>
-      {{#if players}}
       {{#each players}}
       {{#if this}}
-      <div class="lobby-player existent player-{{@index}}" data-index="{{@index}}" data-id="{{id}}">
+      <div class="lobby-player existent player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}}" data-index="{{@index}}" data-id="{{id}}">
         {{#unless @index}}
-        <div class="banker">
+        <div class="banker-label">
           庄家
         </div>
         {{/unless}}
-        <div class="lobby-user-icon">
+        <div class="lobby-player-icon">
           <img src="/imgs/default/user.png"></img>
         </div>
+        <div class="lobby-player-name">{{name}}</div>
       </div>
       {{else}}
-      <div class="lobby-player empty player-{{@index}}" data-index="{{@index}}"></div>
+      <div class="lobby-player empty player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}}" data-index="{{@index}}"  data-id="{{id}}"></div>
       {{/if}}
       {{/each}}
-      {{else}}
-      <div class="lobby-player empty player-0" data-index="0"></div>
-      <div class="lobby-player empty player-1" data-index="1"></div>
-      <div class="lobby-player empty player-2" data-index="2"></div>
-      <div class="lobby-player empty player-3" data-index="3"></div>
-      {{/if}}
     </div>
     {{/games}}
   </div>

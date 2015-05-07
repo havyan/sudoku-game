@@ -51,7 +51,7 @@
   width: 360px;
   height: 380px;
   position: relative;
-  margin: 25px;
+  margin: 10px;
 }
 
 .lobby-table {
@@ -179,30 +179,71 @@
 	color: #FFF000
 }
 
-.lobby-user-icon {
+.lobby-player.banker .lobby-player-icon {
 	display: inline-block;
-	width: 70px;
-	height:70px;
+	width: 64px;
+	height:64px;
 	border:3px solid #C4B098;
-	border-radius: 38px;
+	border-radius: 35px;
 	text-align: center;
 }
 
-.lobby-user-icon img {
-	width: 64px;
-	height: 64px;
+.lobby-player.banker .lobby-player-icon img {
+	width: 58px;
+	height: 58px;
 	margin-top: 3px;
-	border-radius: 31px;
+	border-radius: 29px;
 	background-color: #C4B098;
 }
 
-.lobby-player.existent .banker {
+.lobby-player.normal .lobby-player-icon {
+	display: inline-block;
+	width: 58px;
+	height:58px;
+	border:3px solid #C4B098;
+	border-radius: 32px;
+	text-align: center;
+}
+
+.lobby-player.normal .lobby-player-icon img {
+	width: 52px;
+	height: 52px;
+	margin-top: 3px;
+	border-radius: 26px;
+	background-color: #C4B098;
+}
+
+.lobby-player.existent .banker-label {
 	text-align: center;
 	color: #FFF000;
 	font-size: 16px;
-	margin-bottom: 5px;
+	margin-bottom: 3px;
+}
+
+.lobby-player-name {
+	text-align: center;
 }
 
 .lobby-player.existent.player-0 {
 	left: 142px;
+	cursor: default;
+}
+
+.lobby-player.existent.player-1 {
+  top: 148px;
+  left: 271px;
+}
+
+.lobby-player.existent.player-2 {
+  top: 279px;
+  left: 142px;
+}
+
+.lobby-player.existent.player-3 {
+  top: 148px;
+  left: 22px;
+}
+
+.lobby-game.waiting .lobby-player.empty.normal {
+  cursor: pointer;
 }
