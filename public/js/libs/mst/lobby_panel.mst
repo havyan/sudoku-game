@@ -31,7 +31,7 @@
         <div class="lobby-player-name">{{name}}</div>
       </div>
       {{else}}
-      <div class="lobby-player empty player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}}" data-index="{{@index}}"  data-id="{{id}}"></div>
+      <div class="lobby-player empty player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}}" data-index="{{@index}}"></div>
       {{/if}}
       {{/each}}
     </div>
