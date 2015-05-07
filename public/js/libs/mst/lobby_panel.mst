@@ -2,7 +2,7 @@
   <div class="lobby-nav-rooms">
     {{#rooms}}
     <div class="lobby-nav-room" data-id="{{id}}">
-      {{name}}
+      {{name}}({{playersCount this}})
     </div>
     {{/rooms}}
   </div>
@@ -14,7 +14,7 @@
     <div class="lobby-game {{status}}" data-id="{{id}}">
       <div class="lobby-table">
         <div class="lobby-table-content">
-          {{tableInfo this}}
+          {{{tableInfo this}}}
         </div>
       </div>
       {{#each players}}

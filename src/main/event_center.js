@@ -1,6 +1,6 @@
 var winston = require('winston');
 var _ = require('lodash');
-var SYSTEM_GAME_TOPICS = ['init', 'player-joined'];
+var SYSTEM_GAME_TOPICS = ['init', 'player-joined', 'player-quit', 'status-changed'];
 
 var EventCenter = function(io) {
   this.io = io;

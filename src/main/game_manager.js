@@ -149,12 +149,8 @@ GameManager.prototype.goahead = function(account, gameId) {
   this.findGame(gameId).goahead(account);
 };
 
-GameManager.prototype.addMessage = function(gameId, account, message, cb) {
-  var self = this;
-  var game = this.findGame(gameId);
-  game.addMessage(account, message, function(error, message) {
-    cb(error, message);
-  });
+GameManager.prototype.addMessage = function(gameId, account, message) {
+  return this.findGame(gameId).addMessage(account, message);
 };
 
 GameManager.prototype.hasLiveGame = function() {

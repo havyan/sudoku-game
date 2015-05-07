@@ -23,13 +23,7 @@ module.exports = function(router) {
   });
 
   router.post('/game/:id/message', function(req, res, next) {
-    global.gameManager.addMessage(req.params.id, req.session.account, req.body.message, function(error, message) {
-      if (error) {
-        next(new HttpError(error));
-      } else {
-        res.send(message);
-      }
-    });
+    res.send(global.gameManager.addMessage(req.params.id, req.session.account, req.body.message));
   });
 
   router.post('/game/:id/player', function(req, res, next) {

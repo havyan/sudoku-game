@@ -7,9 +7,25 @@
             return '空桌';
           } else if (game.status === 'waiting') {
             return '等待开始';
+          } else if (game.status === 'loading') {
+            return '游戏加载中...<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
           } else if (game.status === 'ongoing') {
-            return '';
+            return '游戏进行中<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
+          } else if (game.status === 'over') {
+            return '游戏结束';
           }
+        },
+
+        playersCount : function(room) {
+          var count = 0;
+          room.attr('games').each(function(game) {
+            game.attr('players').each(function(player) {
+              if (player) {
+                count++;
+              }
+            });
+          });
+          return count.toString();
         }
       }));
       this.selectRoom(options.model.attr('selectedRoom'));

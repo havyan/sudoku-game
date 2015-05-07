@@ -29,8 +29,9 @@
     },
 
     initManualStart : function() {
-      var index = _.findIndex(this.attr('players'), {
-        account : this.attr('account')
+      var self = this;
+      var index = _.findIndex(this.attr('players'), function(player) {
+        return player && player.attr('account') === self.attr('account');
       });
       this.attr('manualStart', index === 0 && this.attr('startMode') === 'manual');
     },
@@ -252,6 +253,7 @@
 
     setPlayer : function(index, player) {
       this.attr('players').attr(index, player);
+      this.attr('players', this.attr('players').attr());
       this.resetRanking();
     },
 
@@ -265,6 +267,7 @@
         this.attr('quitPlayers').unshift(quitPlayer);
       }
       this.attr('players').attr(index, null);
+      this.attr('players', this.attr('players').attr());
       this.resetRanking();
     },
 

@@ -12,16 +12,21 @@
 
     replaceGame : function(gameId, game) {
       var room = this.findRoomByGameId(gameId);
-      var index = _.findIndex(room.attr('games'), {
-        id : gameId
-      });
-      room.attr('games.' + index, game);
+      if (room) {
+        var index = _.findIndex(room.attr('games'), {
+          id : gameId
+        });
+        room.attr('games.' + index, game);
+      }
     },
 
     initEvents : function() {
       var self = this;
       this.eventReceiver.on('game-init', function(gameId, game) {
         self.replaceGame(gameId, game);
+      });
+      this.eventReceiver.on('game-status-changed', function(gameId, status, oldStatus) {
+        self.setGameStatus(gameId, status);
       });
       this.eventReceiver.on('game-player-joined', function(gameId, index, player) {
         self.setPlayer(gameId, index, player);
@@ -41,9 +46,15 @@
           return player && player.account === account;
         });
         if (index >= 0) {
-          this.attr('players').attr(index, null);
+          game.attr('players').attr(index, null);
         }
       }
+      this.replaceGame(gameId, game.attr());
+    },
+
+    setGameStatus : function(gameId, status) {
+      var game = this.findGame(gameId);
+      game.attr('status', status);
       this.replaceGame(gameId, game.attr());
     },
 

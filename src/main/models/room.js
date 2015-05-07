@@ -2,7 +2,7 @@ var _ = require('lodash');
 var Observable = require('../base/observable');
 var Game = require('./game');
 var PREFIX = "game";
-var CAPACITY = 6;
+var CAPACITY = 12;
 
 var Room = function(id, name) {
   this.name = name;

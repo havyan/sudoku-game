@@ -32,7 +32,7 @@
       return {
         level : this.element.find('.value.level option:selected').data('code'),
         stepTime : this.element.find('.value.step-time option:selected').data('total'),
-        duration : this.element.find('.value.duration option:selected').data('value') * 3600,
+        duration : this.element.find('.value.duration option:selected').data('value'),
         capacity : this.element.find('.value.capacity option:selected').data('value'),
         startMode : this.element.find('.value.start-mode input:checked').data('value')
       };

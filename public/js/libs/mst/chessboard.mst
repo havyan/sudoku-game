@@ -28,6 +28,11 @@
       </div>
       <div class="prop-item-tip">{{delay}}</div>
     </li>
+    <li class="delay prop-item {{#unless glasses}}empty{{/unless}}">
+      <div class="prop-item-content"><img src="/imgs/default/prop_glasses.png"> x {{glasses}}
+      </div>
+      <div class="prop-item-tip">{{glasses}}</div>
+    </li>
     <li class="options_once prop-item {{#unless options_once}}empty{{/unless}}">
       <div class="prop-item-content"><img src="/imgs/default/prop_options_once.png"> x {{options_once}}
       </div>

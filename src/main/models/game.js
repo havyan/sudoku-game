@@ -16,7 +16,7 @@ var OVER = "over";
 var PREFIX = "game";
 var CAPACITY = 4;
 var DEFAULT_LEVEL = 'DDD';
-var GAME_TIMEOUT = 10 * 60 * 60;
+var GAME_TIMEOUT = 10;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var DELAY_COUNTDOWN_TOTAL = 60;
@@ -88,7 +88,7 @@ Game.prototype.init = function(account, params, cb) {
   });
   setTimeout(function() {
     self.destroy();
-  }, this.duration * 1000);
+  }, this.duration * 3600 * 1000);
 };
 
 Game.prototype.isEmpty = function() {
@@ -156,7 +156,7 @@ Game.prototype.nextPlayer = function() {
   this.stopPlayerTimer();
   if (this.currentPlayer) {
     var currentIndex = _.findIndex(this.players, function(player) {
-      return player.account === self.currentPlayer;
+      return player && player.account === self.currentPlayer;
     });
     self.optionsOnce[this.currentPlayer] = false;
     var nextIndex = (currentIndex + 1) % this.players.length;
@@ -281,6 +281,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
             } else {
               self.props.push(prop);
               self.trigger('player-joined', index, user.toJSON());
+              self.addMessage(null, '用户[' + user.name + ']加入');
               if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
                 self.setStatus(LOADING);
               }
@@ -298,6 +299,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
 
 Game.prototype.playerQuit = function(account, status, cb) {
   var self = this;
+  var quitPlayer = this.findPlayer(account);
   if (this.playersCount() > 1) {
     if (this.currentPlayer === account && this.isOngoing()) {
       this.nextPlayer();
@@ -307,7 +309,6 @@ Game.prototype.playerQuit = function(account, status, cb) {
   }
 
   if (this.isOngoing()) {
-    var quitPlayer = this.findPlayer(account);
     quitPlayer.rounds = quitPlayer.rounds + 1;
     quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
     var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
@@ -325,6 +326,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
           account : account,
           status : status
         });
+        self.addMessage(null, '用户[' + quitPlayer.name + ']退出');
         if (self.playersCount() <= 0) {
           self.destroy();
         }
@@ -337,6 +339,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
       account : account,
       status : status
     });
+    self.addMessage(null, '用户[' + quitPlayer.name + ']退出');
     if (self.playersCount() <= 0) {
       self.destroy();
     }
@@ -380,32 +383,27 @@ Game.prototype.removePlayer = function(account) {
   delete this.changedScores[account];
 };
 
-Game.prototype.addMessage = function(account, message, cb) {
+Game.prototype.addMessage = function(account, message) {
   var self = this;
-  UserDAO.findOneByAccount(account, function(error, user) {
-    if (error) {
-      cb(error);
-    } else {
-      var convert = function(value) {
-        return value >= 10 ? value : '0' + value;
-      };
-      var now = new Date(),
-          year = now.getFullYear(),
-          month = convert(now.getMonth() + 1),
-          date = convert(now.getDate()),
-          hours = convert(now.getHours()),
-          minutes = convert(now.getMinutes()),
-          seconds = convert(now.getSeconds());
-      message = {
-        from : user.name,
-        date : year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds,
-        content : message
-      };
-      self.messages.push(message);
-      self.trigger('message-added', message);
-      cb(null, message);
-    }
-  });
+  var from = account ? this.findPlayer(account).name : '系统';
+  var convert = function(value) {
+    return value >= 10 ? value : '0' + value;
+  };
+  var now = new Date(),
+      year = now.getFullYear(),
+      month = convert(now.getMonth() + 1),
+      date = convert(now.getDate()),
+      hours = convert(now.getHours()),
+      minutes = convert(now.getMinutes()),
+      seconds = convert(now.getSeconds());
+  message = {
+    from : from,
+    date : year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds,
+    content : message
+  };
+  self.messages.push(message);
+  self.trigger('message-added', message);
+  return message;
 };
 
 Game.prototype.checkOver = function() {
@@ -483,6 +481,7 @@ Game.prototype.toSimpleJSON = function() {
   } : {
     roomId : this.room.id,
     id : this.id,
+    stepTime : this.rule.score.add.total,
     startMode : this.startMode,
     duration : this.duration,
     capacity : this.capacity,
@@ -575,7 +574,9 @@ Game.prototype.over = function(cb) {
     if (error) {
       cb(error);
     } else {
+      var oldStatus = self.status;
       self.status = OVER;
+      self.trigger('status-changed', self.status, oldStatus);
       self.results.forEach(function(result, index) {
         result.rank = index + 1;
       });
