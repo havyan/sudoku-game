@@ -281,7 +281,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
             } else {
               self.props.push(prop);
               self.trigger('player-joined', index, user.toJSON());
-              self.addMessage(null, '用户[' + user.name + ']加入');
+              self.addMessage('用户[' + user.name + ']加入');
               if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
                 self.setStatus(LOADING);
               }
@@ -326,7 +326,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
           account : account,
           status : status
         });
-        self.addMessage(null, '用户[' + quitPlayer.name + ']退出');
+        self.addMessage('用户[' + quitPlayer.name + ']退出');
         if (self.playersCount() <= 0) {
           self.destroy();
         }
@@ -339,7 +339,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
       account : account,
       status : status
     });
-    self.addMessage(null, '用户[' + quitPlayer.name + ']退出');
+    self.addMessage('用户[' + quitPlayer.name + ']退出');
     if (self.playersCount() <= 0) {
       self.destroy();
     }
@@ -348,13 +348,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
 };
 
 Game.prototype.playersCount = function() {
-  return this.getRealPlayers().length;
-};
-
-Game.prototype.getRealPlayers = function() {
-  return _.filter(this.players, function(player) {
-    return player;
-  });
+  return _.compact(this.players).length;
 };
 
 Game.prototype.createResult = function(player, status) {
@@ -383,7 +377,7 @@ Game.prototype.removePlayer = function(account) {
   delete this.changedScores[account];
 };
 
-Game.prototype.addMessage = function(account, message) {
+Game.prototype.addMessage = function(message, account) {
   var self = this;
   var from = account ? this.findPlayer(account).name : '系统';
   var convert = function(value) {
@@ -543,7 +537,7 @@ Game.prototype.submit = function(account, xy, value, cb) {
 
 Game.prototype.over = function(cb) {
   var self = this;
-  var players = this.getRealPlayers();
+  var players = _.compact(this.players);
   this.stopPlayerTimer();
   players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;

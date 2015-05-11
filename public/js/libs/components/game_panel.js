@@ -130,7 +130,7 @@
     },
 
     resetStartButton : function() {
-      if (this.options.model.getRealPlayers().length <= 1) {
+      if (_.compact(this.options.model.attr('players')).length <= 1) {
         this.element.find('.game-start-button').attr('disabled', 'disabled');
       } else {
         this.element.find('.game-start-button').removeAttr('disabled');

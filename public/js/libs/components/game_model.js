@@ -276,12 +276,6 @@
       this.attr('messagesStamp', Date.now());
     },
 
-    getRealPlayers : function() {
-      return _.filter(this.attr('players'), function(player) {
-        return player;
-      });
-    },
-
     addDraft : function(xy, value) {
       var draft = this.findCellData(xy).attr('draft');
       if (draft.length < 4) {

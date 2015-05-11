@@ -150,7 +150,7 @@ GameManager.prototype.goahead = function(account, gameId) {
 };
 
 GameManager.prototype.addMessage = function(gameId, account, message) {
-  return this.findGame(gameId).addMessage(account, message);
+  return this.findGame(gameId).addMessage(message, account);
 };
 
 GameManager.prototype.hasLiveGame = function() {
