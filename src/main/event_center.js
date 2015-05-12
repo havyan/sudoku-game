@@ -11,7 +11,7 @@ var EventCenter = function(io) {
 
 EventCenter.prototype.initEvents = function() {
   var self = this;
-  global.gameManager.rooms.forEach(function(room) {
+  global.gameManager.getRealRooms().forEach(function(room) {
     room.games.forEach(function(game) {
       self.bindGame(game);
     });

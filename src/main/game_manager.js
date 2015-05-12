@@ -18,8 +18,21 @@ GameManager.prototype.init = function(cb) {
       cb(error);
     } else {
       if (rooms) {
-        rooms.forEach(function(room) {
-          self.rooms.push(new Room(room.id, room.name));
+        var build = function(room) {
+          var room = new Room(room.id, room.name, room.virtual);
+          if (room.virtual) {
+            _.filter(rooms, {
+              parent : room.id
+            }).forEach(function(child) {
+              room.addRoom(build(child));
+            });
+          }
+          return room;
+        };
+        _.filter(rooms, {
+          parent : undefined
+        }).forEach(function(room) {
+          self.rooms.push(build(room));
         });
       }
       self.trigger('game-manager-init');
@@ -80,6 +93,14 @@ GameManager.prototype.playerJoin = function(gameId, account, index, params, cb) 
   }
 };
 
+GameManager.prototype.getRealRooms = function() {
+  var rooms = [];
+  this.rooms.forEach(function(room) {
+    rooms = rooms.concat(room.getRealRooms());
+  });
+  return rooms;
+};
+
 GameManager.prototype.playerQuit = function(account, cb) {
   var game = this.findGameByUser(account);
   if (game) {
@@ -87,20 +108,15 @@ GameManager.prototype.playerQuit = function(account, cb) {
   }
 };
 
-GameManager.prototype.findRoom = function(roomId) {
-  return _.find(this.rooms, {
-    id : roomId
-  });
-};
-
-GameManager.prototype.findRoomByGameId = function(gameId) {
-  return _.find(this.rooms, function(room) {
-    return room.hasGame(gameId);
-  });
-};
-
 GameManager.prototype.findGame = function(gameId) {
-  return this.findRoomByGameId(gameId).findGame(gameId);
+  var game;
+  _.each(this.rooms, function(room) {
+    game = room.findGame(gameId);
+    if (game) {
+      return false;
+    }
+  });
+  return game;
 };
 
 GameManager.prototype.submit = function(gameId, account, xy, value, cb) {
@@ -154,9 +170,9 @@ GameManager.prototype.addMessage = function(gameId, account, message) {
 };
 
 GameManager.prototype.hasLiveGame = function() {
-  return _.find(this.games, function(game) {
-    return !(game.isOver() || game.isEmpty());
-  }) != undefined;
+  return !_.every(this.rooms, function(room) {
+    return !room.hasLiveGame();
+  });
 };
 
 GameManager.prototype.setGameStatus = function(account, id, status) {
@@ -167,12 +183,14 @@ GameManager.prototype.setGameStatus = function(account, id, status) {
 };
 
 GameManager.prototype.findGameByUser = function(account) {
-  var room = _.find(this.rooms, function(room) {
-    return room.findGameByUser(account);
+  var game;
+  _.each(this.rooms, function(room) {
+    game = room.findGameByUser(account);
+    if (game) {
+      return false;
+    }
   });
-  if (room) {
-    return room.findGameByUser(account);
-  }
+  return game;
 };
 
 _.merge(GameManager.prototype, Observable.general);

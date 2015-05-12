@@ -16,9 +16,6 @@ var migrate = require('../migrate');
 var GameManager = require('./game_manager');
 var PropManager = require('./prop_manager');
 
-// Initialize db
-migrate();
-
 hbs.localsAsTemplateData(app);
 config.initialize(app);
 
@@ -77,6 +74,10 @@ app.use(function(err, req, res, next) {
 
 app.init = function(cb) {
   async.series([
+  function(cb) {
+    // Initialize db
+    migrate(cb);
+  },
   function(cb) {
     global.gameManager.init(cb);
   }], cb);
