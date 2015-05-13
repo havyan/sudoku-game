@@ -1,0 +1,30 @@
+<div class="lobby-room" data-id="{{id}}">
+  {{#games}}
+  <div class="lobby-game {{status}}" data-id="{{id}}">
+    <div class="lobby-table">
+      <div class="lobby-table-content">
+        {{{tableInfo this}}}
+      </div>
+    </div>
+    {{#each players}}
+    {{#if this}}
+    <div class="lobby-player existent player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}}" data-index="{{@index}}" data-id="{{id}}">
+      {{#unless @index}}
+      <div class="banker-label">
+        庄家
+      </div>
+      {{/unless}}
+      <div class="lobby-player-icon">
+        <img src="/imgs/default/user.png"></img>
+      </div>
+      <div class="lobby-player-name">
+        {{name}}
+      </div>
+    </div>
+    {{else}}
+    <div class="lobby-player empty player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}}" data-index="{{@index}}"></div>
+    {{/if}}
+    {{/each}}
+  </div>
+  {{/games}}
+</div>
