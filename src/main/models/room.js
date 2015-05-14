@@ -127,7 +127,6 @@ Room.prototype.findGameByUser = function(account) {
           return false;
         }
       });
-      return game;
     } else {
       _.each(room.games, function(g) {
         if (g.findPlayer(account)) {
@@ -136,6 +135,7 @@ Room.prototype.findGameByUser = function(account) {
         }
       });
     }
+    return game;
   };
   return find(this);
 };

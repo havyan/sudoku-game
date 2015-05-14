@@ -24,6 +24,7 @@
         }
       }));
       this.selectRoom(options.model.attr('selectedRoom'));
+      this.element.find('.lobby-nav-item:first').toggleClass('expand');
     },
 
     selectRoom : function(roomId) {
@@ -47,7 +48,11 @@
       }));
     },
 
-    '.lobby-nav-room click' : function(e) {
+    '.lobby-nav-virtual-room click' : function(e) {
+      e.closest('.lobby-nav-item').toggleClass('expand');
+    },
+
+    '.lobby-nav-real-room click' : function(e) {
       this.options.model.selectRoom(e.data('id'));
     },
 
@@ -55,7 +60,7 @@
       this.selectRoom(selectedRoom);
     },
 
-    '.lobby-game.empty .lobby-player.banker click' : function(e) {
+    '.lobby-game.empty .lobby-table click' : function(e) {
       var gameId = e.closest('.lobby-game').data('id');
       var gameForm = new LobbyGameForm(this.element, {
         user : this.options.model.attr('user').attr(),

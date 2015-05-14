@@ -87,7 +87,11 @@ Game.prototype.init = function(account, params, cb) {
     }
   });
   setTimeout(function() {
-    self.destroy();
+    self.over(function(error) {
+      if (error) {
+        winston.error(error);
+      }
+    });
   }, this.duration * 3600 * 1000);
 };
 
