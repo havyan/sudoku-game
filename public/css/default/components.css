@@ -496,6 +496,10 @@ input.invalid, input:focus.invalid {
 	text-align: center;
 }
 
+.destroy-countdown-label {
+	text-align: center;
+}
+
 .destroy-countdown-number {
 	color: red;
 }

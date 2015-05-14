@@ -24,7 +24,7 @@
         }
       }));
       this.selectRoom(options.model.attr('selectedRoom'));
-      this.element.find('.lobby-nav-item:first').toggleClass('expand');
+      this.toggleExpand(this.element.find('.lobby-nav-item:first'));
     },
 
     selectRoom : function(roomId) {
@@ -49,7 +49,30 @@
     },
 
     '.lobby-nav-virtual-room click' : function(e) {
-      e.closest('.lobby-nav-item').toggleClass('expand');
+      this.toggleExpand(e.closest('.lobby-nav-item'));
+    },
+
+    toggleExpand : function(e) {
+      e.toggleClass('expand');
+      if (e.hasClass('expand')) {
+        var $roomContainer = e.find('.lobby-nav-real-rooms');
+        var $rooms = $roomContainer.find('.lobby-nav-real-room');
+        var $line = e.find('.lobby-nav-item-line');
+        var $svg = $line.find('svg');
+        $line.css({
+          'height' : $roomContainer.height() + 'px'
+        });
+        $svg.attr('width', $line.width() + 'px').attr('height', $line.height() + 'px');
+        var left = $line.width() / 2 - 10;
+        var right = $line.width();
+        var path = 'M ' + left + ' 0 ';
+        $rooms.each(function(index, room) {
+          var $room = $(room);
+          var y = $room.position().top + $room.height() / 2 + 10;
+          path += 'L ' + left + ' ' + y + ' L ' + right + ' ' + y + ' L ' + left + ' ' + y + ' ';
+        });
+        $svg.find('path').attr('d', path);
+      }
     },
 
     '.lobby-nav-real-room click' : function(e) {

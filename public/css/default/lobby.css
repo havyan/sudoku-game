@@ -47,6 +47,7 @@
   text-align: center;
   cursor: pointer;
   background: url(../../imgs/default/lobby_nav_room_bg.png) no-repeat;
+  background-position: 0px 3px;
 }
 
 .lobby-nav-real-room {
@@ -54,12 +55,13 @@
   height: 30px;
   line-height: 30px;
   color: white;
-  font-size: 18px;
+  font-size: 14px;
   text-align: center;
   cursor: pointer;
   margin-top: 10px;
   background: url(../../imgs/default/lobby_nav_room_bg.png) no-repeat;
   background-size: cover;
+  background-position: -2px 0px;
 }
 
 .lobby-nav-real-room.active,
@@ -69,12 +71,14 @@
 
 .lobby-nav-item-line {
   float: left;
-  width: 30%;
+  width: 35%;
 }
 
 .lobby-nav-real-rooms {
-  margin-left: 30%;
+  margin-left: 35%;
   width: 60%;
+  overflow: hidden;
+  position: relative;
 }
 
 .lobby-content {
