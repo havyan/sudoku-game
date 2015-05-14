@@ -4,11 +4,16 @@ var Game = require('./game');
 var PREFIX = "game";
 var CAPACITY = 12;
 
-var Room = function(id, name) {
+var Room = function(id, name, virtual) {
   this.name = name;
   this.$ = new Observable();
   this.id = id || PREFIX + Date.now();
-  this.initGames();
+  this.virtual = virtual;
+  if (virtual) {
+    this.children = [];
+  } else {
+    this.initGames();
+  }
 };
 
 Room.prototype.initGames = function() {
@@ -27,6 +32,15 @@ Room.prototype.bindGame = function(game) {
   });
 };
 
+Room.prototype.addRoom = function(room) {
+  if (this.virtual) {
+    this.children.push(room);
+    return true;
+  } else {
+    return false;
+  }
+};
+
 Room.prototype.resetGame = function(game) {
   var index = this.games.indexOf(game);
   this.games[index] = new Game(this, index);
@@ -34,20 +48,69 @@ Room.prototype.resetGame = function(game) {
   this.trigger('game-reset', this.games[index], game);
 };
 
+Room.prototype.getRealRooms = function() {
+  var rooms = [];
+  var collect = function(room) {
+    if (room.virtual) {
+      room.children.forEach(function(child) {
+        collect(child);
+      });
+    } else {
+      rooms.push(room);
+    }
+  };
+  collect(this);
+  return rooms;
+};
+
 Room.prototype.findGame = function(gameId) {
-  return _.find(this.games, {
-    id : gameId
-  });
+  var find = function(room) {
+    if (room.virtual) {
+      var game;
+      _.each(room.children, function(child) {
+        game = find(child);
+        if (game) {
+          return false;
+        }
+      });
+      return game;
+    } else {
+      return _.find(room.games, {
+        id : gameId
+      });
+    }
+  };
+  return find(this);
 };
 
 Room.prototype.hasGame = function(gameId) {
   return this.findGame(gameId) != undefined;
 };
 
+Room.prototype.hasLiveGame = function() {
+  if (this.virtual) {
+    return !_.every(this.children, function(child) {
+      return !child.hasLiveGame();
+    });
+  } else {
+    return !_.every(this.games, function(game) {
+      return game.isOver() || game.isEmpty();
+    });
+  }
+};
+
 Room.prototype.toJSON = function() {
-  return {
+  return this.virtual ? {
     id : this.id,
     name : this.name,
+    virtual : this.virtual,
+    children : this.children.map(function(room) {
+      return room.toJSON();
+    })
+  } : {
+    id : this.id,
+    name : this.name,
+    virtual : this.virtual,
     games : this.games.map(function(game) {
       return game.toSimpleJSON();
     })
@@ -55,9 +118,26 @@ Room.prototype.toJSON = function() {
 };
 
 Room.prototype.findGameByUser = function(account) {
-  return _.find(this.games, function(game) {
-    return game.findPlayer(account);
-  });
+  var find = function(room) {
+    var game;
+    if (room.virtual) {
+      _.each(room.children, function(child) {
+        game = find(child);
+        if (game) {
+          return false;
+        }
+      });
+    } else {
+      _.each(room.games, function(g) {
+        if (g.findPlayer(account)) {
+          game = g;
+          return false;
+        }
+      });
+    }
+    return game;
+  };
+  return find(this);
 };
 
 _.merge(Room.prototype, Observable.general);

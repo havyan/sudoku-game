@@ -2,7 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var RoomSchema = new Schema({
-  name : String
+  name : String,
+  virtual : Boolean,
+  parent : String
 });
 
 RoomSchema.statics.findOneByName = function(name, cb) {

@@ -1,41 +1,28 @@
 <div class="lobby-nav">
   <div class="lobby-nav-rooms">
-    {{#rooms}}
-    <div class="lobby-nav-room" data-id="{{id}}">
-      {{name}}({{playersCount this}})
-    </div>
-    {{/rooms}}
-  </div>
-</div>
-<div class="lobby-content">
-  {{#rooms}}
-  <div class="lobby-room" data-id="{{id}}">
-    {{#games}}
-    <div class="lobby-game {{status}}" data-id="{{id}}">
-      <div class="lobby-table">
-        <div class="lobby-table-content">
-          {{{tableInfo this}}}
+    <div class="lobby-nav-rooms-container scroll-panel">
+      {{#rooms}}
+      <div class="lobby-nav-item" data-id="{{id}}">
+        <div class="lobby-nav-virtual-room">
+          {{name}}({{playersCount this}})
+        </div>
+        <div class="lobby-nav-item-content">
+          <div class="lobby-nav-item-line">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height=0 width=0>
+              <path />
+            </svg>
+          </div>
+          <div class="lobby-nav-real-rooms">
+            {{#children}}
+            <div class="lobby-nav-real-room" data-id="{{id}}">
+              {{name}}({{playersCount this}})
+            </div>
+            {{/children}}
+          </div>
         </div>
       </div>
-      {{#each players}}
-      {{#if this}}
-      <div class="lobby-player existent player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}}" data-index="{{@index}}" data-id="{{id}}">
-        {{#unless @index}}
-        <div class="banker-label">
-          庄家
-        </div>
-        {{/unless}}
-        <div class="lobby-player-icon">
-          <img src="/imgs/default/user.png"></img>
-        </div>
-        <div class="lobby-player-name">{{name}}</div>
-      </div>
-      {{else}}
-      <div class="lobby-player empty player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}}" data-index="{{@index}}"></div>
-      {{/if}}
-      {{/each}}
+      {{/rooms}}
     </div>
-    {{/games}}
   </div>
-  {{/rooms}}
 </div>
+<div class="lobby-content"></div>
