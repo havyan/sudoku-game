@@ -11,11 +11,13 @@ var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
 var ONGOING = "ongoing";
+var ABORTED = "aborted";
 var DESTROYED = "destroyed";
 var OVER = "over";
 var PREFIX = "game";
 var CAPACITY = 4;
 var DEFAULT_LEVEL = 'DDD';
+var DEFAULT_WAIT_TIME = 5;
 var GAME_TIMEOUT = 10;
 var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
@@ -46,8 +48,75 @@ var Game = function(room, index, mode) {
 
 Game.prototype.init = function(account, params, cb) {
   var self = this;
+  var level = params.level || DEFAULT_LEVEL;
+  UserDAO.findOneByAccount(account, function(error, user) {
+    if (error) {
+      cb(error);
+    } else {
+      var money = user.money;
+      var cost = _.findIndex(PuzzleDAO.LEVELS, {
+        code : level
+      }) * 100;
+      if (money < cost) {
+        cb('You don not have enough money, please recharge');
+      } else {
+        self.cost = cost;
+        user.money = money - cost;
+        user.save(function(error) {
+          if (error) {
+            cb(error);
+          } else {
+            RuleDAO.getRule(function(error, rule) {
+              if (error) {
+                cb(error);
+              } else {
+                var add = rule.score.add;
+                rule.score.add = _.find(add, function(e) {
+                  return e.total === params.stepTime;
+                });
+                if (!rule.score.add) {
+                  rule.score.add = _.find(add, function(e) {
+                    return e.selected;
+                  });
+                }
+                self.rule = rule;
+                self.initParams(params);
+                self.trigger('init', self.toSimpleJSON());
+                setTimeout(function() {
+                  self.over(function(error) {
+                    if (error) {
+                      winston.error(error);
+                    }
+                  });
+                }, self.duration * 3600 * 1000);
+                var countdown = self.waitTime * 60;
+                var countDownTimer = setInterval(function() {
+                  if (self.isWaiting()) {
+                    if (countdown >= 0) {
+                      self.trigger('wait-countdown-stage', countdown);
+                      countdown--;
+                    } else {
+                      clearInterval(countDownTimer);
+                      self.abort();
+                    }
+                  } else {
+                    clearInterval(countDownTimer);
+                  }
+                }, 1000);
+                cb();
+              }
+            });
+          }
+        });
+      }
+    }
+  });
+};
+
+Game.prototype.initParams = function(params) {
   this.capacity = params.capacity || CAPACITY;
   this.duration = params.duration || GAME_TIMEOUT;
+  this.waitTime = params.waitTime || DEFAULT_WAIT_TIME;
   this.level = params.level || DEFAULT_LEVEL;
   this.startMode = params.startMode || START_MODE.MANUAL;
   this.quitPlayers = [];
@@ -68,31 +137,6 @@ Game.prototype.init = function(account, params, cb) {
   this.playerTimer = {
     ellapsedTime : 0
   };
-  RuleDAO.getRule(function(error, rule) {
-    if (error) {
-      cb(error);
-    } else {
-      var add = rule.score.add;
-      rule.score.add = _.find(add, function(e) {
-        return e.total === params.stepTime;
-      });
-      if (!rule.score.add) {
-        rule.score.add = _.find(add, function(e) {
-          return e.selected;
-        });
-      }
-      self.rule = rule;
-      self.trigger('init', self.toSimpleJSON());
-      cb();
-    }
-  });
-  setTimeout(function() {
-    self.over(function(error) {
-      if (error) {
-        winston.error(error);
-      }
-    });
-  }, this.duration * 3600 * 1000);
 };
 
 Game.prototype.isEmpty = function() {
@@ -432,6 +476,7 @@ Game.prototype.toJSON = function(account) {
     roomId : this.room.id,
     id : this.id,
     mode : this.mode,
+    waitTime : this.waitTime,
     startMode : this.startMode,
     duration : this.duration,
     capacity : this.capacity,
@@ -537,6 +582,23 @@ Game.prototype.submit = function(account, xy, value, cb) {
   } else {
     cb('You do not have permission now');
   }
+};
+
+Game.prototype.abort = function() {
+  var self = this;
+  var banker = this.players[0];
+  banker.money = banker.money + this.cost;
+  banker.save(function(error) {
+    if (error) {
+      winston.error(error);
+    } else {
+      self.status = ABORTED;
+      self.trigger('game-abort');
+      setTimeout(function() {
+        self.destroy();
+      }, 5000);
+    }
+  });
 };
 
 Game.prototype.over = function(cb) {
@@ -718,6 +780,31 @@ Game.prototype.delay = function(account, cb) {
       });
     } else {
       cb('You do not have enough delay cards');
+    }
+  } else {
+    cb('You do not have permission now');
+  }
+};
+
+Game.prototype.useGlasses = function(account, cb) {
+  var self = this;
+  if (account !== this.currentPlayer) {
+    var prop = _.find(this.props, {
+      account : account
+    });
+    var glasses = prop.glasses;
+    if (glasses > 0) {
+      prop.glasses = glasses - 1;
+      prop.save(function(error) {
+        if (error) {
+          winston.error('Error when updating prop: ' + error);
+          cb(error);
+        } else {
+          cb();
+        }
+      });
+    } else {
+      cb('You do not have enough cards');
     }
   } else {
     cb('You do not have permission now');

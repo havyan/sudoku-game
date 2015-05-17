@@ -4,28 +4,29 @@
     init : function(element, options) {
       this.createModel();
       this.element.append(can.view('/js/libs/mst/lobby_game_form.mst', this.model));
-      var modelElement = this.element.find('.lobby-game-form');
-      modelElement.on('hidden.bs.modal', function() {
-        modelElement.remove();
-      });
-      modelElement.modal();
     },
 
     createModel : function() {
       this.model = new can.Model({
-        stepTimers : this.options.rule.score.add,
+        stepTimes : this.options.rule.score.add,
         levels : this.options.levels.slice(0, parseInt(this.options.user.grade) + 1),
         durations : [2, 3, 4, 5, 6, 7, 8, 9, 10],
-        capacities : [2, 3, 4]
+        capacities : [2, 3, 4],
+        waitTimes : [1, 2, 5, 10]
       });
     },
 
     close : function() {
-      this.element.find('.lobby-game-form').remove();
+      this.element.find('.lobby-game-form').modal('hide');
     },
 
     '.lobby-game-form .close click' : function(element) {
       this.close();
+    },
+
+    show : function(callback) {
+      this.callback = callback;
+      this.element.find('.lobby-game-form').modal();
     },
 
     getParams : function() {
@@ -34,13 +35,14 @@
         stepTime : this.element.find('.value.step-time option:selected').data('total'),
         duration : this.element.find('.value.duration option:selected').data('value'),
         capacity : this.element.find('.value.capacity option:selected').data('value'),
-        startMode : this.element.find('.value.start-mode input:checked').data('value')
+        startMode : this.element.find('.value.start-mode input:checked').data('value'),
+        waitTime: this.element.find('.value.wait-time option:selected').data('value')
       };
     },
 
     '.lobby-game-form .confirm click' : function(element) {
-      if (this.options.callback) {
-        this.options.callback(this.getParams());
+      if (this.callback) {
+        this.callback(this.getParams());
       }
       this.close();
     }

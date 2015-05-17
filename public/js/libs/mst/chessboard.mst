@@ -28,7 +28,7 @@
       </div>
       <div class="prop-item-tip">{{delay}}</div>
     </li>
-    <li class="delay prop-item {{#unless glasses}}empty{{/unless}}">
+    <li class="glasses prop-item {{#unless glasses}}empty{{/unless}}">
       <div class="prop-item-content"><img src="/imgs/default/prop_glasses.png"> x {{glasses}}
       </div>
       <div class="prop-item-tip">{{glasses}}</div>

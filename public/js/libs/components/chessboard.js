@@ -98,22 +98,38 @@
     },
 
     resetPropStatus : function() {
-      if (this.options.model.attr('changedScore.changed') < 0 && this.options.model.attr('prop.impunity') > 0) {
+      var model = this.options.model;
+      if (this.selectedChassCell && (model.isDraft() || model.isActive()) && model.attr('prop.magnifier') > 0) {
+        this.element.find('.prop .magnifier').addClass('active');
+      } else {
+        this.element.find('.prop .magnifier').removeClass('active');
+      }
+      if (model.attr('changedScore.changed') < 0 && model.attr('prop.impunity') > 0) {
         this.element.find('.prop .impunity').addClass('active');
       } else {
         this.element.find('.prop .impunity').removeClass('active');
       }
-      if (this.options.model.isActive() && !this.options.model.attr('delayed') && this.options.model.attr('prop.delay') > 0) {
+      if (model.attr('changedScore.changed') < 0 && model.attr('prop.impunity') > 0) {
+        this.element.find('.prop .impunity').addClass('active');
+      } else {
+        this.element.find('.prop .impunity').removeClass('active');
+      }
+      if (model.isActive() && !model.attr('delayed') && model.attr('prop.delay') > 0) {
         this.element.find('.prop .delay').addClass('active');
       } else {
         this.element.find('.prop .delay').removeClass('active');
       }
-      if (this.options.model.isActive() && !this.options.model.attr('optionsEnabled') && this.options.model.attr('prop.options_once') > 0) {
+      if (this.selectedChassCell && !model.isActive() && model.isSubmit() && !model.attr('glassesUsed')) {
+        this.element.find('.prop .glasses').addClass('active');
+      } else {
+        this.element.find('.prop .glasses').removeClass('active');
+      }
+      if (model.isActive() && !model.attr('optionsEnabled') && model.attr('prop.options_once') > 0) {
         this.element.find('.prop .options_once').addClass('active');
       } else {
         this.element.find('.prop .options_once').removeClass('active');
       }
-      if (this.options.model.attr('prop.options_always') > 0 && !this.options.model.attr('optionsAlways')) {
+      if (model.attr('prop.options_always') > 0 && !model.attr('optionsAlways')) {
         this.element.find('.prop .options_always').addClass('active');
       } else {
         this.element.find('.prop .options_always').removeClass('active');
@@ -323,15 +339,12 @@
       var container = element.parent();
       var xy = container.data('xy');
       this.selectedChassCell = this.chessCells[xy];
-      if (model.isDraft() || model.isActive()) {
-        if (model.attr('prop.magnifier') > 0) {
-          this.element.find('.prop .magnifier').addClass('active');
-        }
-      }
+      this.resetPropStatus();
     },
 
     '.chess-cell blur' : function(element, event) {
-      this.element.find('.prop .magnifier').removeClass('active');
+      this.selectedChassCell = null;
+      this.resetPropStatus();
     },
 
     '.magnifier click' : function(element, event) {
@@ -343,7 +356,6 @@
             this.options.model.autoSubmit(this.selectedChassCell.options.xy);
           }
         }
-        this.selectedChassCell = null;
       }
     },
 
@@ -362,6 +374,20 @@
         this.options.model.impunish(function() {
           self.resetPropStatus();
         });
+      }
+    },
+
+    '.glasses click' : function(element, event) {
+      var self = this;
+      if (element.hasClass('active') && !this.options.model.attr('glassesUsed')) {
+        if (this.selectedChassCell) {
+          this.options.model.useGlasses(function() {
+            self.resetPropStatus();
+            var cellOptions = self.options.model.calcCellOptions(self.selectedChassCell.options.xy);
+            self.showNumberPicker(self.selectedChassCell.element, cellOptions, function(value) {
+            });
+          });
+        }
       }
     },
 

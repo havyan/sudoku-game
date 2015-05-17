@@ -7,7 +7,7 @@
           题目等级
         </div>
         <div class="value level">
-          <select >
+          <select>
             {{#levels}}
             <option data-code="{{code}}">{{name}}</option>
             {{/levels}}
@@ -19,10 +19,10 @@
           每步时间
         </div>
         <div class="value step-time">
-          <select >
-            {{#stepTimers}}
+          <select>
+            {{#stepTimes}}
             <option data-total="{{total}}">{{total}}秒</option>
-            {{/stepTimers}}
+            {{/stepTimes}}
           </select>
         </div>
       </div>
@@ -31,7 +31,7 @@
           每局时间
         </div>
         <div class="value duration">
-          <select >
+          <select>
             {{#durations}}
             <option data-value="{{this}}">{{this}}小时</option>
             {{/durations}}
@@ -43,7 +43,7 @@
           每局人数
         </div>
         <div class="value capacity">
-          <select >
+          <select>
             {{#capacities}}
             <option data-value="{{this}}">{{this}}人</option>
             {{/capacities}}
@@ -66,8 +66,10 @@
           等待时间
         </div>
         <div class="value wait-time">
-          <select >
-            <option>无</option>
+          <select>
+            {{#waitTimes}}
+            <option data-value="{{this}}">{{this}}分钟</option>
+            {{/waitTimes}}
           </select>
         </div>
       </div>

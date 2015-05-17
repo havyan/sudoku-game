@@ -125,6 +125,18 @@ module.exports = function(router) {
     });
   });
 
+  router.post('/game/:id/glasses', function(req, res, next) {
+    global.gameManager.useGlasses(req.params.id, req.session.account, function(error) {
+      if (error) {
+        next(new HttpError(error, HttpError.UNAUTHORIZED));
+      } else {
+        res.send({
+          status : 'ok'
+        });
+      }
+    });
+  });
+
   router.post('/game/:id/options_once', function(req, res, next) {
     global.gameManager.setOptionsOnce(req.params.id, req.session.account, function(error) {
       if (error) {

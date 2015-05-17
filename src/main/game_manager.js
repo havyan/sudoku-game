@@ -151,6 +151,11 @@ GameManager.prototype.delay = function(gameId, account, cb) {
   game.delay(account, cb);
 };
 
+GameManager.prototype.useGlasses = function(gameId, account, cb) {
+  var game = this.findGame(gameId);
+  game.useGlasses(account, cb);
+};
+
 GameManager.prototype.setOptionsOnce = function(gameId, account, cb) {
   var game = this.findGame(gameId);
   game.setOptionsOnce(account, cb);

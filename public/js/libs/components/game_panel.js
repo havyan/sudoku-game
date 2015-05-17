@@ -98,6 +98,16 @@
       $('.destroy-countdown-number').html(newStage);
     },
 
+    '{model} waitCountdownStage' : function(model, e, newStage) {
+      if (newStage === '00:00:00') {
+        if (model.isBanker()) {
+          Dialog.showMessage('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
+        } else {
+          Dialog.showMessage('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
+        }
+      }
+    },
+
     '{model} quit' : function() {
       window.location.href = "/main";
     },
@@ -175,14 +185,17 @@
     '.game-quit-button click' : function() {
       var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
-        Dialog.showConfirm('游戏中，是否强行退出游戏?', function() {
+        var message = this.options.model.isBanker() ? '棋局已开始，您的建桌费不会返还，确定要退出？' : '棋局已开始，确定要退出？';
+        Dialog.showConfirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });
         });
       } else {
-        this.options.model.quit(function() {
-          window.location.href = "/main";
+        Dialog.showConfirm('正在等待棋局，您的建桌费不会返还，确定要退出？', function() {
+          self.options.model.quit(function() {
+            window.location.href = "/main";
+          });
         });
       }
     },

@@ -25,6 +25,11 @@
       }));
       this.selectRoom(options.model.attr('selectedRoom'));
       this.toggleExpand(this.element.find('.lobby-nav-item:first'));
+      this.gameForm = new LobbyGameForm(this.element, {
+        user : this.options.model.attr('user').attr(),
+        rule : this.options.model.attr('rule').attr(),
+        levels : this.options.model.attr('levels').attr()
+      });
     },
 
     selectRoom : function(roomId) {
@@ -84,15 +89,31 @@
     },
 
     '.lobby-game.empty .lobby-table click' : function(e) {
-      var gameId = e.closest('.lobby-game').data('id');
-      var gameForm = new LobbyGameForm(this.element, {
-        user : this.options.model.attr('user').attr(),
-        rule : this.options.model.attr('rule').attr(),
-        levels : this.options.model.attr('levels').attr(),
-        callback : function(params) {
-          Rest.Game.playerJoin(gameId, 0, params, function(result) {
-            window.location.href = '/table/' + result.gameId;
-          });
+      var self = this;
+      this.gameForm.show(function(params) {
+        var gameId = e.closest('.lobby-game').data('id');
+        var money = self.options.model.attr('user.money');
+        var cost = _.findIndex(self.options.model.attr('levels'), {
+          code : params.level
+        }) * 100;
+        if (money < cost) {
+          Dialog.showMessage('您的天才币余额不足');
+        } else {
+          if (cost > 0) {
+            Dialog.showConfirm('您需要花费' + cost + '个天才币，是否继续？', function() {
+              Rest.Game.playerJoin(gameId, 0, params, function(result) {
+                window.location.href = '/table/' + result.gameId;
+              }, function(error) {
+                Dialog.showError('建桌失败, ' + error);
+              });
+            });
+          } else {
+            Rest.Game.playerJoin(gameId, 0, params, function(result) {
+              window.location.href = '/table/' + result.gameId;
+            }, function(error) {
+              Dialog.showError('建桌失败, ' + error);
+            });
+          }
         }
       });
     },

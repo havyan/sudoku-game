@@ -12,6 +12,7 @@
       this.initActive();
       this.initUI();
       this.initManualStart();
+      this.initWait();
     },
 
     initDimension : function() {
@@ -26,6 +27,10 @@
         width : maxX + 9,
         height : maxY + 9
       });
+    },
+
+    initWait : function() {
+      this.attr('waitCountdownStage', Utils.formatSeconds(this.attr('waitTime')));
     },
 
     initManualStart : function() {
@@ -353,6 +358,18 @@
       });
     },
 
+    useGlasses : function(success) {
+      var self = this;
+      Rest.Game.useGlasses(this.attr('id'), function(result) {
+        self.attr('glassesUsed', true);
+        self.attr('prop.glasses', self.attr('prop.glasses') - 1);
+        if (success) {
+          success(result);
+        }
+      }, function() {
+      });
+    },
+
     setOptionsOnce : function(success) {
       var self = this;
       Rest.Game.setOptionsOnce(this.attr('id'), function(result) {
@@ -467,6 +484,7 @@
       this.eventReceiver.on('switch-player', function(account) {
         self.attr('currentPlayer', account);
         self.attr('optionsOnce', false);
+        self.attr('glassesUsed', false);
         self.attr('active', false);
         self.attr('active', account === self.attr('account'));
         self.attr('delayed', false);
@@ -510,6 +528,12 @@
       });
       this.eventReceiver.on('destroy-countdown-stage', function(stage) {
         self.attr('destroyCountdownStage', stage);
+      });
+      this.eventReceiver.on('wait-countdown-stage', function(stage) {
+        self.attr('waitCountdownStage', Utils.formatSeconds(stage));
+      });
+      this.eventReceiver.on('game-abort', function(stage) {
+        self.attr('status', 'aborted');
       });
     },
 
@@ -645,6 +669,10 @@
 
     getRealCellValue : function(xy) {
       return this.attr('initCellValues').attr(xy) || this.attr('userCellValues').attr(xy);
+    },
+
+    isBanker : function() {
+      return this.attr('players.0.account') === this.attr('account');
     },
 
     existsCell : function(xy) {

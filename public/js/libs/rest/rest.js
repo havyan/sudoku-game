@@ -167,6 +167,16 @@
       });
     },
 
+    useGlasses : function(gameId, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/game/' + gameId + '/glasses',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     setOptionsOnce : function(gameId, success, error) {
       return $.ajax({
         type : 'post',
