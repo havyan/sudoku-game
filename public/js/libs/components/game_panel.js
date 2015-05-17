@@ -192,7 +192,8 @@
           });
         });
       } else {
-        Dialog.showConfirm('正在等待棋局，您的建桌费不会返还，确定要退出？', function() {
+        var message = this.options.model.isBanker() ? '正在等待棋局，您的建桌费不会返还，确定要退出？' : '正在等待棋局，确定要退出？';
+        Dialog.showConfirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });
