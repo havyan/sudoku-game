@@ -139,6 +139,6 @@
 
     '.lobby-player.existent mouseleave' : function(e) {
       $('.player-tip').remove();
-    },
+    }
   });
 })();
