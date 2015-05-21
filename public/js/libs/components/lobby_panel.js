@@ -123,6 +123,22 @@
       Rest.Game.playerJoin(gameId, e.data('index'), {}, function(result) {
         window.location.href = '/table/' + result.gameId;
       });
-    }
+    },
+
+    '.lobby-player.existent mouseenter' : function(e) {
+      var player = this.options.model.findPlayer(e.data('id'));
+      if (player) {
+        $('body').append(can.view('/js/libs/mst/player_tip.mst', player));
+        var playerTip = $('.player-tip');
+        playerTip.css({
+          top : e.offset().top + e.outerHeight() / 2,
+          left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
+        });
+      }
+    },
+
+    '.lobby-player.existent mouseleave' : function(e) {
+      $('.player-tip').remove();
+    },
   });
 })();

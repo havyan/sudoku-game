@@ -95,6 +95,21 @@
       });
     },
 
+    findPlayer : function(playerId) {
+      return this.find(function(room) {
+        var player;
+        _.each(room.attr('games'), function(game) {
+          player = _.find(game.attr('players'), {
+            id : playerId
+          });
+          if (player) {
+            return false;
+          }
+        });
+        return player;
+      });
+    },
+
     find : function(callback) {
       var result;
       var find = function(room) {
