@@ -33,6 +33,7 @@
     },
 
     selectRoom : function(roomId) {
+      var model = this.options.model;
       var $room = this.element.find('.lobby-nav-real-room[data-id=' + roomId + ']');
       this.element.find('.lobby-nav-real-room, .lobby-nav-virtual-room').removeClass('active');
       $room.addClass('active').parents('.lobby-nav-item').find('.lobby-nav-virtual-room').addClass('active');
@@ -41,7 +42,10 @@
           if (game.status === 'empty') {
             return '空桌';
           } else if (game.status === 'waiting') {
-            return '等待开始';
+            var level = _.find(model.attr('levels'), {
+              code : game.level
+            }).name;
+            return '等待开始<br>题目等级' + level + '<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
           } else if (game.status === 'loading') {
             return '游戏加载中...<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
           } else if (game.status === 'ongoing') {
@@ -90,10 +94,11 @@
 
     '.lobby-game.empty .lobby-table click' : function(e) {
       var self = this;
+      var model = self.options.model;
       this.gameForm.show(function(params) {
         var gameId = e.closest('.lobby-game').data('id');
-        var money = self.options.model.attr('user.money');
-        var cost = _.findIndex(self.options.model.attr('levels'), {
+        var money = model.attr('user.money');
+        var cost = _.findIndex(model.attr('levels'), {
           code : params.level
         }) * 100;
         if (money < cost) {
@@ -119,10 +124,20 @@
     },
 
     '.lobby-game.waiting .lobby-player.empty.normal click' : function(e) {
+      var model = this.options.model;
       var gameId = e.closest('.lobby-game').data('id');
-      Rest.Game.playerJoin(gameId, e.data('index'), {}, function(result) {
-        window.location.href = '/table/' + result.gameId;
+      var game = model.findGame(gameId);
+      var grade = model.attr('user.grade');
+      var levelIndex = _.findIndex(model.attr('levels'), {
+        code : game.attr('level')
       });
+      if (parseInt(grade) < levelIndex) {
+        Dialog.showMessage('您不能加入题目等级比自己段数高的游戏');
+      } else {
+        Rest.Game.playerJoin(gameId, e.data('index'), {}, function(result) {
+          window.location.href = '/table/' + result.gameId;
+        });
+      }
     },
 
     '.lobby-player.existent mouseenter' : function(e) {

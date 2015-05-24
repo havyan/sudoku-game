@@ -41,43 +41,43 @@ PuzzleSchema.statics.findRandomOneByLevel = function(level, cb) {
 var Puzzle = mongoose.model('Puzzle', PuzzleSchema);
 Puzzle.LEVELS = [{
   code : 'EEE',
-  name : '入门级'
+  name : '入门段'
 }, {
   code : 'DDD',
-  name : '1级'
+  name : '1段'
 }, {
   code : 'CDD',
-  name : '2级'
+  name : '2段'
 }, {
   code : 'CCD',
-  name : '3级'
+  name : '3段'
 }, {
   code : 'CCC',
-  name : '4级'
+  name : '4段'
 }, {
   code : 'BCC',
-  name : '5级'
+  name : '5段'
 }, {
   code : 'BBC',
-  name : '6级'
+  name : '6段'
 }, {
   code : 'BBB',
-  name : '7级'
+  name : '7段'
 }, {
   code : 'ABB',
-  name : '8级'
+  name : '8段'
 }, {
   code : 'AAB',
-  name : '9级'
+  name : '9段'
 }, {
   code : 'AAA',
-  name : '10级'
+  name : '10段'
 }, {
   code : 'AAAA',
-  name : '11级'
+  name : '11段'
 }, {
   code : 'AAAAA',
-  name : '12级'
+  name : '12段'
 }];
 
 module.exports = Puzzle;

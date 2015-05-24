@@ -24,11 +24,11 @@
 }
 
 .lobby-nav-item-content {
-	display: none;
+  display: none;
 }
 
 .lobby-nav-item.expand .lobby-nav-item-content {
-	display: block;
+  display: block;
 }
 
 .lobby-nav-item {
@@ -64,8 +64,7 @@
   background-position: -2px 0px;
 }
 
-.lobby-nav-real-room.active,
-.lobby-nav-virtual-room.active {
+.lobby-nav-real-room.active, .lobby-nav-virtual-room.active {
   color: #FFF000;
 }
 
@@ -84,6 +83,10 @@
 .lobby-content {
   width: 80%;
   margin-left: 20%;
+}
+
+.lobby-room {
+  text-align: center;
 }
 
 .lobby-game {

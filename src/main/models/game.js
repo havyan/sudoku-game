@@ -374,7 +374,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
           account : account,
           status : status
         });
-        self.addMessage('用户[' + quitPlayer.name + ']退出');
+        self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
         if (self.playersCount() <= 0) {
           self.destroy();
         }
@@ -480,6 +480,7 @@ Game.prototype.toJSON = function(account) {
     startMode : this.startMode,
     duration : this.duration,
     capacity : this.capacity,
+    level : this.level,
     rule : this.rule,
     initCellValues : this.initCellValues,
     userCellValues : this.userCellValues,
@@ -528,6 +529,7 @@ Game.prototype.toSimpleJSON = function() {
     startMode : this.startMode,
     duration : this.duration,
     capacity : this.capacity,
+    level : this.level,
     mode : _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
