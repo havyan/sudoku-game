@@ -25,6 +25,7 @@
 
 .lobby-nav-item-content {
   display: none;
+  width: 120%;
 }
 
 .lobby-nav-item.expand .lobby-nav-item-content {
@@ -51,7 +52,7 @@
 }
 
 .lobby-nav-real-room {
-  width: 100px;
+  width: 101px;
   height: 30px;
   line-height: 30px;
   color: white;
@@ -70,11 +71,11 @@
 
 .lobby-nav-item-line {
   float: left;
-  width: 35%;
+  width: 40%;
 }
 
 .lobby-nav-real-rooms {
-  margin-left: 35%;
+  margin-left: 40%;
   width: 60%;
   overflow: hidden;
   position: relative;
@@ -95,6 +96,19 @@
   height: 380px;
   position: relative;
   margin: 10px;
+}
+
+.room-number {
+  position: absolute;
+  top: 95px;
+  left: 87px;
+  width: 59px;
+  height: 61px;
+  z-index: 100;
+  color: black;
+  line-height: 61px;
+  font-size: 22px;
+  background: url(../../imgs/default/room_star.png) no-repeat;
 }
 
 .lobby-table {

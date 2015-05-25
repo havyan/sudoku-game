@@ -1,6 +1,9 @@
 <div class="lobby-room" data-id="{{id}}">
   {{#games}}
   <div class="lobby-game {{status}}" data-id="{{id}}">
+    <div class="room-number">
+      {{tableOrder this}}
+    </div>
     <div class="lobby-table">
       <div class="lobby-table-content">
         {{{tableInfo this}}}

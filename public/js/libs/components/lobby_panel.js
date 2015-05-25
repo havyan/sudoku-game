@@ -34,10 +34,16 @@
 
     selectRoom : function(roomId) {
       var model = this.options.model;
+      var room = this.options.model.findRealRoom(roomId);
       var $room = this.element.find('.lobby-nav-real-room[data-id=' + roomId + ']');
       this.element.find('.lobby-nav-real-room, .lobby-nav-virtual-room').removeClass('active');
       $room.addClass('active').parents('.lobby-nav-item').find('.lobby-nav-virtual-room').addClass('active');
-      this.element.find('.lobby-content').html(can.view('/js/libs/mst/lobby_room.mst', this.options.model.findRealRoom(roomId), {
+      this.element.find('.lobby-content').html(can.view('/js/libs/mst/lobby_room.mst', room, {
+        tableOrder : function(game) {
+          return _.findIndex(room.attr('games'), {
+            id : game.id
+          }) + 1;
+        },
         tableInfo : function(game) {
           if (game.status === 'empty') {
             return '空桌';
@@ -74,11 +80,26 @@
         $svg.attr('width', $line.width() + 'px').attr('height', $line.height() + 'px');
         var left = $line.width() / 2 - 10;
         var right = $line.width();
-        var path = 'M ' + left + ' 0 ';
+        var path = 'M ' + left + ' 0 L ' + left + ' ' + ($roomContainer.height() / 2 - 5);
+        path += ' A 10 10 0 0 0 ' + (left + 10) + ' ' + ($roomContainer.height() / 2 + 5);
+        path += ' L ' + (left + 30) + ' ' + ($roomContainer.height() / 2 + 5);
         $rooms.each(function(index, room) {
           var $room = $(room);
           var y = $room.position().top + $room.height() / 2 + 10;
-          path += 'L ' + left + ' ' + y + ' L ' + right + ' ' + y + ' L ' + left + ' ' + y + ' ';
+          if (index === 0) {
+            path += ' L ' + (left + 30) + ' ' + (y + 10);
+            path += ' A 10 10 0 0 1 ' + (left + 40) + ' ' + y;
+            path += ' L ' + right + ' ' + y;
+            path += ' M ' + (left + 30) + ' ' + ($roomContainer.height() / 2 + 5);
+          } else if (index === $rooms.length - 1) {
+            path += ' L ' + (left + 30) + ' ' + (y - 10);
+            path += ' A 10 10 0 0 0 ' + (left + 40) + ' ' + y;
+            path += ' L ' + right + ' ' + y;
+          } else {
+            path += ' L ' + (left + 30) + ' ' + y;
+            path += ' L ' + right + ' ' + y;
+            path += ' M ' + (left + 30) + ' ' + y;
+          }
         });
         $svg.find('path').attr('d', path);
       }
