@@ -3,5 +3,5 @@ html, body {
 }
 
 body {
-  overflow-y: hidden !important;
+  min-height: 1200px;
 }
