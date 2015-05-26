@@ -99,8 +99,8 @@
       return this.find(function(room) {
         var player;
         _.each(room.attr('games'), function(game) {
-          player = _.find(game.attr('players'), {
-            id : playerId
+          player = _.find(game.attr('players'), function(player) {
+            return player && player.id === playerId;
           });
           if (player) {
             return false;

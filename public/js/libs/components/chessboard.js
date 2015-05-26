@@ -119,7 +119,7 @@
       } else {
         this.element.find('.prop .delay').removeClass('active');
       }
-      if (this.selectedChassCell && !model.isActive() && model.isSubmit() && !model.attr('glassesUsed')) {
+      if (!model.isActive() && model.isSubmit() && !model.attr('glassesUsed')) {
         this.element.find('.prop .glasses').addClass('active');
       } else {
         this.element.find('.prop .glasses').removeClass('active');
@@ -291,12 +291,9 @@
 
     '.chess-cell click' : function(element, event) {
       var model = this.options.model;
-      var self = this;
       var container = element.parent();
       var xy = container.data('xy');
-      if (model.isDraft()) {
-
-      } else if (model.isActive() && model.isPlain()) {
+      if (model.isActive() && model.isPlain()) {
         if (model.getKnownCellValue(xy) !== undefined) {
           model.submit(xy, model.getKnownCellValue(xy));
           model.attr('active', false);
@@ -307,6 +304,10 @@
             model.attr('active', false);
           });
         }
+      } else if (!model.isActive() && model.isSubmit() && model.attr('glassesUsed')) {
+        var cellOptions = model.calcCellOptions(xy);
+        this.showNumberPicker(container, cellOptions, function(value) {
+        });
       }
       event = event || window.event;
       if (event.stopPropagation) {
@@ -380,14 +381,9 @@
     '.glasses click' : function(element, event) {
       var self = this;
       if (element.hasClass('active') && !this.options.model.attr('glassesUsed')) {
-        if (this.selectedChassCell) {
-          this.options.model.useGlasses(function() {
-            self.resetPropStatus();
-            var cellOptions = self.options.model.calcCellOptions(self.selectedChassCell.options.xy);
-            self.showNumberPicker(self.selectedChassCell.element, cellOptions, function(value) {
-            });
-          });
-        }
+        this.options.model.useGlasses(function() {
+          self.resetPropStatus();
+        });
       }
     },
 

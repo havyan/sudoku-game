@@ -131,6 +131,7 @@ Game.prototype.initParams = function(params) {
   this.timeoutTimer = {};
   this.props = [];
   this.optionsOnce = {};
+  this.glassesUsed = {};
   this.results = [];
   this.optionsAlways = {};
   this.changedScores = {};
@@ -169,19 +170,21 @@ Game.prototype.setStatus = function(status) {
         self.initCellValues = puzzleJson.question;
         self.answer = puzzleJson.answer;
         self.trigger('puzzle-init', self.initCellValues);
-        var countdown = COUNTDOWN_TOTAL;
-        var countDownTimer = setInterval(function() {
-          if (countdown >= 0) {
-            self.trigger('countdown-stage', countdown);
-            countdown--;
-          } else {
-            clearInterval(countDownTimer);
-            setTimeout(function() {
-              self.start();
-            }, 2000);
-            self.status = ONGOING;
-            self.trigger('status-changed', self.status, status);
-          }
+        setTimeout(function() {
+          var countdown = COUNTDOWN_TOTAL;
+          var countDownTimer = setInterval(function() {
+            if (countdown >= 0) {
+              self.trigger('countdown-stage', countdown);
+              countdown--;
+            } else {
+              clearInterval(countDownTimer);
+              setTimeout(function() {
+                self.start();
+              }, 2000);
+              self.status = ONGOING;
+              self.trigger('status-changed', self.status, status);
+            }
+          }, 1000);
         }, 1000);
       }
     });
@@ -207,6 +210,7 @@ Game.prototype.nextPlayer = function() {
       return player && player.account === self.currentPlayer;
     });
     self.optionsOnce[this.currentPlayer] = false;
+    self.glassesUsed[this.currentPlayer] = false;
     var nextIndex = (currentIndex + 1) % this.players.length;
     while (!this.players[nextIndex] && nextIndex !== currentIndex) {
       nextIndex = (nextIndex + 1) % this.players.length;
@@ -421,6 +425,7 @@ Game.prototype.removePlayer = function(account) {
   });
   delete this.knownCellValues[account];
   delete this.timeoutCounter[account];
+  clearInterval(this.timeoutTimer[account]);
   delete this.timeoutTimer[account];
   delete this.changedScores[account];
 };
@@ -505,6 +510,7 @@ Game.prototype.toJSON = function(account) {
     knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues,
     changedScore : account ? this.changedScores[account] : this.changedScores,
     remainingTime : this.rule.score.add.total - this.playerTimer.ellapsedTime,
+    glassesUsed : account ? this.glassesUsed[account] ? true : false : this.glassesUsed,
     optionsOnce : account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
     optionsAlways : account ? this.optionsAlways[account] ? true : false : this.optionsAlways
   };
@@ -802,6 +808,7 @@ Game.prototype.useGlasses = function(account, cb) {
           winston.error('Error when updating prop: ' + error);
           cb(error);
         } else {
+          self.glassesUsed[account] = true;
           cb();
         }
       });

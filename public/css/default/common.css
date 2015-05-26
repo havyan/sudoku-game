@@ -172,6 +172,10 @@ label {
   margin-top: 100px;
 }
 
+.modal-open {
+  overflow: visible;
+}
+
 .modal-open .modal {
   overflow-x: hidden;
   overflow-y: hidden;
