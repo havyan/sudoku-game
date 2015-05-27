@@ -345,7 +345,7 @@
       return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
     },
 
-    '.grade-table .value input blur' : function(e) {
+    '.setting-grade .value input blur' : function(e) {
       var value = parseInt(e.val());
       var index = parseInt(e.closest('tr').data('index'));
       var beforValue = index > 0 ? this.model.attr('rule.grade.' + (index - 1) + '.floor') : 0;
@@ -379,7 +379,7 @@
       this.model.attr('ui.zoom', value);
     },
 
-    'input blur' : function() {
+    '.setting-main input blur' : function() {
       this.validate();
     },
 
