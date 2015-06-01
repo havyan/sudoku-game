@@ -305,9 +305,11 @@
           });
         }
       } else if (!model.isActive() && model.isSubmit() && model.attr('glassesUsed')) {
-        var cellOptions = model.calcCellOptions(xy);
-        this.showNumberPicker(container, cellOptions, function(value) {
-        });
+        if (model.getCellValue(xy) === undefined) {
+          var cellOptions = model.calcCellOptions(xy);
+          this.showNumberPicker(container, cellOptions, function(value) {
+          });
+        }
       }
       event = event || window.event;
       if (event.stopPropagation) {

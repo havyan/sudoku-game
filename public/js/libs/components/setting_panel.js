@@ -345,20 +345,9 @@
       return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
     },
 
-    '.setting-grade .value input blur' : function(e) {
-      var value = parseInt(e.val());
-      var index = parseInt(e.closest('tr').data('index'));
-      var beforValue = index > 0 ? this.model.attr('rule.grade.' + (index - 1) + '.floor') : 0;
-      var afterValue = index < this.model.attr('rule.grade').length - 1 ? this.model.attr('rule.grade.' + (index + 1) + '.floor') : 9999999999;
-      if (isNaN(value) || value <= beforValue || value >= afterValue) {
-        e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
-        e.closest('.grade-table').find('.value').removeClass('edit');
-        e.closest('.value').addClass('edit');
-        e.addClass('invalid').focus();
-      } else {
-        e.siblings('.error').empty();
-        e.removeClass('invalid').closest('.value').removeClass('edit');
-        this.model.attr('rule.grade.' + index + '.floor', value);
+    '.setting-grade input blur' : function(e) {
+      if (!this.validateGrade(e)) {
+        e.focus();
       }
     },
 
@@ -384,6 +373,7 @@
     },
 
     validate : function() {
+      var self = this;
       var valid = true;
       this.element.find('input[type=text]').each(function() {
         var $e = $(this);
@@ -394,6 +384,31 @@
           $e.removeClass('invalid');
         }
       });
+      this.element.find('.setting-grade input[type=text]').each(function(index) {
+        if (index > 0 && !self.validateGrade($(this))) {
+          valid = false;
+        }
+      });
+      return valid;
+    },
+
+    validateGrade : function(e) {
+      var valid = true;
+      var value = parseInt(e.val());
+      var index = parseInt(e.closest('tr').data('index'));
+      var beforValue = index > 0 ? this.model.attr('rule.grade.' + (index - 1) + '.floor') : 0;
+      var afterValue = index < this.model.attr('rule.grade').length - 1 ? this.model.attr('rule.grade.' + (index + 1) + '.floor') : 9999999999;
+      if (isNaN(value) || value <= beforValue || value >= afterValue) {
+        e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
+        e.closest('.grade-table').find('.value').removeClass('edit');
+        e.closest('.value').addClass('edit');
+        e.addClass('invalid');
+        valid = false;
+      } else {
+        e.siblings('.error').empty();
+        e.removeClass('invalid').closest('.value').removeClass('edit');
+        this.model.attr('rule.grade.' + index + '.floor', value);
+      }
       return valid;
     }
   });
