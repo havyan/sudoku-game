@@ -66,7 +66,7 @@
     '.setting-panel .add-button click' : function() {
       this.model.attr('rule.score.add').push({
         total : 30,
-        levels : [{
+        levels : [ {
           "from" : 0,
           "to" : 5,
           "score" : 200
@@ -82,7 +82,7 @@
           "from" : 20,
           "to" : 30,
           "score" : 100
-        }]
+        } ]
       });
     },
 
@@ -232,7 +232,8 @@
     },
 
     'input[type=text] keydown' : function(e, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37
+          || event.keyCode === 39 || event.keyCode === 46;
     },
 
     '.add-rule-to blur' : function(e) {
@@ -274,8 +275,7 @@
     },
 
     '.add-rule-item-header > label input blur' : function(e) {
-      var addRule = this.getAddRule(e),
-          total = parseInt(e.val());
+      var addRule = this.getAddRule(e), total = parseInt(e.val());
       if (total !== addRule.attr('total')) {
         addRule.attr('total', total);
         this.resetAddRule(addRule);
@@ -342,7 +342,8 @@
     },
 
     '.grade-table .value input keydown' : function(e, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37
+          || event.keyCode === 39 || event.keyCode === 46;
     },
 
     '.setting-grade input blur' : function(e) {
@@ -376,12 +377,8 @@
       var self = this;
       var valid = true;
       this.element.find('input[type=text]').each(function() {
-        var $e = $(this);
-        if (_.isEmpty($e.val())) {
+        if (!self.validateScore($(this))) {
           valid = false;
-          $e.addClass('invalid');
-        } else {
-          $e.removeClass('invalid');
         }
       });
       this.element.find('.setting-grade input[type=text]').each(function(index) {
@@ -389,6 +386,17 @@
           valid = false;
         }
       });
+      return valid;
+    },
+
+    validateScore : function(e) {
+      var valid = true;
+      if (_.isEmpty(e.val())) {
+        e.addClass('invalid');
+        valid = false;
+      } else {
+        e.removeClass('invalid');
+      }
       return valid;
     },
 

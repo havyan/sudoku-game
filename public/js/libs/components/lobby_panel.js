@@ -128,14 +128,14 @@
           if (cost > 0) {
             Dialog.showConfirm('您需要花费' + cost + '个天才币，是否继续？', function() {
               Rest.Game.playerJoin(gameId, 0, params, function(result) {
-                window.location.href = '/table/' + result.gameId;
+                window.open('/table/' + result.gameId, '_blank');
               }, function(error) {
                 Dialog.showError('建桌失败, ' + error);
               });
             });
           } else {
             Rest.Game.playerJoin(gameId, 0, params, function(result) {
-              window.location.href = '/table/' + result.gameId;
+              window.open('/table/' + result.gameId, '_blank');
             }, function(error) {
               Dialog.showError('建桌失败, ' + error);
             });
@@ -156,7 +156,7 @@
         Dialog.showMessage('您不能加入题目等级比自己段数高的游戏');
       } else {
         Rest.Game.playerJoin(gameId, e.data('index'), {}, function(result) {
-          window.location.href = '/table/' + result.gameId;
+          window.open('/table/' + result.gameId, '_blank');
         });
       }
     },
