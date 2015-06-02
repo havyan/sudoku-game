@@ -127,8 +127,10 @@
         } else {
           if (cost > 0) {
             Dialog.showConfirm('您需要花费' + cost + '个天才币，是否继续？', function() {
+              var $e = $(this);
               Rest.Game.playerJoin(gameId, 0, params, function(result) {
                 window.open('/table/' + result.gameId, '_blank');
+                $e.closest('.modal').modal('hide');
               }, function(error) {
                 Dialog.showError('建桌失败, ' + error);
               });
