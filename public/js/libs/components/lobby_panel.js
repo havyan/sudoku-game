@@ -1,6 +1,10 @@
 (function() {
   can.Control('Components.LobbyPanel', {}, {
     init : function(element, options) {
+      window.localStorage.setItem('lobby_open', true);
+      $(window).unload(function() {
+        window.localStorage.setItem('lobby_open', false);
+      });
       element.html(can.view('/js/libs/mst/lobby_panel.mst', options.model, {
         playersCount : function(room) {
           var count = function(room) {
