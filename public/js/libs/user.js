@@ -19,11 +19,11 @@
       },
 
       '.points-row .confirm click' : function(element) {
-        Dialog.showConfirm('您确定要修改积分吗？', function() {
-          $(this).closest('.modal').modal('hide');
+        Dialog.confirm('您确定要修改积分吗？', function() {
+          this.hide();
           var value = parseInt(element.siblings('.value-field').val());
           Rest.User.setPoints(value, function(result) {
-            Dialog.showMessage('修改积分成功!!!');
+            Dialog.message('修改积分成功!!!');
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
             if (result && result.grade_name) {
@@ -35,11 +35,11 @@
       },
 
       '.money-row .confirm click' : function(element) {
-        Dialog.showConfirm('您确定要修改天才币吗？', function() {
-          $(this).closest('.modal').modal('hide');
+        Dialog.confirm('您确定要修改天才币吗？', function() {
+          this.hide();
           var value = parseInt(element.siblings('.value-field').val());
           Rest.User.setMoney(value, function(result) {
-            Dialog.showMessage('修改天才币成功!!!');
+            Dialog.message('修改天才币成功!!!');
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
           }, function() {

@@ -181,6 +181,16 @@ label {
   overflow-y: hidden;
 }
 
+.warning-dialog .modal-title {
+  color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+
+.error-dialog .modal-title {
+  color: #d9534f;
+  border-color: #d9534f;
+}
+
 .button:hover, .button:focus, .button:active, .button.active, .button.disabled, .button[disabled] {
   color: #333333;
   background-color: #e3e3e3;

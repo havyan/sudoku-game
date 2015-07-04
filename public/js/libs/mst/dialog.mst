@@ -1,4 +1,4 @@
-<div id="{{id}}" class="modal fade" tabindex="-1" aria-hidden="false" data-backdrop="static" {{#unless autoClose}}data-backdrop=static data-keyboard=false{{/unless}}>
+<div id="{{id}}" class="modal fade {{userClass}}" tabindex="-1" aria-hidden="false" data-backdrop="static" {{#unless autoClose}}data-backdrop=static data-keyboard=false{{/unless}}>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -12,7 +12,7 @@
       </div>
       <div class="modal-footer">
         {{#actions}}
-        <button type="button" class="btn {{btnClass}}" {{#dismiss}}data-dismiss="modal"{{/dismiss}}>
+        <button type="button" class="btn action-item {{userClass}}" {{#dismiss}}data-dismiss="modal"{{/dismiss}}>
           {{name}}
         </button>
         {{/actions}}

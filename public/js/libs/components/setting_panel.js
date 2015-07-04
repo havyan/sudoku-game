@@ -66,7 +66,7 @@
     '.setting-panel .add-button click' : function() {
       this.model.attr('rule.score.add').push({
         total : 30,
-        levels : [ {
+        levels : [{
           "from" : 0,
           "to" : 5,
           "score" : 200
@@ -82,7 +82,7 @@
           "from" : 20,
           "to" : 30,
           "score" : 100
-        } ]
+        }]
       });
     },
 
@@ -92,7 +92,7 @@
         this.model.attr('rule.score.add').splice(index, 1);
         this.model.attr('rule.score.add.0.selected', true);
       } else {
-        Dialog.showMessage('不能删除最后一条规则！');
+        Dialog.message('不能删除最后一条规则！');
       }
     },
 
@@ -107,7 +107,7 @@
         });
         this.resetAddRule(addRule);
       } else {
-        Dialog.showMessage('最多可以定制' + this.options.maxLevelCount + '行！');
+        Dialog.message('最多可以定制' + this.options.maxLevelCount + '行！');
       }
       this.validate();
     },
@@ -119,26 +119,26 @@
         addRule.attr('levels').pop();
         this.resetAddRule(addRule);
       } else {
-        Dialog.showMessage('不能删除最后一行！');
+        Dialog.message('不能删除最后一行！');
       }
       this.validate();
     },
 
     '.reset-prop-action click' : function() {
-      Dialog.showConfirm('你确认要重置所有道具吗？', function() {
-        $(this).closest('.modal').modal('hide');
+      Dialog.confirm('你确认要重置所有道具吗？', function() {
+        this.hide();
         Rest.Prop.reset(function() {
-          Dialog.showMessage('重置道具成功!!!');
+          Dialog.message('重置道具成功!!!');
         }, function() {
         });
       });
     },
 
     '.reset-money-action click' : function() {
-      Dialog.showConfirm('你确认要重置天才币吗？', function() {
-        $(this).closest('.modal').modal('hide');
+      Dialog.confirm('你确认要重置天才币吗？', function() {
+        this.hide();
         Rest.User.resetMoney(function() {
-          Dialog.showMessage('重置天才币成功!!!');
+          Dialog.message('重置天才币成功!!!');
         }, function() {
         });
       });
@@ -156,13 +156,13 @@
           Rest.Rule.updateRule(rule, function(res) {
             self.ruleChanged = false;
             if (res.success) {
-              Dialog.showMessage('更新规则成功');
+              Dialog.message('更新规则成功');
             } else {
-              Dialog.showError(res.reason);
+              Dialog.error(res.reason);
             }
           });
         } else {
-          Dialog.showMessage('更新规则成功');
+          Dialog.message('更新规则成功');
         }
       } else {
         var $invalid = this.element.find('input.invalid:first');
@@ -175,7 +175,7 @@
 
     '.setting-back-action click' : function() {
       if (this.ruleChanged || this.uiChanged) {
-        Dialog.showConfirm('设置已被修改，是否放弃？', function() {
+        Dialog.confirm('设置已被修改，是否放弃？', function() {
           window.location.href = "/main";
         });
       } else {
@@ -210,7 +210,7 @@
         }
         if (value <= min || value >= max) {
           level.attr('score', '');
-          Dialog.showMessage('您必须输入介于' + min + '和' + max + '之间的值！');
+          Dialog.message('您必须输入介于' + min + '和' + max + '之间的值！');
         }
       }
       this.getLevel(e).attr('score', this.getValue(e));
@@ -232,8 +232,7 @@
     },
 
     'input[type=text] keydown' : function(e, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37
-          || event.keyCode === 39 || event.keyCode === 46;
+      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
     },
 
     '.add-rule-to blur' : function(e) {
@@ -260,7 +259,7 @@
         }
         if (value <= min || value >= max) {
           level.attr('to', '');
-          Dialog.showMessage('您必须输入介于' + min + '和' + max + '之间的值！');
+          Dialog.message('您必须输入介于' + min + '和' + max + '之间的值！');
         } else {
           if (addRuleRowIndex < levels.length - 1) {
             levels.attr(addRuleRowIndex + 1).attr('from', this.getValue(e));
@@ -275,7 +274,8 @@
     },
 
     '.add-rule-item-header > label input blur' : function(e) {
-      var addRule = this.getAddRule(e), total = parseInt(e.val());
+      var addRule = this.getAddRule(e),
+          total = parseInt(e.val());
       if (total !== addRule.attr('total')) {
         addRule.attr('total', total);
         this.resetAddRule(addRule);
@@ -342,8 +342,7 @@
     },
 
     '.grade-table .value input keydown' : function(e, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37
-          || event.keyCode === 39 || event.keyCode === 46;
+      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
     },
 
     '.setting-grade input blur' : function(e) {

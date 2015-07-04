@@ -76,15 +76,14 @@
 
     '{model} maxTimeoutReached' : function() {
       var self = this;
-      Dialog.showDialog({
+      Dialog.show({
         title : '确认',
         content : '游戏将在<span class="max-timeout-countdown-number">20</span>秒后退出，是否继续？',
         autoClose : false,
         actions : [{
           name : '继续',
-          btnClass : 'btn-primary',
-          callback : function() {
-            var element = $(this);
+          userClass : 'btn-primary',
+          callback : function(element) {
             self.options.model.goahead(function() {
               element.closest('.modal').modal('hide');
             });
@@ -104,9 +103,9 @@
     '{model} waitCountdownStage' : function(model, e, newStage) {
       if (newStage === '00:00:00') {
         if (model.isBanker()) {
-          Dialog.showMessage('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
+          Dialog.message('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
         } else {
-          Dialog.showMessage('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
+          Dialog.message('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
         }
       }
     },
@@ -116,7 +115,7 @@
     },
 
     '{model} results' : function(model, e, results) {
-      var dialog = Dialog.showDialog({
+      var dialog = Dialog.show({
         title : '排行榜',
         template : '/js/libs/mst/results.mst',
         data : model,
@@ -135,9 +134,9 @@
           }
         }, {
           name : '退出',
-          btnClass : 'btn-primary',
-          callback : function() {
-            $(this).closest('.modal').modal('hide');
+          userClass : 'btn-primary',
+          callback : function(element) {
+            this.hide();
             model.quit(function() {
               window.location.href = "/main";
             });
@@ -198,14 +197,14 @@
       var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
         var message = this.options.model.isBanker() ? '棋局已开始，您的建桌费不会返还，确定要退出？' : '棋局已开始，确定要退出？';
-        Dialog.showConfirm(message, function() {
+        Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });
         });
       } else {
         var message = this.options.model.isBanker() ? '正在等待棋局，您的建桌费不会返还，确定要退出？' : '正在等待棋局，确定要退出？';
-        Dialog.showConfirm(message, function() {
+        Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });

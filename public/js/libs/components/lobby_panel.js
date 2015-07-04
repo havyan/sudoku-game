@@ -127,23 +127,22 @@
           code : params.level
         }) * 100;
         if (money < cost) {
-          Dialog.showMessage('您的天才币余额不足');
+          Dialog.message('您的天才币余额不足');
         } else {
           if (cost > 0) {
-            Dialog.showConfirm('您需要花费' + cost + '个天才币，是否继续？', function() {
-              var $e = $(this);
+            Dialog.confirm('您需要花费' + cost + '个天才币，是否继续？', function($e) {
               Rest.Game.playerJoin(gameId, 0, params, function(result) {
                 window.open('/table/' + result.gameId, '_blank');
                 $e.closest('.modal').modal('hide');
               }, function(error) {
-                Dialog.showError('建桌失败, ' + error);
+                Dialog.error('建桌失败, ' + error);
               });
             });
           } else {
             Rest.Game.playerJoin(gameId, 0, params, function(result) {
               window.open('/table/' + result.gameId, '_blank');
             }, function(error) {
-              Dialog.showError('建桌失败, ' + error);
+              Dialog.error('建桌失败, ' + error);
             });
           }
         }
@@ -159,7 +158,7 @@
         code : game.attr('level')
       });
       if (parseInt(grade) < levelIndex) {
-        Dialog.showMessage('您不能加入题目等级比自己段数高的游戏');
+        Dialog.message('您不能加入题目等级比自己段数高的游戏');
       } else {
         Rest.Game.playerJoin(gameId, e.data('index'), {}, function(result) {
           window.open('/table/' + result.gameId, '_blank');
