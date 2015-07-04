@@ -58,10 +58,13 @@
       },
 
       '.default-icons img click' : function(element) {
+        var $icons = this.element.find('.default-icons');
         var $icon = this.element.find('.icon-img');
         var icon = element.attr('src');
         Rest.User.setIcon(icon, function() {
           $icon.attr('src', icon);
+          $icons.find('img').removeClass('selected');
+          $icons.find('[src="' + icon + '"]').addClass('selected');
         }, function() {
         });
       },
