@@ -117,7 +117,7 @@
       this.selectRoom(selectedRoom);
     },
 
-    '.lobby-game.empty .lobby-table click' : function(e) {
+    '.free .lobby-game.empty .lobby-table click' : function(e) {
       var self = this;
       var model = self.options.model;
       this.gameForm.show(function(params) {
@@ -150,7 +150,7 @@
       });
     },
 
-    '.lobby-game.waiting .lobby-player.empty.normal click' : function(e) {
+    '.free .lobby-game.waiting .lobby-player.empty.normal click' : function(e) {
       var model = this.options.model;
       var gameId = e.closest('.lobby-game').data('id');
       var game = model.findGame(gameId);

@@ -5,6 +5,8 @@ var RuleDAO = require('./daos/rule');
 var UserDAO = require('./daos/user');
 var PuzzleDAO = require('./daos/puzzle');
 var Room = require('./models/room');
+var PLAYING = 'playing';
+var FREE = 'free';
 
 var GameManager = function() {
   this.$ = new Observable();
@@ -46,7 +48,8 @@ GameManager.prototype.getLobbyData = function(account, cb) {
     rooms : this.rooms.map(function(room) {
       return room.toJSON();
     }),
-    levels : PuzzleDAO.LEVELS
+    levels : PuzzleDAO.LEVELS,
+    userStatus : this.findGameByUser(account) ? PLAYING : FREE
   };
   UserDAO.findOneByAccount(account, function(error, user) {
     if (error) {

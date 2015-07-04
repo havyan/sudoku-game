@@ -30,6 +30,9 @@
           }
         }
       });
+      $(window).bind('beforeunload', function() {
+        return '确定离开游戏页面吗？';
+      });
     },
 
     '.game-state-hide-button click' : function() {
@@ -77,7 +80,7 @@
         title : '确认',
         content : '游戏将在<span class="max-timeout-countdown-number">20</span>秒后退出，是否继续？',
         autoClose : false,
-        actions : [ {
+        actions : [{
           name : '继续',
           btnClass : 'btn-primary',
           callback : function() {
@@ -86,7 +89,7 @@
               element.closest('.modal').modal('hide');
             });
           }
-        } ]
+        }]
       });
     },
 
@@ -118,7 +121,7 @@
         template : '/js/libs/mst/results.mst',
         data : model,
         autoClose : false,
-        actions : [ {
+        actions : [{
           name : '关闭',
           dismiss : true,
           callback : function() {
@@ -139,7 +142,7 @@
               window.location.href = "/main";
             });
           }
-        } ]
+        }]
       });
     },
 

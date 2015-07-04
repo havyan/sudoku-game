@@ -25,4 +25,4 @@
     </div>
   </div>
 </div>
-<div class="lobby-content"></div>
+<div class="lobby-content {{userStatus}}"></div>

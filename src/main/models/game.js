@@ -600,11 +600,17 @@ Game.prototype.abort = function() {
     if (error) {
       winston.error(error);
     } else {
-      self.status = ABORTED;
-      self.trigger('game-abort');
-      setTimeout(function() {
-        self.destroy();
-      }, 5000);
+      async.eachSeries(self.players, function(player, cb) {
+        if (player && player.account) {
+          self.playerQuit(player.account, 'quit', cb);
+        }
+      }, function() {
+        self.status = ABORTED;
+        self.trigger('game-abort');
+        setTimeout(function() {
+          self.destroy();
+        }, 5000);
+      });
     }
   });
 };

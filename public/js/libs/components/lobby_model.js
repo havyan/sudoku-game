@@ -44,6 +44,9 @@
     },
 
     playerQuit : function(gameId, account) {
+      if (account === this.attr('user.account')) {
+        this.attr('userStatus', 'free');
+      }
       var game = this.findGame(gameId);
       if (game) {
         var index = _.findIndex(game.attr('players'), function(player) {
@@ -63,6 +66,9 @@
     },
 
     setPlayer : function(gameId, index, player) {
+      if (player.account === this.attr('user.account')) {
+        this.attr('userStatus', 'playing');
+      }
       var game = this.findGame(gameId);
       game.attr('players').attr(index, player);
       this.replaceGame(gameId, game.attr());

@@ -140,7 +140,7 @@
   height: 45px;
 }
 
-.lobby-game.empty .lobby-table {
+.free .lobby-game.empty .lobby-table {
   cursor: pointer;
 }
 
@@ -303,6 +303,6 @@
   left: 22px;
 }
 
-.lobby-game.waiting .lobby-player.empty.normal {
+.free .lobby-game.waiting .lobby-player.empty.normal {
   cursor: pointer;
 }
