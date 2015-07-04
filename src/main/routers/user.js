@@ -42,5 +42,19 @@ module.exports = function(router) {
       }
     });
   });
+
+  router.put('/user/icon', function(req, res, next) {
+    UserDAO.updateByAccount(req.session.account, {
+      icon : req.body.icon
+    }, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status : 'ok'
+        });
+      }
+    });
+  });
 };
 

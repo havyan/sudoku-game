@@ -18,7 +18,7 @@
       </div>
       {{/unless}}
       <div class="lobby-player-icon">
-        <img src="/imgs/default/user.png"></img>
+        <img src="{{icon}}"></img>
       </div>
       <div class="lobby-player-name">
         {{name}}

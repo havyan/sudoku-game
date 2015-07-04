@@ -269,6 +269,19 @@
         success : success,
         error : error
       });
+    },
+
+    setIcon : function(icon, success, error) {
+      return $.ajax({
+        type : 'put',
+        url : '/user/icon',
+        dataType : 'json',
+        data : {
+          icon : icon
+        },
+        success : success,
+        error : error
+      });
     }
   }, {});
 

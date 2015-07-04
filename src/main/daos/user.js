@@ -8,6 +8,7 @@ var MONEY = 50000;
 var UserSchema = new Schema({
   account : String,
   name : String,
+  icon : String,
   grade : String,
   points : Number,
   rounds : Number,

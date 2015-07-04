@@ -1,3 +1,4 @@
+var fs = require('fs');
 var HttpError = require('../http_error');
 var winston = require('winston');
 var UserDAO = require('../daos/user');
@@ -71,6 +72,7 @@ module.exports = function(router) {
         }
         res.render('lobby', {
           userName : user.name,
+          userIcon : user.icon,
           money : user.money
         });
       });
@@ -104,7 +106,18 @@ module.exports = function(router) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
       } else if (user) {
-        res.render('user', user);
+        fs.readdir('public/imgs/default/user_icons', function(error, files) {
+          if (error) {
+            next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
+          } else {
+            res.render('user', {
+              user : user,
+              defaultIcons : files.map(function(file) {
+                return '/imgs/default/user_icons/' + file;
+              })
+            });
+          }
+        });
       } else {
         next(new HttpError('No user found for account ' + req.body.account, HttpError.NOT_FOUND));
       }

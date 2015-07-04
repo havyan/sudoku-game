@@ -47,6 +47,25 @@
         });
       },
 
+      '.change-icon-action click' : function(element) {
+        var $icons = this.element.find('.default-icons');
+        if (!$icons.hasClass('show')) {
+          var value = element.closest('.icon').data('value');
+          $icons.find('img').removeClass('selected');
+          $icons.find('[src="' + value + '"]').addClass('selected');
+        }
+        $icons.toggleClass('show');
+      },
+
+      '.default-icons img click' : function(element) {
+        var $icon = this.element.find('.icon-img');
+        var icon = element.attr('src');
+        Rest.User.setIcon(icon, function() {
+          $icon.attr('src', icon);
+        }, function() {
+        });
+      },
+
       '.close-button click' : function() {
         window.location.href = "/main";
       }
