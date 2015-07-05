@@ -1,6 +1,15 @@
 <div class="upload-icon-container">
   <div class="upload-icon-display">
     <span>请点击上传来上传头像</span>
+    <div class="upload-icon-cutter">
+      <div class="dragger-left"></div>
+      <div class="dragger-right"></div>
+      <div class="dragger-top"></div>
+      <div class="dragger-bottom"></div>
+      <div class="inner-icon-container">
+        <div class="inner-icon-display"></div>
+      </div>
+    </div>
   </div>
   <div class="progress">
     <div class="progress-bar" role="progressbar" style="width: 0%;">
