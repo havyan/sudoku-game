@@ -150,3 +150,48 @@
 	background: #f0ad4e;
 	border-color: #eea236;
 }
+
+.upload-icon-container {
+  width: 560px;
+  margin: auto;
+}
+
+.upload-icon-display {
+  height: 300px;
+  width: 558px;
+  line-height: 300px;
+  font-size: 40px;
+  color: gray;
+  text-align: center;
+  border: 1px solid gray;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.upload-icon-container .progress {
+  margin: auto;
+  margin-top: 20px;
+  width: 60%;
+}
+
+.upload-action {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.upload-action .btn {
+  display: inline-block;
+  position: relative;
+  font-size: 20px;
+}
+
+.upload-action input {
+  width: 66px;
+  height: 42px;
+  opacity: 0;
+  display: inline-block;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}

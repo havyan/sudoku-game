@@ -352,6 +352,7 @@ input.invalid, input:focus.invalid {
 .game-player-icon img {
   width: 32px;
   height: 32px;
+  border-radius: 16px;
   margin-top: 4px;
 }
 

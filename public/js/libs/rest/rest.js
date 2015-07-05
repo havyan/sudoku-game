@@ -271,13 +271,14 @@
       });
     },
 
-    setIcon : function(icon, success, error) {
+    setIcon : function(icon, library, success, error) {
       return $.ajax({
         type : 'put',
         url : '/user/icon',
         dataType : 'json',
         data : {
-          icon : icon
+          icon : icon,
+          library : library
         },
         success : success,
         error : error

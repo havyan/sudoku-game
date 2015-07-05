@@ -61,11 +61,31 @@
         var $icons = this.element.find('.default-icons');
         var $icon = this.element.find('.icon-img');
         var icon = element.attr('src');
-        Rest.User.setIcon(icon, function() {
+        Rest.User.setIcon(icon, true, function(result) {
           $icon.attr('src', icon);
           $icons.find('img').removeClass('selected');
           $icons.find('[src="' + icon + '"]').addClass('selected');
         }, function() {
+        });
+      },
+
+      '.upload-icon-action click' : function(element) {
+        var $icon = this.element.find('.icon-img');
+        Dialog.show({
+          title : '上传头像',
+          control : UploadIconPanel,
+          autoClose : false,
+          actions : [Dialog.CANCEL_ACTION, {
+            name : '确认',
+            userClass : 'btn-primary',
+            callback : function(element) {
+              Rest.User.setIcon(this.control.path, false, function(result) {
+                $icon.attr('src', result.path);
+              }, function() {
+              });
+              this.hide();
+            }
+          }]
         });
       },
 

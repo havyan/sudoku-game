@@ -1,0 +1,15 @@
+<div class="upload-icon-container">
+  <div class="upload-icon-display">
+    <span>请点击上传来上传头像</span>
+  </div>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 0%;">
+      0%
+    </div>
+  </div>
+  <div class="upload-action">
+    <span class="btn btn-success"><span>上传</span>
+      <input type="file" name="files[]"  data-url="/user/icon" accept="image/*">
+    </span>
+  </div>
+</div>
