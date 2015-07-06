@@ -91,6 +91,13 @@ module.exports = function(router) {
                     path : iconPath
                   });
                 }
+                setTimeout(function() {
+                  fs.unlink(source, function(error) {
+                    if (error) {
+                      winston.error(error);
+                    }
+                  });
+                }, 1000);
               });
             }
           });
@@ -112,6 +119,13 @@ module.exports = function(router) {
           status : 'ok',
           path : TMP_ICON_DIR + path.substring(path.lastIndexOf('/'), path.length)
         });
+        setTimeout(function() {
+          fs.unlink(path, function(error) {
+            if (error) {
+              winston.error(error);
+            }
+          });
+        }, 600000);
       }
     });
   });
