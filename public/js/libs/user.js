@@ -79,7 +79,8 @@
             name : '确认',
             userClass : 'btn-primary',
             callback : function(element) {
-              Rest.User.setIcon(this.control.path, false, function(result) {
+              var bound = this.control.getCutterBound();
+              Rest.User.setIcon(this.control.path, false, bound, function(result) {
                 $icon.attr('src', result.path);
               }, function() {
               });

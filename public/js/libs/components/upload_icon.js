@@ -24,27 +24,29 @@
         done : function(e, data) {
           var $icon = element.find('.upload-icon-display');
           self.path = data.result.path;
-          $icon.css('background-image', 'url(' + data.result.path + ')');
-          element.find('.inner-icon-display').css('background-image', 'url(' + data.result.path + ')');
-          $icon.find('span').hide();
-          element.find('.upload-icon-cutter').show();
-          self.resetCutter($icon.width() / 2 - 75, $icon.height() / 2 - 75, 150, 150);
+          self.setIconBound(function() {
+            $icon.css('background-image', 'url(' + data.result.path + ')');
+            element.find('.inner-icon-display').css('background-image', 'url(' + data.result.path + ')');
+            $icon.find('span').hide();
+            element.find('.upload-icon-cutter').show();
+            self.resetCutter($icon.width() / 2 - 75, $icon.height() / 2 - 75, 150, 150);
+          });
         }
       });
 
       $innerIconContainer.draggable({
         drag : function(event, ui) {
-          var boundaryRight = $iconCutter.width() - $innerIconContainer.width();
-          var boundaryBottom = $iconCutter.height() - $innerIconContainer.height();
+          var boundaryRight = self.bound.left + self.bound.width - $innerIconContainer.width();
+          var boundaryBottom = self.bound.top + self.bound.height - $innerIconContainer.height();
           if (ui.position.top > boundaryBottom) {
             ui.position.top = boundaryBottom;
-          } else if (ui.position.top < 0) {
-            ui.position.top = 0;
+          } else if (ui.position.top < self.bound.top) {
+            ui.position.top = self.bound.top;
           }
           if (ui.position.left > boundaryRight) {
             ui.position.left = boundaryRight;
-          } else if (ui.position.left < 0) {
-            ui.position.left = 0;
+          } else if (ui.position.left < self.bound.left) {
+            ui.position.left = self.bound.left;
           }
           self.resetCutter(ui.position.left, ui.position.top, $innerIconContainer.width(), $innerIconContainer.height());
         },
@@ -57,10 +59,11 @@
         axis : 'x',
         drag : function(event, ui) {
           var boundaryRight = $right.position().left;
+          var boundaryLeft = Math.max(self.bound.left - DRAGGER_WIDTH, $right.position().left - (self.bound.top + self.bound.height - $top.position().top));
           if (ui.position.left > boundaryRight) {
             ui.position.left = boundaryRight;
-          } else if (ui.position.left < -DRAGGER_WIDTH) {
-            ui.position.left = -DRAGGER_WIDTH;
+          } else if (ui.position.left < boundaryLeft) {
+            ui.position.left = boundaryLeft;
           }
           var size = boundaryRight - ui.position.left - DRAGGER_WIDTH;
           self.resetCutter(ui.position.left + DRAGGER_WIDTH, ui.position.top, size, size);
@@ -75,10 +78,11 @@
         axis : 'x',
         drag : function(event, ui) {
           var boundaryLeft = $left.position().left;
+          var boundaryRight = Math.min(self.bound.left + self.bound.width, $left.position().left + (self.bound.top + self.bound.height - $top.position().top));
           if (ui.position.left < boundaryLeft) {
             ui.position.left = boundaryLeft;
-          } else if (ui.position.left > $iconCutter.width()) {
-            ui.position.left = $iconCutter.width();
+          } else if (ui.position.left > boundaryRight) {
+            ui.position.left = boundaryRight;
           }
           var size = ui.position.left - boundaryLeft - DRAGGER_WIDTH;
           self.resetCutter(boundaryLeft + DRAGGER_WIDTH, ui.position.top, size, size);
@@ -93,11 +97,12 @@
       $top.draggable({
         axis : 'y',
         drag : function(event, ui) {
+          var boundaryTop = Math.max(self.bound.top - DRAGGER_WIDTH, $bottom.position().top - (self.bound.left + self.bound.width - $left.position().left));
           var boundaryBottom = $bottom.position().top;
           if (ui.position.top > boundaryBottom) {
             ui.position.top = boundaryBottom;
-          } else if (ui.position.top < -DRAGGER_WIDTH) {
-            ui.position.top = -DRAGGER_WIDTH;
+          } else if (ui.position.top < boundaryTop) {
+            ui.position.top = boundaryTop;
           }
           var size = boundaryBottom - ui.position.top - DRAGGER_WIDTH;
           self.resetCutter(ui.position.left + DRAGGER_WIDTH, ui.position.top + DRAGGER_WIDTH, size, size);
@@ -113,10 +118,11 @@
         axis : 'y',
         drag : function(event, ui) {
           var boundaryTop = $top.position().top;
+          var boundaryBottom = Math.min(self.bound.top + self.bound.height, $top.position().top + (self.bound.left + self.bound.width - $left.position().left));
           if (ui.position.top < boundaryTop) {
             ui.position.top = boundaryTop;
-          } else if (ui.position.top > $iconCutter.height()) {
-            ui.position.top = $iconCutter.height();
+          } else if (ui.position.top > boundaryBottom) {
+            ui.position.top = boundaryBottom;
           }
           var size = ui.position.top - boundaryTop - DRAGGER_WIDTH;
           self.resetCutter(ui.position.left + DRAGGER_WIDTH, boundaryTop + DRAGGER_WIDTH, size, size);
@@ -127,6 +133,40 @@
           self.resetCutter(ui.position.left + DRAGGER_WIDTH, boundaryTop + DRAGGER_WIDTH, size, size);
         }
       });
+    },
+
+    setIconBound : function(callback) {
+      var self = this;
+      var image = new Image();
+      image.src = this.path;
+      $icon = this.element.find('.upload-icon-display');
+      $(image).load(function() {
+        var zoom = $icon.width() / this.width;
+        if (zoom * this.height > $icon.height()) {
+          zoom = $icon.height() / this.height;
+        }
+        var width = this.width * zoom;
+        var height = this.height * zoom;
+        self.bound = {
+          left : ($icon.width() - width) / 2,
+          top : ($icon.height() - height) / 2,
+          width : width,
+          height : height
+        };
+        if (callback) {
+          callback();
+        }
+      });
+    },
+
+    getCutterBound : function() {
+      var $cutter = this.element.find('.inner-icon-container');
+      return {
+        x : ($cutter.position().left - this.bound.left) / this.bound.width,
+        y : ($cutter.position().top - this.bound.top) / this.bound.height,
+        width : $cutter.width() / this.bound.width,
+        height : $cutter.height() / this.bound.height
+      };
     },
 
     resetCutter : function(x, y, width, height) {

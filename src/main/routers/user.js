@@ -1,4 +1,5 @@
 var fs = require('fs');
+var gm = require('gm');
 var formidable = require('formidable');
 var HttpError = require('../http_error');
 var winston = require('winston');
@@ -64,25 +65,36 @@ module.exports = function(router) {
     } else {
       var fileName = req.body.icon.substring(req.body.icon.lastIndexOf('/') + 1, req.body.icon.length);
       var iconPath = ICON_DIR + '/' + fileName;
-      var readStream = fs.createReadStream('public' + req.body.icon);
-      var writeStream = fs.createWriteStream('public' + iconPath);
-      readStream.pipe(writeStream);
-      readStream.on('end', function() {
-        UserDAO.updateByAccount(req.session.account, {
-          icon : iconPath
-        }, function(error, result) {
-          if (error) {
-            next(new HttpError(error));
-          } else {
-            res.send({
-              status : 'ok',
-              path : iconPath
-            });
-          }
-        });
-      });
-      readStream.on('error', function() {
-        next(new HttpError('Error happen when copy icon file.'));
+      var source = 'public' + req.body.icon;
+      var dest = 'public' + iconPath;
+      gm(source).size(function(error, size) {
+        if (error) {
+          next(new HttpError(error));
+        } else {
+          var bound = JSON.parse(req.body.bound);
+          var width = size.width * bound.width;
+          var height = size.height * bound.height;
+          var x = size.width * bound.x;
+          var y = size.height * bound.y;
+          gm(source).crop(width, height, x, y).write(dest, function(error) {
+            if (error) {
+              next(new HttpError(error));
+            } else {
+              UserDAO.updateByAccount(req.session.account, {
+                icon : iconPath
+              }, function(error, result) {
+                if (error) {
+                  next(new HttpError(error));
+                } else {
+                  res.send({
+                    status : 'ok',
+                    path : iconPath
+                  });
+                }
+              });
+            }
+          });
+        }
       });
     }
   });
