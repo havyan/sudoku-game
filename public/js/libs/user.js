@@ -70,6 +70,7 @@
       },
 
       '.upload-icon-action click' : function(element) {
+        var $icons = this.element.find('.default-icons');
         var $icon = this.element.find('.icon-img');
         Dialog.show({
           title : '上传头像',
@@ -82,6 +83,7 @@
               var bound = this.control.getCutterBound();
               Rest.User.setIcon(this.control.path, false, bound, function(result) {
                 $icon.attr('src', result.path);
+                $icons.find('img').removeClass('selected');
               }, function() {
               });
               this.hide();

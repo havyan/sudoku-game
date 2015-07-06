@@ -50,16 +50,30 @@ module.exports = function(router) {
 
   router.put('/user/icon', function(req, res, next) {
     if (JSON.parse(req.body.library)) {
-      UserDAO.updateByAccount(req.session.account, {
-        icon : req.body.icon
-      }, function(error, result) {
+      UserDAO.findOneByAccount(req.session.account, function(error, user) {
         if (error) {
           next(new HttpError(error));
         } else {
-          res.send({
-            status : 'ok',
-            path : req.body.icon
+          var oldIcon = user.icon;
+          UserDAO.updateByAccount(req.session.account, {
+            icon : req.body.icon
+          }, function(error, result) {
+            if (error) {
+              next(new HttpError(error));
+            } else {
+              res.send({
+                status : 'ok',
+                path : req.body.icon
+              });
+            }
           });
+          if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
+            fs.unlink('public' + oldIcon, function(error) {
+              if (error) {
+                winston.error(error);
+              }
+            });
+          }
         }
       });
     } else {
@@ -80,26 +94,40 @@ module.exports = function(router) {
             if (error) {
               next(new HttpError(error));
             } else {
-              UserDAO.updateByAccount(req.session.account, {
-                icon : iconPath
-              }, function(error, result) {
+              UserDAO.findOneByAccount(req.session.account, function(error, user) {
                 if (error) {
                   next(new HttpError(error));
                 } else {
-                  res.send({
-                    status : 'ok',
-                    path : iconPath
-                  });
-                }
-                setTimeout(function() {
-                  fs.unlink(source, function(error) {
+                  var oldIcon = user.icon;
+                  UserDAO.updateByAccount(req.session.account, {
+                    icon : iconPath
+                  }, function(error, result) {
                     if (error) {
-                      winston.error(error);
+                      next(new HttpError(error));
+                    } else {
+                      res.send({
+                        status : 'ok',
+                        path : iconPath
+                      });
                     }
                   });
-                }, 1000);
+                  if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
+                    fs.unlink('public' + oldIcon, function(error) {
+                      if (error) {
+                        winston.error(error);
+                      }
+                    });
+                  }
+                }
               });
             }
+            setTimeout(function() {
+              fs.unlink(source, function(error) {
+                if (error) {
+                  winston.error(error);
+                }
+              });
+            }, 1000);
           });
         }
       });
