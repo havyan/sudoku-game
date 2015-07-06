@@ -1,9 +1,9 @@
 # Get Started
-## Install GraphicsMagick
-```
 ## Install MongoDB
 ```
 sudo apt-get install mongo
+```
+## Install GraphicsMagick
 ```
 sudo apt-get install graphicsmagick
 ```
