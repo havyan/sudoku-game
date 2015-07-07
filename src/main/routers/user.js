@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var fs = require('fs');
 var gm = require('gm');
 var formidable = require('formidable');
@@ -145,7 +146,7 @@ module.exports = function(router) {
         var path = files['files[]'].path;
         res.send({
           status : 'ok',
-          path : TMP_ICON_DIR + path.substring(path.lastIndexOf('/'), path.length)
+          path : TMP_ICON_DIR + '/' + _.last(path.split(/[/\\]/))
         });
         setTimeout(function() {
           fs.unlink(path, function(error) {
