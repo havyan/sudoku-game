@@ -43,10 +43,8 @@
       this.element.find('.lobby-nav-real-room, .lobby-nav-virtual-room').removeClass('active');
       $room.addClass('active').parents('.lobby-nav-item').find('.lobby-nav-virtual-room').addClass('active');
       this.element.find('.lobby-content').html(can.view('/js/libs/mst/lobby_room.mst', room, {
-        tableOrder : function(game) {
-          return _.findIndex(room.attr('games'), {
-            id : game.id
-          }) + 1;
+        tableOrder : function(index) {
+          return index() + 1;
         },
         tableInfo : function(game) {
           if (game.status === 'empty') {
@@ -62,6 +60,14 @@
             return '游戏进行中<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
           } else if (game.status === 'over') {
             return '游戏结束';
+          }
+        },
+        seatAvailable : function(index, context) {
+          var capacity = context.scope._parent.read('capacity').value;
+          if (!capacity || index() < capacity) {
+            return 'available';
+          } else {
+            return 'unavailable';
           }
         }
       }));
@@ -149,7 +155,18 @@
       });
     },
 
-    '.free .lobby-game.waiting .lobby-player.empty.normal click' : function(e) {
+    '.free .lobby-game.waiting .lobby-table click' : function(e) {
+      var gameId = e.closest('.lobby-game').data('id');
+      var game = this.options.model.findGame(gameId);
+      var index = _.findIndex(game.attr('players'), function(player) {
+        return player == null;
+      });
+      Rest.Game.playerJoin(gameId, index, {}, function(result) {
+        window.open('/table/' + result.gameId, '_blank');
+      });
+    },
+
+    '.free .lobby-game.waiting .lobby-player.empty.normal.available click' : function(e) {
       var model = this.options.model;
       var gameId = e.closest('.lobby-game').data('id');
       var game = model.findGame(gameId);

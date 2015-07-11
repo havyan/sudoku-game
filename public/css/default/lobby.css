@@ -134,13 +134,24 @@
   position: absolute;
 }
 
-.lobby-player.empty {
+.lobby-player.empty.available {
   background: url(../../imgs/default/lobby_seat.png) no-repeat;
   width: 47px;
   height: 45px;
 }
 
+.lobby-player.empty.unavailable {
+  background: gray;
+  border-radius: 2px;
+  width: 47px;
+  height: 45px;
+}
+
 .free .lobby-game.empty .lobby-table {
+  cursor: pointer;
+}
+
+.free .lobby-game.waiting .lobby-table {
   cursor: pointer;
 }
 
@@ -303,6 +314,6 @@
   left: 22px;
 }
 
-.free .lobby-game.waiting .lobby-player.empty.normal {
+.free .lobby-game.waiting .lobby-player.empty.normal.available {
   cursor: pointer;
 }
