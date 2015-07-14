@@ -18,6 +18,6 @@
     {{/results}}
   </tbody>
 </table>
-<div>
+<div class="destroy-countdown-label">
   棋局已完成，房间将在<span class="destroy-countdown-number">120</span>秒内关闭，请您尽快退出。
 </div>

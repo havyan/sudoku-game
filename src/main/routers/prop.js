@@ -1,6 +1,5 @@
 var HttpError = require('../http_error');
 var winston = require('winston');
-var Rule = require('../models/rule');
 
 module.exports = function(router) {
   router.post('/prop/buy', function(req, res, next) {

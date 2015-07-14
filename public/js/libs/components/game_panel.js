@@ -30,6 +30,9 @@
           }
         }
       });
+      $(window).bind('beforeunload', function() {
+        return '确定离开游戏页面吗？';
+      });
     },
 
     '.game-state-hide-button click' : function() {
@@ -73,15 +76,14 @@
 
     '{model} maxTimeoutReached' : function() {
       var self = this;
-      Dialog.showDialog({
+      Dialog.show({
         title : '确认',
         content : '游戏将在<span class="max-timeout-countdown-number">20</span>秒后退出，是否继续？',
         autoClose : false,
         actions : [{
           name : '继续',
-          btnClass : 'btn-primary',
-          callback : function() {
-            var element = $(this);
+          userClass : 'btn-primary',
+          callback : function(element) {
             self.options.model.goahead(function() {
               element.closest('.modal').modal('hide');
             });
@@ -98,24 +100,43 @@
       $('.destroy-countdown-number').html(newStage);
     },
 
+    '{model} waitCountdownStage' : function(model, e, newStage) {
+      if (newStage === '00:00:00') {
+        if (model.isBanker()) {
+          Dialog.message('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
+        } else {
+          Dialog.message('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
+        }
+      }
+    },
+
     '{model} quit' : function() {
       window.location.href = "/main";
     },
 
     '{model} results' : function(model, e, results) {
-      var dialog = Dialog.showDialog({
+      var dialog = Dialog.show({
         title : '排行榜',
         template : '/js/libs/mst/results.mst',
         data : model,
         autoClose : false,
         actions : [{
           name : '关闭',
-          dismiss : true
+          dismiss : true,
+          callback : function() {
+            model.quit(function() {
+              if (JSON.parse(window.localStorage.getItem('lobby_open'))) {
+                window.close();
+              } else {
+                window.location.href = "/main";
+              }
+            });
+          }
         }, {
           name : '退出',
-          btnClass : 'btn-primary',
-          callback : function() {
-            $(this).closest('.modal').modal('hide');
+          userClass : 'btn-primary',
+          callback : function(element) {
+            this.hide();
             model.quit(function() {
               window.location.href = "/main";
             });
@@ -130,7 +151,7 @@
     },
 
     resetStartButton : function() {
-      if (this.options.model.attr('players').length <= 1) {
+      if (_.compact(this.options.model.attr('players')).length <= 1) {
         this.element.find('.game-start-button').attr('disabled', 'disabled');
       } else {
         this.element.find('.game-start-button').removeAttr('disabled');
@@ -175,14 +196,18 @@
     '.game-quit-button click' : function() {
       var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
-        Dialog.showConfirm('游戏中，是否强行退出游戏?', function() {
+        var message = this.options.model.isBanker() ? '棋局已开始，您的建桌费不会返还，确定要退出？' : '棋局已开始，确定要退出？';
+        Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });
         });
       } else {
-        this.options.model.quit(function() {
-          window.location.href = "/main";
+        var message = this.options.model.isBanker() ? '正在等待棋局，您的建桌费不会返还，确定要退出？' : '正在等待棋局，确定要退出？';
+        Dialog.confirm(message, function() {
+          self.options.model.quit(function() {
+            window.location.href = "/main";
+          });
         });
       }
     },

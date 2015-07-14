@@ -1,39 +1,47 @@
 var winston = require('winston');
+var _ = require('lodash');
+var SYSTEM_GAME_TOPICS = ['init', 'player-joined', 'player-quit', 'status-changed'];
 
 var EventCenter = function(io) {
-	this.io = io;
-	this.bind();
-	this.roomEmitters = {};
-	this.userEmitters = {};
+  this.io = io;
+  this.systemEmitter = this.io.of('/events/system');
+  this.gameEmitters = {};
+  this.initEvents();
 };
 
-EventCenter.prototype.bind = function() {
-	var self = this;
-	var gameManager = global.gameManager;
-	gameManager.on('game-created', function(game) {
-		var gameId = game.id;
-		winston.info("Game " + gameId + " created");
-		var roomEmitter = self.io.of('/events/game/' + gameId).on('connection', function(socket) {
-			// TODO find how to get session
-		});
-		self.roomEmitters[gameId] = roomEmitter;
-		game.any(function() {
-			var topic = arguments[0];
-			var topicArgs = [];
-			if (arguments.length >= 2) {
-				for (var i = 1; i < arguments.length; i++) {
-					topicArgs.push(arguments[i]);
-				}
-			}
-			roomEmitter.emit(topic, JSON.stringify(topicArgs));
-		});
-	});
+EventCenter.prototype.initEvents = function() {
+  var self = this;
+  global.gameManager.getRealRooms().forEach(function(room) {
+    room.games.forEach(function(game) {
+      self.bindGame(game);
+    });
 
-	gameManager.on('game-removed', function(game) {
-		delete self.roomEmitters[game.id];
-	});
+    room.on('game-reset', function(newGame, oldGame) {
+      self.bindGame(newGame);
+      self.systemEmitter.emit('game-reset', JSON.stringify([oldGame.id, newGame.toSimpleJSON()]));
+    });
+  });
+};
+
+EventCenter.prototype.bindGame = function(game) {
+  var self = this;
+  this.gameEmitters[game.id] = this.io.of('/events/game/' + game.id);
+  game.any(function() {
+    var topic = arguments[0];
+    var topicArgs = [];
+    if (arguments.length >= 2) {
+      for (var i = 1; i < arguments.length; i++) {
+        topicArgs.push(arguments[i]);
+      }
+    }
+    self.gameEmitters[game.id].emit(topic, JSON.stringify(topicArgs));
+    if (_.contains(SYSTEM_GAME_TOPICS, topic)) {
+      topicArgs.unshift(game.id);
+      self.systemEmitter.emit('game-' + topic, JSON.stringify(topicArgs));
+    }
+  });
 };
 
 module.exports = function(server) {
-	global.eventCenter = new EventCenter(require('socket.io')(server));
+  global.eventCenter = new EventCenter(require('socket.io')(server));
 };

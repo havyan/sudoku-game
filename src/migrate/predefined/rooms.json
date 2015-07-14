@@ -1,0 +1,53 @@
+{
+  "parents": [
+    {
+      "name": "白羊座",
+      "virtual": true
+    }, {
+      "name": "金牛座",
+      "virtual": true
+    }, {
+      "name": "双子座",
+      "virtual": true
+    }, {
+      "name": "巨蟹座",
+      "virtual": true
+    }, {
+      "name": "狮子座",
+      "virtual": true
+    }, {
+      "name": "处女座",
+      "virtual": true
+    }, {
+      "name": "天秤座",
+      "virtual": true
+    }, {
+      "name": "天蝎座",
+      "virtual": true
+    }, {
+      "name": "射手座",
+      "virtual": true
+    }, {
+      "name": "摩羯座",
+      "virtual": true
+    }, {
+      "name": "水瓶座",
+      "virtual": true
+    }, {
+      "name": "双鱼座",
+      "virtual": true
+    }
+  ],
+  "children": [
+    {
+      "name": "房间一",
+      "virtual": false
+    }, {
+      "name": "房间二",
+      "virtual": false
+    }, {
+      "name": "房间三",
+      "virtual": false
+    }
+  ]
+}

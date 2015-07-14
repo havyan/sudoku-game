@@ -1,0 +1,83 @@
+<div class="modal fade lobby-game-form" tabindex="-1" aria-hidden="false" data-backdrop="static" data-backdrop=static data-keyboard=false>
+  <div class="modal-dialog">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+    <div class="content">
+      <div class="lobby-game-form-row">
+        <div class="name">
+          题目等级
+        </div>
+        <div class="value level">
+          <select>
+            {{#levels}}
+            <option data-code="{{code}}">{{name}}</option>
+            {{/levels}}
+          </select>
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          每步时间
+        </div>
+        <div class="value step-time">
+          <select>
+            {{#stepTimes}}
+            <option data-total="{{total}}">{{total}}秒</option>
+            {{/stepTimes}}
+          </select>
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          每局时间
+        </div>
+        <div class="value duration">
+          <select>
+            {{#durations}}
+            <option data-value="{{this}}">{{this}}小时</option>
+            {{/durations}}
+          </select>
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          每局人数
+        </div>
+        <div class="value capacity">
+          <select>
+            {{#capacities}}
+            <option data-value="{{this}}">{{this}}人</option>
+            {{/capacities}}
+          </select>
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          开始方式
+        </div>
+        <div class="value start-mode">
+          <input type="radio" name="start_mode" data-value="auto" checked="checked" />
+          人齐自动开始
+          <input type="radio" name="start_mode" data-value="manual" />
+          庄家手动开始
+        </div>
+      </div>
+      <div class="lobby-game-form-row">
+        <div class="name">
+          等待时间
+        </div>
+        <div class="value wait-time">
+          <select>
+            {{#waitTimes}}
+            <option data-value="{{this}}">{{this}}分钟</option>
+            {{/waitTimes}}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="lobby-game-form-bottom">
+      <button type="button" class="confirm">
+        确认
+      </button>
+    </div>
+  </div>
+</div>

@@ -80,10 +80,10 @@
         type : element.closest('.store-item').data('type')
       }).value;
       if ((count + current) > 999) {
-        Dialog.showMessage('单个道具最多只能买999个。');
+        Dialog.message('单个道具最多只能买999个。');
         $value.val(999 - current);
       } else if (type.price * count > money) {
-        Dialog.showMessage('天才币余额不足，请充值。');
+        Dialog.message('天才币余额不足，请充值。');
       } else {
         Rest.Prop.buy(type.attr('type'), count, function(result) {
           if (result.success) {
@@ -91,9 +91,9 @@
             _.find(self.model.attr('props'), {
               type : type.attr('type')
             }).attr('value', result.count);
-            Dialog.showMessage('购买成功');
+            Dialog.message('购买成功');
           } else {
-            Dialog.showMessage('购买失败: ' + result.reason);
+            Dialog.message('购买失败: ' + result.reason);
           }
         }, function() {
         });

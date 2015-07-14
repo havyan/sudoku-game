@@ -1,7 +1,7 @@
+var fs = require('fs');
 var HttpError = require('../http_error');
 var winston = require('winston');
-var User = require('../models/user');
-var Prop = require('../models/prop');
+var UserDAO = require('../daos/user');
 
 module.exports = function(router) {
   /* GET home page. */
@@ -35,7 +35,7 @@ module.exports = function(router) {
   });
 
   router.post('/login', function(req, res, next) {
-    User.findOneByAccount(req.body.account, function(error, user) {
+    UserDAO.findOneByAccount(req.body.account, function(error, user) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
         return;
@@ -62,16 +62,18 @@ module.exports = function(router) {
 
   router.get('/main', function(req, res, next) {
     var game = global.gameManager.findGameByUser(req.session.account);
-    if (game && game.isOngoing()) {
-      res.redirect('/gameroom/' + game.id);
+    if (game && (game.isOngoing() || game.isWaiting())) {
+      res.redirect('/table/' + game.id);
     } else {
-      User.findOneByAccount(req.session.account, function(error, user) {
+      UserDAO.findOneByAccount(req.session.account, function(error, user) {
         if (error) {
           next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
           return;
         }
-        res.render('main', {
-          userName : user.name
+        res.render('lobby', {
+          userName : user.name,
+          userIcon : user.icon,
+          money : user.money
         });
       });
     }
@@ -85,19 +87,8 @@ module.exports = function(router) {
   });
 
   /* GET Game page. */
-  router.get('/gameroom', function(req, res, next) {
-    global.gameManager.playerJoin(req.session.account, function(error, game) {
-      if (error) {
-        next(new HttpError('Error when adding account' + req.session.account + ' to game: ' + error));
-        return;
-      }
-      res.redirect('/gameroom/' + game.id);
-    });
-  });
-
-  /* GET Game page. */
-  router.get('/gameroom/:id', function(req, res) {
-    res.render('game', {});
+  router.get('/table/:id', function(req, res) {
+    res.render('table', {});
   });
 
   router.get('/propstore', function(req, res, next) {
@@ -111,11 +102,22 @@ module.exports = function(router) {
   });
 
   router.get('/user', function(req, res, next) {
-    User.findOneByAccount(req.session.account, function(error, user) {
+    UserDAO.findOneByAccount(req.session.account, function(error, user) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
       } else if (user) {
-        res.render('user', user);
+        fs.readdir('public/imgs/default/user_icons', function(error, files) {
+          if (error) {
+            next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
+          } else {
+            res.render('user', {
+              user : user,
+              defaultIcons : files.map(function(file) {
+                return '/imgs/default/user_icons/' + file;
+              })
+            });
+          }
+        });
       } else {
         next(new HttpError('No user found for account ' + req.body.account, HttpError.NOT_FOUND));
       }

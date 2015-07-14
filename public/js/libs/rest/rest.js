@@ -34,6 +34,20 @@
       });
     },
 
+    playerJoin : function(id, index, params, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/game/' + id + '/player',
+        data : {
+          index : index,
+          params : JSON.stringify(params || {})
+        },
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     sendMessage : function(gameId, message, success, error) {
       return $.ajax({
         type : 'post',
@@ -153,6 +167,16 @@
       });
     },
 
+    useGlasses : function(gameId, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/game/' + gameId + '/glasses',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     setOptionsOnce : function(gameId, success, error) {
       return $.ajax({
         type : 'post',
@@ -242,6 +266,33 @@
         data : {
           points : points
         },
+        success : success,
+        error : error
+      });
+    },
+
+    setIcon : function(icon, library, bound, success, error) {
+      return $.ajax({
+        type : 'put',
+        url : '/user/icon',
+        dataType : 'json',
+        data : {
+          icon : icon,
+          library : library,
+          bound : JSON.stringify(bound)
+        },
+        success : success,
+        error : error
+      });
+    }
+  }, {});
+
+  can.Model('Rest.Lobby', {
+    getData : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/lobby/data',
+        dataType : 'json',
         success : success,
         error : error
       });

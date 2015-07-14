@@ -19,11 +19,11 @@
       },
 
       '.points-row .confirm click' : function(element) {
-        Dialog.showConfirm('您确定要修改积分吗？', function() {
-          $(this).closest('.modal').modal('hide');
+        Dialog.confirm('您确定要修改积分吗？', function() {
+          this.hide();
           var value = parseInt(element.siblings('.value-field').val());
           Rest.User.setPoints(value, function(result) {
-            Dialog.showMessage('修改积分成功!!!');
+            Dialog.message('修改积分成功!!!');
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
             if (result && result.grade_name) {
@@ -35,15 +35,60 @@
       },
 
       '.money-row .confirm click' : function(element) {
-        Dialog.showConfirm('您确定要修改天才币吗？', function() {
-          $(this).closest('.modal').modal('hide');
+        Dialog.confirm('您确定要修改天才币吗？', function() {
+          this.hide();
           var value = parseInt(element.siblings('.value-field').val());
           Rest.User.setMoney(value, function(result) {
-            Dialog.showMessage('修改天才币成功!!!');
+            Dialog.message('修改天才币成功!!!');
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
           }, function() {
           });
+        });
+      },
+
+      '.change-icon-action click' : function(element) {
+        var $icons = this.element.find('.default-icons');
+        if (!$icons.hasClass('show')) {
+          var value = element.closest('.icon').data('value');
+          $icons.find('img').removeClass('selected');
+          $icons.find('[src="' + value + '"]').addClass('selected');
+        }
+        $icons.toggleClass('show');
+      },
+
+      '.default-icons img click' : function(element) {
+        var $icons = this.element.find('.default-icons');
+        var $icon = this.element.find('.icon-img');
+        var icon = element.attr('src');
+        Rest.User.setIcon(icon, true, {}, function(result) {
+          $icon.attr('src', icon);
+          $icons.find('img').removeClass('selected');
+          $icons.find('[src="' + icon + '"]').addClass('selected');
+        }, function() {
+        });
+      },
+
+      '.upload-icon-action click' : function(element) {
+        var $icons = this.element.find('.default-icons');
+        var $icon = this.element.find('.icon-img');
+        Dialog.show({
+          title : '上传头像',
+          control : UploadIconPanel,
+          autoClose : false,
+          actions : [Dialog.CANCEL_ACTION, {
+            name : '确认',
+            userClass : 'btn-primary',
+            callback : function(element) {
+              var bound = this.control.getCutterBound();
+              Rest.User.setIcon(this.control.path, false, bound, function(result) {
+                $icon.attr('src', result.path);
+                $icons.find('img').removeClass('selected');
+              }, function() {
+              });
+              this.hide();
+            }
+          }]
         });
       },
 

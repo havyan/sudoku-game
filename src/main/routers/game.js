@@ -5,7 +5,7 @@ var Game = require('../models/game');
 module.exports = function(router) {
   /* GET Game. */
   router.get('/game/:id', function(req, res, next) {
-    var game = global.gameManager.getGame(req.params.id);
+    var game = global.gameManager.findGame(req.params.id);
     if (game) {
       game = game.toJSON(req.session.account);
       res.send(game);
@@ -23,12 +23,18 @@ module.exports = function(router) {
   });
 
   router.post('/game/:id/message', function(req, res, next) {
-    global.gameManager.addMessage(req.params.id, req.session.account, req.body.message, function(error, message) {
+    res.send(global.gameManager.addMessage(req.params.id, req.session.account, req.body.message));
+  });
+
+  router.post('/game/:id/player', function(req, res, next) {
+    var index = parseInt(req.body.index);
+    var params = JSON.parse(req.body.params);
+    global.gameManager.playerJoin(req.params.id, req.session.account, index, params, function(error, result) {
       if (error) {
         next(new HttpError(error));
-        return;
+      } else {
+        res.send(result);
       }
-      res.send(message);
     });
   });
 
@@ -109,6 +115,18 @@ module.exports = function(router) {
 
   router.post('/game/:id/delay', function(req, res, next) {
     global.gameManager.delay(req.params.id, req.session.account, function(error) {
+      if (error) {
+        next(new HttpError(error, HttpError.UNAUTHORIZED));
+      } else {
+        res.send({
+          status : 'ok'
+        });
+      }
+    });
+  });
+
+  router.post('/game/:id/glasses', function(req, res, next) {
+    global.gameManager.useGlasses(req.params.id, req.session.account, function(error) {
       if (error) {
         next(new HttpError(error, HttpError.UNAUTHORIZED));
       } else {

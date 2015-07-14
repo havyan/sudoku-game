@@ -1,0 +1,28 @@
+<div class="lobby-nav">
+  <div class="lobby-nav-rooms">
+    <div class="lobby-nav-rooms-container scroll-panel">
+      {{#rooms}}
+      <div class="lobby-nav-item" data-id="{{id}}">
+        <div class="lobby-nav-virtual-room">
+          {{name}}({{playersCount this}})
+        </div>
+        <div class="lobby-nav-item-content">
+          <div class="lobby-nav-item-line">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="0" width="0" stroke="#FFFFFF" fill="none">
+              <path />
+            </svg>
+          </div>
+          <div class="lobby-nav-real-rooms">
+            {{#children}}
+            <div class="lobby-nav-real-room" data-id="{{id}}">
+              {{name}}({{playersCount this}})
+            </div>
+            {{/children}}
+          </div>
+        </div>
+      </div>
+      {{/rooms}}
+    </div>
+  </div>
+</div>
+<div class="lobby-content {{userStatus}}"></div>

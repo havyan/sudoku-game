@@ -2,6 +2,7 @@
   {
     "account": "zhangsan",
     "name": "张三",
+    "icon": "/imgs/default/user_icons/default.png",
     "grade": "0",
     "points": 0,
     "rounds": 10,
@@ -10,6 +11,7 @@
   }, {
     "account": "lisi",
     "name": "李四",
+    "icon": "/imgs/default/user_icons/1.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -18,6 +20,7 @@
   }, {
     "account": "wangmazi",
     "name": "王麻子",
+    "icon": "/imgs/default/user_icons/2.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -26,6 +29,7 @@
   }, {
     "account": "xiaoming",
     "name": "小明",
+    "icon": "/imgs/default/user_icons/3.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -34,6 +38,7 @@
   }, {
     "account": "xiaohong",
     "name": "小红",
+    "icon": "/imgs/default/user_icons/4.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -42,6 +47,7 @@
   }, {
     "account": "xiaoqiang",
     "name": "小强",
+    "icon": "/imgs/default/user_icons/5.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -50,6 +56,7 @@
   }, {
     "account": "xiaofang",
     "name": "小Fang",
+    "icon": "/imgs/default/user_icons/6.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -58,6 +65,7 @@
   }, {
     "account": "tom",
     "name": "Tom",
+    "icon": "/imgs/default/user_icons/7.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -66,6 +74,7 @@
   }, {
     "account": "lucy",
     "name": "Lucy",
+    "icon": "/imgs/default/user_icons/8.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -74,6 +83,7 @@
   }, {
     "account": "kobe",
     "name": "Kobe",
+    "icon": "/imgs/default/user_icons/9.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -82,6 +92,7 @@
   }, {
     "account": "james",
     "name": "James",
+    "icon": "/imgs/default/user_icons/10.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -90,6 +101,7 @@
   }, {
     "account": "lily",
     "name": "Lily",
+    "icon": "/imgs/default/user_icons/11.png",
     "grade": "0",
     "points": 0,
     "rounds": 0,
@@ -98,6 +110,7 @@
   }, {
     "account": "EEE",
     "name": "EEE",
+    "icon": "/imgs/default/user_icons/12.png",
     "grade": "12",
     "points": 0,
     "rounds": 0,

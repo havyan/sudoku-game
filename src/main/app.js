@@ -1,5 +1,6 @@
 var winston = require('winston');
 var express = require('express');
+var async = require('async');
 var app = express();
 var path = require('path');
 var hbs = require('hbs');
@@ -14,9 +15,6 @@ var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
 var PropManager = require('./prop_manager');
-
-// Initialize db
-migrate();
 
 hbs.localsAsTemplateData(app);
 config.initialize(app);
@@ -73,5 +71,16 @@ app.use(function(err, req, res, next) {
     error : env === 'development' ? (err.error || err) : {}
   });
 });
+
+app.init = function(cb) {
+  async.series([
+  function(cb) {
+    // Initialize db
+    migrate(cb);
+  },
+  function(cb) {
+    global.gameManager.init(cb);
+  }], cb);
+};
 
 module.exports = app;

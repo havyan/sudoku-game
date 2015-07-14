@@ -1,94 +1,209 @@
 (function() {
   can.Control('Dialog', {
+    CANCEL_ACTION : {
+      name : '取消',
+      dismiss : true
+    },
 
-    showMessage : function(message) {
-      return this.showDialog({
+    CLOSE_ACTION : {
+      name : '关闭',
+      dismiss : true,
+      userClass : 'btn-primary'
+    },
+
+    /**
+     * params: message -> text or html
+     *         options -> optional, usally we don't need it, please refer to Dialog.show(options)
+     */
+    message : function(message, options) {
+      return this.show(this.merge({
         title : '消息',
         content : message,
         autoClose : true,
-        disposable : true,
-        actions : [{
-          name : '关闭',
-          dismiss : true,
-          callback : function(e) {
-            $(this).closest('.modal').modal('hide');
-          }
-        }]
-      });
+        actions : [this.CLOSE_ACTION]
+      }, options));
     },
 
-    showError : function(message) {
-      return this.showDialog({
+    /**
+     * params: error -> text or html
+     *         options -> optional, usally we don't need it, please refer to Dialog.show(options)
+     */
+    error : function(error, options) {
+      return this.show(this.merge({
         title : '错误',
-        content : message,
+        content : error,
         autoClose : true,
         disposable : true,
-        actions : [{
-          name : '关闭',
-          dismiss : true,
-          btnClass : 'btn-danger',
-          callback : function(e) {
-            $(this).closest('.modal').modal('hide');
-          }
-        }]
-      });
+        userClass : 'error-dialog',
+        actions : [this.CLOSE_ACTION]
+      }, options));
     },
 
-    showConfirm : function(message, confirmCallback, cancelCallback) {
-      return this.showDialog({
+    /**
+     * params: warning -> text or html
+     *         options -> optional, usally we don't need it, please refer to Dialog.show(options)
+     */
+    warning : function(warning, options) {
+      return this.show(this.merge({
+        title : '警告',
+        content : warning,
+        autoClose : true,
+        userClass : 'warning-dialog',
+        actions : [this.CLOSE_ACTION]
+      }, options));
+    },
+
+    /**
+     * params: message -> text or html
+     *         callback -> action handler of 'OK' button
+     *         options -> optional, usally we don't need it, please refer to Dialog.show(options)
+     */
+    confirm : function(message, callback, options) {
+      return this.show(this.merge({
         title : '确认',
         content : message,
         autoClose : false,
-        actions : [{
-          name : '取消',
-          dismiss : true,
-          callback : cancelCallback
-        }, {
-          name : '确认',
-          btnClass : 'btn-primary',
-          callback : confirmCallback
+        actions : [this.CANCEL_ACTION, {
+          name : 'OK',
+          userClass : 'btn-primary',
+          callback : callback
         }]
-      });
+      }, options));
     },
 
-    showDialog : function(options) {
-      if (!options.id) {
-        options.id = "dialog" + Date.now();
-      }
-      if (options.disposable === undefined) {
-        options.disposable = true;
-      }
-      if (options.actions) {
-        options.actions.forEach(function(action) {
-          if (!action.btnClass) {
-            action.btnClass = 'btn-default';
+    merge : function(destOptions, srcOptions) {
+      var destActions,
+          srcActions,
+          destLeftActions,
+          srcLeftActions;
+      if (srcOptions) {
+        destActions = destOptions.actions;
+        srcActions = srcOptions.actions;
+        destLeftActions = destOptions.leftActions;
+        srcLeftActions = srcOptions.leftActions;
+        delete destOptions.actions;
+        delete destOptions.leftActions;
+        $.extend(destOptions, srcOptions);
+        if (destActions && srcActions) {
+          if (_.isArray(srcActions)) {
+            destOptions.actions = srcActions;
+          } else {
+            destOptions.actions = [];
+            destActions.forEach(function(destAction) {
+              destOptions.actions.push($.extend({}, destAction, srcActions[destAction.name]));
+            });
           }
-        });
-      }
-      $('body').append(can.view('/js/libs/mst/dialog.mst', options));
-      var dialogElement = $('#' + options.id);
-      var contentElement = dialogElement.find('.modal-body');
-      if (options.control) {
-        new options.control(contentElement, options.data ? options.data : {});
-      } else if (options.template) {
-        contentElement.html(can.view(options.template, options.data ? options.data : {}));
-      } else if (options.content) {
-        contentElement.html(options.content);
-      }
-      if (options.actions) {
-        options.actions.forEach(function(action, index) {
-          if (action.callback) {
-            dialogElement.find('.modal-footer .btn:eq(' + index + ')').click(action.callback);
+        } else {
+          destOptions.actions = destActions;
+        }
+        if (destLeftActions && srcLeftActions) {
+          if (_.isArray(srcLeftActions)) {
+            destOptions.leftActions = srcLeftActions;
+          } else {
+            destOptions.leftActions = [];
+            destLeftActions.forEach(function(destLeftAction) {
+              destOptions.leftActions.push($.extend({}, destLeftAction, srcLeftActions[destLeftAction.name]));
+            });
           }
-        });
+        } else {
+          destOptions.leftActions = destLeftActions;
+        }
       }
-      if (options.disposable) {
-        dialogElement.on('hidden.bs.modal', function() {
-          dialogElement.remove();
-        });
-      }
-      dialogElement.modal();
-      return dialogElement;
+      return destOptions;
+    },
+
+    /**
+     * params: id -> optional, default is "dialog" +  Date.now()
+     *         title -> optional, default is "Dialog"
+     *         parent -> optional, default is body element
+     *         disposable -> optional, whether to destroy dialog when dialog hidden
+     *         content -> text or html
+     *         template -> ejs path
+     *         control -> type to dialog content
+     *         data -> Object, used by template or control
+     *         actions -> Array, right bottom actions {
+     *           type -> 'button', 'link' or 'separator'
+     *           name -> display name of action
+     *           userClass -> class of action
+     *           dismiss -> boolean, whether to hide dialog
+     *           callback -> function to handle action, this object is the dialog self
+     *         }
+     *         leftActions -> Array, left bottom actions {
+     *           type -> 'button', 'link' or 'separator'
+     *           name -> display name of action
+     *           userClass -> class of action
+     *           dismiss -> boolean, whether to hide dialog
+     *           callback -> function to handle action, this object is the dialog self
+     *         }
+     *
+     * return: Dialog {
+     *           control -> control of dialog
+     *           element -> dialog element
+     *           dom -> some child elements of dialog
+     *         }
+     */
+    show : function(options) {
+      var $parent,
+          $dialog,
+          dialog,
+          modal;
+      options = $.extend({
+        title : 'Dialog',
+        id : "dialog" + Date.now(),
+        disposable : true,
+        parent : 'body'
+      }, options);
+      $parent = $(options.parent);
+      $parent.append(can.view('/js/libs/mst/dialog.mst', options));
+      $dialog = $parent.find('#' + options.id);
+      dialog = new Dialog($dialog, options);
+      return dialog;
     }
-  }, {});
+  }, {
+    init : function(element, options) {
+      var $content = element.find('.modal-body');
+      this.dom = {};
+      if (options.control) {
+        this.control = new options.control($content, options.data ? options.data : {});
+      } else if (options.template) {
+        $content.html(can.view(options.template, options.data ? options.data : {}));
+      } else if (options.content) {
+        $content.html(options.content);
+      }
+      this.initActions();
+      if (options.disposable) {
+        element.on('hidden.bs.modal', function() {
+          element.remove();
+        });
+      }
+      element.modal();
+    },
+
+    initActions : function() {
+      var self = this;
+      if (this.options.actions) {
+        this.options.actions.forEach(function(action, index) {
+          var actionName = action.name ? action.name : action.type ? action.type + index : 'action' + index;
+          self.dom[actionName] = self.element.find('.modal-footer .action-item:eq(' + index + ')');
+          if (action.callback) {
+            self.dom[actionName].click(function(e) {
+              action.callback.call(self, $(e.target), e);
+            });
+          }
+        });
+      }
+    },
+
+    show : function() {
+      this.element.modal();
+    },
+
+    hide : function() {
+      this.element.modal('hide');
+    },
+
+    remove : function() {
+      this.element.remove();
+    }
+  });
 })();

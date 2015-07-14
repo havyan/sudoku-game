@@ -92,7 +92,7 @@
         this.model.attr('rule.score.add').splice(index, 1);
         this.model.attr('rule.score.add.0.selected', true);
       } else {
-        Dialog.showMessage('不能删除最后一条规则！');
+        Dialog.message('不能删除最后一条规则！');
       }
     },
 
@@ -107,7 +107,7 @@
         });
         this.resetAddRule(addRule);
       } else {
-        Dialog.showMessage('最多可以定制' + this.options.maxLevelCount + '行！');
+        Dialog.message('最多可以定制' + this.options.maxLevelCount + '行！');
       }
       this.validate();
     },
@@ -119,26 +119,26 @@
         addRule.attr('levels').pop();
         this.resetAddRule(addRule);
       } else {
-        Dialog.showMessage('不能删除最后一行！');
+        Dialog.message('不能删除最后一行！');
       }
       this.validate();
     },
 
     '.reset-prop-action click' : function() {
-      Dialog.showConfirm('你确认要重置所有道具吗？', function() {
-        $(this).closest('.modal').modal('hide');
+      Dialog.confirm('你确认要重置所有道具吗？', function() {
+        this.hide();
         Rest.Prop.reset(function() {
-          Dialog.showMessage('重置道具成功!!!');
+          Dialog.message('重置道具成功!!!');
         }, function() {
         });
       });
     },
 
     '.reset-money-action click' : function() {
-      Dialog.showConfirm('你确认要重置天才币吗？', function() {
-        $(this).closest('.modal').modal('hide');
+      Dialog.confirm('你确认要重置天才币吗？', function() {
+        this.hide();
         Rest.User.resetMoney(function() {
-          Dialog.showMessage('重置天才币成功!!!');
+          Dialog.message('重置天才币成功!!!');
         }, function() {
         });
       });
@@ -156,13 +156,13 @@
           Rest.Rule.updateRule(rule, function(res) {
             self.ruleChanged = false;
             if (res.success) {
-              Dialog.showMessage('更新规则成功');
+              Dialog.message('更新规则成功');
             } else {
-              Dialog.showError(res.reason);
+              Dialog.error(res.reason);
             }
           });
         } else {
-          Dialog.showMessage('更新规则成功');
+          Dialog.message('更新规则成功');
         }
       } else {
         var $invalid = this.element.find('input.invalid:first');
@@ -175,7 +175,7 @@
 
     '.setting-back-action click' : function() {
       if (this.ruleChanged || this.uiChanged) {
-        Dialog.showConfirm('设置已被修改，是否放弃？', function() {
+        Dialog.confirm('设置已被修改，是否放弃？', function() {
           window.location.href = "/main";
         });
       } else {
@@ -210,7 +210,7 @@
         }
         if (value <= min || value >= max) {
           level.attr('score', '');
-          Dialog.showMessage('您必须输入介于' + min + '和' + max + '之间的值！');
+          Dialog.message('您必须输入介于' + min + '和' + max + '之间的值！');
         }
       }
       this.getLevel(e).attr('score', this.getValue(e));
@@ -259,7 +259,7 @@
         }
         if (value <= min || value >= max) {
           level.attr('to', '');
-          Dialog.showMessage('您必须输入介于' + min + '和' + max + '之间的值！');
+          Dialog.message('您必须输入介于' + min + '和' + max + '之间的值！');
         } else {
           if (addRuleRowIndex < levels.length - 1) {
             levels.attr(addRuleRowIndex + 1).attr('from', this.getValue(e));
@@ -345,20 +345,9 @@
       return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
     },
 
-    '.grade-table .value input blur' : function(e) {
-      var value = parseInt(e.val());
-      var index = parseInt(e.closest('tr').data('index'));
-      var beforValue = index > 0 ? this.model.attr('rule.grade.' + (index - 1) + '.floor') : 0;
-      var afterValue = index < this.model.attr('rule.grade').length - 1 ? this.model.attr('rule.grade.' + (index + 1) + '.floor') : 9999999999;
-      if (isNaN(value) || value <= beforValue || value >= afterValue) {
-        e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
-        e.closest('.grade-table').find('.value').removeClass('edit');
-        e.closest('.value').addClass('edit');
-        e.addClass('invalid').focus();
-      } else {
-        e.siblings('.error').empty();
-        e.removeClass('invalid').closest('.value').removeClass('edit');
-        this.model.attr('rule.grade.' + index + '.floor', value);
+    '.setting-grade input blur' : function(e) {
+      if (!this.validateGrade(e)) {
+        e.focus();
       }
     },
 
@@ -379,21 +368,54 @@
       this.model.attr('ui.zoom', value);
     },
 
-    'input blur' : function() {
+    '.setting-main input blur' : function() {
       this.validate();
     },
 
     validate : function() {
+      var self = this;
       var valid = true;
       this.element.find('input[type=text]').each(function() {
-        var $e = $(this);
-        if (_.isEmpty($e.val())) {
+        if (!self.validateScore($(this))) {
           valid = false;
-          $e.addClass('invalid');
-        } else {
-          $e.removeClass('invalid');
         }
       });
+      this.element.find('.setting-grade input[type=text]').each(function(index) {
+        if (index > 0 && !self.validateGrade($(this))) {
+          valid = false;
+        }
+      });
+      return valid;
+    },
+
+    validateScore : function(e) {
+      var valid = true;
+      if (_.isEmpty(e.val())) {
+        e.addClass('invalid');
+        valid = false;
+      } else {
+        e.removeClass('invalid');
+      }
+      return valid;
+    },
+
+    validateGrade : function(e) {
+      var valid = true;
+      var value = parseInt(e.val());
+      var index = parseInt(e.closest('tr').data('index'));
+      var beforValue = index > 0 ? this.model.attr('rule.grade.' + (index - 1) + '.floor') : 0;
+      var afterValue = index < this.model.attr('rule.grade').length - 1 ? this.model.attr('rule.grade.' + (index + 1) + '.floor') : 9999999999;
+      if (isNaN(value) || value <= beforValue || value >= afterValue) {
+        e.siblings('.error').html('积分必须介于' + beforValue + '到' + afterValue + '之间');
+        e.closest('.grade-table').find('.value').removeClass('edit');
+        e.closest('.value').addClass('edit');
+        e.addClass('invalid');
+        valid = false;
+      } else {
+        e.siblings('.error').empty();
+        e.removeClass('invalid').closest('.value').removeClass('edit');
+        this.model.attr('rule.grade.' + index + '.floor', value);
+      }
       return valid;
     }
   });

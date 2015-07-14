@@ -1,6 +1,9 @@
+var winston = require('winston');
+
 var HttpError = function(message, status) {
-	this.status = status || HttpError.SERVER_ERROR;
-	this.error = new Error(message);
+  this.status = status || HttpError.SERVER_ERROR;
+  this.error = new Error(message);
+  winston.error(this.error.stack);
 };
 
 HttpError.NOT_FOUND = 404;
@@ -8,15 +11,15 @@ HttpError.SERVER_ERROR = 500;
 HttpError.UNAUTHORIZED = 401;
 
 HttpError.prototype.__defineGetter__('message', function() {
-	return this.error.message;
+  return this.error.message;
 });
 
 HttpError.prototype.__defineGetter__('name', function() {
-	return this.error.name;
+  return this.error.name;
 });
 
 HttpError.prototype.__defineGetter__('stack', function() {
-	return this.error.stack;
+  return this.error.stack;
 });
 
 module.exports = HttpError;

@@ -1,7 +1,7 @@
 (function() {
   can.Model('Models.GameModel', {}, {
-    init : function(game, eventCenter) {
-      this.eventCenter = eventCenter;
+    init : function(game, eventReceiver) {
+      this.eventReceiver = eventReceiver;
       this.initDimension();
       this.initEvents();
       this.initStatus();
@@ -11,6 +11,8 @@
       this.initOptions();
       this.initActive();
       this.initUI();
+      this.initManualStart();
+      this.initWait();
     },
 
     initDimension : function() {
@@ -25,6 +27,18 @@
         width : maxX + 9,
         height : maxY + 9
       });
+    },
+
+    initWait : function() {
+      this.attr('waitCountdownStage', Utils.formatSeconds(this.attr('waitTime')));
+    },
+
+    initManualStart : function() {
+      var self = this;
+      var index = _.findIndex(this.attr('players'), function(player) {
+        return player && player.attr('account') === self.attr('account');
+      });
+      this.attr('manualStart', index === 0 && this.attr('startMode') === 'manual');
     },
 
     initStatus : function() {
@@ -81,11 +95,13 @@
       var scores = this.attr('scores');
       var ranking = [];
       $.each(players, function(index, player) {
-        ranking.push({
-          account : player.attr('account'),
-          name : player.attr('name'),
-          score : scores[player.attr('account')] || 0
-        });
+        if (player) {
+          ranking.push({
+            account : player.attr('account'),
+            name : player.attr('name'),
+            score : scores[player.attr('account')] || 0
+          });
+        }
       });
       ranking.sort(function(source, dest) {
         return dest.score - source.score;
@@ -240,21 +256,23 @@
       window.localStorage.setItem(this.attr('account') + '_ui', JSON.stringify(this.attr('ui').attr()));
     },
 
-    addPlayer : function(player) {
-      this.attr('players').push(player);
+    setPlayer : function(index, player) {
+      this.attr('players').attr(index, player);
+      this.attr('players', this.attr('players').attr());
       this.resetRanking();
     },
 
     playerQuit : function(account, status) {
       var index = _.findIndex(this.attr('players'), function(player) {
-        return player.account === account;
+        return player && player.account === account;
       });
       if (this.attr('status') === 'ongoing') {
         var quitPlayer = this.attr('players.' + index).attr();
         quitPlayer.status = status;
         this.attr('quitPlayers').unshift(quitPlayer);
       }
-      this.attr('players').splice(index, 1);
+      this.attr('players').attr(index, null);
+      this.attr('players', this.attr('players').attr());
       this.resetRanking();
     },
 
@@ -333,6 +351,18 @@
       var self = this;
       Rest.Game.delay(this.attr('id'), function(result) {
         self.attr('prop.delay', self.attr('prop.delay') - 1);
+        if (success) {
+          success(result);
+        }
+      }, function() {
+      });
+    },
+
+    useGlasses : function(success) {
+      var self = this;
+      Rest.Game.useGlasses(this.attr('id'), function(result) {
+        self.attr('glassesUsed', true);
+        self.attr('prop.glasses', self.attr('prop.glasses') - 1);
         if (success) {
           success(result);
         }
@@ -420,10 +450,10 @@
 
     initEvents : function() {
       var self = this;
-      this.eventCenter.on('player-joined', function(player) {
-        self.addPlayer(player);
+      this.eventReceiver.on('player-joined', function(index, player) {
+        self.setPlayer(index, player);
       });
-      this.eventCenter.on('player-quit', function(data) {
+      this.eventReceiver.on('player-quit', function(data) {
         var account = data.account;
         self.playerQuit(account, data.status);
         if (self.attr('account') === account) {
@@ -431,72 +461,79 @@
           self.destroy();
         }
       });
-      this.eventCenter.on('message-added', function(message) {
+      this.eventReceiver.on('message-added', function(message) {
         self.addMessage(message);
       });
-      this.eventCenter.on('status-changed', function(status) {
+      this.eventReceiver.on('status-changed', function(status) {
         self.attr('status', status);
       });
-      this.eventCenter.on('puzzle-init', function(initCellValues) {
+      this.eventReceiver.on('puzzle-init', function(initCellValues) {
         self.attr('initCellValues', initCellValues);
       });
-      this.eventCenter.on('countdown-stage', function(stage) {
+      this.eventReceiver.on('countdown-stage', function(stage) {
         self.attr('countdownStage', stage);
       });
-      this.eventCenter.on('cell-correct', function(xy, value) {
+      this.eventReceiver.on('cell-correct', function(xy, value) {
         self.attr('userCellValues').attr(xy, parseInt(value));
       });
-      this.eventCenter.on('cell-incorrect', function(xy) {
+      this.eventReceiver.on('cell-incorrect', function(xy) {
         self.attr('incorrect', {
           xy : xy
         });
       });
-      this.eventCenter.on('switch-player', function(account) {
+      this.eventReceiver.on('switch-player', function(account) {
         self.attr('currentPlayer', account);
         self.attr('optionsOnce', false);
+        self.attr('glassesUsed', false);
         self.attr('active', false);
         self.attr('active', account === self.attr('account'));
         self.attr('delayed', false);
       });
-      this.eventCenter.on('ellapsed-time', function(ellapsedTime) {
+      this.eventReceiver.on('ellapsed-time', function(ellapsedTime) {
         var remainingTime = self.attr('rule.score.add.total') - ellapsedTime;
         self.attr('remainingTime', remainingTime);
       });
-      this.eventCenter.on('score-changed', function(account, info) {
+      this.eventReceiver.on('score-changed', function(account, info) {
         self.attr('scores').attr(account, parseInt(info.score));
         if (account === self.attr('account')) {
           self.attr('changedScore', info);
         }
       });
-      this.eventCenter.on('max-timeout-reached', function(account) {
+      this.eventReceiver.on('max-timeout-reached', function(account) {
         if (self.attr('account') === account) {
           self.attr('maxTimeoutReached', Date.now());
         }
       });
-      this.eventCenter.on('quit-countdown-stage', function(account, stage) {
+      this.eventReceiver.on('quit-countdown-stage', function(account, stage) {
         if (self.attr('account') === account) {
           self.attr('quitCountdownStage', stage);
         }
       });
-      this.eventCenter.on('game-over', function(results) {
+      this.eventReceiver.on('game-over', function(results) {
         self.attr('status', 'over');
         self.attr('results', results);
       });
-      this.eventCenter.on('game-destroyed', function() {
+      this.eventReceiver.on('game-destroyed', function() {
         self.attr('status', 'destroyed');
         self.destroy();
       });
-      this.eventCenter.on('game-delayed', function() {
+      this.eventReceiver.on('game-delayed', function() {
         self.attr('delayed', true);
       });
-      this.eventCenter.on('delay-countdown-stage', function(stage) {
+      this.eventReceiver.on('delay-countdown-stage', function(stage) {
         self.attr('delayCountdownStage', stage);
       });
-      this.eventCenter.on('game-delay-cancelled', function() {
+      this.eventReceiver.on('game-delay-cancelled', function() {
         self.attr('delayed', false);
       });
-      this.eventCenter.on('destroy-countdown-stage', function(stage) {
+      this.eventReceiver.on('destroy-countdown-stage', function(stage) {
         self.attr('destroyCountdownStage', stage);
+      });
+      this.eventReceiver.on('wait-countdown-stage', function(stage) {
+        self.attr('waitCountdownStage', Utils.formatSeconds(stage));
+      });
+      this.eventReceiver.on('game-abort', function(stage) {
+        self.attr('status', 'aborted');
       });
     },
 
@@ -632,6 +669,10 @@
 
     getRealCellValue : function(xy) {
       return this.attr('initCellValues').attr(xy) || this.attr('userCellValues').attr(xy);
+    },
+
+    isBanker : function() {
+      return this.attr('players.0.account') === this.attr('account');
     },
 
     existsCell : function(xy) {

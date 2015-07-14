@@ -9,6 +9,7 @@ var PropSchema = new Schema({
   magnifier : Number,
   impunity : Number,
   delay : Number,
+  glasses : Number,
   options_once : Number,
   options_always : Number
 });

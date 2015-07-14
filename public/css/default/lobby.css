@@ -1,0 +1,319 @@
+.lobby {
+  margin-top: 30px;
+}
+
+.lobby-nav {
+  width: 20%;
+  float: left;
+  text-align: center;
+}
+
+.lobby-nav-rooms {
+  width: 278px;
+  height: 879px;
+  display: inline-block;
+  background: url(../../imgs/default/lobby_nav_bg.png) no-repeat;
+}
+
+.lobby-nav-rooms-container {
+  width: 90%;
+  height: 819px;
+  margin: auto;
+  margin-top: 30px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.lobby-nav-item-content {
+  display: none;
+  width: 120%;
+}
+
+.lobby-nav-item.expand .lobby-nav-item-content {
+  display: block;
+}
+
+.lobby-nav-item {
+  width: 173px;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.lobby-nav-virtual-room {
+  width: 173px;
+  height: 51px;
+  line-height: 51px;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+  background: url(../../imgs/default/lobby_nav_room_bg.png) no-repeat;
+  background-position: 0px 3px;
+}
+
+.lobby-nav-real-room {
+  width: 101px;
+  height: 30px;
+  line-height: 30px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 10px;
+  background: url(../../imgs/default/lobby_nav_room_bg.png) no-repeat;
+  background-size: cover;
+  background-position: -2px 0px;
+}
+
+.lobby-nav-real-room.active, .lobby-nav-virtual-room.active {
+  color: #FFF000;
+}
+
+.lobby-nav-item-line {
+  float: left;
+  width: 40%;
+}
+
+.lobby-nav-real-rooms {
+  margin-left: 40%;
+  width: 60%;
+  overflow: hidden;
+  position: relative;
+}
+
+.lobby-content {
+  width: 80%;
+  margin-left: 20%;
+}
+
+.lobby-room {
+  text-align: center;
+}
+
+.lobby-game {
+  display: inline-block;
+  width: 360px;
+  height: 380px;
+  position: relative;
+  margin: 10px;
+}
+
+.room-number {
+  position: absolute;
+  top: 95px;
+  left: 87px;
+  width: 59px;
+  height: 61px;
+  z-index: 100;
+  color: black;
+  line-height: 61px;
+  font-size: 22px;
+  background: url(../../imgs/default/room_star.png) no-repeat;
+}
+
+.lobby-table {
+  width: 135px;
+  height: 133px;
+  background: url(../../imgs/default/lobby_table.png) no-repeat;
+  position: absolute;
+  top: 120px;
+  left: 112px;
+  text-align: center;
+  display: table;
+}
+
+.lobby-table-content {
+  display: table-cell;
+  height: 133px;
+  vertical-align: middle;
+  font-size: 16px;
+}
+
+.lobby-player {
+  position: absolute;
+}
+
+.lobby-player.empty.available {
+  background: url(../../imgs/default/lobby_seat.png) no-repeat;
+  width: 47px;
+  height: 45px;
+}
+
+.lobby-player.empty.unavailable {
+  background: gray;
+  border-radius: 2px;
+  width: 47px;
+  height: 45px;
+}
+
+.free .lobby-game.empty .lobby-table {
+  cursor: pointer;
+}
+
+.free .lobby-game.waiting .lobby-table {
+  cursor: pointer;
+}
+
+.lobby-player.empty.player-0 {
+  top: 35px;
+  left: 156px;
+}
+
+.lobby-player.empty.player-1 {
+  top: 164px;
+  left: 287px;
+}
+
+.lobby-player.empty.player-2 {
+  top: 293px;
+  left: 156px;
+}
+
+.lobby-player.empty.player-3 {
+  top: 164px;
+  left: 25px;
+}
+
+.lobby-game-form .modal-dialog {
+  width: 700px;
+  height: 500px;
+  background: url(../../imgs/default/lobby_game_form_bg.png) no-repeat;
+  background-size: 700px 500px;
+  overflow: hidden;
+  color: white;
+  font-size: 16px;
+}
+
+.lobby-game-form .close {
+  width: 30px;
+  height: 30px;
+  margin-top: 28px;
+  margin-right: 28px;
+  background: url(../../imgs/default/lobby_game_form_close.png) no-repeat;
+  background-size: 30px 30px;
+}
+
+.lobby-game-form .content {
+  width: 400px;
+  height: 350px;
+  margin: auto;
+  margin-top: 70px;
+}
+
+.lobby-game-form .name {
+  width: 30%;
+  text-align: left;
+}
+
+.lobby-game-form .value {
+  width: 65%;
+}
+
+.lobby-game-form .value > * {
+  vertical-align: middle;
+}
+
+.lobby-game-form .value select {
+  width: 100%;
+  border-radius: 5px;
+  color: blue;
+}
+
+.lobby-game-form .value input[type=radio]:last-of-type {
+  margin-left: 10px;
+}
+
+.lobby-game-form .lobby-game-form-row > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.lobby-game-form .lobby-game-form-row {
+  margin-bottom: 30px;
+}
+
+.lobby-game-form  .confirm {
+  width: 131px;
+  height: 51px;
+  line-height: 51px;
+  background: url(../../imgs/default/form_confirm.png) no-repeat;
+  margin: auto;
+  display: block;
+  border: none;
+  outline: none;
+  padding: 0px;
+}
+
+.lobby-game-form  .confirm:hover {
+  color: #FFF000
+}
+
+.lobby-player.banker .lobby-player-icon {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  border: 3px solid #C4B098;
+  border-radius: 35px;
+  text-align: center;
+}
+
+.lobby-player.banker .lobby-player-icon img {
+  width: 58px;
+  height: 58px;
+  margin-top: 3px;
+  border-radius: 29px;
+  background-color: #C4B098;
+}
+
+.lobby-player.normal .lobby-player-icon {
+  display: inline-block;
+  width: 58px;
+  height: 58px;
+  border: 3px solid #C4B098;
+  border-radius: 32px;
+  text-align: center;
+}
+
+.lobby-player.normal .lobby-player-icon img {
+  width: 52px;
+  height: 52px;
+  margin-top: 3px;
+  border-radius: 26px;
+  background-color: #C4B098;
+}
+
+.lobby-player.existent .banker-label {
+  text-align: center;
+  color: #FFF000;
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+.lobby-player-name {
+  text-align: center;
+}
+
+.lobby-player.existent.player-0 {
+  left: 142px;
+  cursor: default;
+}
+
+.lobby-player.existent.player-1 {
+  top: 148px;
+  left: 271px;
+}
+
+.lobby-player.existent.player-2 {
+  top: 279px;
+  left: 142px;
+}
+
+.lobby-player.existent.player-3 {
+  top: 148px;
+  left: 22px;
+}
+
+.free .lobby-game.waiting .lobby-player.empty.normal.available {
+  cursor: pointer;
+}

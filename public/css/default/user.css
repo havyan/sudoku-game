@@ -1,114 +1,243 @@
 .main {
-	width: 50%;
-	margin: auto;
-	margin-top: 20px;
+  width: 50%;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .info {
-	width: 50%;
-	display: inline-block;
-	vertical-align: top;
+  width: 50%;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .icon {
-	width: 20%;
-	display: inline-block;
-	vertical-align: top;
-	margin-top: 20px;
+  width: 200px;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 10px;
 }
 
 .icon > * {
-	display: block;
-	margin: auto;
+  display: block;
+  margin: auto;
 }
 
 .icon img {
-	background: white;
-	border: 1px solid gray;
-	margin-bottom: 5px;
+  background: white;
+  border: 1px solid gray;
+  margin-bottom: 5px;
+  width: 128px;
+  height: 128px;
+}
+
+.icon-actions {
+  margin-top: 20px;
+}
+
+.default-icons {
+  width: 200px;
+  border: 1px solid gray;
+  font-size: 0px;
+  margin-top: 10px;
+  display: none;
+}
+
+.default-icons.show {
+  display: block;
+}
+
+.default-icons img {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  margin: 0px;
+  cursor: pointer;
+}
+
+.default-icons img.selected {
+  background: #C4B098;
+}
+
+.default-icons img:hover {
+  background: #006599;
+}
+
+.change-icon-action {
+  margin-right: 20px;
 }
 
 .info-row * {
-	font-size: 1.2em;
-	vertical-align: middle;
+  font-size: 1.2em;
+  vertical-align: middle;
 }
 
 .info-row {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .info-row .name {
-	margin-right: 10px;
+  margin-right: 10px;
 }
 
 .info-row .value {
-	margin-right: 10px;
+  margin-right: 10px;
 }
 
 .info-row input {
-	font-size: 0.8em;
+  font-size: 0.8em;
 }
 
 .info-row .value-field {
-	display: none;
+  display: none;
 }
 
 .info-row .confirm {
-	display: none;
+  display: none;
 }
 
 .info-row .cancel {
-	display: none;
+  display: none;
 }
 
 .info-row.edit .modify-button {
-	display: none;
+  display: none;
 }
 
 .info-row.edit .value {
-	display: none;
+  display: none;
 }
 
 .info-row.edit .value-field {
-	display: inline;
+  display: inline;
 }
 
 .info-row.edit .confirm {
-	display: inline;
+  display: inline;
 }
 
 .info-row.edit .cancel {
-	display: inline;
+  display: inline;
 }
 
 .info-row .value-field {
-	width: 70px;
-	height: 25px;
-	text-align: center;
-	font-size: 1em;
-} 
+  width: 70px;
+  height: 25px;
+  text-align: center;
+  font-size: 1em;
+}
 
 .actions {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 
 .actions input {
-	width: 12%;
-	margin-right: 20px;
-	font-size: 1em;
+  width: 12%;
+  margin-right: 20px;
+  font-size: 1em;
 }
 
 .bottom {
-	width: 50%;
-	margin: auto;
-	margin-top: 20px;
+  width: 50%;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .bottom .close-button {
-	float: right;
-	width: 12%;
-	font-size: 1em;
-	color: #fff;
-	background: #f0ad4e;
-	border-color: #eea236;
+  float: right;
+  width: 12%;
+  font-size: 1em;
+  color: #fff;
+  background: #f0ad4e;
+  border-color: #eea236;
+}
+
+.upload-icon-container {
+  width: 560px;
+  margin: auto;
+}
+
+.upload-icon-display {
+  height: 300px;
+  width: 558px;
+  line-height: 300px;
+  font-size: 40px;
+  color: gray;
+  text-align: center;
+  border: 1px solid #E2E2E2;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.upload-icon-cutter {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: gray;
+  opacity: 0.5;
+  position: relative;
+}
+
+.upload-icon-cutter > * {
+  position: absolute;
+}
+
+.dragger-left, .dragger-right, .dragger-top, .dragger-bottom {
+  background: red;
+}
+
+.dragger-left, .dragger-right {
+  cursor: e-resize;
+  width: 3px;
+}
+
+.dragger-top, .dragger-bottom {
+  cursor: n-resize;
+  height: 3px;
+}
+
+.inner-icon-container {
+  overflow: hidden;
+  cursor: move;
+}
+
+.inner-icon-display {
+  height: 300px;
+  width: 558px;
+  line-height: 300px;
+  font-size: 40px;
+  color: gray;
+  position: absolute;
+  text-align: center;
+  border: 1px solid #E2E2E2;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.upload-icon-container .progress {
+  margin: auto;
+  margin-top: 20px;
+  width: 60%;
+}
+
+.upload-action {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.upload-action .btn {
+  display: inline-block;
+  position: relative;
+  font-size: 20px;
+}
+
+.upload-action input {
+  width: 66px;
+  height: 42px;
+  opacity: 0;
+  display: inline-block;
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
