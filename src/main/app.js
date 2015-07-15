@@ -22,7 +22,7 @@ config.initialize(app);
 global.gameManager = new GameManager();
 global.propManager = new PropManager();
 
-//app.use(favicon(app.get('conf.path.favicon')));
+app.use(favicon(app.get('conf.path.favicon')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
   extended : false
