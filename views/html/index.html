@@ -11,26 +11,28 @@
     <script src="{{@basejs}}/libs/components/dialog.js"></script>
   </head>
   <body>
-    <form class="login-form" action="/login" method="post">
-      <div class="login-icon"></div>
-      <div class="login-user">
-        <div class="login-user-icon">
-          <img src="{{@baseimg}}/user.png"></img>
+    <div class="login-area">
+      <form class="login-form" action="/login" method="post">
+        <div class="login-icon"></div>
+        <div class="login-user">
+          <div class="login-user-icon">
+            <img src="{{@baseimg}}/user.png"></img>
+          </div>
+          <input class="login-user-field" type="text" name="account" autocomplete="on" placeholder="用户名" />
+          {{#error}}
+          <div class="login-error">
+            您输入的用户名错误
+          </div>
+          {{/error}}
         </div>
-        <input class="login-user-field" type="text" name="account" autocomplete="on" placeholder="用户名" />
-        {{#error}}
-        <div class="login-error">
-          您输入的用户名错误
+        <div class="login-button">
+          <input class="button" type="submit" value="登录" />
         </div>
-        {{/error}}
-      </div>
-      <div class="login-button">
-        <input class="button" type="submit" value="登录" />
-      </div>
-      <div class="remember-me">
-        <input type="checkbox" name="remember_me"/>
-        <label>下次自动登录</label>
-      </div>
-    </form>
+        <div class="remember-me">
+          <input type="checkbox" name="remember_me"/>
+          <label>下次自动登录</label>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

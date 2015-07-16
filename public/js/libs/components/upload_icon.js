@@ -29,7 +29,7 @@
             element.find('.inner-icon-display').css('background-image', 'url(' + data.result.path + ')');
             $icon.find('span').hide();
             element.find('.upload-icon-cutter').show();
-            var cutterSize = Math.min(bound.width, bound.height);
+            var cutterSize = Math.min(bound.width, bound.height, 150);
             self.resetCutter(bound.left + (bound.width - cutterSize) / 2, bound.top + (bound.height - cutterSize) / 2, cutterSize, cutterSize);
           });
         }

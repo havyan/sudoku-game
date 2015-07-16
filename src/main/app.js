@@ -14,13 +14,11 @@ var config = require('./config');
 var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
-var PropManager = require('./prop_manager');
 
 hbs.localsAsTemplateData(app);
 config.initialize(app);
 
 global.gameManager = new GameManager();
-global.propManager = new PropManager();
 
 app.use(favicon(app.get('conf.path.favicon')));
 app.use(cookieParser());

@@ -1,5 +1,6 @@
 var fs = require('fs');
 var HttpError = require('../http_error');
+var PropManager = require('../prop_manager');
 var winston = require('winston');
 var UserDAO = require('../daos/user');
 
@@ -28,7 +29,7 @@ module.exports = function(router) {
         res.redirect('/main');
       } else {
         res.render('index', {
-          error : req.query.nouser === 'true'
+          error : req.query.error === 'true'
         });
       }
     }
@@ -49,7 +50,7 @@ module.exports = function(router) {
         req.session.account = user.account;
         res.redirect('/main');
       } else {
-        res.redirect('/login?nouser=true');
+        res.redirect('/login?error=true');
       }
     });
   });
@@ -92,7 +93,7 @@ module.exports = function(router) {
   });
 
   router.get('/propstore', function(req, res, next) {
-    global.propManager.getPropData(req.session.account, function(error, data) {
+    PropManager.getPropData(req.session.account, function(error, data) {
       if (error) {
         next(new HttpError('Error when get prop data for account' + req.session.account + ': ' + error));
       } else {

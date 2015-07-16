@@ -4,11 +4,9 @@ var UserDAO = require('./daos/user');
 
 var PROP_TYPES = require('./models/prop_types.json');
 
-var PropManager = function() {
+var PropManager = {};
 
-};
-
-PropManager.prototype.getPropData = function(account, cb) {
+PropManager.getPropData = function(account, cb) {
   UserDAO.findOneByAccount(account, function(error, user) {
     if (error) {
       cb(error);
@@ -37,7 +35,7 @@ PropManager.prototype.getPropData = function(account, cb) {
   });
 };
 
-PropManager.prototype.buy = function(account, type, count, cb) {
+PropManager.buy = function(account, type, count, cb) {
   var game = global.gameManager.findGameByUser(account);
   if (game && !game.isOver()) {
     cb(null, {
@@ -91,7 +89,7 @@ PropManager.prototype.buy = function(account, type, count, cb) {
   }
 };
 
-PropManager.prototype.reset = function(cb) {
+PropManager.reset = function(cb) {
   PropDAO.reset(cb);
 };
 
