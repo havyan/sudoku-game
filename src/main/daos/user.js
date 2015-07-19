@@ -9,6 +9,7 @@ var UserSchema = new Schema({
   account : String,
   name : String,
   password : String,
+  email: String,
   icon : String,
   grade : String,
   points : Number,

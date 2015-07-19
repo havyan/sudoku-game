@@ -1,6 +1,7 @@
 var fs = require('fs');
 var HttpError = require('../http_error');
 var PropManager = require('../prop_manager');
+var UserManager = require('../user_manager');
 var winston = require('winston');
 var UserDAO = require('../daos/user');
 
@@ -20,13 +21,23 @@ module.exports = function(router) {
   });
 
   /* GET login page. */
-  router.get('/login', function(req, res) {
+  router.get('/login', function(req, res, next) {
     if (req.session.account) {
       res.redirect('/main');
     } else {
-      if (req.cookies.account) {
-        req.session.account = req.cookies.account;
-        res.redirect('/main');
+      if (req.cookies.account && req.cookies.password) {
+        UserDAO.findOne({
+          account : req.cookies.account,
+          password : req.cookies.password
+        }, function(error, user) {
+          if (error) {
+            next(new HttpError('Error when processing auto login: ' + error));
+            return;
+          } else {
+            req.session.account = req.cookies.account;
+            res.redirect('/main');
+          }
+        });
       } else {
         res.render('index', {
           error : req.query.error === 'true'
@@ -36,7 +47,11 @@ module.exports = function(router) {
   });
 
   router.post('/login', function(req, res, next) {
-    UserDAO.findOneByAccount(req.body.account, function(error, user) {
+    var password = UserManager.encryptPassword(req.body.password);
+    UserDAO.findOne({
+      account : req.body.account,
+      password : password
+    }, function(error, user) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
         return;
@@ -44,6 +59,9 @@ module.exports = function(router) {
       if (user) {
         if (req.body.remember_me) {
           res.cookie('account', user.account, {
+            maxAge : 3600000 * 24 * 30
+          });
+          res.cookie('password', password, {
             maxAge : 3600000 * 24 * 30
           });
         }
@@ -58,6 +76,7 @@ module.exports = function(router) {
   router.get('/logout', function(req, res) {
     req.session.account = undefined;
     res.clearCookie('account');
+    res.clearCookie('password');
     res.redirect('/');
   });
 
@@ -122,6 +141,11 @@ module.exports = function(router) {
       } else {
         next(new HttpError('No user found for account ' + req.body.account, HttpError.NOT_FOUND));
       }
+    });
+  });
+
+  router.get('/signup', function(req, res, next) {
+    res.render('signup', {
     });
   });
 };

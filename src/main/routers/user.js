@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var HttpError = require('../http_error');
 var winston = require('winston');
 var UserManager = require('../user_manager');
@@ -69,6 +70,36 @@ module.exports = function(router) {
           status : 'ok',
           path : path
         });
+      }
+    });
+  });
+
+  router.post('/user', function(req, res, next) {
+    UserManager.createUser(_.cloneDeep(req.body), function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(result);
+      }
+    });
+  });
+
+  router.post('/user/check_account', function(req, res, next) {
+    UserManager.checkAccount(req.body.account, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(result);
+      }
+    });
+  });
+
+  router.post('/user/check_email', function(req, res, next) {
+    UserManager.checkEmail(req.body.email, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(result);
       }
     });
   });

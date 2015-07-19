@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var winston = require('winston');
 var express = require('express');
 var async = require('async');
@@ -14,6 +15,7 @@ var config = require('./config');
 var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
+var IGNORED_CHECK_ACTIONS = ['GET /', 'GET /login', 'POST /login', 'GET /signup', 'POST /user', 'POST /user/check_account', 'POST /user/check_email'];
 
 hbs.localsAsTemplateData(app);
 config.initialize(app);
@@ -44,8 +46,9 @@ app.engine('html', hbs.__express);
 
 // authority handler
 app.use(function(req, res, next) {
-  winston.info("Start " + req.method + " " + req.path);
-  if (req.path !== '/' && req.path !== '/login' && !req.session.account) {
+  var action = req.method + " " + req.path;
+  winston.info("Start " + action);
+  if (!_.contains(IGNORED_CHECK_ACTIONS, action) && !req.session.account) {
     req.params.error = true;
     res.redirect('/login');
   } else {

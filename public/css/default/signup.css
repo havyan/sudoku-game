@@ -1,0 +1,110 @@
+.signup-container {
+  margin: auto;
+  margin-top: 30px;
+  width: 500px;
+}
+
+.signup-header .welcome {
+  float: right;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.signup-header .logo {
+  width: 159px;
+  height: 54px;
+  background: url(/imgs/default/logo.png);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.signup-header .game-label {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+.signup-separator {
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+.signup-separator .above {
+  height: 2px;
+  background: white;
+  margin-bottom: 2px;
+}
+
+.signup-separator .below {
+  height: 1px;
+  background: white;
+}
+
+.signup-form {
+  width: 400px;
+  margin: auto;
+}
+
+.signup-row {
+  margin-bottom: 25px;
+}
+
+.signup-row > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.signup-name {
+  width: 80px;
+}
+
+.signup-value {
+  width: 230px;
+  border-radius: 8px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.verify-code .signup-value {
+  width: 80px;
+  margin-right: 10px;
+}
+
+.verify-code img {
+  width: 80px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.verify-code a {
+  color: #fff100;
+}
+
+.protocol-read {
+  font-size: 10px;
+}
+
+.protocol-read input {
+  margin-left: 60px;
+  margin-right: 5px;
+}
+
+.signup-actions {
+  text-align: center;
+}
+
+.signup-actions input {
+  margin-right: 50px; 
+}
+
+.ok-sign {
+  width: 20px;
+  height: 19px;
+  background: url(/imgs/default/right.png);
+  display: none;
+  margin-left: 10px;
+}
+
+.ok-sign.wrong {
+  background: url(/imgs/default/wrong.png);
+}

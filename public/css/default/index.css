@@ -1,95 +1,71 @@
+.login-area {
+  width: 600px;
+  height: 600px;
+  margin: auto;
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
 .login-form {
-	position: fixed;
-	margin: auto;
-	width: 300px;
-	height: 300px;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
+  width: 300px;
+  margin: auto;
+  margin-top: 150px;
+  text-align: center;
 }
 
-.login-icon {
-	width: 60px;
-	height: 60px;
-	background: #FFF url(../../imgs/default/user.png);
-	margin: auto;
-	border-radius: 30px;
-	outline: none;
-	border-color: rgba(255, 255, 255, .75);
-	box-shadow: 0 0 8px rgba(255, 255, 255, .5);
-	margin-bottom: 40px;
+.login-title {
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
-.login-user {
-	height: 40px;
-	border-radius: 5px;
-	background: #FFF;
-	margin-bottom: 40px;
+.login-user, .login-password {
+  margin-bottom: 20px;
 }
 
-.login-user-icon {
-	height: 34px;
-	width: 34px;
-	margin-top: 3px;
-	margin-left: 3px;
-	background: #FFF;
-	float: left;
-	background: #FFF;
-	float: left;
-	border-radius: 5px;
+.login-label {
+  width: 15%;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: right;
+  color: #fff100;
 }
 
-.login-user-icon img {
-	width: 100%;
-	height: 100%;
+.login-field {
+  width: 60%;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
 }
 
-.login-user-field {
-	height: 38px;
-	margin-left: 3px;
-	width: calc(100% - 45px);
-	border-radius: 5px;
-	border-width: 0px;
-	font-size: 22px;
+.login-more {
+  margin-bottom: 20px;
 }
 
-.login-user-field:focus {
-	outline: none;
+.login-more > * {
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff100;
+  font-size: 10px;
+}
+
+.login-more label {
+  margin-right: 30px;
+}
+
+.login-separator {
+  width: 65%;
+  background: white;
+  height: 1px;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .login-error {
-	background: red;
-	height: 25px;
-	font-size: 15px;
-	line-height: 25px;
-	color: #FFF;
-	border-radius: 5px;
-	padding-left: 34px;
-}
-
-.login-button {
-	height: 30px;
-	width: 100px;
-	margin: auto;
-	margin-bottom: 20px;
-}
-
-.login-button input {
-	width: 100%;
-	height: 100%;
-	border-radius: 15px;
-	color: #96A4AD;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-.remember-me {
-	width: 100px;
-	margin: auto;
-	font-size: 8px;
-}
-
-.remember-me * {
-	vertical-align: middle;
+  color: red;
+  margin-bottom: 10px;
 }

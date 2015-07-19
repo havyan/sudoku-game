@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/signup.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-2.1.1.min.js"></script>
+    <script src="{{@basejs}}/libs3/lodash.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/signup.js"></script>
+  </head>
+  <body>
+    <div class="signup-container">
+      <div class="signup-header">
+        <div class="welcome">
+          欢迎注册
+        </div>
+        <div class="logo"></div>
+        <div class="game-label">
+          数独棋
+        </div>
+      </div>
+      <div class="signup-separator">
+        <div class="above"></div>
+        <div class="below"></div>
+      </div>
+      <form class="signup-form" action="/user" method="post">
+        <div class="signup-row account">
+          <label class="signup-name">账号</label>
+          <input class="signup-value" type="text" name="account"/>
+          <div class="ok-sign" style="display: none;"></div>
+        </div>
+        <div class="signup-row name">
+          <label class="signup-name">用户名</label>
+          <input class="signup-value" type="text" name="name"/>
+          <div class="ok-sign"></div>
+        </div>
+        <div class="signup-row password">
+          <label class="signup-name">密码</label>
+          <input class="signup-value" type="password" name="password"/>
+          <div class="ok-sign"></div>
+        </div>
+        <div class="signup-row repeat-password">
+          <label class="signup-name">重复密码</label>
+          <input class="signup-value" type="password" name="repeat_password"/>
+          <div class="ok-sign"></div>
+        </div>
+        <div class="signup-row email">
+          <label class="signup-name">邮箱</label>
+          <input class="signup-value" type="text" name="email"/>
+          <div class="ok-sign"></div>
+        </div>
+        <div class="signup-row verify-code">
+          <label class="signup-name">验证码</label>
+          <input class="signup-value" type="text" name="verify_code"/>
+          <img class="verify-image" />
+          <a href="javascript:void(0)" class="refresh-verify-code">刷新</a>
+        </div>
+        <div class="signup-row protocol-read">
+          <input type="checkbox"/>
+          <label>我已阅读并同意超天才数独玩家协议</label>
+        </div>
+        <div class="signup-actions">
+          <input class="button" type="submit" value="注册" />
+          <a class="button" href="/">关闭</a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

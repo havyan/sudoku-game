@@ -284,6 +284,32 @@
         success : success,
         error : error
       });
+    },
+
+    checkAccount : function(account, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/check_account',
+        dataType : 'json',
+        data : {
+          account : account
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    checkEmail : function(email, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/check_email',
+        dataType : 'json',
+        data : {
+          email : email
+        },
+        success : success,
+        error : error
+      });
     }
   }, {});
 
