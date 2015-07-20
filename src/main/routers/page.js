@@ -148,5 +148,10 @@ module.exports = function(router) {
     res.render('signup', {
     });
   });
+
+  router.get('/contact', function(req, res, next) {
+    res.render('contact', {
+    });
+  });
 };
 

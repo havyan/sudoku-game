@@ -11,6 +11,10 @@
     <script src="{{@basejs}}/libs/components/dialog.js"></script>
   </head>
   <body>
+    <a class="logo" href="/"><img src="/imgs/default/logo.png" /></a>
+    <div class="top-right-area">
+      <a class="button" href="/contact">联系我们</a>
+    </div>
     <div class="login-area">
       <form class="login-form" action="/login" method="post">
         <div class="login-title">
@@ -25,7 +29,9 @@
           <input class="login-field" type="password" name="password" autocomplete="on" placeholder="密码" />
         </div>
         {{#error}}
-        <div class="login-error">用户名或者密码错误</div>
+        <div class="login-error">
+          用户名或者密码错误
+        </div>
         {{/error}}
         <div class="login-more">
           <input type="checkbox" name="remember_me"/>

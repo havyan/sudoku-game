@@ -1,3 +1,15 @@
+.logo {
+  margin-left: 30px;
+  margin-top: 20px;
+  float: left;
+}
+
+.top-right-area {
+  float: right;
+  margin-right: 30px;
+  margin-top: 20px;
+}
+
 .login-area {
   width: 600px;
   height: 600px;

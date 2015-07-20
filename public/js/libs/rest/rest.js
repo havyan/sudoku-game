@@ -310,6 +310,16 @@
         success : success,
         error : error
       });
+    },
+
+    getVcode : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/user/vcode',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
     }
   }, {});
 

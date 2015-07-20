@@ -9,8 +9,11 @@ var UserSchema = new Schema({
   account : String,
   name : String,
   password : String,
-  email: String,
-  icon : String,
+  email : String,
+  icon : {
+    type : String,
+    default : '/imgs/default/user_icons/default.png'
+  },
   grade : String,
   points : Number,
   rounds : Number,

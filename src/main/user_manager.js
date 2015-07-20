@@ -4,6 +4,7 @@ var gm = require('gm');
 var formidable = require('formidable');
 var winston = require('winston');
 var crypto = require('crypto');
+var vcode = require('verify-code');
 var UserDAO = require('./daos/user');
 var TMP_ICON_DIR = '/imgs/web/tmp';
 var ICON_DIR = '/imgs/web/user_icons';
@@ -188,6 +189,10 @@ UserManager.encryptPassword = function(password) {
   var hasher = crypto.createHash("md5");
   hasher.update(password);
   return hasher.digest('hex');
+};
+
+UserManager.generateVcode = function() {
+  return vcode.Generate();
 };
 
 module.exports = UserManager;

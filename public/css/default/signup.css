@@ -65,18 +65,17 @@
   padding-right: 3px;
 }
 
-.verify-code .signup-value {
+.vcode .signup-value {
   width: 80px;
-  margin-right: 10px;
 }
 
-.verify-code img {
+.vcode img {
   width: 80px;
   height: 30px;
   margin-right: 10px;
 }
 
-.verify-code a {
+.vcode a {
   color: #fff100;
 }
 
@@ -93,7 +92,7 @@
   text-align: center;
 }
 
-.signup-actions input {
+.signup-actions button {
   margin-right: 50px; 
 }
 
@@ -107,4 +106,10 @@
 
 .ok-sign.wrong {
   background: url(/imgs/default/wrong.png);
+}
+
+.mandatory-sign {
+  display: inline-block;
+  vertical-align: middle;
+  color: red;
 }

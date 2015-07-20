@@ -1,0 +1,55 @@
+.contact-container {
+  margin: auto;
+  margin-top: 30px;
+  width: 500px;
+}
+
+.contact-header .welcome {
+  float: right;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.contact-header .logo {
+  width: 159px;
+  height: 54px;
+  background: url(/imgs/default/logo.png);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.contact-header .game-label {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+.contact-separator {
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+.contact-separator .above {
+  height: 2px;
+  background: white;
+  margin-bottom: 2px;
+}
+
+.contact-separator .below {
+  height: 1px;
+  background: white;
+}
+
+.contact-content {
+  width: 400px;
+  margin: auto;
+}
+
+.contact-content p {
+  line-height: 30px;
+}
+
+.contact-actions {
+  margin-top: 20px;
+  text-align: center;
+}

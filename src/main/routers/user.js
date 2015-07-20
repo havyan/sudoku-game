@@ -75,13 +75,21 @@ module.exports = function(router) {
   });
 
   router.post('/user', function(req, res, next) {
-    UserManager.createUser(_.cloneDeep(req.body), function(error, result) {
-      if (error) {
-        next(new HttpError(error));
-      } else {
-        res.send(result);
-      }
-    });
+    var vcode = req.body.vcode ? req.body.vcode.toLocaleLowerCase() : '';
+    if (vcode !== req.session.vcode) {
+      res.send({
+        success : false,
+        reason : '验证码不对，请重新输入'
+      });
+    } else {
+      UserManager.createUser(_.cloneDeep(req.body), function(error, result) {
+        if (error) {
+          next(new HttpError(error));
+        } else {
+          res.send(result);
+        }
+      });
+    }
   });
 
   router.post('/user/check_account', function(req, res, next) {
@@ -101,6 +109,15 @@ module.exports = function(router) {
       } else {
         res.send(result);
       }
+    });
+  });
+
+  router.get('/user/vcode', function(req, res, next) {
+    var result = UserManager.generateVcode();
+    winston.info('Generate verify code: ' + result.code);
+    req.session.vcode = result.code.toLocaleLowerCase();
+    res.send({
+      url : result.dataURL
     });
   });
 };

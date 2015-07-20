@@ -15,7 +15,9 @@ var config = require('./config');
 var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
-var IGNORED_CHECK_ACTIONS = ['GET /', 'GET /login', 'POST /login', 'GET /signup', 'POST /user', 'POST /user/check_account', 'POST /user/check_email'];
+var IGNORED_CHECK_ACTIONS = ['GET /', 'GET /login', 'POST /login',
+                             'GET /signup', 'POST /user', 'POST /user/check_account',
+                             'POST /user/check_email', 'GET /user/vcode', 'GET /contact'];
 
 hbs.localsAsTemplateData(app);
 config.initialize(app);
