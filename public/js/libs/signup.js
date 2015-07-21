@@ -7,10 +7,6 @@
       },
 
       getVcode : function() {
-        Rest.User.getVcode(function(result) {
-          $('.verify-image').attr('src', result.url);
-        }, function() {
-        });
       },
 
       '.refresh-vcode click' : function() {
