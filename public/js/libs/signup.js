@@ -108,6 +108,28 @@
         }
       },
 
+      '.vcode .signup-value blur' : function(e) {
+        var self = this;
+        var vcode = e.val();
+        var $sign = e.siblings('.ok-sign');
+        if (!_.isEmpty(vcode)) {
+          Rest.User.checkVcode(vcode, function(result) {
+            if (result.valid) {
+              $sign.removeClass('wrong');
+              self.validation.vcode = true;
+            } else {
+              $sign.addClass('wrong');
+              self.validation.vcode = false;
+            }
+            $sign.css('display', 'inline-block');
+          }, function() {
+          });
+        } else {
+          $sign.hide();
+          self.validation.vcode = false;
+        }
+      },
+
       '.signup-form submit' : function() {
         return false;
       },
@@ -115,7 +137,7 @@
       '.signup-submit click' : function() {
         var self = this;
         var validation = self.validation;
-        if (validation.account && validation.password && validation.repeatPassword && validation.email) {
+        if (validation.account && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
           $('.signup-form').ajaxSubmit({
             success : function(result) {
               if (result.success) {

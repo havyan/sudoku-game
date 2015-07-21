@@ -112,6 +112,13 @@ module.exports = function(router) {
     });
   });
 
+  router.post('/user/check_vcode', function(req, res, next) {
+    var vcode = req.body.vcode ? req.body.vcode.toLocaleLowerCase() : '';
+    res.send({
+      valid : vcode === req.session.vcode
+    });
+  });
+
   router.get('/user/vcode', function(req, res, next) {
     var result = UserManager.generateVcode();
     winston.info('Generate verify code: ' + result.code);

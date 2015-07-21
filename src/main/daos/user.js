@@ -14,11 +14,26 @@ var UserSchema = new Schema({
     type : String,
     default : '/imgs/default/user_icons/default.png'
   },
-  grade : String,
-  points : Number,
-  rounds : Number,
-  wintimes : Number,
-  money : Number
+  grade : {
+    type : String,
+    default : '0'
+  },
+  points : {
+    type : Number,
+    default : 0
+  },
+  rounds : {
+    type : Number,
+    default : 0
+  },
+  wintimes : {
+    type : Number,
+    default : 0
+  },
+  money : {
+    type : Number,
+    default : 5000
+  }
 });
 
 UserSchema.statics.findOneByName = function(name, cb) {

@@ -312,6 +312,19 @@
       });
     },
 
+    checkVcode : function(vcode, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/check_vcode',
+        dataType : 'json',
+        data : {
+          vcode : vcode
+        },
+        success : success,
+        error : error
+      });
+    },
+
     getVcode : function(success, error) {
       return $.ajax({
         type : 'get',
