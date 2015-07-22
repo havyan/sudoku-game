@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var _ = require('lodash');
+var winston = require('winston');
 var async = require('async');
 var Schema = mongoose.Schema;
 var RuleDAO = require('./rule');
