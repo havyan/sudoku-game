@@ -158,7 +158,7 @@ UserManager.createUser = function(params, cb) {
         self.checkEmail(params.email, function(error, result) {
           if (result.valid) {
             params.password = self.encryptPassword(params.password);
-            UserDAO.create(params, function(error) {
+            UserDAO.createUser(params, function(error) {
               if (error) {
                 cb(error);
               } else {
