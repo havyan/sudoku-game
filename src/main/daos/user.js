@@ -49,8 +49,8 @@ UserSchema.statics.createUser = function(params, cb) {
           cb(error);
         } else {
           if (!find) {
-            winston.info('Create prop for account [' + user.account + '] from predefined');
-            PropDAO.createDefault(user.account, cb);
+            winston.info('Create prop for account [' + params.account + '] from predefined');
+            PropDAO.createDefault(params.account, cb);
           } else {
             cb();
           }
