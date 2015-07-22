@@ -90,11 +90,18 @@ module.exports = function(router) {
           next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
           return;
         }
-        res.render('lobby', {
-          userName : user.name,
-          userIcon : user.icon,
-          money : user.money
-        });
+        if (user) {
+          res.render('lobby', {
+            userName : user.name,
+            userIcon : user.icon,
+            money : user.money
+          });
+        } else {
+          req.session.account = undefined;
+          res.clearCookie('account');
+          res.clearCookie('password');
+          res.redirect('/');
+        }
       });
     }
   });
