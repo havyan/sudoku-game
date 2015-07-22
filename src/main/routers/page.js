@@ -97,7 +97,10 @@ module.exports = function(router) {
             money : user.money
           });
         } else {
-          res.redirect('/logout');
+          req.session.account = undefined;
+          res.clearCookie('account');
+          res.clearCookie('password');
+          res.redirect('/');
         }
       });
     }
