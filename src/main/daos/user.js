@@ -3,6 +3,7 @@ var _ = require('lodash');
 var async = require('async');
 var Schema = mongoose.Schema;
 var RuleDAO = require('./rule');
+var PropDAO = require('./prop');
 var MONEY = 50000;
 
 var UserSchema = new Schema({
@@ -35,6 +36,28 @@ var UserSchema = new Schema({
     default : 5000
   }
 });
+
+UserSchema.statics.createUser = function(params, cb) {
+  this.create(params, function(error) {
+    if (error) {
+      cb(error);
+    } else {
+      PropDAO.findOneByAccount(params.account, function(error, find) {
+        if (error) {
+          winston.error('Error happens when getting prop from db: ' + error);
+          cb(error);
+        } else {
+          if (!find) {
+            winston.info('Create prop for account [' + user.account + '] from predefined');
+            PropDAO.createDefault(user.account, cb);
+          } else {
+            cb();
+          }
+        }
+      });
+    }
+  });
+};
 
 UserSchema.statics.findOneByName = function(name, cb) {
   this.findOne({

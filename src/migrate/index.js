@@ -64,22 +64,7 @@ module.exports = function(cb) {
           } else {
             if (!find) {
               winston.info('Create user [' + user.name + '] from predefined');
-              UserDAO.create(user, cb);
-            } else {
-              cb();
-            }
-          }
-        });
-      },
-      function(cb) {
-        PropDAO.findOneByAccount(user.account, function(error, find) {
-          if (error) {
-            winston.error('Error happens when getting prop from db: ' + error);
-            cb(error);
-          } else {
-            if (!find) {
-              winston.info('Create prop for account [' + user.account + '] from predefined');
-              PropDAO.createDefault(user.account, cb);
+              UserDAO.createUser(user, cb);
             } else {
               cb();
             }
@@ -97,12 +82,7 @@ module.exports = function(cb) {
       terminal : false
     });
 
-    var source,
-        puzzle,
-        lineNumber = 0,
-        questionlineNumber = 0,
-        answerLineNumber = 0,
-        mode = GameMode.MODE9;
+    var source, puzzle, lineNumber = 0, questionlineNumber = 0, answerLineNumber = 0, mode = GameMode.MODE9;
     rl.on('line', function(line) {
       line = line.trim();
       var sourceSymbol = line.match(/^[\w\d]+-([ABCDE]+)-[\w\d-\.]*$/);
