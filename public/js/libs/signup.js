@@ -9,11 +9,13 @@
       getVcode : function() {
         Rest.User.getVcode(function(result) {
           $('.verify-image').attr('src', result.url);
+          $('.vcode .signup-value').val('');
+          $('.vcode .ok-sign').hide();
         }, function() {
         });
       },
 
-      '.refresh-vcode click' : function() {
+      '.refresh-vcode click' : function(e) {
         this.getVcode();
       },
 
