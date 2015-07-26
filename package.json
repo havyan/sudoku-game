@@ -21,7 +21,10 @@
     "gm": "^1.18.1",
     "canvas": "^1.2.3",
     "verify-code": "^0.1.5",
-    "nodemailer": "^1.4.0"
+    "nodemailer": "^1.4.0",
+    "nodemailer-direct-transport": "^1.0.2",
+    "nodemailer-smtp-transport": "^1.0.3",
+    "nodemailer-smtp-pool": "^1.1.1"
   },
   "devDependencies": {
     "chai": "^1.10.0",

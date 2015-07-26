@@ -286,6 +286,21 @@
       });
     },
 
+    resetPassword : function(account, password, key, success, error) {
+      return $.ajax({
+        type : 'put',
+        url : '/user/password',
+        dataType : 'json',
+        data : {
+          account : account,
+          password : password,
+          key : key
+        },
+        success : success,
+        error : error
+      });
+    },
+
     checkAccount : function(account, success, error) {
       return $.ajax({
         type : 'post',
@@ -330,6 +345,19 @@
         type : 'get',
         url : '/user/vcode',
         dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    sendResetMail : function(email, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/reset_mail',
+        dataType : 'json',
+        data : {
+          email : email
+        },
         success : success,
         error : error
       });

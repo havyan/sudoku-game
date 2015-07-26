@@ -245,3 +245,72 @@ label {
   width: 40%;
   text-align: left;
 }
+
+.common-container {
+  margin: auto;
+  margin-top: 30px;
+  width: 500px;
+}
+
+.common-header .welcome {
+  float: right;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.common-header .logo {
+  width: 159px;
+  height: 54px;
+  background: url(/imgs/default/logo.png);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.common-header .game-label {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+.common-separator {
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+.common-separator .above {
+  height: 2px;
+  background: white;
+  margin-bottom: 2px;
+}
+
+.common-separator .below {
+  height: 1px;
+  background: white;
+}
+
+.common-content {
+  width: 400px;
+  margin: auto;
+}
+
+.common-content p {
+  line-height: 30px;
+}
+
+.common-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.ok-sign {
+  width: 20px;
+  height: 19px;
+  background: url(/imgs/default/right.png);
+  display: none;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.ok-sign.wrong {
+  background: url(/imgs/default/wrong.png);
+}

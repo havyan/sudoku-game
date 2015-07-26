@@ -1,13 +1,17 @@
 var _ = require('lodash');
 var fs = require('fs');
 var gm = require('gm');
+var async = require('async');
 var formidable = require('formidable');
 var winston = require('winston');
 var crypto = require('crypto');
 var vcode = require('verify-code');
+var mailer = require('./mailer');
 var UserDAO = require('./daos/user');
+var ResetKeyDAO = require('./daos/reset_key');
 var TMP_ICON_DIR = '/imgs/web/tmp';
 var ICON_DIR = '/imgs/web/user_icons';
+var RESET_PASSWORD_EXPIRED = 30;
 
 var removeFile = function(path) {
   fs.unlink(path, function(error) {
@@ -193,6 +197,74 @@ UserManager.encryptPassword = function(password) {
 
 UserManager.generateVcode = function() {
   return vcode.Generate();
+};
+
+UserManager.resetPassword = function(account, password, key, cb) {
+  var self = this;
+  this.checkResetKey(key, function(error, available, source) {
+    if (source === account) {
+      UserManager.updateByAccount(account, {
+        password : self.encryptPassword(password)
+      }, function(error) {
+        if (error) {
+          cb(error);
+        } else {
+          ResetKeyDAO.removeKey(account, cb);
+        }
+      });
+    } else {
+      cb('No permission');
+    }
+  });
+};
+
+UserManager.sendResetMail = function(email, cb) {
+  async.waterfall([
+  function(cb) {
+    UserDAO.findOne({
+      email : email
+    }, cb);
+  },
+  function(user, cb) {
+    if (user) {
+      ResetKeyDAO.removeKey(user.account, function(error) {
+        if (error) {
+          cb(error);
+        } else {
+          ResetKeyDAO.createKey(user.account, cb);
+        }
+      });
+    } else {
+      cb('No user found for email: ' + email);
+    }
+  },
+  function(key, cb) {
+    var link = global.config.server.domain + '/reset_password?key=' + key.id;
+    mailer.send({
+      to : email,
+      subject : '重置超天才数独游戏登录密码',
+      html : '<p>请点击重置链接来重置密码: <a href="' + link + '">重置</a></p>'
+    }, cb);
+  }], cb);
+};
+
+UserManager.checkResetKey = function(key, cb) {
+  ResetKeyDAO.findOneById(key, function(error, resetKey) {
+    if (error) {
+      cb(error);
+    } else {
+      if (resetKey) {
+        var now = new Date();
+        if ((now - resetKey.date) > RESET_PASSWORD_EXPIRED * 60 * 1000) {
+          cb(null, false, resetKey.source);
+        } else {
+          cb(null, true, resetKey.source);
+        }
+      } else {
+        cb(null, false);
+      }
+    }
+  });
 };
 
 module.exports = UserManager;

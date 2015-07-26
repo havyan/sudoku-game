@@ -1,5 +1,6 @@
 {
 	"server": {
+	  "domain": "http://localhost:9191",
 		"port": 9191
 	},
 	"mongodb": {
@@ -19,6 +20,10 @@
 			"basecss": "/css/default",
 			"basejs": "/js",
 			"basefile": "/"
+		},
+		"mail" : {
+		  "from": "havyan@qq.com",
+		  "password": ""
 		}
 	},
 	"winston": {

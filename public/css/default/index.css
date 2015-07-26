@@ -1,3 +1,7 @@
+html, body {
+  overflow: hidden !important;
+}
+
 .logo {
   margin-left: 30px;
   margin-top: 20px;
@@ -8,6 +12,20 @@
   float: right;
   margin-right: 30px;
   margin-top: 20px;
+}
+
+.contact-btn {
+  display: inline-block;
+  width: 90px;
+  height: 28px;
+  background-size: cover;
+  text-align: center;
+  background-image: url(/imgs/default/contact.png);
+  line-height: 28px;
+  background-color: inherit;
+  border: none;
+  font-size: 14px;
+  color: white;
 }
 
 .login-area {
@@ -51,6 +69,7 @@
   display: inline-block;
   vertical-align: middle;
   text-align: left;
+  background: #002250;
 }
 
 .login-more {
@@ -80,4 +99,29 @@
 .login-error {
   color: red;
   margin-bottom: 10px;
+}
+
+.login-button input {
+  width: 120px;
+  height: 34px;
+  background-size: cover;
+  background-image: url(/imgs/default/login_btn.png);
+  line-height: 34px;
+  background-color: inherit;
+  border: none;
+  font-size: 16px;
+  color: white;
+}
+
+.signup-button a {
+  display: inline-block;
+  width: 80px;
+  height: 34px;
+  background-size: cover;
+  background-image: url(/imgs/default/signup_btn.png);
+  line-height: 34px;
+  background-color: inherit;
+  border: none;
+  font-size: 16px;
+  color: white;
 }

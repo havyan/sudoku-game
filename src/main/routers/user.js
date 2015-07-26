@@ -44,6 +44,18 @@ module.exports = function(router) {
     });
   });
 
+  router.put('/user/password', function(req, res, next) {
+    UserManager.resetPassword(req.body.account, req.body.password, req.body.key, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status : 'ok'
+        });
+      }
+    });
+  });
+
   router.put('/user/icon', function(req, res, next) {
     var account = req.session.account;
     var icon = req.body.icon;
@@ -125,6 +137,18 @@ module.exports = function(router) {
     req.session.vcode = result.code.toLocaleLowerCase();
     res.send({
       url : result.dataURL
+    });
+  });
+
+  router.post('/user/reset_mail', function(req, res, next) {
+    UserManager.sendResetMail(req.body.email, function(error) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status : 'ok'
+        });
+      }
     });
   });
 };

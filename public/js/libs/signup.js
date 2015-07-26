@@ -42,10 +42,19 @@
       },
 
       '.password .signup-value blur' : function(e) {
+        this.verifyPassword();
+      },
+
+      '.repeat-password .signup-value blur' : function(e) {
+        this.verifyPassword();
+      },
+
+      verifyPassword : function() {
+        var e = $('.password .signup-value');
         var self = this;
         var password = e.val();
         var $sign = e.siblings('.ok-sign');
-        var reg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,.\/]).{4,16}$/;
+        var reg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,.\/]).{6,16}$/;
         if (!_.isEmpty(password)) {
           if (reg.test(password)) {
             $sign.removeClass('wrong');
@@ -59,13 +68,10 @@
           $sign.hide();
           self.validation.password = false;
         }
-      },
 
-      '.repeat-password .signup-value blur' : function(e) {
-        var self = this;
+        e = $('.repeat-password .signup-value');
         var repeatPassword = e.val();
-        var password = $('.password .signup-value').val();
-        var $sign = e.siblings('.ok-sign');
+        $sign = e.siblings('.ok-sign');
         if (!_.isEmpty(repeatPassword)) {
           if (password === repeatPassword) {
             $sign.removeClass('wrong');
@@ -160,6 +166,6 @@
       }
     });
 
-    new SignupPanel($('.signup-container'));
+    new SignupPanel($('.common-container'));
   });
 })();

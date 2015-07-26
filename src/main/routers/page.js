@@ -160,5 +160,20 @@ module.exports = function(router) {
     res.render('contact', {
     });
   });
+
+  router.get('/retrieve_password', function(req, res, next) {
+    res.render('retrieve_password', {
+    });
+  });
+
+  router.get('/reset_password', function(req, res, next) {
+    UserManager.checkResetKey(req.query.key, function(error, available, source) {
+      res.render('reset_password', {
+        available : available,
+        key : req.query.key,
+        account : source
+      });
+    });
+  });
 };
 
