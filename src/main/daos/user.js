@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var _ = require('lodash');
+var crypto = require('crypto');
 var winston = require('winston');
 var async = require('async');
 var Schema = mongoose.Schema;
@@ -12,6 +13,10 @@ var UserSchema = new Schema({
   name : String,
   password : String,
   email : String,
+  create_at : {
+    type : Date,
+    default : Date.now
+  },
   icon : {
     type : String,
     default : '/imgs/default/user_icons/default.png'
@@ -39,6 +44,11 @@ var UserSchema = new Schema({
 });
 
 UserSchema.statics.createUser = function(params, cb) {
+  params = _.merge({
+    password : params.account,
+    email : params.account + '@supergenius.cn'
+  }, params);
+  params.password = this.encryptPassword(params.password);
   this.create(params, function(error) {
     if (error) {
       cb(error);
@@ -135,6 +145,12 @@ UserSchema.statics.resetMoney = function(cb) {
       }, cb);
     }
   });
+};
+
+UserSchema.statics.encryptPassword = function(password) {
+  var hasher = crypto.createHash("md5");
+  hasher.update(password);
+  return hasher.digest('hex');
 };
 
 UserSchema.virtual('winrate').get(function() {

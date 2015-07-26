@@ -4,7 +4,6 @@ var gm = require('gm');
 var async = require('async');
 var formidable = require('formidable');
 var winston = require('winston');
-var crypto = require('crypto');
 var vcode = require('verify-code');
 var mailer = require('./mailer');
 var UserDAO = require('./daos/user');
@@ -162,7 +161,6 @@ UserManager.createUser = function(params, cb) {
       if (result.valid) {
         self.checkEmail(params.email, function(error, result) {
           if (result.valid) {
-            params.password = self.encryptPassword(params.password);
             UserDAO.createUser(params, function(error) {
               if (error) {
                 cb(error);
@@ -189,12 +187,6 @@ UserManager.createUser = function(params, cb) {
   });
 };
 
-UserManager.encryptPassword = function(password) {
-  var hasher = crypto.createHash("md5");
-  hasher.update(password);
-  return hasher.digest('hex');
-};
-
 UserManager.generateVcode = function() {
   return vcode.Generate();
 };
@@ -203,8 +195,8 @@ UserManager.resetPassword = function(account, password, key, cb) {
   var self = this;
   this.checkResetKey(key, function(error, available, source) {
     if (source === account) {
-      UserManager.updateByAccount(account, {
-        password : self.encryptPassword(password)
+      self.updateByAccount(account, {
+        password : UserDAO.encryptPassword(password)
       }, function(error) {
         if (error) {
           cb(error);

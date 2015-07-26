@@ -7,7 +7,16 @@
       '.send.available click' : function(e) {
         var email = $('.email').val();
         Rest.User.sendResetMail(email, function() {
-          Dialog.message('重置邮件已发送至您的邮箱，请在30分钟内重置密码，过期无效');
+          Dialog.message('重置邮件已发送至您的邮箱，请在30分钟内重置密码，过期无效', {
+            actions : [{
+              name : '关闭',
+              dismiss : true,
+              userClass : 'btn-primary',
+              callback : function() {
+                window.location.href = '/';
+              }
+            }]
+          });
         }, function() {
         });
       },

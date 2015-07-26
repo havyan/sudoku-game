@@ -149,7 +149,16 @@
           $('.signup-form').ajaxSubmit({
             success : function(result) {
               if (result.success) {
-                Dialog.message('注册成功');
+                Dialog.message('注册成功', {
+                  actions : [{
+                    name : '关闭',
+                    dismiss : true,
+                    userClass : 'btn-primary',
+                    callback : function() {
+                      window.location.href = '/';
+                    }
+                  }]
+                });
               } else {
                 Dialog.error(result.reason);
                 self.getVcode();

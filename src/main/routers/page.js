@@ -47,7 +47,7 @@ module.exports = function(router) {
   });
 
   router.post('/login', function(req, res, next) {
-    var password = UserManager.encryptPassword(req.body.password);
+    var password = UserDAO.encryptPassword(req.body.password);
     UserDAO.findOne({
       account : req.body.account,
       password : password
