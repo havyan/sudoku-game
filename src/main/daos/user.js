@@ -17,6 +17,9 @@ var UserSchema = new Schema({
     type : Date,
     default : Date.now
   },
+  create_ip : String,
+  login_at : Date,
+  login_ip : String,
   icon : {
     type : String,
     default : '/imgs/default/user_icons/default.png'

@@ -94,7 +94,9 @@ module.exports = function(router) {
         reason : '验证码不对，请重新输入'
       });
     } else {
-      UserManager.createUser(_.cloneDeep(req.body), function(error, result) {
+      var params = _.cloneDeep(req.body);
+      params.create_ip = req.ip;
+      UserManager.createUser(params, function(error, result) {
         if (error) {
           next(new HttpError(error));
         } else {

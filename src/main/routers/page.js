@@ -57,16 +57,24 @@ module.exports = function(router) {
         return;
       }
       if (user) {
-        if (req.body.remember_me) {
-          res.cookie('account', user.account, {
-            maxAge : 3600000 * 24 * 30
-          });
-          res.cookie('password', password, {
-            maxAge : 3600000 * 24 * 30
-          });
-        }
-        req.session.account = user.account;
-        res.redirect('/main');
+        user.login_at = new Date();
+        user.login_ip = req.ip;
+        user.save(function(error) {
+          if (error) {
+            next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
+          } else {
+            if (req.body.remember_me) {
+              res.cookie('account', user.account, {
+                maxAge : 3600000 * 24 * 30
+              });
+              res.cookie('password', password, {
+                maxAge : 3600000 * 24 * 30
+              });
+            }
+            req.session.account = user.account;
+            res.redirect('/main');
+          }
+        });
       } else {
         res.redirect('/login?error=true');
       }
