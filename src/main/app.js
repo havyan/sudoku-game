@@ -89,4 +89,7 @@ app.init = function(cb) {
   }], cb);
 };
 
+// Worker to process data
+require('./worker');
+
 module.exports = app;

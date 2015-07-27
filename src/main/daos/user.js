@@ -3,15 +3,25 @@ var _ = require('lodash');
 var crypto = require('crypto');
 var winston = require('winston');
 var async = require('async');
+var mailer = require('../mailer');
 var Schema = mongoose.Schema;
 var RuleDAO = require('./rule');
 var PropDAO = require('./prop');
+var ActiveKeyDAO = require('./active_key');
 var MONEY = 50000;
+var STATES = {
+  NEW : 'new',
+  ACTIVE : 'active'
+};
 
 var UserSchema = new Schema({
   account : String,
   name : String,
   password : String,
+  state : {
+    type : String,
+    default : STATES.NEW
+  },
   email : String,
   create_at : {
     type : Date,
@@ -47,30 +57,38 @@ var UserSchema = new Schema({
 });
 
 UserSchema.statics.createUser = function(params, cb) {
+  var self = this;
   params = _.merge({
     password : params.account,
     email : params.account + '@supergenius.cn'
   }, params);
   params.password = this.encryptPassword(params.password);
-  this.create(params, function(error) {
-    if (error) {
-      cb(error);
+  async.waterfall([
+  function(cb) {
+    self.create(params, cb);
+  },
+  function(user, cb) {
+    PropDAO.findOneByAccount(params.account, cb);
+  },
+  function(find, cb) {
+    if (!find) {
+      winston.info('Create prop for account [' + params.account + '] from predefined');
+      PropDAO.createDefault(params.account, cb);
     } else {
-      PropDAO.findOneByAccount(params.account, function(error, find) {
-        if (error) {
-          winston.error('Error happens when getting prop from db: ' + error);
-          cb(error);
-        } else {
-          if (!find) {
-            winston.info('Create prop for account [' + params.account + '] from predefined');
-            PropDAO.createDefault(params.account, cb);
-          } else {
-            cb();
-          }
-        }
-      });
+      cb(null, null);
     }
-  });
+  },
+  function(prop, cb) {
+    ActiveKeyDAO.createKey(params.account, cb);
+  },
+  function(key, cb) {
+    var link = global.config.server.domain + '/active_user?key=' + key.id;
+    mailer.send({
+      to : params.email,
+      subject : ' 激活超天才账户',
+      html : '<p>请点击激活来激活超天才账户: <a href="' + link + '">激活</a></p>'
+    }, cb);
+  }], cb);
 };
 
 UserSchema.statics.findOneByName = function(name, cb) {
