@@ -183,5 +183,13 @@ module.exports = function(router) {
       });
     });
   });
+
+  router.get('/active_user', function(req, res, next) {
+    UserManager.checkActiveKey(req.query.key, function(error, available, source) {
+      res.render('active_user', {
+        available : available
+      });
+    });
+  });
 };
 

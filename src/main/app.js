@@ -20,7 +20,7 @@ var IGNORED_CHECK_ACTIONS = ['GET /', 'GET /login', 'POST /login',
                              'GET /signup', 'POST /user', 'POST /user/check_account',
                              'POST /user/check_email', 'GET /user/vcode', 'GET /contact',
                              'POST /user/check_vcode', 'GET /retrieve_password', 'POST /user/reset_mail',
-                             'GET /reset_password', 'PUT /user/password'];
+                             'GET /reset_password', 'PUT /user/password', 'GET /active_user'];
 
 hbs.localsAsTemplateData(app);
 config.initialize(app);

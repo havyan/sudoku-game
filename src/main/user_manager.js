@@ -8,6 +8,7 @@ var vcode = require('verify-code');
 var mailer = require('./mailer');
 var UserDAO = require('./daos/user');
 var ResetKeyDAO = require('./daos/reset_key');
+var ActiveKeyDAO = require('./daos/active_key');
 var TMP_ICON_DIR = '/imgs/web/tmp';
 var ICON_DIR = '/imgs/web/user_icons';
 var RESET_PASSWORD_EXPIRED = 30;
@@ -240,12 +241,27 @@ UserManager.checkResetKey = function(key, cb) {
       cb(error);
     } else {
       if (resetKey) {
-        var now = new Date();
-        if ((now - resetKey.date) > RESET_PASSWORD_EXPIRED * 60 * 1000) {
-          cb(null, false, resetKey.source);
-        } else {
-          cb(null, true, resetKey.source);
-        }
+        cb(null, true, resetKey.source);
+      } else {
+        cb(null, false);
+      }
+    }
+  });
+};
+
+UserManager.checkActiveKey = function(key, cb) {
+  ActiveKeyDAO.findOneById(key, function(error, activeKey) {
+    if (error) {
+      cb(error);
+    } else {
+      if (activeKey) {
+        UserDAO.activeUser(activeKey.source, function(error) {
+          if (error) {
+            cb(error);
+          } else {
+            cb(null, true, activeKey.source);
+          }
+        });
       } else {
         cb(null, false);
       }

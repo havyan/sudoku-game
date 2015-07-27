@@ -168,6 +168,14 @@ UserSchema.statics.resetMoney = function(cb) {
   });
 };
 
+UserSchema.statics.activeUser = function(account, cb) {
+  this.update({
+    account : account
+  }, {
+    state : STATES.ACTIVE
+  }, cb);
+};
+
 UserSchema.statics.encryptPassword = function(password) {
   var hasher = crypto.createHash("md5");
   hasher.update(password);
