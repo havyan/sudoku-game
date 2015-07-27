@@ -197,13 +197,7 @@ UserManager.resetPassword = function(account, password, key, cb) {
     if (source === account) {
       self.updateByAccount(account, {
         password : UserDAO.encryptPassword(password)
-      }, function(error) {
-        if (error) {
-          cb(error);
-        } else {
-          ResetKeyDAO.removeKey(account, cb);
-        }
-      });
+      }, cb);
     } else {
       cb('No permission');
     }

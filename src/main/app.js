@@ -1,3 +1,4 @@
+require('./common');
 var _ = require('lodash');
 var winston = require('winston');
 var express = require('express');
