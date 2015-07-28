@@ -79,15 +79,23 @@ UserSchema.statics.createUser = function(params, cb) {
     }
   },
   function(prop, cb) {
-    ActiveKeyDAO.createKey(params.account, cb);
+    if (params.state !== STATES.ACTIVE) {
+      ActiveKeyDAO.createKey(params.account, cb);
+    } else {
+      cb(null, null);
+    }
   },
   function(key, cb) {
-    var link = global.config.server.domain + '/active_user?key=' + key.id;
-    mailer.send({
-      to : params.email,
-      subject : ' 激活超天才账户',
-      html : '<p>请点击激活来激活超天才账户: <a href="' + link + '">激活</a></p>'
-    }, cb);
+    if (params.state !== STATES.ACTIVE) {
+      var link = global.config.server.domain + '/active_user?key=' + key.id;
+      mailer.send({
+        to : params.email,
+        subject : ' 激活超天才账户',
+        html : '<p>请点击激活来激活超天才账户: <a href="' + link + '">激活</a></p>'
+      }, cb);
+    } else {
+      cb();
+    }
   }], cb);
 };
 
