@@ -50,7 +50,8 @@ module.exports = function(router) {
     var password = UserDAO.encryptPassword(req.body.password);
     UserDAO.findOne({
       account : req.body.account,
-      password : password
+      password : password,
+      state : 'active'
     }, function(error, user) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));

@@ -30,4 +30,10 @@ ActiveKeySchema.statics.findOneById = function(id, cb) {
   }, cb);
 };
 
+ActiveKeySchema.statics.findOneBySource = function(source, cb) {
+  this.findOne({
+    source : source
+  }, cb);
+};
+
 module.exports = mongoose.model('ActiveKey', ActiveKeySchema);

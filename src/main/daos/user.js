@@ -99,6 +99,12 @@ UserSchema.statics.createUser = function(params, cb) {
   }], cb);
 };
 
+UserSchema.statics.findInactive = function(cb) {
+  this.find({
+    state : STATES.NEW
+  }, cb);
+};
+
 UserSchema.statics.findOneByName = function(name, cb) {
   this.findOne({
     name : name
