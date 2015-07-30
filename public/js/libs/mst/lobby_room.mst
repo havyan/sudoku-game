@@ -1,5 +1,5 @@
 <div class="lobby-room" data-id="{{id}}">
-  {{#games}}
+  {{#each games}}
   <div class="lobby-game {{status}}" data-id="{{id}}">
     <div class="room-number">
       {{tableOrder @index}}
@@ -29,5 +29,5 @@
     {{/if}}
     {{/each}}
   </div>
-  {{/games}}
+  {{/each}}
 </div>
