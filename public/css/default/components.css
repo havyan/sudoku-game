@@ -23,6 +23,14 @@
 .setting-panel .setting-container {
   margin-left: 27%;
   width: 43%;
+  min-width: 600px;
+}
+
+.setting-score {
+  background-image: url(/imgs/default/score_bg.png);
+  background-size: 100% 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .setting-panel .grade-table {
@@ -173,7 +181,6 @@ input.invalid, input:focus.invalid {
 
 .setting-panel .add-rule {
   margin-bottom: 20px;
-  min-width: 600px;
 }
 
 .setting-panel input {
