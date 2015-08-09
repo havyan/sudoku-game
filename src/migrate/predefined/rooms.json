@@ -2,39 +2,63 @@
   "parents": [
     {
       "name": "白羊座",
+      "code": "aries",
+      "icon": "/imgs/default/constellation/aries.png",
       "virtual": true
     }, {
       "name": "金牛座",
+      "code": "taurus",
+      "icon": "/imgs/default/constellation/taurus.png",
       "virtual": true
     }, {
       "name": "双子座",
+      "code": "gemini",
+      "icon": "/imgs/default/constellation/gemini.png",
       "virtual": true
     }, {
       "name": "巨蟹座",
+      "code": "cancer",
+      "icon": "/imgs/default/constellation/cancer.png",
       "virtual": true
     }, {
       "name": "狮子座",
+      "code": "leo",
+      "icon": "/imgs/default/constellation/leo.png",
       "virtual": true
     }, {
       "name": "处女座",
+      "code": "virgo",
+      "icon": "/imgs/default/constellation/virgo.png",
       "virtual": true
     }, {
       "name": "天秤座",
+      "code": "libra",
+      "icon": "/imgs/default/constellation/libra.png",
       "virtual": true
     }, {
       "name": "天蝎座",
+      "code": "scorpio",
+      "icon": "/imgs/default/constellation/scorpio.png",
       "virtual": true
     }, {
       "name": "射手座",
+      "code": "sagittarius",
+      "icon": "/imgs/default/constellation/sagittarius.png",
       "virtual": true
     }, {
       "name": "摩羯座",
+      "code": "capricorn",
+      "icon": "/imgs/default/constellation/capricorn.png",
       "virtual": true
     }, {
       "name": "水瓶座",
+      "code": "aquarius",
+      "icon": "/imgs/default/constellation/aquarius.png",
       "virtual": true
     }, {
       "name": "双鱼座",
+      "code": "pisces",
+      "icon": "/imgs/default/constellation/pisces.png",
       "virtual": true
     }
   ],

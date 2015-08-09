@@ -2,11 +2,24 @@
   can.Model('Models.LobbyModel', {}, {
     init : function(data, eventReceiver) {
       this.eventReceiver = eventReceiver;
-      this.selectRoom(this.find(function(room) {
-        if (!room.attr('virtual')) {
-          return room.id;
+      var selectedRoom;
+      var favariteRoomId = window.localStorage.getItem('favarite_room');
+      if (favariteRoomId) {
+        var favariteRoom = this.findRoom(favariteRoomId);
+        if (favariteRoom) {
+          if (favariteRoom.attr('virtual')) {
+            selectedRoom = favariteRoom.attr('children.0.id');
+          } else {
+            selectedRoom = favariteRoom.attr('id');
+          }
         }
-      }));
+      }
+      if (!selectedRoom) {
+        selectedRoom = this.find(function(room) {
+          return room.id;
+        });
+      }
+      this.selectRoom(selectedRoom);
       this.initEvents();
     },
 
@@ -72,6 +85,35 @@
       var game = this.findGame(gameId);
       game.attr('players').attr(index, player);
       this.replaceGame(gameId, game.attr());
+    },
+
+    findRoom : function(roomId) {
+      var self = this;
+      var result;
+      var find = function(room) {
+        var result;
+        if (roomId === room.attr('id')) {
+          result = room;
+          return room;
+        } else {
+          if (room.attr('virtual')) {
+            _.each(room.attr('children'), function(child) {
+              result = find(child);
+              if (result) {
+                return false;
+              }
+            });
+          }
+        }
+        return result;
+      };
+      _.each(this.attr('rooms'), function(room) {
+        result = find(room);
+        if (result) {
+          return false;
+        }
+      });
+      return result;
     },
 
     findRealRoom : function(roomId) {

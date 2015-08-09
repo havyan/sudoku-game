@@ -14,14 +14,27 @@ html, body {
   margin-top: 20px;
 }
 
+.top-right-area * {
+  vertical-align: middle;
+}
+
+.welcome {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.welcome span {
+  color: red;
+}
+
 .contact-btn {
   display: inline-block;
   width: 90px;
-  height: 28px;
-  background-size: cover;
+  height: 32px;
+  background-size: 100% 100%;
   text-align: center;
   background-image: url(/imgs/default/contact.png);
-  line-height: 28px;
+  line-height: 32px;
   background-color: inherit;
   border: none;
   font-size: 14px;
@@ -29,8 +42,8 @@ html, body {
 }
 
 .login-area {
-  width: 600px;
-  height: 600px;
+  width: 800px;
+  height: 800px;
   margin: auto;
   position: fixed;
   left: 0px;
@@ -41,9 +54,24 @@ html, body {
 
 .login-form {
   width: 300px;
+  height: 300px;
   margin: auto;
-  margin-top: 150px;
+  margin-top: 250px;
   text-align: center;
+}
+
+.enter {
+  display: block;
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+  margin: auto;
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  margin-top: 380px;
+  background-size: 100% 100%;
+  background-image: url(/imgs/default/login_btn.png);
 }
 
 .login-title {
@@ -123,4 +151,27 @@ html, body {
   border: none;
   font-size: 16px;
   color: white;
+}
+
+.room {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+}
+
+.room img {
+  height: 100px;
+}
+
+.room a {
+  display: block;
+  text-align: center;
+}
+
+.room .label {
+  margin-top: 5px;
+}
+
+.room.favarite .label {
+  color: #fff100;
 }

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
-var EXPIRES = '72h';
+var EXPIRES = '24h';
 
 var ActiveKeySchema = new Schema({
   source : String,

@@ -102,7 +102,7 @@ input.invalid, input:focus.invalid {
 }
 
 .setting-top-actions input {
-  width: 16%;
+  width: 20%;
   font-size: 1em;
   margin-right: 20px;
 }
@@ -263,7 +263,6 @@ input.invalid, input:focus.invalid {
   margin-left: 30px;
   height: 30px;
   width: 15%;
-  box-shadow: 2px 2px 2px #888888;
 }
 
 .setting-panel .setting-back-action {

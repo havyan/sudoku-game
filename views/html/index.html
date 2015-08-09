@@ -9,13 +9,28 @@
     <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
     <script src="{{@basejs}}/libs3/can.jquery.js"></script>
     <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/index.js"></script>
   </head>
   <body>
     <a class="logo" href="/"><img src="/imgs/default/logo.png" /></a>
     <div class="top-right-area">
+      {{#user}}
+      <div class="welcome">
+        欢迎 <span>{{name}}</span>
+      </div>
+      {{/user}}
       <a class="contact-btn" href="/contact">联系我们</a>
     </div>
     <div class="login-area">
+      {{#rooms}}
+      <div id="{{id}}" class="room">
+        <a class="icon" href="javascript:void(0);"><img src="{{icon}}" /></a>
+        <a class="label" href="javascript:void(0);">{{name}}</a>
+      </div>
+      {{/rooms}}
+      {{#if user}}
+      <a class="enter" href="/main">进入游戏</a>
+      {{else}}
       <form class="login-form" action="/login" method="post">
         <div class="login-title">
           Sudoku
@@ -46,6 +61,7 @@
           <a href="/signup">注册</a>
         </div>
       </form>
+      {{/if}}
     </div>
   </body>
 </html>

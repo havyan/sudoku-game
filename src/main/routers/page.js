@@ -3,47 +3,57 @@ var HttpError = require('../http_error');
 var PropManager = require('../prop_manager');
 var UserManager = require('../user_manager');
 var winston = require('winston');
+var RoomDAO = require('../daos/room');
 var UserDAO = require('../daos/user');
 
 module.exports = function(router) {
-  /* GET home page. */
-  router.get('/', function(req, res) {
-    if (req.cookies.account) {
-      req.session.account = req.cookies.account;
-      res.redirect('/main');
-    } else if (req.session.account) {
-      res.redirect('/main');
-    } else {
-      res.render('index', {
-        error : false
-      });
-    }
-  });
-
-  /* GET login page. */
-  router.get('/login', function(req, res, next) {
-    if (req.session.account) {
-      res.redirect('/main');
-    } else {
-      if (req.cookies.account && req.cookies.password) {
-        UserDAO.findOne({
-          account : req.cookies.account,
-          password : req.cookies.password
-        }, function(error, user) {
+  var autoLogin = function(req, res, next) {
+    RoomDAO.allVirtuals(function(error, rooms) {
+      var render = function(user) {
+        res.render('index', {
+          rooms : rooms,
+          user : user,
+          error : req.query.error === 'true'
+        });
+      };
+      if (req.session.account) {
+        UserDAO.findOneByAccount(req.session.account, function(error, user) {
           if (error) {
             next(new HttpError('Error when processing auto login: ' + error));
             return;
           } else {
-            req.session.account = req.cookies.account;
-            res.redirect('/main');
+            render(user);
           }
         });
       } else {
-        res.render('index', {
-          error : req.query.error === 'true'
-        });
+        if (req.cookies.account && req.cookies.password) {
+          UserDAO.findOne({
+            account : req.cookies.account,
+            password : req.cookies.password
+          }, function(error, user) {
+            if (error) {
+              next(new HttpError('Error when processing auto login: ' + error));
+              return;
+            } else {
+              req.session.account = req.cookies.account;
+              render(user);
+            }
+          });
+        } else {
+          render();
+        }
       }
-    }
+    });
+  };
+
+  /* GET home page. */
+  router.get('/', function(req, res, next) {
+    autoLogin(req, res, next);
+  });
+
+  /* GET login page. */
+  router.get('/login', function(req, res, next) {
+    autoLogin(req, res, next);
   });
 
   router.post('/login', function(req, res, next) {

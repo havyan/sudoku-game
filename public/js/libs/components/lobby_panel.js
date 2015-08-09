@@ -27,8 +27,9 @@
           return count(room).toString();
         }
       }));
-      this.selectRoom(options.model.attr('selectedRoom'));
-      this.toggleExpand(this.element.find('.lobby-nav-item:first'));
+      var selectedRoom = options.model.attr('selectedRoom');
+      this.selectRoom(selectedRoom);
+      this.toggleExpand(this.element.find('#' + selectedRoom).closest('.lobby-nav-item'));
       this.gameForm = new LobbyGameForm(this.element, {
         user : this.options.model.attr('user').attr(),
         rule : this.options.model.attr('rule').attr(),
@@ -43,8 +44,10 @@
       this.element.find('.lobby-nav-real-room, .lobby-nav-virtual-room').removeClass('active');
       $room.addClass('active').parents('.lobby-nav-item').find('.lobby-nav-virtual-room').addClass('active');
       this.element.find('.lobby-content').html(can.view('/js/libs/mst/lobby_room.mst', room, {
-        tableOrder : function(index) {
-          return index() + 1;
+        tableOrder : function(game) {
+          return _.findIndex(room.attr('games'), {
+            id : game.id
+          }) + 1;
         },
         tableInfo : function(game) {
           if (game.status === 'empty') {
