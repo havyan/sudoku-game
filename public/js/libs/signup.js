@@ -149,7 +149,7 @@
           $('.signup-form').ajaxSubmit({
             success : function(result) {
               if (result.success) {
-                Dialog.message('注册成功', {
+                Dialog.message('注册成功，请在24小时内登录您的邮箱激活您的账户', {
                   actions : [{
                     name : '关闭',
                     dismiss : true,

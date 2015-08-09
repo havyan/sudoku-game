@@ -540,8 +540,8 @@ input.invalid, input:focus.invalid {
 .chessboard-actions {
   position: absolute;
   top: 20%;
-  left: 1%;
-  width: 16%;
+  left: -6%;
+  width: 24%;
   z-index: 100;
 }
 
@@ -832,8 +832,7 @@ to {
 }
 
 .action-active {
-  border-style: groove;
-  background: white;
+  color: #fff100;
 }
 
 .game-timer-panel {
