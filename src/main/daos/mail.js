@@ -14,6 +14,7 @@ var MessageSchema = new Schema({
     ref : 'User'
   },
   title : String,
+  content : String,
   when : {
     type : Date,
     default : Date.now
@@ -21,9 +22,12 @@ var MessageSchema = new Schema({
   read : Boolean
 });
 
-MessageSchema.statics.findOneByAccount = function(account, cb) {
-  this.findOne({
-    account : account
+MessageSchema.statics.createBy = function(from, to, title, content, cb) {
+  this.create({
+    from : ObjectId(from),
+    to : ObjectId(to),
+    title : title,
+    content : content
   }, cb);
 };
 

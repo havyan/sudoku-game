@@ -1,7 +1,7 @@
 var fs = require('fs');
 var HttpError = require('../http_error');
-var PropManager = require('../prop_manager');
-var UserManager = require('../user_manager');
+var Prop = require('../models/prop');
+var User = require('../models/user');
 var winston = require('winston');
 var RoomDAO = require('../daos/room');
 var UserDAO = require('../daos/user');
@@ -138,7 +138,7 @@ module.exports = function(router) {
   });
 
   router.get('/propstore', function(req, res, next) {
-    PropManager.getPropData(req.session.account, function(error, data) {
+    Prop.getPropData(req.session.account, function(error, data) {
       if (error) {
         next(new HttpError('Error when get prop data for account' + req.session.account + ': ' + error));
       } else {
@@ -186,7 +186,7 @@ module.exports = function(router) {
   });
 
   router.get('/reset_password', function(req, res, next) {
-    UserManager.checkResetKey(req.query.key, function(error, available, source) {
+    User.checkResetKey(req.query.key, function(error, available, source) {
       res.render('reset_password', {
         available : available,
         key : req.query.key,
@@ -196,7 +196,7 @@ module.exports = function(router) {
   });
 
   router.get('/active_user', function(req, res, next) {
-    UserManager.checkActiveKey(req.query.key, function(error, available, source) {
+    User.checkActiveKey(req.query.key, function(error, available, source) {
       res.render('active_user', {
         available : available
       });

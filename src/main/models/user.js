@@ -5,10 +5,10 @@ var async = require('async');
 var formidable = require('formidable');
 var winston = require('winston');
 var vcode = require('verify-code');
-var mailer = require('./mailer');
-var UserDAO = require('./daos/user');
-var ResetKeyDAO = require('./daos/reset_key');
-var ActiveKeyDAO = require('./daos/active_key');
+var emailer = require('../emailer');
+var UserDAO = require('../daos/user');
+var ResetKeyDAO = require('../daos/reset_key');
+var ActiveKeyDAO = require('../daos/active_key');
 var TMP_ICON_DIR = '/imgs/web/tmp';
 var ICON_DIR = '/imgs/web/user_icons';
 var RESET_PASSWORD_EXPIRED = 30;
@@ -21,17 +21,17 @@ var removeFile = function(path) {
   });
 };
 
-var UserManager = {};
+var User = {};
 
-UserManager.resetMoney = function(cb) {
+User.resetMoney = function(cb) {
   UserDAO.resetMoney(cb);
 };
 
-UserManager.updateByAccount = function(account, json, cb) {
+User.updateByAccount = function(account, json, cb) {
   UserDAO.updateByAccount(account, json, cb);
 };
 
-UserManager.updateIconByAccount = function(account, icon, library, bound, cb) {
+User.updateIconByAccount = function(account, icon, library, bound, cb) {
   if (library) {
     UserDAO.findOneByAccount(account, function(error, user) {
       if (error) {
@@ -98,7 +98,7 @@ UserManager.updateIconByAccount = function(account, icon, library, bound, cb) {
   }
 };
 
-UserManager.uploadIcon = function(req, cb) {
+User.uploadIcon = function(req, cb) {
   var form = new formidable.IncomingForm();
   form.uploadDir = 'public' + TMP_ICON_DIR;
   form.keepExtensions = true;
@@ -115,7 +115,7 @@ UserManager.uploadIcon = function(req, cb) {
   });
 };
 
-UserManager.checkAccount = function(account, cb) {
+User.checkAccount = function(account, cb) {
   if (account) {
     UserDAO.findOneByAccount(account, function(error, user) {
       if (error) {
@@ -133,7 +133,7 @@ UserManager.checkAccount = function(account, cb) {
   }
 };
 
-UserManager.checkEmail = function(email, cb) {
+User.checkEmail = function(email, cb) {
   if (email) {
     UserDAO.findOne({
       email : email
@@ -153,7 +153,7 @@ UserManager.checkEmail = function(email, cb) {
   }
 };
 
-UserManager.createUser = function(params, cb) {
+User.createUser = function(params, cb) {
   var self = this;
   this.checkAccount(params.account, function(error, result) {
     if (error) {
@@ -188,11 +188,11 @@ UserManager.createUser = function(params, cb) {
   });
 };
 
-UserManager.generateVcode = function() {
+User.generateVcode = function() {
   return vcode.Generate();
 };
 
-UserManager.resetPassword = function(account, password, key, cb) {
+User.resetPassword = function(account, password, key, cb) {
   var self = this;
   this.checkResetKey(key, function(error, available, source) {
     if (source === account) {
@@ -205,7 +205,7 @@ UserManager.resetPassword = function(account, password, key, cb) {
   });
 };
 
-UserManager.sendResetMail = function(email, cb) {
+User.sendResetMail = function(email, cb) {
   async.waterfall([
   function(cb) {
     UserDAO.findOne({
@@ -227,7 +227,7 @@ UserManager.sendResetMail = function(email, cb) {
   },
   function(key, cb) {
     var link = global.config.server.domain + '/reset_password?key=' + key.id;
-    mailer.send({
+    emailer.send({
       to : email,
       subject : '重置超天才数独游戏登录密码',
       html : '<p>请点击重置链接来重置密码: <a href="' + link + '">重置</a></p>'
@@ -235,7 +235,7 @@ UserManager.sendResetMail = function(email, cb) {
   }], cb);
 };
 
-UserManager.checkResetKey = function(key, cb) {
+User.checkResetKey = function(key, cb) {
   ResetKeyDAO.findOneById(key, function(error, resetKey) {
     if (error) {
       cb(error);
@@ -249,7 +249,7 @@ UserManager.checkResetKey = function(key, cb) {
   });
 };
 
-UserManager.checkActiveKey = function(key, cb) {
+User.checkActiveKey = function(key, cb) {
   ActiveKeyDAO.findOneById(key, function(error, activeKey) {
     if (error) {
       cb(error);
@@ -269,4 +269,4 @@ UserManager.checkActiveKey = function(key, cb) {
   });
 };
 
-module.exports = UserManager;
+module.exports = User;

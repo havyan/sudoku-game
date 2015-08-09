@@ -1,11 +1,11 @@
 var _ = require('lodash');
 var HttpError = require('../http_error');
 var winston = require('winston');
-var UserManager = require('../user_manager');
+var User = require('../models/user');
 
 module.exports = function(router) {
   router.post('/user/reset_money', function(req, res, next) {
-    UserManager.resetMoney(function(error) {
+    User.resetMoney(function(error) {
       if (error) {
         next(new HttpError(error));
       } else {
@@ -17,7 +17,7 @@ module.exports = function(router) {
   });
 
   router.put('/user/points', function(req, res, next) {
-    UserManager.updateByAccount(req.session.account, {
+    User.updateByAccount(req.session.account, {
       points : req.body.points
     }, function(error, result) {
       if (error) {
@@ -31,7 +31,7 @@ module.exports = function(router) {
   });
 
   router.put('/user/money', function(req, res, next) {
-    UserManager.updateByAccount(req.session.account, {
+    User.updateByAccount(req.session.account, {
       money : req.body.money
     }, function(error, result) {
       if (error) {
@@ -45,7 +45,7 @@ module.exports = function(router) {
   });
 
   router.put('/user/password', function(req, res, next) {
-    UserManager.resetPassword(req.body.account, req.body.password, req.body.key, function(error, result) {
+    User.resetPassword(req.body.account, req.body.password, req.body.key, function(error, result) {
       if (error) {
         next(new HttpError(error));
       } else {
@@ -61,7 +61,7 @@ module.exports = function(router) {
     var icon = req.body.icon;
     var library = JSON.parse(req.body.library);
     var bound = req.body.bound ? JSON.parse(req.body.bound) : {};
-    UserManager.updateIconByAccount(account, icon, library, bound, function(error, path) {
+    User.updateIconByAccount(account, icon, library, bound, function(error, path) {
       if (error) {
         next(new HttpError(error));
       } else {
@@ -74,7 +74,7 @@ module.exports = function(router) {
   });
 
   router.post('/user/icon', function(req, res, next) {
-    UserManager.uploadIcon(req, function(error, path) {
+    User.uploadIcon(req, function(error, path) {
       if (error) {
         next(new HttpError(error));
       } else {
@@ -96,7 +96,7 @@ module.exports = function(router) {
     } else {
       var params = _.cloneDeep(req.body);
       params.create_ip = req.ip;
-      UserManager.createUser(params, function(error, result) {
+      User.createUser(params, function(error, result) {
         if (error) {
           next(new HttpError(error));
         } else {
@@ -107,7 +107,7 @@ module.exports = function(router) {
   });
 
   router.post('/user/check_account', function(req, res, next) {
-    UserManager.checkAccount(req.body.account, function(error, result) {
+    User.checkAccount(req.body.account, function(error, result) {
       if (error) {
         next(new HttpError(error));
       } else {
@@ -117,7 +117,7 @@ module.exports = function(router) {
   });
 
   router.post('/user/check_email', function(req, res, next) {
-    UserManager.checkEmail(req.body.email, function(error, result) {
+    User.checkEmail(req.body.email, function(error, result) {
       if (error) {
         next(new HttpError(error));
       } else {
@@ -134,7 +134,7 @@ module.exports = function(router) {
   });
 
   router.get('/user/vcode', function(req, res, next) {
-    var result = UserManager.generateVcode();
+    var result = User.generateVcode();
     winston.info('Generate verify code: ' + result.code);
     req.session.vcode = result.code.toLocaleLowerCase();
     res.send({
@@ -143,7 +143,7 @@ module.exports = function(router) {
   });
 
   router.post('/user/reset_mail', function(req, res, next) {
-    UserManager.sendResetMail(req.body.email, function(error) {
+    User.sendResetMail(req.body.email, function(error) {
       if (error) {
         next(new HttpError(error));
       } else {

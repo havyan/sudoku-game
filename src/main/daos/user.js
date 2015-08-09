@@ -3,7 +3,7 @@ var _ = require('lodash');
 var crypto = require('crypto');
 var winston = require('winston');
 var async = require('async');
-var mailer = require('../mailer');
+var emailer = require('../emailer');
 var Schema = mongoose.Schema;
 var RuleDAO = require('./rule');
 var PropDAO = require('./prop');
@@ -88,7 +88,7 @@ UserSchema.statics.createUser = function(params, cb) {
   function(key, cb) {
     if (params.state !== STATES.ACTIVE) {
       var link = global.config.server.domain + '/active_user?key=' + key.id;
-      mailer.send({
+      emailer.send({
         to : params.email,
         subject : ' 激活超天才账户',
         html : '<p>请点击激活来激活超天才账户: <a href="' + link + '">激活</a></p>'

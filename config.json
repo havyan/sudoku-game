@@ -22,6 +22,7 @@
 			"basefile": "/"
 		},
 		"mail" : {
+		  "service" : "qq",
 		  "from": "havyan@qq.com",
 		  "password": ""
 		}
