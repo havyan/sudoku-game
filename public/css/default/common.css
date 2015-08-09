@@ -84,6 +84,7 @@ a:hover {
   margin-left: 20%;
   width: 80%;
   height: 130px;
+  min-width: 1264px;
 }
 
 .header-actions a {
