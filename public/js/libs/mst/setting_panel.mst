@@ -1,12 +1,12 @@
 <div class="setting-panel">
   <div class="navigator">
-    <div class="item main active" data-target="setting-main">
+    <div class="rich-button item main active" data-target="setting-main">
       游戏设置
     </div>
-    <div class="item grade" data-target="setting-grade">
+    <div class="rich-button item grade" data-target="setting-grade">
       段位积分
     </div>
-    <div class="item game-ui" data-target="setting-game-ui">
+    <div class="rich-button item game-ui" data-target="setting-game-ui">
       游戏界面
     </div>
   </div>
@@ -107,7 +107,7 @@
     {{/ui}}
   </div>
   <div class="setting-actions">
-    <input class="button setting-back-action" type="button" value="返回" />
-    <input class="button setting-save-action" type="button" value="保存" />
+    <input class="rich-button setting-back-action" type="button" value="返回" />
+    <input class="rich-button setting-save-action" type="button" value="保存" />
   </div>
 </div>

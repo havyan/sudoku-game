@@ -1,12 +1,18 @@
+<div class="top-actions">
+  <a class="user-button" href="/user">个人信息</a>
+  <a class="propstore-button" href="/propstore">道具</a>
+  <a class="setting-button" href="/setting">管理</a>
+  <a class="logout-button" href="/logout">注销</a>
+</div>
 <div class="welcome">
-  欢迎{{userName}}, 余额<span class="money">{{money}}</span>天才币
+  欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
 </div>
 <div class="main">
   <div class="navigator">
-    <div class="item store active">
+    <div class="rich-button item store active">
       道具商城
     </div>
-    <div class="item my-prop">
+    <div class="rich-button item my-prop">
       我的道具
     </div>
   </div>
@@ -58,5 +64,5 @@
   </div>
 </div>
 <div class="bottom-actions">
-  <input class="button back" type="button" value="返回" />
+  <input class="rich-button back" type="button" value="返回" />
 </div>

@@ -45,13 +45,13 @@
     </li>
     {{/prop}}
   </ul>
-  <div class="chessboard-panel">
+  <div class="chessboard-panel {{#if active}}active{{else}}inactive{{/if}}">
     {{#cellDatas}}
     <div class="chess-cell-container {{cellContainerClass this}}" data-xy="{{xy}}" style="{{chessCellContainerLayout this}}"></div>
     {{/cellDatas}}
   </div>
   {{#if active}}
-  <input type="button" class="button pass-action" value="PASS"/>
+  <a class="pass-action" href="javascript:void(0)">Pass</a>
   {{/if}} <div class="score-message correct-message"></div>
   <div class="score-message incorrect-message"></div>
   <div class="score-message timeout-message"></div>

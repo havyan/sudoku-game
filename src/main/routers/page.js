@@ -126,9 +126,17 @@ module.exports = function(router) {
   });
 
   /* GET Setting page. */
-  router.get('/setting', function(req, res) {
-    res.render('setting', {
-      account : req.session.account
+  router.get('/setting', function(req, res, next) {
+    UserDAO.findOneByAccount(req.session.account, function(error, user) {
+      if (error) {
+        next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
+      } else {
+        res.render('setting', {
+          userName : user.name,
+          userIcon : user.icon,
+          money : user.money
+        });
+      }
     });
   });
 

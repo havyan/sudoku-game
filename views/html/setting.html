@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
-    <link href="{{@basecss}}/components.css" rel="stylesheet" type="text/css" />
     <link href="{{@basecss}}/setting.css" rel="stylesheet" type="text/css" />
     <script src="{{@basejs}}/libs3/jquery-2.1.1.min.js"></script>
     <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
@@ -16,11 +15,14 @@
     <script src="{{@basejs}}/libs/setting.js"></script>
   </head>
   <body data-account={{account}}>
-    <div class="header">
-      <a class="logout-button" href="/logout"> <img src="{{@baseimg}}/logout.png" /><span>注销</span> </a>
-      <a class="setting-button" href="/setting"> <img src="{{@baseimg}}/setting.png" /><span>管理</span> </a>
-      <a class="propstore-button" href="/propstore"> <img src="{{@baseimg}}/prop.png" /><span>道具</span> </a>
-      <a class="user-button" href="/user"> <img src="{{@baseimg}}/user_gray.png" /><span>个人信息</span> </a>
+    <div class="top-actions">
+      <a class="user-button" href="/user">个人信息</a>
+      <a class="propstore-button" href="/propstore">道具</a>
+      <a class="setting-button" href="/setting">管理</a>
+      <a class="logout-button" href="/logout">注销</a>
+    </div>
+    <div class="welcome">
+      欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
     </div>
 
     <div id="setting"></div>

@@ -1,29 +1,7 @@
-.welcome {
-	margin-top: 20px;
-	margin-right: 10%;
-	float: right;
-}
-
 .navigator {
 	float: left;
 	width: 12%;
 	margin-left: 10%;
-}
-
-.navigator .item {
-	cursor: pointer;
-	font-size: 1.2em;
-	color: white;
-	text-align: center;
-	background: gray;
-	margin-bottom: 20px;
-	border-radius: 10px;
-	padding: 10px;
-}
-
-.navigator .item.active {
-	background: white;
-	color: gray;
 }
 
 .main {
@@ -87,12 +65,8 @@
 }
 
 .bottom-actions .back {
-	color: #fff;
-	background: #f0ad4e;
-	border-color: #eea236;
 	float: right;
-	margin-right: 20%;
+	margin-right: 10%;
 	height: 30px;
-	width: 100px;
-	box-shadow: 2px 2px 2px #888888;
+	width: 80px;
 }
