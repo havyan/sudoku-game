@@ -221,11 +221,14 @@ label {
   border-color: #d9534f;
 }
 
-.button:hover, .button:focus, .button:active, .button.active, .button.disabled, .button[disabled] {
+.button:hover, .button:focus, .button:active, .button.active {
   background-image: url(/imgs/default/button_hover.png);
+  color: #FFF000;
 }
 
 .button.disabled, .button[disabled] {
+  background-image: url(/imgs/default/button_hover.png);
+  color: gray;
   cursor: default;
   opacity: 0.65;
 }
@@ -356,12 +359,13 @@ label {
   background-color: inherit;
 }
 
-.rich-button:hover, .rich-button:focus, .rich-button:active, .rich-button.active, .rich-button.disabled, .rich-button[disabled] {
+.rich-button:hover, .rich-button:focus, .rich-button:active, .rich-button.active {
   color: #FFF000;
 }
 
 .rich-button.disabled, .rich-button[disabled] {
   cursor: default;
+  color: gray;
   opacity: 0.65;
 }
 

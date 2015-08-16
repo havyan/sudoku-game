@@ -39,10 +39,8 @@
       var gameStateArea = this.element.find('.game-state-area');
       if (gameStateArea.hasClass('out')) {
         gameStateArea.removeClass('out').css('right', '0px');
-        gameStateArea.find('.game-state-hide-button').html('>>');
       } else {
         gameStateArea.addClass('out').css('right', (-gameStateArea[0].offsetWidth) + 'px');
-        gameStateArea.find('.game-state-hide-button').html('<<');
       }
     },
 
@@ -146,7 +144,7 @@
     },
 
     messageToBottom : function() {
-      var msgElement = this.element.find('.game-chat-messages')[0];
+      var msgElement = this.element.find('.game-chat-messages-container')[0];
       msgElement.scrollTop = msgElement.scrollHeight - msgElement.clientHeight;
     },
 

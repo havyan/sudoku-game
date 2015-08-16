@@ -53,6 +53,10 @@
   background-position: 0px 3px;
 }
 
+.lobby-nav-virtual-room:hover {
+  transform: scale(1.1, 1.1);
+}
+
 .lobby-nav-real-room {
   width: 101px;
   height: 30px;

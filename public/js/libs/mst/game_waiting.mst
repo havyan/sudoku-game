@@ -6,6 +6,6 @@
     等待倒计时: {{waitCountdownStage}}
   </div>
   {{#manualStart}}
-  <input class="button game-start-button" type="button" value="开始" />
+  <input class="rich-button game-start-button" type="button" value="开始" />
   {{/manualStart}}
 </div>

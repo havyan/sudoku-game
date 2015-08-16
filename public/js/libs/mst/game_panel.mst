@@ -36,13 +36,15 @@
 	    	</tbody>
 		</table>
 		<div class="game-state-separator light"></div>
-		<div class="game-chat-messages scroll-panel">
-			{{#messages}}
-			<div class="game-message-item">
-				<div class="game-message-item-header">{{from}} ({{date}}):</div>
-				<div class="game-message-item-content">{{{formatMessage this}}}</div>
+		<div class="game-chat-messages">
+		  <div class="game-chat-messages-container scroll-panel">
+  			{{#messages}}
+  			<div class="game-message-item">
+  				<div class="game-message-item-header">{{from}} ({{date}}):</div>
+  				<div class="game-message-item-content">{{{formatMessage this}}}</div>
+  			</div>
+  			{{/messages}}
 			</div>
-			{{/messages}}
 		</div>
 		<div class="game-state-separator light"></div>
 		<textarea class="game-message-input"></textarea>
@@ -50,6 +52,6 @@
 			<input class="button game-quit-button" type="button" value="退出" />
 			<input class="button game-send-message-button" type="button" value="发送" />
 		</div>
-		<a class="game-state-hide-button" href="javascript:void(0);">>></a>
+		<a class="game-state-hide-button" href="javascript:void(0);"></a>
 	</div>
 </div>

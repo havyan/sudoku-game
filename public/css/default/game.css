@@ -18,10 +18,9 @@ body {
   min-width: 230px;
   right: 0px;
   width: 13%;
-  border: solid gray 1px;
-  border-radius: 2px;
-  box-shadow: -2px 2px 2px gray;
   padding: 10px 0px 10px 10px;
+  background-image: url(/imgs/default/chat_bg.png);
+  background-size: 100% 100%;
   transition: right 0.5s;
 }
 
@@ -86,6 +85,7 @@ body {
 .active-status {
   position: absolute;
   right: 0px;
+  top: 2%;
   width: 70px;
   height: 80px;
   background-image: url(/imgs/default/light_off.png);
@@ -119,23 +119,39 @@ body {
 }
 
 .game-chat-messages {
-  height: 150px;
-  padding: 0px 5px 5px 5px;
+  height: 130px;
+  padding: 20px 10px 10px 10px;
+  width: 80%;
+  overflow: hidden;
+  font-size: 10px;
+  background-image: url(/imgs/default/messages_bg.png);
+  background-size: 100% 100%;
+}
+
+.game-chat-messages-container {
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
-  width: 75%;
-  font-size: 12px;
 }
 
 .game-message-input {
-  height: 80px;
+  height: 60px;
   display: block;
+  padding: 20px 10px 10px 10px;
+  font-size: 12px;
   width: 80%;
-  border-radius: 5px;
-  box-shadow: 1px 1px 1px gray;
   margin-bottom: 20px;
-  color: black;
-  padding: 3px;
+  color: #FFF000;
+  background-image: url(/imgs/default/post_messages_bg.png);
+  background-size: 100% 100%;
+  background-color: inherit;
+  border: none;
   resize: none;
+}
+
+.game-message-input:focus {
+  border: none;
+  outline: none;
 }
 
 .game-message-item {
@@ -165,18 +181,17 @@ body {
 
 .game-state-hide-button {
   position: absolute;
-  top: 48%;
-  left: -20px;
-  height: 40px;
+  top: 46%;
+  left: -15px;
+  height: 60px;
   line-height: 40px;
   width: 20px;
   font-size: 12px;
   text-decoration: none;
-  border-radius: 2px 0px 0px 2px;
   color: #FFF;
   z-index: 999;
-  background: #96A4AD;
-  box-shadow: -2px 2px 2px gray;
+  background-image: url(/imgs/default/hide_chat.png);
+  background-size: 100% 100%;
 }
 
 .game-main-area {
@@ -204,8 +219,8 @@ body {
 .game-start-button {
   margin: auto;
   display: block;
-  height: 30px;
-  width: 120px;
+  height: 40px;
+  width: 100px;
   border-radius: 20px;
   color: #96A4AD;
   font-size: 16px;
@@ -373,10 +388,12 @@ body {
 {
 from {
   box-shadow: 0px 0px 0px 0px #05B522;
+  background: white;
   z-index: 999;
 }
 to {
   box-shadow: 0px 0px 5px 5px #05B522;
+  background: white;
   z-index: 999;
 }
 }
@@ -384,10 +401,12 @@ to {
 @-webkit-keyframes
 correct {from {
   box-shadow: 0px 0px 0px 0px #05B522;
+  background: white;
   z-index: 999;
 }
 to {
   box-shadow: 0px 0px 5px 5px #05B522;
+  background: white;
   z-index: 999;
 }
 }
@@ -395,10 +414,12 @@ to {
 @keyframes
 incorrect {from {
   box-shadow: 0px 0px 0px 0px red;
+  background: white;
   z-index: 999;
 }
 to {
   box-shadow: 0px 0px 5px 5px red;
+  background: white;
   z-index: 999;
 }
 }
@@ -406,10 +427,12 @@ to {
 @-webkit-keyframes
 incorrect {from {
   box-shadow: 0px 0px 0px 0px red;
+  background: white;
   z-index: 999;
 }
 to {
   box-shadow: 0px 0px 5px 5px red;
+  background: white;
   z-index: 999;
 }
 }
@@ -458,7 +481,9 @@ to {
 
 .chess-cell-value.known.has-value {
   color: #607E02;
-  outline: 1px solid #607E02;
+  border: 1px solid #607E02;
+  border-radius: 3px;
+  box-sizing: border-box;
   z-index: 100;
 }
 
@@ -542,7 +567,7 @@ to {
   line-height: 50px;
   position: absolute;
   right: 0px;
-  bottom: 2%;
+  bottom: 5%;
   color: white;
   background-image: url(/imgs/default/pass.png);
   background-size: 100% 100%;

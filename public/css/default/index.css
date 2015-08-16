@@ -169,6 +169,10 @@ html, body {
   height: 100px;
 }
 
+.room:hover {
+  transform: scale(1.2, 1.2);
+}
+
 .room a {
   display: block;
   text-align: center;
