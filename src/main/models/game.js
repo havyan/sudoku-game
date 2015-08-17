@@ -481,7 +481,7 @@ Game.prototype.addMessage = function(message, account) {
   }
   message = {
     from : from,
-    date : dateFormat(new Date(), 'yyyy年mm月dd日 hh:MM:ss'),
+    date : dateFormat(new Date(), 'yyyy/mm/dd hh:MM:ss'),
     content : message
   };
   this.messages.push(message);
