@@ -353,6 +353,10 @@ body {
   background: #92D6D2;
 }
 
+.chessboard-container.draft .chess-cell-container .chess-cell {
+  background: white;
+}
+
 .chess-cell-container.draft {
   background: #FD8C04 !important;
 }

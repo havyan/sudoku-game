@@ -293,7 +293,7 @@
       var model = this.options.model;
       var container = element.parent();
       var xy = container.data('xy');
-      if (model.isActive() && model.isPlain()) {
+      if (model.isActive() && model.isPlain() && model.isSubmit()) {
         if (model.getKnownCellValue(xy) !== undefined) {
           model.submit(xy, model.getKnownCellValue(xy));
           model.attr('active', false);
