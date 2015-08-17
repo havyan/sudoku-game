@@ -161,8 +161,10 @@ Game.prototype.buildPlayerIndex = function() {
 };
 
 Game.prototype.addPlayerIndex = function(account) {
-  var indexes = _.values(this.playerIndex);
-  this.playerIndex[account] = indexes.length > 0 ? _.max(indexes) + 1 : 0;
+  if (this.playerIndex[account] === undefined) {
+    var indexes = _.values(this.playerIndex);
+    this.playerIndex[account] = indexes.length > 0 ? _.max(indexes) + 1 : 0;
+  }
 };
 
 Game.prototype.isEmpty = function() {
@@ -321,7 +323,7 @@ Game.prototype.updateScore = function(type, account, xy) {
 };
 
 Game.prototype.stopTimer = function() {
-  if(this.timer) {
+  if (this.timer) {
     clearInterval(this.timer);
   }
   this.stopPlayerTimer();
