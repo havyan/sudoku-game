@@ -158,6 +158,38 @@ body {
   margin-bottom: 5px;
 }
 
+.game-message-from-system .game-message-item-content {
+  color: white;
+}
+
+.game-message-from-0 .game-message-item-content {
+  color: #F00;
+}
+
+.game-message-from-1 .game-message-item-content {
+  color: #F60;
+}
+
+.game-message-from-2 .game-message-item-content {
+  color: #FF0;
+}
+
+.game-message-from-3 .game-message-item-content {
+  color: #0C0;
+}
+
+.game-message-from-4 .game-message-item-content {
+  color: #699;
+}
+
+.game-message-from-5 .game-message-item-content {
+  color: #06C;
+}
+
+.game-message-from-6 .game-message-item-content {
+  color: #909;
+}
+
 .game-message-item-header {
   color: rgb(65, 147, 236);
 }

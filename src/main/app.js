@@ -16,11 +16,7 @@ var config = require('./config');
 var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
-var IGNORED_CHECK_ACTIONS = ['GET /', 'GET /login', 'POST /login',
-                             'GET /signup', 'POST /user', 'POST /user/check_account',
-                             'POST /user/check_email', 'GET /user/vcode', 'GET /contact',
-                             'POST /user/check_vcode', 'GET /retrieve_password', 'POST /user/reset_mail',
-                             'GET /reset_password', 'PUT /user/password', 'GET /active_user'];
+var NOLOGIN_ACTIONS = require('./nologin_actions.json');
 
 hbs.localsAsTemplateData(app);
 config.initialize(app);
@@ -53,7 +49,7 @@ app.engine('html', hbs.__express);
 app.use(function(req, res, next) {
   var action = req.method + " " + req.path;
   winston.info("Start " + action);
-  if (!_.contains(IGNORED_CHECK_ACTIONS, action) && !req.session.account) {
+  if (!_.contains(NOLOGIN_ACTIONS, action) && !req.session.account) {
     req.params.error = true;
     res.redirect('/login');
   } else {

@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var winston = require('winston');
 var async = require('async');
+var dateFormat = require('dateformat');
 var Observable = require('../base/observable');
 var RuleDAO = require('../daos/rule');
 var UserDAO = require('../daos/user');
@@ -138,6 +139,24 @@ Game.prototype.initParams = function(params) {
   this.playerTimer = {
     ellapsedTime : 0
   };
+  this.buildPlayerIndex();
+};
+
+Game.prototype.buildPlayerIndex = function() {
+  var playerIndex = {};
+  var i = 0;
+  this.players.forEach(function(player) {
+    if(player) {
+      playerIndex[player.account] = i;
+      i++;
+    }
+  });
+  this.playerIndex = playerIndex;
+};
+
+Game.prototype.addPlayerIndex = function(account) {
+  var indexes = _.values(this.playerIndex);
+  this.playerIndex[account] = indexes.length > 0 ? _.max(indexes) + 1 : 0;
 };
 
 Game.prototype.isEmpty = function() {
@@ -326,6 +345,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
           cb(error);
         } else {
           self.players[index] = user;
+          self.addPlayerIndex(account);
           self.knownCellValues[user.account] = {};
           PropDAO.findOneByAccount(account, function(error, prop) {
             if (error) {
@@ -431,25 +451,28 @@ Game.prototype.removePlayer = function(account) {
 };
 
 Game.prototype.addMessage = function(message, account) {
-  var self = this;
-  var from = account ? this.findPlayer(account).name : '系统';
-  var convert = function(value) {
-    return value >= 10 ? value : '0' + value;
-  };
-  var now = new Date(),
-      year = now.getFullYear(),
-      month = convert(now.getMonth() + 1),
-      date = convert(now.getDate()),
-      hours = convert(now.getHours()),
-      minutes = convert(now.getMinutes()),
-      seconds = convert(now.getSeconds());
+  var from;
+  if(account) {
+    var player = this.findPlayer(account);
+    from = {
+      account: player.account,
+      name: player.name,
+      index: this.playerIndex[player.account]
+    };
+  } else {
+    from = {
+      account: 'system',
+      name: '系统',
+      index: 'system'
+    };
+  }
   message = {
     from : from,
-    date : year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds,
+    date : dateFormat(new Date(), 'yyyy年mm月dd日 hh:MM:ss'),
     content : message
   };
-  self.messages.push(message);
-  self.trigger('message-added', message);
+  this.messages.push(message);
+  this.trigger('message-added', message);
   return message;
 };
 
