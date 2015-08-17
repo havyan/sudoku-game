@@ -35,6 +35,10 @@ body {
   padding: 5px;
 }
 
+.player-area {
+  text-align: center;
+}
+
 .game-player {
   width: 23%;
   display: inline-block;
