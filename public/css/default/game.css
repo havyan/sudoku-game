@@ -73,7 +73,8 @@ body {
 
 .game-player.active .game-player-icon {
   border: 2px solid #FBED0C;
-  border-radius: 22px;
+  border-radius: 20px;
+  box-sizing: border-box;
 }
 
 .game-player-icon img {
