@@ -5,24 +5,24 @@
     init : function(element, options) {
       element.html(can.view('/js/libs/mst/game_timer.mst', options.model));
       this.element.find('.game-timer-delay').css('opacity', options.model.attr('delayCountdownStage') / 60);
-      this.render(options.model, options.model.attr('remainingTime'));
+      this.render(options.model, options.model.attr('playerRemainingTime'));
     },
 
-    '{model} remainingTime' : function(model, e, remainingTime) {
-      this.render(model, remainingTime);
+    '{model} playerRemainingTime' : function(model, e, playerRemainingTime) {
+      this.render(model, playerRemainingTime);
     },
 
-    render : function(model, remainingTime) {
+    render : function(model, playerRemainingTime) {
       if (model.isActive()) {
         var totalTime = model.totalTime();
-        var ellapsedTime = totalTime - remainingTime;
+        var ellapsedTime = totalTime - playerRemainingTime;
         var bgSVG = this.element.find('.game-timer-background svg');
         var radius = bgSVG.parent().width() / 2;
         var radian = 2 * Math.PI * ellapsedTime / totalTime;
         var x = radius + radius * Math.sin(radian);
         var y = radius - radius * Math.cos(radian);
         var path = 'M' + radius + ' ' + radius + ' L ' + radius + ' 0 ';
-        path += 'A ' + radius + ' ' + radius + ' 0 ' + ((remainingTime > totalTime / 2) ? 1 : 0) + ' 0 ' + x + ' ' + y + ' ';
+        path += 'A ' + radius + ' ' + radius + ' 0 ' + ((playerRemainingTime > totalTime / 2) ? 1 : 0) + ' 0 ' + x + ' ' + y + ' ';
         path += 'L ' + radius + ' ' + radius + ' Z';
         var levels = model.attr('rule.score.add.levels');
         var levelIndex = _.findIndex(levels, function(level) {

@@ -28,6 +28,13 @@ body {
   margin: auto;
 }
 
+.game-remaining-time {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+}
+
 .game-player {
   width: 31%;
   display: inline-block;

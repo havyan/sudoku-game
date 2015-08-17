@@ -5,7 +5,7 @@
 		</svg>
 	</div>
 	<div class="remaining-time">
-		{{remainingTime}}
+		{{playerRemainingTime}}
 	</div>
 	{{#delayed}}
 	<div class="game-timer-delay"></div>

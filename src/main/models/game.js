@@ -83,13 +83,18 @@ Game.prototype.init = function(account, params, cb) {
                 self.rule = rule;
                 self.initParams(params);
                 self.trigger('init', self.toSimpleJSON());
-                setTimeout(function() {
-                  self.over(function(error) {
-                    if (error) {
-                      winston.error(error);
-                    }
-                  });
-                }, self.duration * 3600 * 1000);
+                self.timer = setInterval(function() {
+                  self.remainingTime--;
+                  self.trigger('total-countdown-stage', self.remainingTime);
+                  if (self.remainingTime <= 0) {
+                    self.stopTimer();
+                    self.over(function(error) {
+                      if (error) {
+                        winston.error(error);
+                      }
+                    });
+                  }
+                }, 1000);
                 var countdown = self.waitTime * 60;
                 var countDownTimer = setInterval(function() {
                   if (self.isWaiting()) {
@@ -117,6 +122,7 @@ Game.prototype.init = function(account, params, cb) {
 Game.prototype.initParams = function(params) {
   this.capacity = params.capacity || CAPACITY;
   this.duration = params.duration || GAME_TIMEOUT;
+  this.remainingTime = this.duration * 3600;
   this.waitTime = params.waitTime || DEFAULT_WAIT_TIME;
   this.level = params.level || DEFAULT_LEVEL;
   this.startMode = params.startMode || START_MODE.MANUAL;
@@ -146,7 +152,7 @@ Game.prototype.buildPlayerIndex = function() {
   var playerIndex = {};
   var i = 0;
   this.players.forEach(function(player) {
-    if(player) {
+    if (player) {
       playerIndex[player.account] = i;
       i++;
     }
@@ -243,11 +249,11 @@ Game.prototype.nextPlayer = function() {
     self.playerTimer = {
       ellapsedTime : 0
     };
-    self.trigger('ellapsed-time', self.playerTimer.ellapsedTime);
+    self.trigger('player-ellapsed-time', self.playerTimer.ellapsedTime);
     self.playerTimer.timer = setInterval(function() {
       if (!self.playerTimer.stopped && !self.delayed) {
         self.playerTimer.ellapsedTime++;
-        self.trigger('ellapsed-time', self.playerTimer.ellapsedTime);
+        self.trigger('player-ellapsed-time', self.playerTimer.ellapsedTime);
         if (self.playerTimer.ellapsedTime === self.rule.score.add.total) {
           var currentPlayer = self.currentPlayer;
           self.stopPlayerTimer();
@@ -312,6 +318,13 @@ Game.prototype.updateScore = function(type, account, xy) {
     this.trigger('score-changed', account, this.changedScores[account]);
   }
   return score;
+};
+
+Game.prototype.stopTimer = function() {
+  if(this.timer) {
+    clearInterval(this.timer);
+  }
+  this.stopPlayerTimer();
 };
 
 Game.prototype.stopPlayerTimer = function() {
@@ -452,18 +465,18 @@ Game.prototype.removePlayer = function(account) {
 
 Game.prototype.addMessage = function(message, account) {
   var from;
-  if(account) {
+  if (account) {
     var player = this.findPlayer(account);
     from = {
-      account: player.account,
-      name: player.name,
-      index: this.playerIndex[player.account]
+      account : player.account,
+      name : player.name,
+      index : this.playerIndex[player.account]
     };
   } else {
     from = {
-      account: 'system',
-      name: '系统',
-      index: 'system'
+      account : 'system',
+      name : '系统',
+      index : 'system'
     };
   }
   message = {
@@ -507,6 +520,7 @@ Game.prototype.toJSON = function(account) {
     waitTime : this.waitTime,
     startMode : this.startMode,
     duration : this.duration,
+    remainingTime : this.remainingTime,
     capacity : this.capacity,
     level : this.level,
     rule : this.rule,
@@ -532,7 +546,7 @@ Game.prototype.toJSON = function(account) {
     }),
     knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues,
     changedScore : account ? this.changedScores[account] : this.changedScores,
-    remainingTime : this.rule.score.add.total - this.playerTimer.ellapsedTime,
+    playerRemainingTime : this.rule.score.add.total - this.playerTimer.ellapsedTime,
     glassesUsed : account ? this.glassesUsed[account] ? true : false : this.glassesUsed,
     optionsOnce : account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
     optionsAlways : account ? this.optionsAlways[account] ? true : false : this.optionsAlways
@@ -557,6 +571,7 @@ Game.prototype.toSimpleJSON = function() {
     stepTime : this.rule.score.add.total,
     startMode : this.startMode,
     duration : this.duration,
+    remainingTime : this.remainingTime,
     capacity : this.capacity,
     level : this.level,
     mode : _.findKey(GameMode, function(value) {
@@ -641,7 +656,7 @@ Game.prototype.abort = function() {
 Game.prototype.over = function(cb) {
   var self = this;
   var players = _.compact(this.players);
-  this.stopPlayerTimer();
+  this.stopTimer();
   players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
     var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;
@@ -902,7 +917,7 @@ Game.prototype.setOptionsAlways = function(account, cb) {
 };
 
 Game.prototype.destroy = function() {
-  this.stopPlayerTimer();
+  this.stopTimer();
   this.status = DESTROYED;
   winston.info('Game [' + this.id + '] destoryed');
   this.trigger('game-destroyed');

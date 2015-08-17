@@ -2,6 +2,7 @@
 	<div class="game-main-area"></div>
 	<div class="game-countdown-number" style="display:none;"></div>
 	<div class="game-state-area">
+	  <div class="game-remaining-time">{{remainingTime}}</div>
 		<div class="player-area">
 			{{#each players}}
 			{{#if this}}

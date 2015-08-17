@@ -13,6 +13,7 @@
       this.initUI();
       this.initManualStart();
       this.initWait();
+      this.initRemainingTime();
     },
 
     initDimension : function() {
@@ -31,6 +32,10 @@
 
     initWait : function() {
       this.attr('waitCountdownStage', Utils.formatSeconds(this.attr('waitTime')));
+    },
+
+    initRemainingTime : function() {
+      this.attr('remainingTime', Utils.formatSeconds(this.attr('remainingTime')));
     },
 
     initManualStart : function() {
@@ -489,9 +494,9 @@
         self.attr('active', account === self.attr('account'));
         self.attr('delayed', false);
       });
-      this.eventReceiver.on('ellapsed-time', function(ellapsedTime) {
-        var remainingTime = self.attr('rule.score.add.total') - ellapsedTime;
-        self.attr('remainingTime', remainingTime);
+      this.eventReceiver.on('player-ellapsed-time', function(ellapsedTime) {
+        var playerRemainingTime = self.attr('rule.score.add.total') - ellapsedTime;
+        self.attr('playerRemainingTime', playerRemainingTime);
       });
       this.eventReceiver.on('score-changed', function(account, info) {
         self.attr('scores').attr(account, parseInt(info.score));
@@ -534,6 +539,9 @@
       });
       this.eventReceiver.on('game-abort', function(stage) {
         self.attr('status', 'aborted');
+      });
+      this.eventReceiver.on('total-countdown-stage', function(stage) {
+        self.attr('remainingTime', Utils.formatSeconds(stage));
       });
     },
 
