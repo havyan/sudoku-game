@@ -164,15 +164,15 @@
       var index = _.findIndex(game.attr('players'), function(player) {
         return player == null;
       });
-      Rest.Game.playerJoin(gameId, index, {}, function(result) {
-        window.open('/table/' + result.gameId, '_blank');
-      });
+      this.joinGame(game, index);
     },
 
     '.free .lobby-game.waiting .lobby-player.empty.normal.available click' : function(e) {
+      this.joinGame(this.options.model.findGame(e.closest('.lobby-game').data('id')), e.data('index'));
+    },
+
+    joinGame : function(game, index) {
       var model = this.options.model;
-      var gameId = e.closest('.lobby-game').data('id');
-      var game = model.findGame(gameId);
       var grade = model.attr('user.grade');
       var levelIndex = _.findIndex(model.attr('levels'), {
         code : game.attr('level')
@@ -180,7 +180,7 @@
       if (parseInt(grade) < levelIndex) {
         Dialog.message('您不能加入题目等级比自己段数高的游戏');
       } else {
-        Rest.Game.playerJoin(gameId, e.data('index'), {}, function(result) {
+        Rest.Game.playerJoin(game.attr('id'), index, {}, function(result) {
           window.open('/table/' + result.gameId, '_blank');
         });
       }
