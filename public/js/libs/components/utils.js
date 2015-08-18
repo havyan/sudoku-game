@@ -10,4 +10,8 @@
       return hours + ':' + minutes + ':' + seconds;
     }
   };
+
+  can.mustache.registerHelper('formatSeconds', function(value) {
+    return Utils.formatSeconds( typeof value === 'function' ? value() : value);
+  });
 })();

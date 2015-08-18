@@ -35,6 +35,12 @@ body {
   padding: 5px;
 }
 
+.game-remaining-time.warning {
+  animation: fade 1s infinite ease-in-out;
+  -webkit-animation: fade 1s infinite ease-in-out;
+  color: red;
+}
+
 .player-area {
   text-align: center;
 }
@@ -355,11 +361,14 @@ body {
 }
 
 .chessboard-container.draft .chess-cell-container {
-  background: #92D6D2;
 }
 
-.chessboard-container.draft .chess-cell-container .chess-cell {
-  background: white;
+.chessboard-container.draft .chessboard-panel.inactive .chess-cell-container .chess-cell {
+  background: #79b693;
+}
+
+ .chessboard-container.draft .chessboard-panel.active .chess-cell-container .chess-cell {
+  background: #b0dac3;
 }
 
 .chess-cell-container.draft {

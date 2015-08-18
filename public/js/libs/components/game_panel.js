@@ -99,11 +99,20 @@
     },
 
     '{model} waitCountdownStage' : function(model, e, newStage) {
-      if (newStage === '00:00:00') {
+      if (newStage === 0) {
         if (model.isBanker()) {
           Dialog.message('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
         } else {
           Dialog.message('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
+        }
+      }
+    },
+
+    '{model} remainingTime' : function(model, e, remainingTime) {
+      if (remainingTime <= 60) {
+        var $remainingTime = this.element.find('.game-remaining-time');
+        if (!$remainingTime.hasClass('warning')) {
+          $remainingTime.addClass('warning');
         }
       }
     },

@@ -31,11 +31,11 @@
     },
 
     initWait : function() {
-      this.attr('waitCountdownStage', Utils.formatSeconds(this.attr('waitTime')));
+      this.attr('waitCountdownStage', this.attr('waitTime'));
     },
 
     initRemainingTime : function() {
-      this.attr('remainingTime', Utils.formatSeconds(this.attr('remainingTime')));
+      this.attr('remainingTime', this.attr('remainingTime'));
     },
 
     initManualStart : function() {
@@ -535,13 +535,13 @@
         self.attr('destroyCountdownStage', stage);
       });
       this.eventReceiver.on('wait-countdown-stage', function(stage) {
-        self.attr('waitCountdownStage', Utils.formatSeconds(stage));
+        self.attr('waitCountdownStage', stage);
       });
       this.eventReceiver.on('game-abort', function(stage) {
         self.attr('status', 'aborted');
       });
       this.eventReceiver.on('total-countdown-stage', function(stage) {
-        self.attr('remainingTime', Utils.formatSeconds(stage));
+        self.attr('remainingTime', stage);
       });
     },
 
