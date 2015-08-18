@@ -1,72 +1,78 @@
 .navigator {
-	float: left;
-	width: 12%;
-	margin-left: 10%;
+  float: left;
+  width: 12%;
+  margin-left: 10%;
 }
 
 .main {
-	position: relative;
-	top: 60px;
-	clear: both;
+  position: relative;
+  top: 60px;
+  clear: both;
 }
 
 .main .container {
-	margin-left: 25%;
+  margin-left: 25%;
 }
 
 .main .container .card {
-	display: none;
-	width: 85%;
+  display: none;
+  width: 85%;
 }
 
 .main .container .card.active {
-	display: block;
+  display: block;
 }
 
 .main .container .item {
-	display: inline-block;
-	margin-bottom: 20px;
-	vertical-align: top;
-	width: 32%;
+  display: inline-block;
+  margin-bottom: 20px;
+  vertical-align: top;
+  width: 32%;
 }
 
 .main .container .store .item .count img {
-	width: 20px;
-	height: 20px;
-	vertical-align: middle;
-	cursor: pointer;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  cursor: pointer;
 }
 
 .main .container .store .item .count input {
-	width: 40px;
-	vertical-align: middle;
-	text-align: center;
+  width: 40px;
+  vertical-align: middle;
+  text-align: center;
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid gray;
 }
 
-.main .container .store .item .actions input{
-	font-size: 14px;
-	margin-left: 20%;
-	padding-left: 25px;
-	padding-right: 25px;
+.main .container .store .item .count input:focus {
+  color: #FFF000;
+}
+
+.main .container .store .item .actions input {
+  font-size: 14px;
+  margin-left: 20%;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .main .container .item > * {
-	margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .main .container .my-prop .my-count * {
-	vertical-align: middle;
-	margin-right: 5px;
+  vertical-align: middle;
+  margin-right: 5px;
 }
 
 .bottom-actions {
-	position: relative;
-	top: 80px;
+  position: relative;
+  top: 80px;
 }
 
 .bottom-actions .back {
-	float: right;
-	margin-right: 10%;
-	height: 35px;
-	width: 100px;
+  float: right;
+  margin-right: 10%;
+  height: 35px;
+  width: 100px;
 }

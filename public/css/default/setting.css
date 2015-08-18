@@ -285,7 +285,7 @@ input.invalid, input:focus.invalid {
 .setting-panel .setting-actions .rich-button {
   float: right;
   margin-left: 30px;
-  height: 30px;
+  height: 32px;
   width: 15%;
 }
 
