@@ -38,6 +38,7 @@
   background-size: 100% 100%;
   padding: 30px;
   box-sizing: border-box;
+  font-size: 15px;
 }
 
 .setting-panel .grade-table {
@@ -70,6 +71,10 @@
   height: 25px;
   line-height: 25px;
   vertical-align: middle;
+  background-color: rgba(0,61,232,0.3);
+  padding-right: 3px;
+  color: #FFF000;
+  border: 1px solid gray;
 }
 
 input.invalid, input:focus.invalid {
@@ -120,6 +125,18 @@ input.invalid, input:focus.invalid {
 
 .setting-panel .add-button {
   margin-left: 30px;
+}
+
+.setting-score input, .setting-score button {
+  font-size: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  background-image: url(/imgs/default/rich_button.png);
+}
+
+.setting-score input:focus, .setting-score button:focus {
+  color: #FFF000;
 }
 
 .setting-score > a {
@@ -174,7 +191,7 @@ input.invalid, input:focus.invalid {
   display: inline-block;
 }
 
-.setting-panel .add-rule-item-header.edit > label span {
+.setting-panel .add-rule-item-header.edit > label span:first-of-type {
   display: none;
 }
 
@@ -221,7 +238,7 @@ input.invalid, input:focus.invalid {
   display: inline-block;
   width: 18%;
   vertical-align: top;
-  margin-top: 5px;
+  margin-top: 8px;
 }
 
 .setting-panel .add-rule-row-actions {
@@ -294,4 +311,8 @@ input.invalid, input:focus.invalid {
 
 .setting-panel .ui-row .ui-value-zoom input {
   width: 60px;
+  background-color: rgba(0,61,232,0.3);
+  padding-right: 3px;
+  color: #FFF000;
+  border: 1px solid gray;
 }

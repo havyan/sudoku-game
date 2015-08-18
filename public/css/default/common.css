@@ -25,7 +25,25 @@ body {
 input {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  color: black;
+}
+
+input, textarea {
+  color: white;
+  background-color: transparent;
+  border: none;
+  background-size: 100% 100%;
+}
+
+input:focus, textarea:focus {
+  border: none;
+  outline: none;
+  color: #FFF000;
+}
+
+input[disabled=disabled], input[disabled=true],
+button[disabled=disabled], button[disabled=true],
+textarea[disabled=disabled], textarea[disabled=true] {
+  color: gray;
 }
 
 a {
@@ -195,7 +213,7 @@ label {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   border: none;
-  background-color: inherit;
+  background-color: transparent;
 }
 
 .modal-dialog {
@@ -224,6 +242,8 @@ label {
 .button:hover, .button:focus, .button:active, .button.active {
   background-image: url(/imgs/default/button_hover.png);
   color: #FFF000;
+  border: none;
+  outline: none;
 }
 
 .button.disabled, .button[disabled] {
@@ -356,11 +376,13 @@ label {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   border: none;
-  background-color: inherit;
+  background-color: transparent;
 }
 
 .rich-button:hover, .rich-button:focus, .rich-button:active, .rich-button.active {
   color: #FFF000;
+  border: none;
+  outline: none;
 }
 
 .rich-button.disabled, .rich-button[disabled] {
@@ -389,9 +411,8 @@ to {
 }
 }
 
-@-webkit-keyframes fade 
-{
-from {
+@-webkit-keyframes
+fade {from {
   opacity: 1;
 }
 to {

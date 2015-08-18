@@ -15,8 +15,8 @@
     {{#score}}
     <div class="setting-main item active" data-nav="main">
       <div class="setting-top-actions">
-        <input class="button reset-prop-action" type="button" value="重置道具" />
-        <input class="button reset-money-action" type="button" value="重置天才币" />
+        <input class="rich-button reset-prop-action" type="button" value="重置道具" />
+        <input class="rich-button reset-money-action" type="button" value="重置天才币" />
       </div>
       <div class="setting-score">
         <label class="setting-title">每步时间</label>
@@ -31,7 +31,7 @@
               <input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} />
               <label><span>{{total}}</span>
                 <input type="text" value="{{total}}" />
-                秒</label>
+                <span>秒</span></label>
             </div>
             <div class="add-rule-content">
               <div class="add-rule-list-label">
