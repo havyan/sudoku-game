@@ -1,3 +1,13 @@
+input {
+  padding-left: 5px;
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid gray;
+}
+
+input:focus {
+  border: 1px solid gray;
+}
+
 .main {
   width: 50%;
   margin: auto;
