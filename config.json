@@ -22,9 +22,9 @@
 			"basefile": "/"
 		},
 		"mail" : {
-		  "service" : "qq",
-		  "from": "havyan@qq.com",
-		  "password": ""
+		  "service" : "163",
+		  "from": "zxx.968@163.com",
+		  "password": "genius"
 		}
 	},
 	"winston": {

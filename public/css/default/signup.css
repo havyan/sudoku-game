@@ -1,3 +1,13 @@
+input {
+  padding-left: 5px;
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid gray;
+}
+
+input:focus {
+  border: 1px solid gray;
+}
+
 .signup-form {
   width: 400px;
   margin: auto;
@@ -23,7 +33,7 @@
 .signup-value {
   width: 230px;
   border-radius: 8px;
-  padding-left: 3px;
+  padding-left: 5px;
   padding-right: 3px;
 }
 
