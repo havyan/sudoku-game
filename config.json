@@ -1,6 +1,6 @@
 {
 	"server": {
-	  "domain": "http://localhost:9191",
+	  "domain": "http://localhost",
 		"port": 9191
 	},
 	"mongodb": {
