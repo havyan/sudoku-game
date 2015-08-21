@@ -91,9 +91,9 @@ body {
 }
 
 .game-state-separator {
-  width: 80%;
-  height: 2px;
-  background: gray;
+  width: 85%;
+  height: 1px;
+  background: #005f96;
   margin: auto;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -117,7 +117,6 @@ body {
 .game-state-separator.light {
   margin-top: 10px;
   margin-bottom: 10px;
-  opacity: 0.2;
 }
 
 .game-ranking-table {
@@ -367,7 +366,7 @@ body {
   background: #79b693;
 }
 
- .chessboard-container.draft .chessboard-panel.active .chess-cell-container .chess-cell {
+.chessboard-container.draft .chessboard-panel.active .chess-cell-container .chess-cell {
   background: #b0dac3;
 }
 
@@ -785,15 +784,25 @@ to {
   padding: 0px;
   margin: 0px;
   border-style: solid;
-  border-color: #D0D0D0;
+  border-color: #0079bb;
   border-width: 1px;
   z-index: 100;
+  height: auto !important;
 }
 
 .prop li {
   list-style: none;
   padding: 8px 16px 8px 16px;
   position: relative;
+  background-color: rgba(0,61,232,0.3);
+  border-width: 0px 0px 1px 0px;
+  border-color: #0079bb;
+  border-style: solid;
+  box-sizing: border-box;
+}
+
+.prop li:last-of-type {
+  border: none;
 }
 
 .prop li .prop-item-tip {
@@ -814,8 +823,8 @@ to {
 }
 
 .prop li.active {
-  background: white;
-  color: gray;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
 }
 
 .prop li.prop-item.empty {
@@ -957,14 +966,18 @@ to {
 
 .chessboard-container.big .prop {
   font-size: 0px;
-  width: 138px;
+  width: 141px !important;
   left: -2%;
   bottom: 20%;
+  border-width: 1px 0px 0px 1px;
 }
 
 .chessboard-container.big .prop li {
   display: inline-block;
   padding: 5px;
+  border-width: 0px 1px 1px 0px;
+  border-color: #0079bb;
+  border-style: solid;
 }
 
 .chessboard-container.big .prop li .prop-item-content img {
