@@ -184,7 +184,7 @@ input.invalid, input:focus.invalid {
 
 .setting-panel .add-rule-item-header > label input {
   display: none;
-  width: 30px;
+  width: 40px;
 }
 
 .setting-panel .add-rule-item-header.edit > label input {
@@ -208,7 +208,6 @@ input.invalid, input:focus.invalid {
 }
 
 .setting-panel input {
-  color: #96A4AD;
   text-align: center;
 }
 

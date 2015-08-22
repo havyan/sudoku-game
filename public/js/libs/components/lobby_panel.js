@@ -93,9 +93,9 @@
         $svg.attr('width', $line.width() + 'px').attr('height', $line.height() + 'px');
         var left = $line.width() / 2 - 10;
         var right = $line.width();
-        var path = 'M ' + left + ' 0 L ' + left + ' ' + ($roomContainer.height() / 2 - 5);
-        path += ' A 10 10 0 0 0 ' + (left + 10) + ' ' + ($roomContainer.height() / 2 + 5);
-        path += ' L ' + (left + 30) + ' ' + ($roomContainer.height() / 2 + 5);
+        var path = 'M ' + left + ' 0 L ' + left + ' ' + ($roomContainer.height() / 2);
+        path += ' A 10 10 0 0 0 ' + (left + 10) + ' ' + ($roomContainer.height() / 2 + 10);
+        path += ' L ' + (left + 30) + ' ' + ($roomContainer.height() / 2 + 10);
         $rooms.each(function(index, room) {
           var $room = $(room);
           var y = $room.position().top + $room.height() / 2 + 10;
