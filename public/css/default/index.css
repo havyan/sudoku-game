@@ -177,6 +177,7 @@ input[type=text], input[type=password] {
 
 .room:hover {
   transform: scale(1.2, 1.2);
+  -webkit-transform: scale(1.2, 1.2);
 }
 
 .room a {

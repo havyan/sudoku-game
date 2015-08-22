@@ -10,19 +10,15 @@
 
 .lobby-nav-rooms {
   width: 278px;
-  height: 879px;
   min-width: 278px;
   display: inline-block;
-  background: url(../../imgs/default/lobby_nav_bg.png) no-repeat;
+  background-image: url(../../imgs/default/lobby_nav_bg.png);
+  background-size: 100% 100%;
 }
 
 .lobby-nav-rooms-container {
-  width: 90%;
-  height: 819px;
-  margin: auto;
-  margin-top: 30px;
+  margin: 30px 20px;
   overflow-x: hidden;
-  overflow-y: auto;
 }
 
 .lobby-nav-item-content {
@@ -53,10 +49,6 @@
   background-position: 0px 3px;
 }
 
-.lobby-nav-virtual-room:hover {
-  transform: scale(1.1, 1.1);
-}
-
 .lobby-nav-real-room {
   width: 101px;
   height: 30px;
@@ -69,6 +61,12 @@
   background: url(../../imgs/default/lobby_nav_room_bg.png) no-repeat;
   background-size: cover;
   background-position: -2px 0px;
+}
+
+.lobby-nav-virtual-room:hover,
+.lobby-nav-real-room:hover {
+  transform: scale(1.1, 1.1);
+  -webkit-transform: scale(1.1, 1.1);
 }
 
 .lobby-nav-real-room.active, .lobby-nav-virtual-room.active {
