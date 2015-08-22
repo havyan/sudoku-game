@@ -829,7 +829,6 @@ to {
 }
 
 .prop li.prop-item.empty {
-  background: none;
   opacity: 0.5;
   color: gray;
 }
@@ -866,8 +865,8 @@ to {
 .zoom-bar {
   width: 26px;
   height: 220px;
-  border: 2px solid #afb0b3;
-  background: white;
+  border: 1px solid #0079bb;
+  background-color: rgba(0,61,232,0.3);
 }
 
 .zoom-bar .zoom-button {
@@ -880,17 +879,21 @@ to {
   line-height: 24px;
   font-size: 18px;
   font-weight: bold;
-  color: #5a5e65;
+  color: white;
   text-align: center;
   cursor: pointer;
 }
 
+.zoom-bar .zoom-button:hover {
+  color: #FFF000;
+}
+
 .zoom-bar .zoom-in-button {
-  border-bottom: 1px solid #afb0b3;
+  border-bottom: 1px solid #0079bb;
 }
 
 .zoom-bar .zoom-out-button {
-  border-top: 1px solid #afb0b3;
+  border-top: 1px solid #0079bb;
 }
 
 .zoom-bar .zoom-area {
@@ -943,7 +946,7 @@ to {
   height: 10px;
   border: 1px solid #afb0b3;
   position: absolute;
-  background: white;
+  background: #FFF000;
   left: -3px;
   z-index: 10;
   color: red;
