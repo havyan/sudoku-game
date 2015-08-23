@@ -1,5 +1,16 @@
 [
   {
+    "account": "SYSTEM",
+    "name": "系统",
+    "password": "123@abc",
+    "state": "active",
+    "icon": "/imgs/default/user_icons/default.png",
+    "grade": "0",
+    "points": 0,
+    "rounds": 0,
+    "wintimes": 0,
+    "money": 0
+  }, {
     "account": "zhangsan",
     "name": "张三",
     "state": "active",

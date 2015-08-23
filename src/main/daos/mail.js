@@ -4,25 +4,28 @@ var ObjectId = mongoose.Types.ObjectId;
 var async = require('async');
 var Schema = mongoose.Schema;
 
-var MessageSchema = new Schema({
+var MailSchema = new Schema({
   from : {
-    type : ObjectId,
+    type : Schema.Types.ObjectId,
     ref : 'User'
   },
   to : {
-    type : ObjectId,
+    type : Schema.Types.ObjectId,
     ref : 'User'
   },
   title : String,
   content : String,
-  when : {
+  date : {
     type : Date,
     default : Date.now
   },
-  read : Boolean
+  read : {
+    type : Boolean,
+    default : false
+  }
 });
 
-MessageSchema.statics.createBy = function(from, to, title, content, cb) {
+MailSchema.statics.createMail = function(from, to, title, content, cb) {
   this.create({
     from : ObjectId(from),
     to : ObjectId(to),
@@ -31,4 +34,10 @@ MessageSchema.statics.createBy = function(from, to, title, content, cb) {
   }, cb);
 };
 
-module.exports = mongoose.model('Message', MessageSchema);
+MailSchema.statics.findByFrom = function(from, cb) {
+  this.find({
+    from : ObjectId(from)
+  }).sort('-date').populate('from').populate('to').exec(cb);
+};
+
+module.exports = mongoose.model('Mail', MailSchema);

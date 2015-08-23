@@ -8,6 +8,7 @@ var UserDAO = require('../daos/user');
 var PropDAO = require('../daos/prop');
 var PuzzleDAO = require('../daos/puzzle');
 var GameMode = require('./game_mode');
+var Mail = require('./mail');
 var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
@@ -681,6 +682,11 @@ Game.prototype.over = function(cb) {
       } else {
         self.results.unshift(self.createResult(player, 'normal'));
         index++;
+        Mail.createBySystem(player.id, 'Test', 'This is a test', function(error) {
+          if (error) {
+            winston.error(error);
+          }
+        });
         cb();
       }
     });
