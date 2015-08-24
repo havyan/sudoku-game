@@ -6,13 +6,27 @@
       this.setDraft(this.options.model.attr('draft'));
     },
 
+    initEvents : function() {
+      this.bindDraft(this.options.model.attr('draft'));
+    },
+
+    bindDraft : function(draft) {
+      var self = this;
+      if (draft) {
+        draft.bind('change', function() {
+          self.setDraft(draft);
+          self.resetView();
+        });
+      }
+    },
+
     resetView : function() {
       var model = this.options.model;
       var parentModel = this.options.parentModel;
       if (model.attr('value')) {
         this.showValue();
       } else {
-        if (parentModel.isDraft() && model.attr('draft').length > 0) {
+        if (parentModel.isDraft() && model.attr('draft') && model.attr('draft').length > 0) {
           this.showDraft();
         } else {
           if (parentModel.isOptions()) {
@@ -36,9 +50,8 @@
       this.resetView();
     },
 
-    '{model.draft} change' : function() {
-      this.setDraft(this.options.model.attr('draft'));
-      this.resetView();
+    '{model} draft' : function(model, e, draft) {
+      this.bindDraft(draft);
     },
 
     '{model} cellOptions' : function(model, e, cellOptions) {
@@ -158,35 +171,39 @@
     },
 
     setDraft : function(draft) {
-      this.element.find('.chess-cell-draft-cell').empty();
-      if (draft.length > 0 && draft.length <= 4) {
-        this.element.find('.chess-cell-draft').addClass('has-value');
-        if (draft.length === 1) {
-          this.element.find('.chess-cell-draft-one').html(draft[0]).attr('active', "true");
-        } else if (draft.length > 1) {
-          this.element.find('.chess-cell-draft-one').attr('active', "false");
-          if (draft.length <= 4) {
-            for (var i = 0; i <= draft.length; i++) {
-              this.element.find('.chess-cell-draft-cell[index=' + i + ']').html(draft[i]);
+      if (draft) {
+        this.element.find('.chess-cell-draft-cell').empty();
+        if (draft.length > 0 && draft.length <= 4) {
+          this.element.find('.chess-cell-draft').addClass('has-value');
+          if (draft.length === 1) {
+            this.element.find('.chess-cell-draft-one').html(draft[0]).attr('active', "true");
+          } else if (draft.length > 1) {
+            this.element.find('.chess-cell-draft-one').attr('active', "false");
+            if (draft.length <= 4) {
+              for (var i = 0; i <= draft.length; i++) {
+                this.element.find('.chess-cell-draft-cell[index=' + i + ']').html(draft[i]);
+              }
             }
           }
+        } else {
+          this.element.find('.chess-cell-draft').removeClass('has-value');
         }
-      } else {
-        this.element.find('.chess-cell-draft').removeClass('has-value');
       }
     },
 
     setCellOptions : function(cellOptions) {
-      this.element.find('.chess-cell-options-cell').empty();
-      if (cellOptions.length === 0) {
-        this.element.find('.chess-cell-no-options').attr('active', "true");
-      } else if (cellOptions.length > 0) {
-        this.element.find('.chess-cell-no-options').attr('active', "false");
-        if (cellOptions.length <= 4) {
-          var index = 3;
-          for (var i = cellOptions.length - 1; i >= 0; i--) {
-            this.element.find('.chess-cell-options-cell[index=' + index + ']').html(cellOptions[i]);
-            index--;
+      if (cellOptions) {
+        this.element.find('.chess-cell-options-cell').empty();
+        if (cellOptions.length === 0) {
+          this.element.find('.chess-cell-no-options').attr('active', "true");
+        } else if (cellOptions.length > 0) {
+          this.element.find('.chess-cell-no-options').attr('active', "false");
+          if (cellOptions.length <= 4) {
+            var index = 3;
+            for (var i = cellOptions.length - 1; i >= 0; i--) {
+              this.element.find('.chess-cell-options-cell[index=' + index + ']').html(cellOptions[i]);
+              index--;
+            }
           }
         }
       }

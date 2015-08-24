@@ -395,42 +395,45 @@ Game.prototype.playerQuit = function(account, status, cb) {
   } else {
     this.stopPlayerTimer();
   }
-
-  if (this.isOngoing()) {
-    quitPlayer.rounds = quitPlayer.rounds + 1;
-    quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
-    var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
-      return e.floor > quitPlayer.points;
-    });
-    quitPlayer.grade = this.rule.grade[ceilingIndex - 1].code;
-    quitPlayer.save(function(error) {
-      if (error) {
-        cb(error);
-      } else {
-        self.quitPlayers.unshift(quitPlayer);
-        self.results.unshift(self.createResult(quitPlayer, status));
-        self.removePlayer(account);
-        self.trigger('player-quit', {
-          account : account,
-          status : status
-        });
-        self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
-        if (self.playersCount() <= 0) {
-          self.destroy();
+  if (quitPlayer) {
+    if (this.isOngoing()) {
+      quitPlayer.rounds = quitPlayer.rounds + 1;
+      quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
+      var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
+        return e.floor > quitPlayer.points;
+      });
+      quitPlayer.grade = this.rule.grade[ceilingIndex - 1].code;
+      quitPlayer.save(function(error) {
+        if (error) {
+          cb(error);
+        } else {
+          self.quitPlayers.unshift(quitPlayer);
+          self.results.unshift(self.createResult(quitPlayer, status));
+          self.removePlayer(account);
+          self.trigger('player-quit', {
+            account : account,
+            status : status
+          });
+          self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
+          if (self.playersCount() <= 0) {
+            self.destroy();
+          }
+          cb();
         }
-        cb();
+      });
+    } else {
+      this.removePlayer(account);
+      this.trigger('player-quit', {
+        account : account,
+        status : status
+      });
+      self.addMessage('用户[' + quitPlayer.name + ']退出');
+      if (self.playersCount() <= 0) {
+        self.destroy();
       }
-    });
-  } else {
-    this.removePlayer(account);
-    this.trigger('player-quit', {
-      account : account,
-      status : status
-    });
-    self.addMessage('用户[' + quitPlayer.name + ']退出');
-    if (self.playersCount() <= 0) {
-      self.destroy();
+      cb();
     }
+  } else {
     cb();
   }
 };

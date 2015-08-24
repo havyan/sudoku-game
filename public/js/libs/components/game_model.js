@@ -152,15 +152,16 @@
             if (!_.find(cellDatas, {
               index : index
             })) {
+              var value = initCellValues.attr(xy) || userCellValues.attr(xy) || knownCellValues.attr(xy);
               cellDatas.push({
                 x : x,
                 y : y,
                 xy : xy,
                 index : index,
                 type : initCellValues.attr(xy) ? 'init' : userCellValues.attr(xy) ? 'user' : knownCellValues.attr(xy) ? 'known' : '',
-                value : initCellValues.attr(xy) || userCellValues.attr(xy) || knownCellValues.attr(xy),
-                cellOptions : allCellOptions[xy] || [],
-                draft : drafts[xy] ? drafts[xy] : []
+                value : value,
+                cellOptions : null,
+                draft : value ? null : drafts[xy]
               });
             }
             j++;
@@ -171,10 +172,7 @@
       cellDatas = _.sortBy(cellDatas, 'index');
       this.attr('cellDatas', cellDatas);
       this.attr('cellDatas').each(function(cellData, xy) {
-        cellData.attr('draft').bind('change', function() {
-          drafts[xy] = cellData.attr('draft').attr();
-          self.saveDrafts(drafts);
-        });
+        self.bindDraft(xy, cellData.attr('draft'));
       });
       this.bind('initCellValues', function() {
         self.attr('initCellValues').each(function(value, xy) {
@@ -192,6 +190,8 @@
         if (cellData) {
           cellData.attr('type', 'user');
           cellData.attr('value', value);
+          cellData.attr('cellOptions', null);
+          cellData.attr('draft', null);
         }
         self.attr('knownCellValues').removeAttr(xy);
         self.resetAllCellOptions();
@@ -202,6 +202,8 @@
           if (cellData) {
             cellData.attr('type', 'known');
             cellData.attr('value', value);
+            cellData.attr('cellOptions', null);
+            cellData.attr('draft', null);
           }
           self.resetAllCellOptions();
         }
@@ -287,21 +289,44 @@
     },
 
     addDraft : function(xy, value) {
-      var draft = this.findCellData(xy).attr('draft');
+      var cellData = this.findCellData(xy);
+      var draft = cellData.attr('draft');
+      if (!draft) {
+        cellData.attr('draft', []);
+        draft = cellData.attr('draft');
+        this.bindDraft(xy, draft);
+      }
       if (draft.length < 4) {
         draft.push(value);
       }
       this.resetAllCellOptions();
     },
 
+    bindDraft : function(xy, draft) {
+      if (draft) {
+        var self = this;
+        draft.bind('change', function() {
+          var drafts = self.retrieveDrafts();
+          drafts[xy] = draft.attr();
+          self.saveDrafts(drafts);
+        });
+      }
+    },
+
     popDraft : function(xy) {
-      this.findCellData(xy).attr('draft').pop();
+      var cellData = this.findCellData(xy);
+      var draft = cellData.attr('draft');
+      if (draft) {
+        draft.pop();
+        if (draft.length === 0) {
+          cellData.attr('draft', null);
+        }
+      }
       this.resetAllCellOptions();
     },
 
     clearDraft : function(xy) {
-      var draft = this.findCellData(xy).attr('draft');
-      draft.splice(0, draft.length);
+      this.findCellData(xy).attr('draft', null);
       this.resetAllCellOptions();
     },
 
@@ -548,7 +573,7 @@
     setCellOptions : function(xy, cellOptions) {
       var cellData = this.findCellData(xy);
       var currentCellOptions = cellData.attr('cellOptions');
-      if (currentCellOptions.length === cellOptions.length) {
+      if (currentCellOptions && currentCellOptions.length === cellOptions.length) {
         var same = true;
         for (var i = 0; i < cellOptions.length; i++) {
           same = same && (cellOptions[i] === currentCellOptions[i]);
@@ -561,9 +586,11 @@
     },
 
     resetAllCellOptions : function() {
-      var allCellOptions = this.calcAllCellOptions();
-      for (var key in allCellOptions) {
-        this.setCellOptions(key, allCellOptions[key]);
+      if (this.isOptions()) {
+        var allCellOptions = this.calcAllCellOptions();
+        for (var key in allCellOptions) {
+          this.setCellOptions(key, allCellOptions[key]);
+        }
       }
     },
 
@@ -663,7 +690,7 @@
         var cellValue = cellData.attr('value');
         if (cellValue === undefined && this.attr('editStatus') === 'draft') {
           var draft = cellData.attr('draft');
-          if (draft.length === 1 && !isNaN(parseInt(draft[0]))) {
+          if (draft && draft.length === 1 && !isNaN(parseInt(draft[0]))) {
             cellValue = parseInt(draft[0]);
           }
         }

@@ -2,6 +2,7 @@
   <div class="chess-cell-value {{type}} {{#value}}has-value{{/value}}">
     {{value}}
   </div>
+  {{#if cellOptions}}
   <div class="chess-cell-options">
     <div class="chess-cell-no-options" active="false">
       X
@@ -11,6 +12,8 @@
     <div class="chess-cell-options-cell" index="2"></div>
     <div class="chess-cell-options-cell" index="3"></div>
   </div>
+  {{/if}}
+  {{#if draft}}
   <div class="chess-cell-draft">
     <div class="chess-cell-draft-one" active="false"></div>
     <div class="chess-cell-draft-cell" index="0"></div>
@@ -18,4 +21,5 @@
     <div class="chess-cell-draft-cell" index="2"></div>
     <div class="chess-cell-draft-cell" index="3"></div>
   </div>
+  {{/if}}
 </div>
