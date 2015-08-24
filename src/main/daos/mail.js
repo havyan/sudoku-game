@@ -40,4 +40,10 @@ MailSchema.statics.findByFrom = function(from, cb) {
   }).sort('-date').populate('from').populate('to').exec(cb);
 };
 
+MailSchema.statics.findByTo = function(to, cb) {
+  this.find({
+    to : ObjectId(to)
+  }).sort('-date').populate('from').populate('to').exec(cb);
+};
+
 module.exports = mongoose.model('Mail', MailSchema);

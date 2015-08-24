@@ -8,7 +8,7 @@ Mail.create = function(from, to, title, content, cb) {
   MailDAO.createMail(from, to, title, content, cb);
 };
 
-Mail.createBySystem = function(to, title, content, cb) {
+Mail.createFromSystem = function(to, title, content, cb) {
   async.waterfall([
   function(cb) {
     UserDAO.findOneByAccount('SYSTEM', cb);
@@ -24,7 +24,7 @@ Mail.findByAccount = function(account, cb) {
     UserDAO.findOneByAccount(account, cb);
   },
   function(user, cb) {
-    MailDAO.findByFrom(user.id, cb);
+    MailDAO.findByTo(user.id, cb);
   }], cb);
 };
 

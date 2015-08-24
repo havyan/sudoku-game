@@ -5,6 +5,7 @@ var User = require('../models/user');
 var winston = require('winston');
 var RoomDAO = require('../daos/room');
 var UserDAO = require('../daos/user');
+var Mail = require('../models/mail');
 
 module.exports = function(router) {
   var autoLogin = function(req, res, next) {
@@ -145,17 +146,17 @@ module.exports = function(router) {
     res.render('table', {});
   });
 
-  router.get('/propstore', function(req, res, next) {
+  router.get('/view/props', function(req, res, next) {
     Prop.getPropData(req.session.account, function(error, data) {
       if (error) {
         next(new HttpError('Error when get prop data for account' + req.session.account + ': ' + error));
       } else {
-        res.render('propstore', data);
+        res.render('props', data);
       }
     });
   });
 
-  router.get('/user', function(req, res, next) {
+  router.get('/view/user', function(req, res, next) {
     UserDAO.findOneByAccount(req.session.account, function(error, user) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
@@ -208,6 +209,16 @@ module.exports = function(router) {
       res.render('active_user', {
         available : available
       });
+    });
+  });
+
+  router.get('/view/mails', function(req, res, next) {
+    Mail.findByAccount(req.session.account, function(error, mails) {
+      if (error) {
+        next(new HttpError('Error when get prop data for account' + req.session.account + ': ' + error));
+      } else {
+        res.render('mails', mails);
+      }
     });
   });
 };

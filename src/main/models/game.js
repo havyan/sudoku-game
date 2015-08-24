@@ -665,32 +665,35 @@ Game.prototype.over = function(cb) {
     var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;
     return sourceScore - destScore;
   });
-  var index = 0;
-  async.eachSeries(players, function(player, cb) {
-    player.points = player.points + 100 * (self.results.length + 1);
-    var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
-      return e.floor > player.points;
-    });
-    player.grade = self.rule.grade[ceilingIndex - 1].code;
-    player.rounds = player.rounds + 1;
-    if (index === players - 1) {
-      player.wintimes = player.wintimes + 1;
-    }
-    player.save(function(error) {
-      if (error) {
-        cb(error);
-      } else {
-        self.results.unshift(self.createResult(player, 'normal'));
-        index++;
-        Mail.createBySystem(player.id, 'Test', 'This is a test', function(error) {
-          if (error) {
-            winston.error(error);
-          }
-        });
-        cb();
+  async.waterfall([
+  function(cb) {
+    var index = 0;
+    async.eachSeries(players, function(player, cb) {
+      player.points = player.points + 100 * (self.results.length + 1);
+      var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
+        return e.floor > player.points;
+      });
+      player.grade = self.rule.grade[ceilingIndex - 1].code;
+      player.rounds = player.rounds + 1;
+      if (index === players - 1) {
+        player.wintimes = player.wintimes + 1;
       }
-    });
-  }, function(error) {
+      player.save(function(error) {
+        if (error) {
+          cb(error);
+        } else {
+          self.results.unshift(self.createResult(player, 'normal'));
+          index++;
+          cb();
+        }
+      });
+    }, cb);
+  },
+  function(cb) {
+    async.eachSeries(players, function(player, cb) {
+      Mail.createFromSystem(player.id, 'Test', 'This is a test', cb);
+    }, cb);
+  }], function(error) {
     if (error) {
       cb(error);
     } else {
