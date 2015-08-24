@@ -691,7 +691,7 @@ Game.prototype.over = function(cb) {
   },
   function(cb) {
     async.eachSeries(players, function(player, cb) {
-      Mail.createFromSystem(player.id, 'Test', 'This is a test', cb);
+      Mail.createFromSystem(player.id, '最新战报', 'Developing...', cb);
     }, cb);
   }], function(error) {
     if (error) {

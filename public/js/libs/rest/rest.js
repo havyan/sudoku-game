@@ -375,4 +375,16 @@
       });
     }
   }, {});
+
+  can.Model('Rest.Mail', {
+    getMails : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/mails',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
 })();
