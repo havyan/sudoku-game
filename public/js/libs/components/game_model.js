@@ -170,6 +170,17 @@
       });
       cellDatas = _.sortBy(cellDatas, 'index');
       this.attr('cellDatas', cellDatas);
+      this.bind('initCellValues', function() {
+        self.attr('initCellValues').each(function(value, xy) {
+          var cellData = self.findCellData(xy);
+          if (cellData) {
+            cellData.attr('type', 'init');
+            cellData.attr('value', value);
+          }
+          self.attr('knownCellValues').removeAttr(xy);
+        });
+        self.resetAllCellOptions();
+      });
       this.attr('cellDatas').each(function(cellData) {
         cellData.bind('draft', function() {
           self.saveDrafts();
@@ -588,10 +599,10 @@
       }
       if (cellOptions) {
         if (cellOptions.length > 0 && cellOptions.length <= 4) {
-          for (var i = 0; i < 4 - cellOptions.length; i++) {
-            cellOptions.push(null);
+          var size = 4 - cellOptions.length;
+          for (var i = 0; i < size; i++) {
+            cellOptions.unshift(null);
           }
-          cellOptions.reverse();
         } else if (cellOptions.length > 4) {
           cellOptions = null;
         }
