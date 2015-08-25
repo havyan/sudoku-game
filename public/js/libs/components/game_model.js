@@ -160,7 +160,6 @@
                 index : index,
                 type : initCellValues.attr(xy) ? 'init' : userCellValues.attr(xy) ? 'user' : knownCellValues.attr(xy) ? 'known' : '',
                 value : value,
-                cellOptions : null,
                 draft : value ? null : drafts[xy]
               });
             }
@@ -171,19 +170,10 @@
       });
       cellDatas = _.sortBy(cellDatas, 'index');
       this.attr('cellDatas', cellDatas);
-      this.attr('cellDatas').each(function(cellData, xy) {
-        self.bindDraft(xy, cellData.attr('draft'));
-      });
-      this.bind('initCellValues', function() {
-        self.attr('initCellValues').each(function(value, xy) {
-          var cellData = self.findCellData(xy);
-          if (cellData) {
-            cellData.attr('type', 'init');
-            cellData.attr('value', value);
-          }
-          self.attr('knownCellValues').removeAttr(xy);
+      this.attr('cellDatas').each(function(cellData) {
+        cellData.bind('draft', function() {
+          self.saveDrafts();
         });
-        self.resetAllCellOptions();
       });
       this.attr('userCellValues').bind('change', function(ev, xy, how, value) {
         var cellData = self.findCellData(xy);
@@ -194,7 +184,9 @@
           cellData.attr('draft', null);
         }
         self.attr('knownCellValues').removeAttr(xy);
-        self.resetAllCellOptions();
+        if (self.isOptions()) {
+          self.resetAllCellOptions();
+        }
       });
       this.attr('knownCellValues').bind('change', function(ev, xy, how, value) {
         if (how !== 'remove') {
@@ -205,7 +197,9 @@
             cellData.attr('cellOptions', null);
             cellData.attr('draft', null);
           }
-          self.resetAllCellOptions();
+          if (self.isOptions()) {
+            self.resetAllCellOptions();
+          }
         }
       });
     },
@@ -245,7 +239,14 @@
       }
     },
 
-    saveDrafts : function(drafts) {
+    saveDrafts : function() {
+      var drafts = {};
+      this.attr('cellDatas').each(function(cellData) {
+        var draft = cellData.attr('draft');
+        if (draft) {
+          drafts[cellData.attr('xy')] = draft.attr();
+        }
+      });
       window.localStorage.setItem(this.attr('id') + '_' + this.attr('account') + '_drafts', JSON.stringify(drafts));
     },
 
@@ -292,24 +293,16 @@
       var cellData = this.findCellData(xy);
       var draft = cellData.attr('draft');
       if (!draft) {
-        cellData.attr('draft', []);
-        draft = cellData.attr('draft');
-        this.bindDraft(xy, draft);
+        draft = [];
+      } else {
+        draft = draft.attr();
       }
       if (draft.length < 4) {
         draft.push(value);
-      }
-      this.resetAllCellOptions();
-    },
-
-    bindDraft : function(xy, draft) {
-      if (draft) {
-        var self = this;
-        draft.bind('change', function() {
-          var drafts = self.retrieveDrafts();
-          drafts[xy] = draft.attr();
-          self.saveDrafts(drafts);
-        });
+        cellData.attr('draft', draft);
+        if (this.isOptions()) {
+          this.resetAllCellOptions();
+        }
       }
     },
 
@@ -317,17 +310,23 @@
       var cellData = this.findCellData(xy);
       var draft = cellData.attr('draft');
       if (draft) {
+        draft = draft.attr();
         draft.pop();
         if (draft.length === 0) {
-          cellData.attr('draft', null);
+          draft = null;
         }
+        cellData.attr('draft', draft);
       }
-      this.resetAllCellOptions();
+      if (this.isOptions()) {
+        this.resetAllCellOptions();
+      }
     },
 
     clearDraft : function(xy) {
       this.findCellData(xy).attr('draft', null);
-      this.resetAllCellOptions();
+      if (this.isOptions()) {
+        this.resetAllCellOptions();
+      }
     },
 
     submit : function(xy, value) {
@@ -440,13 +439,18 @@
     },
 
     toSubmit : function() {
+      if (this.isOptions()) {
+        this.resetAllCellOptions();
+      }
       this.attr('editStatus', 'submit');
-      this.resetAllCellOptions();
     },
 
     toDraft : function() {
+      if (this.isOptions()) {
+        this.resetAllCellOptions();
+      }
       this.attr('editStatus', 'draft');
-      this.resetAllCellOptions();
+
     },
 
     isDraft : function() {
@@ -462,8 +466,8 @@
     },
 
     toOptions : function() {
-      this.attr('viewStatus', 'options');
       this.resetAllCellOptions();
+      this.attr('viewStatus', 'options');
     },
 
     isOptions : function() {
@@ -582,15 +586,25 @@
           return;
         }
       }
+      if (cellOptions) {
+        if (cellOptions.length > 0 && cellOptions.length <= 4) {
+          for (var i = 0; i < 4 - cellOptions.length; i++) {
+            cellOptions.push(null);
+          }
+          cellOptions.reverse();
+        } else if (cellOptions.length > 4) {
+          cellOptions = null;
+        }
+      } else {
+        cellOptions = null;
+      }
       cellData.attr('cellOptions', cellOptions);
     },
 
     resetAllCellOptions : function() {
-      if (this.isOptions()) {
-        var allCellOptions = this.calcAllCellOptions();
-        for (var key in allCellOptions) {
-          this.setCellOptions(key, allCellOptions[key]);
-        }
+      var allCellOptions = this.calcAllCellOptions();
+      for (var key in allCellOptions) {
+        this.setCellOptions(key, allCellOptions[key]);
       }
     },
 

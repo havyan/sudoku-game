@@ -14,4 +14,26 @@
   can.mustache.registerHelper('formatSeconds', function(value) {
     return Utils.formatSeconds( typeof value === 'function' ? value() : value);
   });
+
+  can.mustache.registerHelper('isEmpty', function(data, options) {
+    if ( typeof data === 'function') {
+      data = data();
+    }
+    if (_.isEmpty(data)) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  });
+
+  can.mustache.registerHelper('isSingle', function(data, options) {
+    if ( typeof data === 'function') {
+      data = data();
+    }
+    if (data && data.length === 1) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  });
 })();

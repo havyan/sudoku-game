@@ -2,8 +2,7 @@
   can.Control('ChessCell', {}, {
     init : function(element, options) {
       element.html(can.view('/js/libs/mst/chess_cell.mst', options.model));
-      this.setCellOptions(options.model.attr('cellOptions'));
-      this.setDraft(this.options.model.attr('draft'));
+      this.initEvents();
     },
 
     initEvents : function() {
@@ -14,7 +13,6 @@
       var self = this;
       if (draft) {
         draft.bind('change', function() {
-          self.setDraft(draft);
           self.resetView();
         });
       }
@@ -55,7 +53,6 @@
     },
 
     '{model} cellOptions' : function(model, e, cellOptions) {
-      this.setCellOptions(cellOptions);
       this.resetView();
     },
 
@@ -168,45 +165,6 @@
       this.resetElementFont(this.element.find('.chess-cell-options-cell'));
       this.element.find('.chess-cell-value').hide();
       this.element.find('.chess-cell-draft').hide();
-    },
-
-    setDraft : function(draft) {
-      if (draft) {
-        this.element.find('.chess-cell-draft-cell').empty();
-        if (draft.length > 0 && draft.length <= 4) {
-          this.element.find('.chess-cell-draft').addClass('has-value');
-          if (draft.length === 1) {
-            this.element.find('.chess-cell-draft-one').html(draft[0]).attr('active', "true");
-          } else if (draft.length > 1) {
-            this.element.find('.chess-cell-draft-one').attr('active', "false");
-            if (draft.length <= 4) {
-              for (var i = 0; i <= draft.length; i++) {
-                this.element.find('.chess-cell-draft-cell[index=' + i + ']').html(draft[i]);
-              }
-            }
-          }
-        } else {
-          this.element.find('.chess-cell-draft').removeClass('has-value');
-        }
-      }
-    },
-
-    setCellOptions : function(cellOptions) {
-      if (cellOptions) {
-        this.element.find('.chess-cell-options-cell').empty();
-        if (cellOptions.length === 0) {
-          this.element.find('.chess-cell-no-options').attr('active', "true");
-        } else if (cellOptions.length > 0) {
-          this.element.find('.chess-cell-no-options').attr('active', "false");
-          if (cellOptions.length <= 4) {
-            var index = 3;
-            for (var i = cellOptions.length - 1; i >= 0; i--) {
-              this.element.find('.chess-cell-options-cell[index=' + index + ']').html(cellOptions[i]);
-              index--;
-            }
-          }
-        }
-      }
     },
 
     focus : function() {

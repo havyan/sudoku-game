@@ -4,22 +4,34 @@
   </div>
   {{#if cellOptions}}
   <div class="chess-cell-options">
-    <div class="chess-cell-no-options" active="false">
+    {{#isEmpty cellOptions}}
+    <div class="chess-cell-no-options" active="true">
       X
     </div>
-    <div class="chess-cell-options-cell" index="0"></div>
-    <div class="chess-cell-options-cell" index="1"></div>
-    <div class="chess-cell-options-cell" index="2"></div>
-    <div class="chess-cell-options-cell" index="3"></div>
+    {{else}}
+    {{#each cellOptions}}
+    <div class="chess-cell-options-cell" index="{{@index}}">
+      {{this}}
+    </div>
+    {{/each}}
+    {{/isEmpty}}
   </div>
   {{/if}}
   {{#if draft}}
   <div class="chess-cell-draft">
-    <div class="chess-cell-draft-one" active="false"></div>
-    <div class="chess-cell-draft-cell" index="0"></div>
-    <div class="chess-cell-draft-cell" index="1"></div>
-    <div class="chess-cell-draft-cell" index="2"></div>
-    <div class="chess-cell-draft-cell" index="3"></div>
+    {{#isSingle draft}}
+    {{#each draft}}
+    <div class="chess-cell-draft-one" active="true">
+      {{this}}
+    </div>
+    {{/each}}
+    {{else}}
+    {{#each draft}}
+    <div class="chess-cell-draft-cell" index="{{@index}}">
+      {{this}}
+    </div>
+    {{/each}}
+    {{/isSingle}}
   </div>
   {{/if}}
 </div>
