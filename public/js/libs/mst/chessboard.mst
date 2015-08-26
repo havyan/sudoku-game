@@ -1,6 +1,5 @@
-<div class="chessboard-container" style="{{chessboardLayout this}}">
-  <div class="game-zoom">
-  </div>
+<div class="chessboard-container {{editStatus}} {{viewStatus}}">
+  <div class="game-zoom"></div>
   <div class="game-timer-panel"></div>
   <div class="active-status" active="{{active}}"></div>
   <div class="chessboard-actions">
@@ -16,38 +15,86 @@
     <li class="magnifier prop-item {{#unless magnifier}}empty{{/unless}}">
       <div class="prop-item-content"><img src="/imgs/default/prop_magnifier.png"> x {{magnifier}}
       </div>
-      <div class="prop-item-tip">{{magnifier}}</div>
+      <div class="prop-item-tip">
+        {{magnifier}}
+      </div>
     </li>
     <li class="impunity prop-item {{#unless impunity}}empty{{/unless}}">
       <div class="prop-item-content"><img src="/imgs/default/prop_impunity.png"> x {{impunity}}
       </div>
-      <div class="prop-item-tip">{{impunity}}</div>
+      <div class="prop-item-tip">
+        {{impunity}}
+      </div>
     </li>
     <li class="delay prop-item {{#unless delay}}empty{{/unless}}">
       <div class="prop-item-content"><img src="/imgs/default/prop_delay.png"> x {{delay}}
       </div>
-      <div class="prop-item-tip">{{delay}}</div>
+      <div class="prop-item-tip">
+        {{delay}}
+      </div>
     </li>
     <li class="glasses prop-item {{#unless glasses}}empty{{/unless}}">
       <div class="prop-item-content"><img src="/imgs/default/prop_glasses.png"> x {{glasses}}
       </div>
-      <div class="prop-item-tip">{{glasses}}</div>
+      <div class="prop-item-tip">
+        {{glasses}}
+      </div>
     </li>
     <li class="options_once prop-item {{#unless options_once}}empty{{/unless}}">
       <div class="prop-item-content"><img src="/imgs/default/prop_options_once.png"> x {{options_once}}
       </div>
-      <div class="prop-item-tip">{{options_once}}</div>
+      <div class="prop-item-tip">
+        {{options_once}}
+      </div>
     </li>
     <li class="options_always prop-item {{#unless options_always}}empty{{/unless}}">
       <div class="prop-item-content"><img src="/imgs/default/prop_options_always.png"> x {{options_always}}
       </div>
-      <div class="prop-item-tip">{{options_always}}</div>
+      <div class="prop-item-tip">
+        {{options_always}}
+      </div>
     </li>
     {{/prop}}
   </ul>
   <div class="chessboard-panel {{#if active}}active{{else}}inactive{{/if}}">
     {{#cellDatas}}
-    <div class="chess-cell-container {{cellContainerClass this}}" data-xy="{{xy}}" style="{{chessCellContainerLayout this}}"></div>
+    <div class="chess-cell {{#value}}has-value{{/value}}" data-xy="{{xy}}" style="{{cellLayout this}}" {{#unless value}}tabindex="-1"{{/unless}}>
+      <div class="chess-cell-value {{type}}">
+        {{value}}
+      </div>
+      {{#if cellOptions}}
+      <div class="chess-cell-options">
+        {{#isEmpty cellOptions}}
+        <div class="chess-cell-no-options">
+          X
+        </div>
+        {{else}}
+        {{#each cellOptions}}
+        <div class="chess-cell-options-cell" index="{{@index}}">
+          {{this}}
+        </div>
+        {{/each}}
+        {{/isEmpty}}
+      </div>
+      {{/if}}
+      {{#if draft}}
+      <div class="chess-cell-draft">
+        {{#isSingle draft}}
+        {{#each draft}}
+        <div class="chess-cell-draft-one">
+          {{this}}
+        </div>
+        {{/each}}
+        {{else}}
+        {{#each draft}}
+        <div class="chess-cell-draft-cell" index="{{@index}}">
+          {{this}}
+        </div>
+        {{/each}}
+        {{/isSingle}}
+      </div>
+      {{/if}}
+    </div>
     {{/cellDatas}}
   </div>
   {{#if active}}

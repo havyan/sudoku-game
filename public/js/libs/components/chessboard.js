@@ -4,7 +4,6 @@
       var self = this;
       this.render();
       this.initEvents();
-      this.resetChessCellsFont();
     },
 
     initEvents : function() {
@@ -54,31 +53,39 @@
       var self = this;
       var mode = this.options.model.attr('mode');
       var dimension = this.options.model.attr('dimension');
-      var cellWidth = 100 / dimension.width;
-      var cellHeight = 100 / dimension.height;
+      var cellUsedWidth = 100 / dimension.width;
+      var cellUsedHeight = 100 / dimension.height;
+      var cellWidth = cellUsedWidth * 0.9;
+      var cellHeight = cellUsedHeight * 0.9;
       this.element.html(can.view('/js/libs/mst/chessboard.mst', this.options.model, {
-        chessboardLayout : function() {
-          var chessboardSize = self.getChessboardSize();
-          return 'width: ' + chessboardSize.width + 'px; ' + 'height: ' + chessboardSize.height + 'px; ';
-        },
-        chessCellContainerLayout : function(cellData) {
-          return 'left: ' + (cellData.x * cellWidth) + '%; top: ' + (cellData.y * cellHeight) + '%; width: ' + cellWidth + '%; height: ' + cellHeight + '%;';
-        },
-
-        cellContainerClass : function(cellData) {
-          return "chess-cell-container-" + (cellData.x % 3) + '-' + (cellData.y % 3);
+        cellLayout : function(cellData) {
+          var style = 'width: ' + cellWidth + '%; height: ' + cellHeight + '%;';
+          var rx = cellData.x % 3;
+          var ry = cellData.y % 3;
+          var left = cellData.x * cellUsedWidth;
+          var top = cellData.y * cellUsedHeight;
+          if (rx === 0) {
+            left += (cellUsedWidth * 0.08);
+          } else if (rx === 1) {
+            left += (cellUsedWidth * 0.05);
+          } else if (rx === 2) {
+            left += (cellUsedWidth * 0.02);
+          }
+          if (ry === 0) {
+            top += (cellUsedHeight * 0.08);
+          } else if (ry === 1) {
+            top += (cellUsedHeight * 0.05);
+          } else if (ry === 2) {
+            top += (cellUsedHeight * 0.02);
+          }
+          style += (' left: ' + left + '%; top: ' + top + '%;');
+          return style;
         }
       }));
       this.chessCells = {};
-      this.element.find('.chess-cell-container').each(function() {
-        var container = $(this);
-        var xy = container.data('xy');
-        self.chessCells[xy] = new ChessCell(container, {
-          model : self.options.model.findCellData(xy),
-          parent : self,
-          parentModel : self.options.model,
-          xy : xy
-        });
+      this.element.find('.chess-cell').each(function() {
+        var chessCell = $(this);
+        self.chessCells[chessCell.data('xy')] = chessCell;
       });
       this.numberPicker = new NumberPicker(this.element.find('.chessboard-container'), {});
       this.zoomBar = new ZoomBar(this.element.find('.game-zoom'), {
@@ -94,6 +101,7 @@
         model : this.options.model
       });
       this.resetPropStatus();
+      this.resize();
       this.layout();
     },
 
@@ -154,26 +162,26 @@
         'width' : chessboardSize.width + 'px',
         'height' : chessboardSize.height + 'px'
       });
-      this.resetChessCellsFont();
-    },
-
-    resetChessCellsFont : function() {
-      for (var key in this.chessCells) {
-        this.chessCells[key].resetFont();
-      }
+      this.element.find('.chessboard-panel').css('font-size', this.getCellSize() * 0.9 + 'px');
     },
 
     getChessboardSize : function() {
+      var dimension = this.options.model.attr('dimension');
+      var cellSize = this.getCellSize();
+      return {
+        width : cellSize * dimension.width,
+        height : cellSize * dimension.height
+      };
+    },
+
+    getCellSize : function() {
       var dimension = this.options.model.attr('dimension');
       var cellSize = Math.floor((window.innerHeight - 60) / dimension.height);
       if (cellSize * dimension.width > window.innerWidth) {
         cellSize = Math.floor((window.innerWidth - 60) / dimension.width);
       }
-      cellSize = cellSize * this.options.model.attr('ui.zoom');
-      return {
-        width : cellSize * dimension.width,
-        height : cellSize * dimension.height
-      };
+      cellSize = Math.max(24, cellSize);
+      return cellSize * this.options.model.attr('ui.zoom');
     },
 
     '.chessboard-submit-mode-action click' : function() {
@@ -232,18 +240,18 @@
 
     '{model.userCellValues} change' : function(userCellValues, e, xy) {
       var self = this;
-      this.chessCells[xy].element.addClass('correct');
+      this.chessCells[xy].addClass('correct');
       setTimeout(function() {
-        self.chessCells[xy].element.removeClass('correct');
+        self.chessCells[xy].removeClass('correct');
       }, 2000);
     },
 
     '{model.knownCellValues} change' : function(userCellValues, e, xy, how) {
       if (how !== 'remove') {
         var self = this;
-        this.chessCells[xy].element.addClass('known-cell');
+        this.chessCells[xy].addClass('known-cell');
         setTimeout(function() {
-          self.chessCells[xy].element.removeClass('known-cell');
+          self.chessCells[xy].removeClass('known-cell');
         }, 2000);
       }
     },
@@ -251,9 +259,9 @@
     '{model} incorrect' : function(model, e, data) {
       var self = this,
           xy = data.xy;
-      this.chessCells[xy].element.addClass('incorrect');
+      this.chessCells[xy].addClass('incorrect');
       setTimeout(function() {
-        self.chessCells[xy].element.removeClass('incorrect');
+        self.chessCells[xy].removeClass('incorrect');
       }, 2000);
     },
 
@@ -271,7 +279,7 @@
       var top = (chessboardElement.height() - messageElement.height()) / 2;
       if (changedScore.type === 'correct' || changedScore.type === 'incorrect') {
         if (changedScore.xy) {
-          var cellElement = this.chessCells[changedScore.xy].element;
+          var cellElement = this.chessCells[changedScore.xy];
           left = cellElement.position().left - (messageElement.width() - cellElement.width()) / 2;
           top = cellElement.position().top - (messageElement.height() - cellElement.height()) / 2;
         }
@@ -291,15 +299,14 @@
 
     '.chess-cell click' : function(element, event) {
       var model = this.options.model;
-      var container = element.parent();
-      var xy = container.data('xy');
+      var xy = element.data('xy');
       if (model.isActive() && model.isPlain() && model.isSubmit()) {
         if (model.getKnownCellValue(xy) !== undefined) {
           model.submit(xy, model.getKnownCellValue(xy));
           model.attr('active', false);
         } else if (model.getCellValue(xy) === undefined) {
           var cellOptions = model.calcCellOptions(xy);
-          this.showNumberPicker(container, cellOptions, function(value) {
+          this.showNumberPicker(element, cellOptions, function(value) {
             model.submit(xy, value);
             model.attr('active', false);
           });
@@ -307,7 +314,7 @@
       } else if (!model.isActive() && model.isSubmit() && model.attr('glassesUsed')) {
         if (model.getCellValue(xy) === undefined) {
           var cellOptions = model.calcCellOptions(xy);
-          this.showNumberPicker(container, cellOptions, function(value) {
+          this.showNumberPicker(element, cellOptions, function(value) {
           });
         }
       }
@@ -316,6 +323,81 @@
         event.stopPropagation();
       } else if (window.event) {
         window.event.cancelBubble = true;
+      }
+    },
+
+    '.chess-cell keydown' : function(element, event) {
+      var model = this.options.model;
+      var xy = element.data('xy');
+      if (model.isDraft() && model.isPlain()) {
+        var draft = model.findCellData(xy).attr('draft');
+        var code = event.keyCode;
+        var codeMap = {
+          normal : {
+            '192' : '`',
+            '188' : ',',
+            '190' : '.',
+            '191' : '/',
+            '186' : ';',
+            '222' : "'",
+            '219' : '[',
+            '221' : ']',
+            '220' : '\\',
+            '189' : '-',
+            '187' : '=',
+            '106' : '*',
+            '107' : '+',
+            '109' : '-',
+            '110' : '.',
+            '111' : '/'
+          },
+          shift : {
+            '192' : '~',
+            '188' : '<',
+            '190' : '>',
+            '191' : '?',
+            '186' : ':',
+            '222' : '"',
+            '219' : '{',
+            '221' : '}',
+            '220' : '|',
+            '48' : ')',
+            '49' : '!',
+            '50' : '@',
+            '51' : '#',
+            '52' : '$',
+            '53' : '%',
+            '54' : '^',
+            '55' : '&',
+            '56' : '*',
+            '57' : '('
+          }
+        };
+        if (event.shiftKey) {
+          if (codeMap.shift['' + code]) {
+            model.addDraft(xy, codeMap.shift['' + code]);
+          } else if (code > 64 && code < 91) {
+            model.addDraft(xy, String.fromCharCode(code));
+          }
+        } else {
+          if (codeMap.normal['' + code]) {
+            model.addDraft(xy, codeMap.normal['' + code]);
+          } else if (code === 46) {
+            model.popDraft(xy);
+          } else if (code === 8) {
+            model.clearDraft(xy);
+            return false;
+          } else if (code === 32) {
+            model.addDraft(xy, ' ');
+            return false;
+          } else if (code > 64 && code < 91) {
+            model.addDraft(xy, String.fromCharCode(code + 32));
+          } else if (code > 47 && code < 58) {
+            model.addDraft(xy, String.fromCharCode(code));
+          } else if (code > 95 && code < 106) {
+            model.addDraft(xy, code - 96);
+          }
+        }
       }
     },
 
@@ -353,10 +435,10 @@
     '.magnifier click' : function(element, event) {
       if (this.selectedChassCell) {
         if (this.options.model.isDraft()) {
-          this.options.model.peep(this.selectedChassCell.options.xy);
+          this.options.model.peep(this.selectedChassCell.data('xy'));
         } else {
           if (this.options.model.isActive()) {
-            this.options.model.autoSubmit(this.selectedChassCell.options.xy);
+            this.options.model.autoSubmit(this.selectedChassCell.data('xy'));
           }
         }
       }

@@ -299,8 +299,6 @@ body {
 
 .chessboard-container {
   position: relative;
-  min-width: 660px;
-  min-height: 660px;
   margin: 0 auto;
 }
 
@@ -326,11 +324,6 @@ body {
   left: 0px;
   width: 100%;
   height: 100%;
-}
-
-.chess-cell-container {
-  position: absolute;
-  border-radius: 3px;
 }
 
 .chess-cell:focus {
@@ -359,68 +352,12 @@ body {
   cursor: pointer;
 }
 
-.chessboard-container.draft .chess-cell-container {
-}
-
-.chessboard-container.draft .chessboard-panel.inactive .chess-cell-container .chess-cell {
+.chessboard-container.draft .chessboard-panel.inactive .chess-cell {
   background: #79b693;
 }
 
-.chessboard-container.draft .chessboard-panel.active .chess-cell-container .chess-cell {
+.chessboard-container.draft .chessboard-panel.active .chess-cell {
   background: #b0dac3;
-}
-
-.chess-cell-container.draft {
-  background: #FD8C04 !important;
-}
-
-.chess-cell-container.draft * {
-  color: #FD8C04 !important;
-}
-
-.chess-cell-container-0-0 .chess-cell {
-  top: 8%;
-  left: 8%;
-}
-
-.chess-cell-container-1-0 .chess-cell {
-  top: 8%;
-  left: 5%;
-}
-
-.chess-cell-container-2-0 .chess-cell {
-  top: 8%;
-  left: 2%;
-}
-
-.chess-cell-container-0-1 .chess-cell {
-  top: 5%;
-  left: 8%;
-}
-
-.chess-cell-container-1-1 .chess-cell {
-  top: 5%;
-  left: 5%;
-}
-
-.chess-cell-container-2-1 .chess-cell {
-  top: 5%;
-  left: 2%;
-}
-
-.chess-cell-container-0-2 .chess-cell {
-  top: 2%;
-  left: 8%;
-}
-
-.chess-cell-container-1-2 .chess-cell {
-  top: 2%;
-  left: 5%;
-}
-
-.chess-cell-container-2-2 .chess-cell {
-  top: 2%;
-  left: 2%;
 }
 
 .chess-cell > * {
@@ -434,6 +371,11 @@ body {
 .chess-cell-value {
   font-weight: bold;
   text-align: center;
+  font-size: 0.75em;
+  line-height: 1.34em;
+  background-color: inherit;
+  border-radius: inherit;
+  z-index: 300;
 }
 
 .chess-cell-value.init {
@@ -530,22 +472,28 @@ to {
   -webkit-animation: known-cell 1s;
 }
 
-.chess-cell-value.user.has-value {
+.chess-cell-value.user {
   color: #05B522;
-  z-index: 100;
 }
 
-.chess-cell-value.known.has-value {
+.chess-cell-value.known {
   color: #607E02;
   border: 1px solid #607E02;
   border-radius: 3px;
   box-sizing: border-box;
-  z-index: 100;
 }
 
 .chess-cell-options {
-  display: none;
   color: #4193ec;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-color: inherit;
+  border-radius: inherit;
+  z-index: 100;
 }
 
 .chess-cell-no-options {
@@ -557,12 +505,9 @@ to {
   font-family: Arial;
   text-align: center;
   font-weight: bold;
-  display: none;
-}
-
-.chess-cell-no-options[active=true] {
-  display: block;
   z-index: 10;
+  font-size: 0.75em;
+  line-height: 1.34em;
 }
 
 .chess-cell-options-cell {
@@ -570,15 +515,42 @@ to {
   height: 50%;
   float: left;
   text-align: center;
+  font-size: 0.375em;
+  line-height: 1.34em;
+}
+
+.chessboard-container.draft .chess-cell .chess-cell-value {
+  display: none;
+}
+
+.chessboard-container.draft .chess-cell .chess-cell-draft {
+  display: block;
+}
+
+.chess-cell.has-value .chess-cell-value {
+  display: block !important;
+}
+
+.chessboard-container.options .chess-cell .chess-cell-value {
+  display: none;
+}
+
+.chessboard-container.options .chess-cell .chess-cell-options {
+  display: block;
 }
 
 .chess-cell-draft {
   display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  display: none;
   color: #FD8C04;
-}
-
-.chess-cell-draft.has-value {
-  z-index: 100;
+  z-index: 200;
+  background-color: inherit;
+  border-radius: inherit;
 }
 
 .chess-cell-draft-one {
@@ -590,12 +562,9 @@ to {
   font-family: Arial;
   text-align: center;
   font-weight: bold;
-  display: none;
-}
-
-.chess-cell-draft-one[active=true] {
-  display: block;
   z-index: 10;
+  font-size: 0.75em;
+  line-height: 1.34em;
 }
 
 .chess-cell-draft-cell {
@@ -603,6 +572,8 @@ to {
   height: 50%;
   float: left;
   text-align: center;
+  font-size: 0.375em;
+  line-height: 1.34em;
 }
 
 .chessboard-view-mode {

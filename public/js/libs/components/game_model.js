@@ -176,6 +176,8 @@
           if (cellData) {
             cellData.attr('type', 'init');
             cellData.attr('value', value);
+            cellData.attr('cellOptions', null);
+            cellData.attr('draft', null);
           }
           self.attr('knownCellValues').removeAttr(xy);
         });

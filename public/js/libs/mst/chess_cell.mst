@@ -1,5 +1,5 @@
-<div class="chess-cell" data-xy="{{xy}}" {{#unless value}}tabindex="-1"{{/unless}}>
-  <div class="chess-cell-value {{type}} {{#value}}has-value{{/value}}">
+<div class="chess-cell {{#value}}has-value{{/value}}" data-xy="{{xy}}" {{#unless value}}tabindex="-1"{{/unless}}>
+  <div class="chess-cell-value {{type}}">
     {{value}}
   </div>
   {{#if cellOptions}}
