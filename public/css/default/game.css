@@ -353,6 +353,10 @@ body {
   cursor: pointer;
 }
 
+.chess-cell.has-value:hover {
+  cursor: default;
+}
+
 .chessboard-container.draft .chessboard-panel.inactive .chess-cell {
   background: #79b693;
 }
@@ -518,6 +522,7 @@ to {
   text-align: center;
   font-size: 0.35rem;
   line-height: 0.5rem;
+  font-weight: bold;
 }
 
 .chessboard-container.draft .chess-cell .chess-cell-value {
@@ -575,6 +580,7 @@ to {
   text-align: center;
   font-size: 0.35rem;
   line-height: 0.5rem;
+  font-weight: bold;
 }
 
 .chessboard-view-mode {
