@@ -421,8 +421,7 @@
 
     '.chess-cell focus' : function(element, event) {
       var model = this.options.model;
-      var container = element.parent();
-      var xy = container.data('xy');
+      var xy = element.data('xy');
       this.selectedChassCell = this.chessCells[xy];
       this.resetPropStatus();
     },
