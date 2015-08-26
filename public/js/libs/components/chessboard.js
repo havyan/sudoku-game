@@ -162,7 +162,7 @@
         'width' : chessboardSize.width + 'px',
         'height' : chessboardSize.height + 'px'
       });
-      this.element.find('.chessboard-panel').css('font-size', this.getCellSize() * 0.9 + 'px');
+      $('html').css('font-size', this.getCellSize() * 0.9 + 'px');
     },
 
     getChessboardSize : function() {

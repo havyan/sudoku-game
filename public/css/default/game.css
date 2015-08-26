@@ -4,6 +4,7 @@ html, body {
 
 body {
   min-height: 1200px;
+  font-size: 16px;
 }
 
 .game-panel {
@@ -371,8 +372,8 @@ body {
 .chess-cell-value {
   font-weight: bold;
   text-align: center;
-  font-size: 0.75em;
-  line-height: 1.34em;
+  font-size: 0.75rem;
+  line-height: 1rem;
   background-color: inherit;
   border-radius: inherit;
   z-index: 300;
@@ -506,8 +507,8 @@ to {
   text-align: center;
   font-weight: bold;
   z-index: 10;
-  font-size: 0.75em;
-  line-height: 1.34em;
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .chess-cell-options-cell {
@@ -515,8 +516,8 @@ to {
   height: 50%;
   float: left;
   text-align: center;
-  font-size: 0.375em;
-  line-height: 1.34em;
+  font-size: 0.35rem;
+  line-height: 0.5rem;
 }
 
 .chessboard-container.draft .chess-cell .chess-cell-value {
@@ -563,8 +564,8 @@ to {
   text-align: center;
   font-weight: bold;
   z-index: 10;
-  font-size: 0.75em;
-  line-height: 1.34em;
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .chess-cell-draft-cell {
@@ -572,8 +573,8 @@ to {
   height: 50%;
   float: left;
   text-align: center;
-  font-size: 0.375em;
-  line-height: 1.34em;
+  font-size: 0.35rem;
+  line-height: 0.5rem;
 }
 
 .chessboard-view-mode {
