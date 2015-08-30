@@ -384,7 +384,11 @@ body {
 }
 
 .chess-cell-value.init {
-  color: #6B7D91;
+  color: #595656;
+}
+
+.chessboard-container.draft .chess-cell-value.init {
+  color: #09377b;
 }
 
 @keyframes correct
@@ -481,6 +485,10 @@ to {
   color: #05B522;
 }
 
+.chessboard-container.draft .chess-cell-value.user {
+  color: #0a2a16;
+}
+
 .chess-cell-value.known {
   color: #607E02;
   border: 1px solid #607E02;
@@ -499,6 +507,10 @@ to {
   background-color: inherit;
   border-radius: inherit;
   z-index: 100;
+}
+
+.chessboard-container.draft .chess-cell-options {
+  color: #e60012;
 }
 
 .chess-cell-no-options {
