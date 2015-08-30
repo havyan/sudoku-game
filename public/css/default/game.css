@@ -329,7 +329,7 @@ body {
 
 .chess-cell:focus {
   outline: #FD8C04 ridge 2px;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .chess-cell {
@@ -339,6 +339,7 @@ body {
   text-align: center;
   background: white;
   border-radius: 3px;
+  box-sizing: border-box;
 }
 
 .chessboard-panel.inactive .chess-cell {
