@@ -144,14 +144,14 @@
                 window.open('/table/' + result.gameId, '_blank');
                 $e.closest('.modal').modal('hide');
               }, function(error) {
-                Dialog.error('建桌失败, ' + error);
+                Dialog.error('建桌失败, ' + error.responseJSON.message);
               });
             });
           } else {
             Rest.Game.playerJoin(gameId, 0, params, function(result) {
               window.open('/table/' + result.gameId, '_blank');
             }, function(error) {
-              Dialog.error('建桌失败, ' + error);
+              Dialog.error('建桌失败, ' + error.responseJSON.message);
             });
           }
         }

@@ -68,10 +68,14 @@ var env = app.get('env');
 app.use(function(err, req, res, next) {
   res.status(err.status || HttpError.SERVER_ERROR);
   winston.error(err.message);
-  res.render('error', {
-    message : err.message,
-    error : env === 'development' ? (err.error || err) : {}
-  });
+  if (err.responseType === 'json') {
+    res.send(err.toJSON());
+  } else {
+    res.render('error', {
+      message : err.message,
+      error : env === 'development' ? (err.error || err) : {}
+    });
+  }
 });
 
 app.init = function(cb) {
