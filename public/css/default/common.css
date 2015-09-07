@@ -43,7 +43,7 @@ input:focus, textarea:focus {
 input[disabled=disabled], input[disabled=true],
 button[disabled=disabled], button[disabled=true],
 textarea[disabled=disabled], textarea[disabled=true] {
-  color: gray;
+  color: gray !important;
 }
 
 a {

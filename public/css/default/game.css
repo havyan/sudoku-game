@@ -52,6 +52,13 @@ body {
   margin-top: 10px;
 }
 
+.game-player.active {
+  transform: scale(1.15, 1.15);
+  -webkit-transform: scale(1.15, 1.15);
+  color: #FFF000;
+  font-weight: bold;
+}
+
 .game-player * {
   margin: auto;
   text-align: center;
