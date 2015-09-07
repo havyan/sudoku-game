@@ -56,6 +56,10 @@
       }
     },
 
+    '{model} active' : function(model, e, active) {
+      this.activePlayer(model.attr('currentPlayer'));
+    },
+
     '{model} currentPlayer' : function(model, e, player) {
       this.activePlayer(player);
     },
