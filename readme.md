@@ -1,7 +1,20 @@
 # Get Started
-## Install Node.js
-Please refer:
-https://nodejs.org/en/download/
+## Install Node.js by source code
+* Download nodejs v0.12.7
+```
+wget https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz
+```
+* Decompress tar
+```
+tar xvf node-v0.12.7.tar.gz
+```
+* Compile and install
+```
+cd node-v0.12.7
+./configure
+make
+make install
+```
 
 ## Install MongoDB
 * For Ubuntu, please refer:
