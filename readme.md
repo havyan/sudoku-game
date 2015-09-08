@@ -23,3 +23,22 @@ https://github.com/Automattic/node-canvas/wiki/Installation---Fedora
 ```
 npm install
 ```
+
+## Start Server
+```
+npm start
+```
+
+## Debug
+### Install node-inspector
+```
+npm install -g node-inspector
+```
+### Start node-inspector
+```
+node-inspector
+```
+### Start Server on debug mode
+```
+node --debug bin/startup.js
+```
