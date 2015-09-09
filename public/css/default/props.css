@@ -1,0 +1,82 @@
+.navigator {
+  float: left;
+  width: 12%;
+  margin-left: 10%;
+}
+
+.main {
+  position: relative;
+  top: 60px;
+  clear: both;
+}
+
+.main .container {
+  margin-left: 25%;
+}
+
+.main .container .card {
+  display: none;
+  width: 85%;
+}
+
+.main .container .card.active {
+  display: block;
+}
+
+.main .container .item {
+  display: inline-block;
+  margin-bottom: 20px;
+  vertical-align: top;
+  width: 32%;
+}
+
+.main .container .store .item .count img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.main .container .store .item .count input {
+  width: 40px;
+  vertical-align: middle;
+  text-align: center;
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid gray;
+}
+
+.main .container .store .item .count input:focus {
+  color: #FFF000;
+}
+
+.main .container .store .item .actions input {
+  font-size: 14px;
+  height: 30px;
+  line-height: 30px;
+  margin-left: 20%;
+  border-radius: 15px;
+  padding: 0px 20px;
+  color: black;
+  background-color: white;
+}
+
+.main .container .item > * {
+  margin-bottom: 15px;
+}
+
+.main .container .my-prop .my-count * {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.bottom-actions {
+  position: relative;
+  top: 80px;
+}
+
+.bottom-actions .back {
+  float: right;
+  margin-right: 10%;
+  height: 35px;
+  width: 100px;
+}

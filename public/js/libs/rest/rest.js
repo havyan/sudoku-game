@@ -284,6 +284,83 @@
         success : success,
         error : error
       });
+    },
+
+    resetPassword : function(account, password, key, success, error) {
+      return $.ajax({
+        type : 'put',
+        url : '/user/password',
+        dataType : 'json',
+        data : {
+          account : account,
+          password : password,
+          key : key
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    checkAccount : function(account, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/check_account',
+        dataType : 'json',
+        data : {
+          account : account
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    checkEmail : function(email, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/check_email',
+        dataType : 'json',
+        data : {
+          email : email
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    checkVcode : function(vcode, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/check_vcode',
+        dataType : 'json',
+        data : {
+          vcode : vcode
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    getVcode : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/user/vcode',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    sendResetMail : function(email, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/user/reset_mail',
+        dataType : 'json',
+        data : {
+          email : email
+        },
+        success : success,
+        error : error
+      });
     }
   }, {});
 
@@ -292,6 +369,18 @@
       return $.ajax({
         type : 'get',
         url : '/lobby/data',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
+
+  can.Model('Rest.Mail', {
+    getMails : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/mails',
         dataType : 'json',
         success : success,
         error : error

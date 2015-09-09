@@ -13,6 +13,7 @@
       this.initUI();
       this.initManualStart();
       this.initWait();
+      this.initRemainingTime();
     },
 
     initDimension : function() {
@@ -30,7 +31,11 @@
     },
 
     initWait : function() {
-      this.attr('waitCountdownStage', Utils.formatSeconds(this.attr('waitTime')));
+      this.attr('waitCountdownStage', this.attr('waitTime'));
+    },
+
+    initRemainingTime : function() {
+      this.attr('remainingTime', this.attr('remainingTime'));
     },
 
     initManualStart : function() {
@@ -147,15 +152,15 @@
             if (!_.find(cellDatas, {
               index : index
             })) {
+              var value = initCellValues.attr(xy) || userCellValues.attr(xy) || knownCellValues.attr(xy);
               cellDatas.push({
                 x : x,
                 y : y,
                 xy : xy,
                 index : index,
                 type : initCellValues.attr(xy) ? 'init' : userCellValues.attr(xy) ? 'user' : knownCellValues.attr(xy) ? 'known' : '',
-                value : initCellValues.attr(xy) || userCellValues.attr(xy) || knownCellValues.attr(xy),
-                cellOptions : allCellOptions[xy] || [],
-                draft : drafts[xy] ? drafts[xy] : []
+                value : value,
+                draft : value ? null : drafts[xy]
               });
             }
             j++;
@@ -165,31 +170,36 @@
       });
       cellDatas = _.sortBy(cellDatas, 'index');
       this.attr('cellDatas', cellDatas);
-      this.attr('cellDatas').each(function(cellData, xy) {
-        cellData.attr('draft').bind('change', function() {
-          drafts[xy] = cellData.attr('draft').attr();
-          self.saveDrafts(drafts);
-        });
-      });
       this.bind('initCellValues', function() {
         self.attr('initCellValues').each(function(value, xy) {
           var cellData = self.findCellData(xy);
           if (cellData) {
             cellData.attr('type', 'init');
             cellData.attr('value', value);
+            cellData.attr('cellOptions', null);
+            cellData.attr('draft', null);
           }
           self.attr('knownCellValues').removeAttr(xy);
         });
         self.resetAllCellOptions();
+      });
+      this.attr('cellDatas').each(function(cellData) {
+        cellData.bind('draft', function() {
+          self.saveDrafts();
+        });
       });
       this.attr('userCellValues').bind('change', function(ev, xy, how, value) {
         var cellData = self.findCellData(xy);
         if (cellData) {
           cellData.attr('type', 'user');
           cellData.attr('value', value);
+          cellData.attr('cellOptions', null);
+          cellData.attr('draft', null);
         }
         self.attr('knownCellValues').removeAttr(xy);
-        self.resetAllCellOptions();
+        if (self.isOptions()) {
+          self.resetAllCellOptions();
+        }
       });
       this.attr('knownCellValues').bind('change', function(ev, xy, how, value) {
         if (how !== 'remove') {
@@ -197,8 +207,12 @@
           if (cellData) {
             cellData.attr('type', 'known');
             cellData.attr('value', value);
+            cellData.attr('cellOptions', null);
+            cellData.attr('draft', null);
           }
-          self.resetAllCellOptions();
+          if (self.isOptions()) {
+            self.resetAllCellOptions();
+          }
         }
       });
     },
@@ -238,7 +252,14 @@
       }
     },
 
-    saveDrafts : function(drafts) {
+    saveDrafts : function() {
+      var drafts = {};
+      this.attr('cellDatas').each(function(cellData) {
+        var draft = cellData.attr('draft');
+        if (draft) {
+          drafts[cellData.attr('xy')] = draft.attr();
+        }
+      });
       window.localStorage.setItem(this.attr('id') + '_' + this.attr('account') + '_drafts', JSON.stringify(drafts));
     },
 
@@ -282,22 +303,43 @@
     },
 
     addDraft : function(xy, value) {
-      var draft = this.findCellData(xy).attr('draft');
+      var cellData = this.findCellData(xy);
+      var draft = cellData.attr('draft');
+      if (!draft) {
+        draft = [];
+      } else {
+        draft = draft.attr();
+      }
       if (draft.length < 4) {
         draft.push(value);
+        cellData.attr('draft', draft);
+        if (this.isOptions()) {
+          this.resetAllCellOptions();
+        }
       }
-      this.resetAllCellOptions();
     },
 
     popDraft : function(xy) {
-      this.findCellData(xy).attr('draft').pop();
-      this.resetAllCellOptions();
+      var cellData = this.findCellData(xy);
+      var draft = cellData.attr('draft');
+      if (draft) {
+        draft = draft.attr();
+        draft.pop();
+        if (draft.length === 0) {
+          draft = null;
+        }
+        cellData.attr('draft', draft);
+      }
+      if (this.isOptions()) {
+        this.resetAllCellOptions();
+      }
     },
 
     clearDraft : function(xy) {
-      var draft = this.findCellData(xy).attr('draft');
-      draft.splice(0, draft.length);
-      this.resetAllCellOptions();
+      this.findCellData(xy).attr('draft', null);
+      if (this.isOptions()) {
+        this.resetAllCellOptions();
+      }
     },
 
     submit : function(xy, value) {
@@ -410,13 +452,18 @@
     },
 
     toSubmit : function() {
+      if (this.isOptions()) {
+        this.resetAllCellOptions();
+      }
       this.attr('editStatus', 'submit');
-      this.resetAllCellOptions();
     },
 
     toDraft : function() {
+      if (this.isOptions()) {
+        this.resetAllCellOptions();
+      }
       this.attr('editStatus', 'draft');
-      this.resetAllCellOptions();
+
     },
 
     isDraft : function() {
@@ -432,8 +479,8 @@
     },
 
     toOptions : function() {
-      this.attr('viewStatus', 'options');
       this.resetAllCellOptions();
+      this.attr('viewStatus', 'options');
     },
 
     isOptions : function() {
@@ -489,9 +536,9 @@
         self.attr('active', account === self.attr('account'));
         self.attr('delayed', false);
       });
-      this.eventReceiver.on('ellapsed-time', function(ellapsedTime) {
-        var remainingTime = self.attr('rule.score.add.total') - ellapsedTime;
-        self.attr('remainingTime', remainingTime);
+      this.eventReceiver.on('player-ellapsed-time', function(ellapsedTime) {
+        var playerRemainingTime = self.attr('rule.score.add.total') - ellapsedTime;
+        self.attr('playerRemainingTime', playerRemainingTime);
       });
       this.eventReceiver.on('score-changed', function(account, info) {
         self.attr('scores').attr(account, parseInt(info.score));
@@ -530,17 +577,20 @@
         self.attr('destroyCountdownStage', stage);
       });
       this.eventReceiver.on('wait-countdown-stage', function(stage) {
-        self.attr('waitCountdownStage', Utils.formatSeconds(stage));
+        self.attr('waitCountdownStage', stage);
       });
       this.eventReceiver.on('game-abort', function(stage) {
         self.attr('status', 'aborted');
+      });
+      this.eventReceiver.on('total-countdown-stage', function(stage) {
+        self.attr('remainingTime', stage);
       });
     },
 
     setCellOptions : function(xy, cellOptions) {
       var cellData = this.findCellData(xy);
       var currentCellOptions = cellData.attr('cellOptions');
-      if (currentCellOptions.length === cellOptions.length) {
+      if (currentCellOptions && currentCellOptions.length === cellOptions.length) {
         var same = true;
         for (var i = 0; i < cellOptions.length; i++) {
           same = same && (cellOptions[i] === currentCellOptions[i]);
@@ -548,6 +598,18 @@
         if (same) {
           return;
         }
+      }
+      if (cellOptions) {
+        if (cellOptions.length > 0 && cellOptions.length <= 4) {
+          var size = 4 - cellOptions.length;
+          for (var i = 0; i < size; i++) {
+            cellOptions.unshift(null);
+          }
+        } else if (cellOptions.length > 4) {
+          cellOptions = null;
+        }
+      } else {
+        cellOptions = null;
       }
       cellData.attr('cellOptions', cellOptions);
     },
@@ -655,7 +717,7 @@
         var cellValue = cellData.attr('value');
         if (cellValue === undefined && this.attr('editStatus') === 'draft') {
           var draft = cellData.attr('draft');
-          if (draft.length === 1 && !isNaN(parseInt(draft[0]))) {
+          if (draft && draft.length === 1 && !isNaN(parseInt(draft[0]))) {
             cellValue = parseInt(draft[0]);
           }
         }

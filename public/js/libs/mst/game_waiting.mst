@@ -3,9 +3,9 @@
     用户{{#each players}}{{#if this}}{{#if @index}}, {{/if}}{{name}}{{/if}}{{/each}}已进入游戏
   </div>
   <div class="game-waiting-countdown">
-    等待倒计时: {{waitCountdownStage}}
+    等待倒计时: {{formatSeconds waitCountdownStage}}
   </div>
   {{#manualStart}}
-  <input class="button game-start-button" type="button" value="开始" />
+  <input class="rich-button game-start-button" type="button" value="开始" />
   {{/manualStart}}
 </div>

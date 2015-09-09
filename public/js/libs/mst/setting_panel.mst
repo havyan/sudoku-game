@@ -1,12 +1,12 @@
 <div class="setting-panel">
   <div class="navigator">
-    <div class="item main active" data-target="setting-main">
+    <div class="rich-button item main active" data-target="setting-main">
       游戏设置
     </div>
-    <div class="item grade" data-target="setting-grade">
+    <div class="rich-button item grade" data-target="setting-grade">
       段位积分
     </div>
-    <div class="item game-ui" data-target="setting-game-ui">
+    <div class="rich-button item game-ui" data-target="setting-game-ui">
       游戏界面
     </div>
   </div>
@@ -15,8 +15,8 @@
     {{#score}}
     <div class="setting-main item active" data-nav="main">
       <div class="setting-top-actions">
-        <input class="button reset-prop-action" type="button" value="重置道具" />
-        <input class="button reset-money-action" type="button" value="重置天才币" />
+        <input class="rich-button reset-prop-action" type="button" value="重置道具" />
+        <input class="rich-button reset-money-action" type="button" value="重置天才币" />
       </div>
       <div class="setting-score">
         <label class="setting-title">每步时间</label>
@@ -31,7 +31,7 @@
               <input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} />
               <label><span>{{total}}</span>
                 <input type="text" value="{{total}}" />
-                秒</label>
+                <span>秒</span></label>
             </div>
             <div class="add-rule-content">
               <div class="add-rule-list-label">
@@ -107,7 +107,7 @@
     {{/ui}}
   </div>
   <div class="setting-actions">
-    <input class="button setting-back-action" type="button" value="返回" />
-    <input class="button setting-save-action" type="button" value="保存" />
+    <input class="rich-button setting-back-action" type="button" value="返回" />
+    <input class="rich-button setting-save-action" type="button" value="保存" />
   </div>
 </div>

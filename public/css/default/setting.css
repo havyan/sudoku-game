@@ -1,26 +1,317 @@
 #setting {
-	margin-top: 50px;
+  margin-top: 80px;
 }
 
 .header {
-	margin-top: 10px;
-	height: 32px;
+  margin-top: 10px;
+  height: 32px;
 }
 
 .header a {
-	float: right;
-	line-height: 32px;
-	height: 32px;
-	margin-left: 20px;
-	text-decoration: none;
+  float: right;
+  line-height: 32px;
+  height: 32px;
+  margin-left: 20px;
+  text-decoration: none;
 }
 
 .header a * {
-	vertical-align: middle;
-	margin-left: 5px;
-	color: #FFF;
+  vertical-align: middle;
+  margin-left: 5px;
+  color: #FFF;
 }
 
-.logout-button {
-	margin-right: 20%;
+.setting-panel .navigator {
+  float: left;
+  width: 12%;
+  margin-left: 10%;
+}
+
+.setting-panel .setting-container {
+  margin-left: 27%;
+  width: 50%;
+  min-width: 600px;
+}
+
+.setting-score {
+  background-image: url(/imgs/default/score_bg.png);
+  background-size: 100% 100%;
+  padding: 30px;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+
+.setting-panel .grade-table {
+  width: 35%;
+}
+
+.setting-panel .grade-table * {
+  font-size: 16px;
+}
+
+.setting-panel .grade-table tr {
+  height: 30px;
+  line-height: 30px;
+}
+
+.setting-panel .grade-table .name {
+  width: 80px;
+}
+
+.setting-panel .grade-table .value {
+  text-align: right;
+  width: 100px;
+  position: relative;
+}
+
+.grade-table .value input {
+  display: none;
+  width: 80px;
+  text-align: right;
+  height: 25px;
+  line-height: 25px;
+  vertical-align: middle;
+  background-color: rgba(0,61,232,0.3);
+  padding-right: 3px;
+  color: #FFF000;
+  border: 1px solid gray;
+}
+
+input.invalid, input:focus.invalid {
+  border: 1px solid red;
+  outline: 1px solid red;
+}
+
+.grade-table .value.edit input {
+  display: inline-block;
+}
+
+.grade-table .value.edit span {
+  display: none;
+}
+
+.grade-table .value .error {
+  color: red;
+  position: absolute;
+  left: 105%;
+  white-space: nowrap;
+  top: 0px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.setting-panel .setting-container .item {
+  display: none;
+}
+
+.setting-panel .setting-container .item.active {
+  display: block;
+}
+
+.setting-top-actions {
+  margin-bottom: 20px;
+}
+
+.setting-top-actions input {
+  width: 20%;
+  font-size: 1em;
+  margin-right: 20px;
+}
+
+.setting-panel .setting-title {
+  font-size: 25px;
+}
+
+.setting-panel .add-button {
+  margin-left: 30px;
+}
+
+.setting-score input, .setting-score button {
+  font-size: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  background-image: url(/imgs/default/rich_button.png);
+}
+
+.setting-score input:focus, .setting-score button:focus {
+  color: #FFF000;
+}
+
+.setting-score > a {
+  line-height: 24px;
+  height: 24px;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.setting-score > a * {
+  vertical-align: middle;
+  color: #FFF;
+}
+
+.setting-panel .add-rule-separator {
+  height: 2px;
+  background: gray;
+  opacity: 0.3;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.setting-panel .add-rule-collapsed-button {
+  float: right;
+  text-decoration: none;
+  color: #FFF;
+  font-size: 14px;
+}
+
+.setting-panel .add-rule-item.collapsed .add-rule-content {
+  display: none;
+}
+
+.setting-panel .add-rule-item-header * {
+  vertical-align: middle;
+}
+
+.setting-panel .add-rule-item-header > label {
+  margin-left: 5px;
+}
+
+.setting-panel .add-rule-item-header > label * {
+  vertical-align: middle;
+}
+
+.setting-panel .add-rule-item-header > label input {
+  display: none;
+  width: 40px;
+}
+
+.setting-panel .add-rule-item-header.edit > label input {
+  display: inline-block;
+}
+
+.setting-panel .add-rule-item-header.edit > label span:first-of-type {
+  display: none;
+}
+
+.setting-panel .add-rule-content {
+  position: relative;
+  width: 80%;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.setting-panel .add-rule {
+  margin-bottom: 20px;
+}
+
+.setting-panel input {
+  text-align: center;
+}
+
+.setting-panel .add-rule-list {
+  display: inline-block;
+  width: 55%;
+}
+
+.setting-panel .reduce-rule-row {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.setting-panel .reduce-rule-row label {
+  display: inline-block;
+  text-align: right;
+  width: 25%;
+}
+
+.setting-panel .reduce-rule-row input {
+  display: inline-block;
+  margin-left: 3%;
+  width: 25%;
+}
+
+.setting-panel .add-rule-list-label {
+  display: inline-block;
+  width: 18%;
+  vertical-align: top;
+  margin-top: 8px;
+}
+
+.setting-panel .add-rule-row-actions {
+  display: inline-block;
+  height: 16px;
+  width: 15%;
+}
+
+.setting-panel .add-rule-row-actions img {
+  height: 16px;
+  width: 16px;
+}
+
+.setting-panel .add-rule-item-row {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.setting-panel .add-rule-item-row .add-rule-from {
+  width: 22%;
+}
+
+.setting-panel .add-rule-item-row .add-rule-to {
+  width: 22%;
+}
+
+.setting-panel .add-rule-score {
+  width: 42%;
+  margin-left: 10px;
+}
+
+.setting-panel .add-rule-row-actions .add-button {
+  margin-left: 0px;
+}
+
+.setting-panel .setting-actions {
+  height: 30px;
+  width: 50%;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.setting-panel .setting-actions .rich-button {
+  float: right;
+  margin-left: 30px;
+  height: 32px;
+  width: 15%;
+}
+
+.setting-panel .ui-row {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.setting-panel .ui-row .ui-name {
+  width: 20%;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 16px;
+  text-align: right;
+}
+
+.setting-panel .ui-row .ui-value {
+  width: 40%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 20px;
+}
+
+.setting-panel .ui-row .ui-value-zoom input {
+  width: 60px;
+  background-color: rgba(0,61,232,0.3);
+  padding-right: 3px;
+  color: #FFF000;
+  border: 1px solid gray;
 }

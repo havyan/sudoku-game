@@ -1,5 +1,6 @@
 {
 	"server": {
+	  "domain": "http://localhost",
 		"port": 9191
 	},
 	"mongodb": {
@@ -19,6 +20,11 @@
 			"basecss": "/css/default",
 			"basejs": "/js",
 			"basefile": "/"
+		},
+		"mail" : {
+		  "service" : "163",
+		  "from": "zxx.968@163.com",
+		  "password": "genius"
 		}
 	},
 	"winston": {

@@ -1,16 +1,11 @@
 var _ = require('lodash');
-var fs = require('fs');
-var gm = require('gm');
-var formidable = require('formidable');
 var HttpError = require('../http_error');
 var winston = require('winston');
-var UserDAO = require('../daos/user');
-var TMP_ICON_DIR = '/imgs/web/tmp';
-var ICON_DIR = '/imgs/web/user_icons';
+var User = require('../models/user');
 
 module.exports = function(router) {
   router.post('/user/reset_money', function(req, res, next) {
-    UserDAO.resetMoney(function(error) {
+    User.resetMoney(function(error) {
       if (error) {
         next(new HttpError(error));
       } else {
@@ -22,7 +17,7 @@ module.exports = function(router) {
   });
 
   router.put('/user/points', function(req, res, next) {
-    UserDAO.updateByAccount(req.session.account, {
+    User.updateByAccount(req.session.account, {
       points : req.body.points
     }, function(error, result) {
       if (error) {
@@ -36,7 +31,7 @@ module.exports = function(router) {
   });
 
   router.put('/user/money', function(req, res, next) {
-    UserDAO.updateByAccount(req.session.account, {
+    User.updateByAccount(req.session.account, {
       money : req.body.money
     }, function(error, result) {
       if (error) {
@@ -49,112 +44,112 @@ module.exports = function(router) {
     });
   });
 
+  router.put('/user/password', function(req, res, next) {
+    User.resetPassword(req.body.account, req.body.password, req.body.key, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status : 'ok'
+        });
+      }
+    });
+  });
+
   router.put('/user/icon', function(req, res, next) {
-    if (JSON.parse(req.body.library)) {
-      UserDAO.findOneByAccount(req.session.account, function(error, user) {
-        if (error) {
-          next(new HttpError(error));
-        } else {
-          var oldIcon = user.icon;
-          UserDAO.updateByAccount(req.session.account, {
-            icon : req.body.icon
-          }, function(error, result) {
-            if (error) {
-              next(new HttpError(error));
-            } else {
-              res.send({
-                status : 'ok',
-                path : req.body.icon
-              });
-            }
-          });
-          if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
-            fs.unlink('public' + oldIcon, function(error) {
-              if (error) {
-                winston.error(error);
-              }
-            });
-          }
-        }
+    var account = req.session.account;
+    var icon = req.body.icon;
+    var library = JSON.parse(req.body.library);
+    var bound = req.body.bound ? JSON.parse(req.body.bound) : {};
+    User.updateIconByAccount(account, icon, library, bound, function(error, path) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status : 'ok',
+          path : path
+        });
+      }
+    });
+  });
+
+  router.post('/user/icon', function(req, res, next) {
+    User.uploadIcon(req, function(error, path) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status : 'ok',
+          path : path
+        });
+      }
+    });
+  });
+
+  router.post('/user', function(req, res, next) {
+    var vcode = req.body.vcode ? req.body.vcode.toLocaleLowerCase() : '';
+    if (vcode !== req.session.vcode) {
+      res.send({
+        success : false,
+        reason : '验证码不对，请重新输入'
       });
     } else {
-      var fileName = req.body.icon.substring(req.body.icon.lastIndexOf('/') + 1, req.body.icon.length);
-      var iconPath = ICON_DIR + '/' + fileName;
-      var source = 'public' + req.body.icon;
-      var dest = 'public' + iconPath;
-      gm(source).size(function(error, size) {
+      var params = _.cloneDeep(req.body);
+      params.create_ip = req.ip;
+      User.createUser(params, function(error, result) {
         if (error) {
           next(new HttpError(error));
         } else {
-          var bound = JSON.parse(req.body.bound);
-          var width = size.width * bound.width;
-          var height = size.height * bound.height;
-          var x = size.width * bound.x;
-          var y = size.height * bound.y;
-          gm(source).crop(width, height, x, y).write(dest, function(error) {
-            if (error) {
-              next(new HttpError(error));
-            } else {
-              UserDAO.findOneByAccount(req.session.account, function(error, user) {
-                if (error) {
-                  next(new HttpError(error));
-                } else {
-                  var oldIcon = user.icon;
-                  UserDAO.updateByAccount(req.session.account, {
-                    icon : iconPath
-                  }, function(error, result) {
-                    if (error) {
-                      next(new HttpError(error));
-                    } else {
-                      res.send({
-                        status : 'ok',
-                        path : iconPath
-                      });
-                    }
-                  });
-                  if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
-                    fs.unlink('public' + oldIcon, function(error) {
-                      if (error) {
-                        winston.error(error);
-                      }
-                    });
-                  }
-                }
-              });
-            }
-            setTimeout(function() {
-              fs.unlink(source, function(error) {
-                if (error) {
-                  winston.error(error);
-                }
-              });
-            }, 1000);
-          });
+          res.send(result);
         }
       });
     }
   });
 
-  router.post('/user/icon', function(req, res, next) {
-    var form = new formidable.IncomingForm();
-    form.uploadDir = 'public' + TMP_ICON_DIR;
-    form.keepExtensions = true;
-    form.parse(req, function(error, fields, files) {
+  router.post('/user/check_account', function(req, res, next) {
+    User.checkAccount(req.body.account, function(error, result) {
       if (error) {
         next(new HttpError(error));
       } else {
-        var path = files['files[]'].path;
+        res.send(result);
+      }
+    });
+  });
+
+  router.post('/user/check_email', function(req, res, next) {
+    User.checkEmail(req.body.email, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(result);
+      }
+    });
+  });
+
+  router.post('/user/check_vcode', function(req, res, next) {
+    var vcode = req.body.vcode ? req.body.vcode.toLocaleLowerCase() : '';
+    res.send({
+      valid : vcode === req.session.vcode
+    });
+  });
+
+  router.get('/user/vcode', function(req, res, next) {
+    var result = User.generateVcode();
+    winston.info('Generate verify code: ' + result.code);
+    req.session.vcode = result.code.toLocaleLowerCase();
+    res.send({
+      url : result.dataURL
+    });
+  });
+
+  router.post('/user/reset_mail', function(req, res, next) {
+    User.sendResetMail(req.body.email, function(error) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
         res.send({
-          status : 'ok',
-          path : TMP_ICON_DIR + '/' + _.last(path.split(/[/\\]/))
+          status : 'ok'
         });
-        setTimeout(function() {
-          fs.unlink(path, function(error) {
-            if (error) {
-              winston.error(error);
-            }
-          });
-        }, 600000);
       }
     });
   });

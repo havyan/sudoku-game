@@ -25,7 +25,25 @@ body {
 input {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  color: black;
+}
+
+input, textarea {
+  color: white;
+  background-color: transparent;
+  border: none;
+  background-size: 100% 100%;
+}
+
+input:focus, textarea:focus {
+  border: none;
+  outline: none;
+  color: #FFF000;
+}
+
+input[disabled=disabled], input[disabled=true],
+button[disabled=disabled], button[disabled=true],
+textarea[disabled=disabled], textarea[disabled=true] {
+  color: gray !important;
 }
 
 a {
@@ -79,11 +97,37 @@ a:hover {
   font-size: 16px;
 }
 
+.top-actions {
+  text-align: right;
+  float: right;
+  margin-right: 5%;
+  margin-top: 10px;
+}
+
+.top-actions a {
+  height: 55px;
+  width: 55px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 55px;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  background-image: url(/imgs/default/header_action_bg.png);
+  background-size: 100% 100%;
+  margin-left: 5px;
+}
+
+.top-actions a:hover {
+  color: #FFF000;
+}
+
 .header-actions {
-  background: url(../../imgs/default/header_bg.png) no-repeat;
+  background: url(/imgs/default/header_bg.png) no-repeat;
   margin-left: 20%;
   width: 80%;
   height: 130px;
+  min-width: 1264px;
 }
 
 .header-actions a {
@@ -97,7 +141,7 @@ a:hover {
   color: white;
   font-size: 18px;
   text-align: center;
-  background-image: url(../../imgs/default/header_action_bg.png);
+  background-image: url(/imgs/default/header_action_bg.png);
 }
 
 .header-actions a:hover {
@@ -106,6 +150,23 @@ a:hover {
 
 .header-actions a:first-of-type {
   margin-left: 42px;
+}
+
+.welcome {
+  width: 50%;
+  margin-left: 10%;
+  position: relative;
+  top: 20px;
+}
+
+.welcome .user-name {
+  color: red;
+  margin: 0px 3px 0px 3px;
+}
+
+.welcome .money {
+  color: #FFF000;
+  margin: 0px 3px 0px 3px;
 }
 
 .footer {
@@ -140,32 +201,19 @@ label {
 .button {
   display: inline-block;
   *zoom: 1;
-  padding: 4px 12px;
+  padding: 8px 20px;
+  color: white;
   margin-bottom: 0;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.25em;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  color: #333333;
-  background-color: #fdfdfd;
-  background-image: -moz-linear-gradient(top, #fdfdfd, #e3e3e3);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fdfdfd), to(#e3e3e3));
-  background-image: -webkit-linear-gradient(top, #fdfdfd, #e3e3e3);
-  background-image: -o-linear-gradient(top, #fdfdfd, #e3e3e3);
-  background-image: linear-gradient(to bottom, #fdfdfd, #e3e3e3);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdfdfd', endColorstr='#e3e3e3', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled= false);
-  border: 1px solid #bebebe;
-  *border: 0;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  *margin-left: .3em;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
-  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
+  background-image: url(/imgs/default/button.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border: none;
+  background-color: transparent;
 }
 
 .modal-dialog {
@@ -191,20 +239,18 @@ label {
   border-color: #d9534f;
 }
 
-.button:hover, .button:focus, .button:active, .button.active, .button.disabled, .button[disabled] {
-  color: #333333;
-  background-color: #e3e3e3;
-  *background-color: #d9d9d9;
+.button:hover, .button:focus, .button:active, .button.active {
+  background-image: url(/imgs/default/button_hover.png);
+  color: #FFF000;
+  border: none;
+  outline: none;
 }
 
 .button.disabled, .button[disabled] {
+  background-image: url(/imgs/default/button_hover.png);
+  color: gray;
   cursor: default;
-  background-image: none;
   opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
 }
 
 .player-tip {
@@ -244,4 +290,132 @@ label {
   display: inline-block;
   width: 40%;
   text-align: left;
+}
+
+.common-container {
+  margin: auto;
+  margin-top: 30px;
+  width: 500px;
+}
+
+.common-header .welcome {
+  float: right;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.common-header .logo {
+  width: 159px;
+  height: 54px;
+  background: url(/imgs/default/logo.png);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.common-header .game-label {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+.common-separator {
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+.common-separator .above {
+  height: 2px;
+  background: white;
+  margin-bottom: 2px;
+}
+
+.common-separator .below {
+  height: 1px;
+  background: white;
+}
+
+.common-content {
+  width: 400px;
+  margin: auto;
+}
+
+.common-content p {
+  line-height: 30px;
+}
+
+.common-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.ok-sign {
+  width: 20px;
+  height: 19px;
+  background: url(/imgs/default/right.png);
+  display: none;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.ok-sign.wrong {
+  background: url(/imgs/default/wrong.png);
+}
+
+.rich-button {
+  display: inline-block;
+  *zoom: 1;
+  padding: 8px 20px;
+  color: white;
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 1.25em;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: url(/imgs/default/rich_button.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border: none;
+  background-color: transparent;
+}
+
+.rich-button:hover, .rich-button:focus, .rich-button:active, .rich-button.active {
+  color: #FFF000;
+  border: none;
+  outline: none;
+}
+
+.rich-button.disabled, .rich-button[disabled] {
+  cursor: default;
+  color: gray;
+  opacity: 0.65;
+}
+
+.navigator .item {
+  cursor: pointer;
+  font-size: 1.2em;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+@keyframes fade
+{
+from {
+  opacity: 1;
+}
+to {
+  opacity: 0;
+}
+}
+
+@-webkit-keyframes
+fade {from {
+  opacity: 1;
+}
+to {
+  opacity: 0;
+}
 }

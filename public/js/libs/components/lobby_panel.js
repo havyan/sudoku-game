@@ -27,8 +27,9 @@
           return count(room).toString();
         }
       }));
-      this.selectRoom(options.model.attr('selectedRoom'));
-      this.toggleExpand(this.element.find('.lobby-nav-item:first'));
+      var selectedRoom = options.model.attr('selectedRoom');
+      this.selectRoom(selectedRoom);
+      this.toggleExpand(this.element.find('#' + selectedRoom).closest('.lobby-nav-item'));
       this.gameForm = new LobbyGameForm(this.element, {
         user : this.options.model.attr('user').attr(),
         rule : this.options.model.attr('rule').attr(),
@@ -43,8 +44,10 @@
       this.element.find('.lobby-nav-real-room, .lobby-nav-virtual-room').removeClass('active');
       $room.addClass('active').parents('.lobby-nav-item').find('.lobby-nav-virtual-room').addClass('active');
       this.element.find('.lobby-content').html(can.view('/js/libs/mst/lobby_room.mst', room, {
-        tableOrder : function(index) {
-          return index() + 1;
+        tableOrder : function(game) {
+          return _.findIndex(room.attr('games'), {
+            id : game.id
+          }) + 1;
         },
         tableInfo : function(game) {
           if (game.status === 'empty') {
@@ -90,9 +93,9 @@
         $svg.attr('width', $line.width() + 'px').attr('height', $line.height() + 'px');
         var left = $line.width() / 2 - 10;
         var right = $line.width();
-        var path = 'M ' + left + ' 0 L ' + left + ' ' + ($roomContainer.height() / 2 - 5);
-        path += ' A 10 10 0 0 0 ' + (left + 10) + ' ' + ($roomContainer.height() / 2 + 5);
-        path += ' L ' + (left + 30) + ' ' + ($roomContainer.height() / 2 + 5);
+        var path = 'M ' + left + ' 0 L ' + left + ' ' + ($roomContainer.height() / 2);
+        path += ' A 10 10 0 0 0 ' + (left + 10) + ' ' + ($roomContainer.height() / 2 + 10);
+        path += ' L ' + (left + 30) + ' ' + ($roomContainer.height() / 2 + 10);
         $rooms.each(function(index, room) {
           var $room = $(room);
           var y = $room.position().top + $room.height() / 2 + 10;
@@ -141,14 +144,14 @@
                 window.open('/table/' + result.gameId, '_blank');
                 $e.closest('.modal').modal('hide');
               }, function(error) {
-                Dialog.error('建桌失败, ' + error);
+                Dialog.error('建桌失败, ' + error.responseJSON.message);
               });
             });
           } else {
             Rest.Game.playerJoin(gameId, 0, params, function(result) {
               window.open('/table/' + result.gameId, '_blank');
             }, function(error) {
-              Dialog.error('建桌失败, ' + error);
+              Dialog.error('建桌失败, ' + error.responseJSON.message);
             });
           }
         }
@@ -161,15 +164,15 @@
       var index = _.findIndex(game.attr('players'), function(player) {
         return player == null;
       });
-      Rest.Game.playerJoin(gameId, index, {}, function(result) {
-        window.open('/table/' + result.gameId, '_blank');
-      });
+      this.joinGame(game, index);
     },
 
     '.free .lobby-game.waiting .lobby-player.empty.normal.available click' : function(e) {
+      this.joinGame(this.options.model.findGame(e.closest('.lobby-game').data('id')), e.data('index'));
+    },
+
+    joinGame : function(game, index) {
       var model = this.options.model;
-      var gameId = e.closest('.lobby-game').data('id');
-      var game = model.findGame(gameId);
       var grade = model.attr('user.grade');
       var levelIndex = _.findIndex(model.attr('levels'), {
         code : game.attr('level')
@@ -177,7 +180,7 @@
       if (parseInt(grade) < levelIndex) {
         Dialog.message('您不能加入题目等级比自己段数高的游戏');
       } else {
-        Rest.Game.playerJoin(gameId, e.data('index'), {}, function(result) {
+        Rest.Game.playerJoin(game.attr('id'), index, {}, function(result) {
           window.open('/table/' + result.gameId, '_blank');
         });
       }

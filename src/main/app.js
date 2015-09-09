@@ -1,3 +1,5 @@
+require('./common');
+var _ = require('lodash');
 var winston = require('winston');
 var express = require('express');
 var async = require('async');
@@ -14,15 +16,14 @@ var config = require('./config');
 var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
-var PropManager = require('./prop_manager');
+var NOLOGIN_ACTIONS = require('./nologin_actions.json');
 
 hbs.localsAsTemplateData(app);
 config.initialize(app);
 
 global.gameManager = new GameManager();
-global.propManager = new PropManager();
 
-//app.use(favicon(app.get('conf.path.favicon')));
+app.use(favicon(app.get('conf.path.favicon')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
   extended : false
@@ -46,8 +47,9 @@ app.engine('html', hbs.__express);
 
 // authority handler
 app.use(function(req, res, next) {
-  winston.info("Start " + req.method + " " + req.path);
-  if (req.path !== '/' && req.path !== '/login' && !req.session.account) {
+  var action = req.method + " " + req.path;
+  winston.info("Start " + action);
+  if (!_.contains(NOLOGIN_ACTIONS, action) && !req.session.account) {
     req.params.error = true;
     res.redirect('/login');
   } else {
@@ -66,10 +68,14 @@ var env = app.get('env');
 app.use(function(err, req, res, next) {
   res.status(err.status || HttpError.SERVER_ERROR);
   winston.error(err.message);
-  res.render('error', {
-    message : err.message,
-    error : env === 'development' ? (err.error || err) : {}
-  });
+  if (err.responseType === 'json') {
+    res.send(err.toJSON());
+  } else {
+    res.render('error', {
+      message : err.message,
+      error : env === 'development' ? (err.error || err) : {}
+    });
+  }
 });
 
 app.init = function(cb) {
@@ -82,5 +88,8 @@ app.init = function(cb) {
     global.gameManager.init(cb);
   }], cb);
 };
+
+// Worker to process data
+require('./worker');
 
 module.exports = app;

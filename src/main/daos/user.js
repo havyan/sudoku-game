@@ -1,20 +1,109 @@
 var mongoose = require('mongoose');
 var _ = require('lodash');
+var crypto = require('crypto');
+var winston = require('winston');
 var async = require('async');
+var emailer = require('../emailer');
 var Schema = mongoose.Schema;
 var RuleDAO = require('./rule');
+var PropDAO = require('./prop');
+var ActiveKeyDAO = require('./active_key');
 var MONEY = 50000;
+var STATES = {
+  NEW : 'new',
+  ACTIVE : 'active'
+};
 
 var UserSchema = new Schema({
   account : String,
   name : String,
-  icon : String,
-  grade : String,
-  points : Number,
-  rounds : Number,
-  wintimes : Number,
-  money : Number
+  password : String,
+  state : {
+    type : String,
+    default : STATES.NEW
+  },
+  email : String,
+  create_at : {
+    type : Date,
+    default : Date.now
+  },
+  create_ip : String,
+  login_at : Date,
+  login_ip : String,
+  icon : {
+    type : String,
+    default : '/imgs/default/user_icons/default.png'
+  },
+  grade : {
+    type : String,
+    default : '0'
+  },
+  points : {
+    type : Number,
+    default : 0
+  },
+  rounds : {
+    type : Number,
+    default : 0
+  },
+  wintimes : {
+    type : Number,
+    default : 0
+  },
+  money : {
+    type : Number,
+    default : 5000
+  }
 });
+
+UserSchema.statics.createUser = function(params, cb) {
+  var self = this;
+  params = _.merge({
+    password : params.account,
+    email : params.account + '@supergenius.cn'
+  }, params);
+  params.password = this.encryptPassword(params.password);
+  async.waterfall([
+  function(cb) {
+    self.create(params, cb);
+  },
+  function(user, cb) {
+    PropDAO.findOneByAccount(params.account, cb);
+  },
+  function(find, cb) {
+    if (!find) {
+      winston.info('Create prop for account [' + params.account + '] from predefined');
+      PropDAO.createDefault(params.account, cb);
+    } else {
+      cb(null, null);
+    }
+  },
+  function(prop, cb) {
+    if (params.state !== STATES.ACTIVE) {
+      ActiveKeyDAO.createKey(params.account, cb);
+    } else {
+      cb(null, null);
+    }
+  },
+  function(key, cb) {
+    if (params.state !== STATES.ACTIVE) {
+      var link = global.config.server.domain + ':' + global.config.server.port + '/active_user?key=' + key.id;
+      emailer.send({
+        to : params.email,
+        subject : ' 激活超天才账户',
+        html : '<p>请点击激活来激活超天才账户: <a href="' + link + '">激活</a></p>'
+      }, cb);
+    } else {
+      cb();
+    }
+  }], cb);
+};
+
+UserSchema.statics.findInactive = function(cb) {
+  this.find({
+    state : STATES.NEW
+  }, cb);
+};
 
 UserSchema.statics.findOneByName = function(name, cb) {
   this.findOne({
@@ -91,6 +180,20 @@ UserSchema.statics.resetMoney = function(cb) {
       }, cb);
     }
   });
+};
+
+UserSchema.statics.activeUser = function(account, cb) {
+  this.update({
+    account : account
+  }, {
+    state : STATES.ACTIVE
+  }, cb);
+};
+
+UserSchema.statics.encryptPassword = function(password) {
+  var hasher = crypto.createHash("md5");
+  hasher.update(password);
+  return hasher.digest('hex');
 };
 
 UserSchema.virtual('winrate').get(function() {

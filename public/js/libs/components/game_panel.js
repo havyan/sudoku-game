@@ -39,10 +39,8 @@
       var gameStateArea = this.element.find('.game-state-area');
       if (gameStateArea.hasClass('out')) {
         gameStateArea.removeClass('out').css('right', '0px');
-        gameStateArea.find('.game-state-hide-button').html('>>');
       } else {
         gameStateArea.addClass('out').css('right', (-gameStateArea[0].offsetWidth) + 'px');
-        gameStateArea.find('.game-state-hide-button').html('<<');
       }
     },
 
@@ -56,6 +54,10 @@
       } else if (newStatus === 'destroyed') {
         window.location.href = "/main";
       }
+    },
+
+    '{model} active' : function(model, e, active) {
+      this.activePlayer(model.attr('currentPlayer'));
     },
 
     '{model} currentPlayer' : function(model, e, player) {
@@ -101,11 +103,20 @@
     },
 
     '{model} waitCountdownStage' : function(model, e, newStage) {
-      if (newStage === '00:00:00') {
+      if (newStage === 0) {
         if (model.isBanker()) {
           Dialog.message('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
         } else {
           Dialog.message('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
+        }
+      }
+    },
+
+    '{model} remainingTime' : function(model, e, remainingTime) {
+      if (remainingTime <= 60) {
+        var $remainingTime = this.element.find('.game-remaining-time');
+        if (!$remainingTime.hasClass('warning')) {
+          $remainingTime.addClass('warning');
         }
       }
     },
@@ -146,7 +157,7 @@
     },
 
     messageToBottom : function() {
-      var msgElement = this.element.find('.game-chat-messages')[0];
+      var msgElement = this.element.find('.game-chat-messages-container')[0];
       msgElement.scrollTop = msgElement.scrollHeight - msgElement.clientHeight;
     },
 

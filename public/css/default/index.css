@@ -1,95 +1,194 @@
+html, body {
+  overflow: hidden !important;
+}
+
+input[type=text], input[type=password] {
+  padding: 2px;
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid gray;
+}
+
+.logo {
+  margin-left: 30px;
+  margin-top: 20px;
+  float: left;
+}
+
+.top-right-area {
+  float: right;
+  margin-right: 30px;
+  margin-top: 20px;
+}
+
+.top-right-area * {
+  vertical-align: middle;
+}
+
+.login-welcome {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.login-welcome span {
+  color: red;
+}
+
+.contact-btn {
+  display: inline-block;
+  width: 90px;
+  height: 32px;
+  background-size: 100% 100%;
+  text-align: center;
+  background-image: url(/imgs/default/contact.png);
+  line-height: 32px;
+  background-color: inherit;
+  border: none;
+  font-size: 14px;
+  color: white;
+}
+
+.login-area {
+  width: 800px;
+  height: 800px;
+  margin: auto;
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.login-container {
+  width: 300px;
+  height: 340px;
+  margin: auto;
+  margin-top: 250px;
+  text-align: center;
+  overflow: hidden;
+}
+
 .login-form {
-	position: fixed;
-	margin: auto;
-	width: 300px;
-	height: 300px;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
+  width: 100%;
+  height: 100%;
 }
 
-.login-icon {
-	width: 60px;
-	height: 60px;
-	background: #FFF url(../../imgs/default/user.png);
-	margin: auto;
-	border-radius: 30px;
-	outline: none;
-	border-color: rgba(255, 255, 255, .75);
-	box-shadow: 0 0 8px rgba(255, 255, 255, .5);
-	margin-bottom: 40px;
+.enter {
+  display: block;
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  margin: auto;
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  margin-top: 125px;
+  background-size: 100% 100%;
+  background-image: url(/imgs/default/login_btn.png);
 }
 
-.login-user {
-	height: 40px;
-	border-radius: 5px;
-	background: #FFF;
-	margin-bottom: 40px;
+.login-title {
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
-.login-user-icon {
-	height: 34px;
-	width: 34px;
-	margin-top: 3px;
-	margin-left: 3px;
-	background: #FFF;
-	float: left;
-	background: #FFF;
-	float: left;
-	border-radius: 5px;
+.login-user, .login-password {
+  margin-bottom: 20px;
 }
 
-.login-user-icon img {
-	width: 100%;
-	height: 100%;
+.login-label {
+  width: 15%;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: right;
+  color: #fff100;
 }
 
-.login-user-field {
-	height: 38px;
-	margin-left: 3px;
-	width: calc(100% - 45px);
-	border-radius: 5px;
-	border-width: 0px;
-	font-size: 22px;
+.login-field {
+  width: 60%;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
 }
 
-.login-user-field:focus {
-	outline: none;
+.login-more {
+  margin-bottom: 20px;
+}
+
+.login-more > * {
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff100;
+  font-size: 10px;
+}
+
+.login-more label {
+  margin-right: 30px;
+}
+
+.login-separator {
+  width: 65%;
+  background: white;
+  height: 1px;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .login-error {
-	background: red;
-	height: 25px;
-	font-size: 15px;
-	line-height: 25px;
-	color: #FFF;
-	border-radius: 5px;
-	padding-left: 34px;
-}
-
-.login-button {
-	height: 30px;
-	width: 100px;
-	margin: auto;
-	margin-bottom: 20px;
+  color: red;
+  margin-bottom: 10px;
 }
 
 .login-button input {
-	width: 100%;
-	height: 100%;
-	border-radius: 15px;
-	color: #96A4AD;
-	font-size: 16px;
-	font-weight: bold;
+  width: 120px;
+  height: 34px;
+  background-size: cover;
+  background-image: url(/imgs/default/login_btn.png);
+  line-height: 34px;
+  background-color: inherit;
+  border: none;
+  font-size: 16px;
+  color: white;
 }
 
-.remember-me {
-	width: 100px;
-	margin: auto;
-	font-size: 8px;
+.signup-button a {
+  display: inline-block;
+  width: 80px;
+  height: 34px;
+  background-size: cover;
+  background-image: url(/imgs/default/signup_btn.png);
+  line-height: 34px;
+  background-color: inherit;
+  border: none;
+  font-size: 16px;
+  color: white;
 }
 
-.remember-me * {
-	vertical-align: middle;
+.room {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+}
+
+.room img {
+  height: 100px;
+}
+
+.room:hover {
+  transform: scale(1.2, 1.2);
+  -webkit-transform: scale(1.2, 1.2);
+}
+
+.room a {
+  display: block;
+  text-align: center;
+}
+
+.room .label {
+  margin-top: 5px;
+}
+
+.room.favarite .label {
+  color: #fff100;
 }

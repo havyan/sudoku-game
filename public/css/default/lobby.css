@@ -10,18 +10,15 @@
 
 .lobby-nav-rooms {
   width: 278px;
-  height: 879px;
+  min-width: 278px;
   display: inline-block;
-  background: url(../../imgs/default/lobby_nav_bg.png) no-repeat;
+  background-image: url(../../imgs/default/lobby_nav_bg.png);
+  background-size: 100% 100%;
 }
 
 .lobby-nav-rooms-container {
-  width: 90%;
-  height: 819px;
-  margin: auto;
-  margin-top: 30px;
+  margin: 30px 20px;
   overflow-x: hidden;
-  overflow-y: auto;
 }
 
 .lobby-nav-item-content {
@@ -31,6 +28,7 @@
 
 .lobby-nav-item.expand .lobby-nav-item-content {
   display: block;
+  overflow: hidden;
 }
 
 .lobby-nav-item {
@@ -53,17 +51,32 @@
 }
 
 .lobby-nav-real-room {
-  width: 101px;
+  width: 100px;
   height: 30px;
   line-height: 30px;
   color: white;
   font-size: 14px;
   text-align: center;
   cursor: pointer;
-  margin-top: 10px;
+  margin-bottom: 10px;
   background: url(../../imgs/default/lobby_nav_room_bg.png) no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: -2px 0px;
+}
+
+.lobby-nav-real-rooms .lobby-nav-real-room:last-of-type {
+  margin-bottom: 0px;
+}
+
+.lobby-nav-virtual-room:hover {
+  transform: scale(1.1, 1.1);
+  -webkit-transform: scale(1.1, 1.1);
+}
+
+.lobby-nav-real-room:hover {
+  transform: scale(1.1, 1.1);
+  -webkit-transform: scale(1.1, 1.1);
+  margin-left: 5px;
 }
 
 .lobby-nav-real-room.active, .lobby-nav-virtual-room.active {
@@ -78,12 +91,13 @@
 .lobby-nav-real-rooms {
   margin-left: 40%;
   width: 60%;
-  overflow: hidden;
+  margin-top: 10px;
   position: relative;
 }
 
 .lobby-content {
   width: 80%;
+  min-width: 1264px;
   margin-left: 20%;
 }
 

@@ -1,12 +1,14 @@
 var _ = require('lodash');
 var winston = require('winston');
 var async = require('async');
+var dateFormat = require('dateformat');
 var Observable = require('../base/observable');
 var RuleDAO = require('../daos/rule');
 var UserDAO = require('../daos/user');
 var PropDAO = require('../daos/prop');
 var PuzzleDAO = require('../daos/puzzle');
 var GameMode = require('./game_mode');
+var Mail = require('./mail');
 var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
@@ -82,13 +84,18 @@ Game.prototype.init = function(account, params, cb) {
                 self.rule = rule;
                 self.initParams(params);
                 self.trigger('init', self.toSimpleJSON());
-                setTimeout(function() {
-                  self.over(function(error) {
-                    if (error) {
-                      winston.error(error);
-                    }
-                  });
-                }, self.duration * 3600 * 1000);
+                self.timer = setInterval(function() {
+                  self.remainingTime--;
+                  self.trigger('total-countdown-stage', self.remainingTime);
+                  if (self.remainingTime <= 0) {
+                    self.stopTimer();
+                    self.over(function(error) {
+                      if (error) {
+                        winston.error(error);
+                      }
+                    });
+                  }
+                }, 1000);
                 var countdown = self.waitTime * 60;
                 var countDownTimer = setInterval(function() {
                   if (self.isWaiting()) {
@@ -116,6 +123,7 @@ Game.prototype.init = function(account, params, cb) {
 Game.prototype.initParams = function(params) {
   this.capacity = params.capacity || CAPACITY;
   this.duration = params.duration || GAME_TIMEOUT;
+  this.remainingTime = this.duration * 3600;
   this.waitTime = params.waitTime || DEFAULT_WAIT_TIME;
   this.level = params.level || DEFAULT_LEVEL;
   this.startMode = params.startMode || START_MODE.MANUAL;
@@ -138,6 +146,26 @@ Game.prototype.initParams = function(params) {
   this.playerTimer = {
     ellapsedTime : 0
   };
+  this.buildPlayerIndex();
+};
+
+Game.prototype.buildPlayerIndex = function() {
+  var playerIndex = {};
+  var i = 0;
+  this.players.forEach(function(player) {
+    if (player) {
+      playerIndex[player.account] = i;
+      i++;
+    }
+  });
+  this.playerIndex = playerIndex;
+};
+
+Game.prototype.addPlayerIndex = function(account) {
+  if (this.playerIndex[account] === undefined) {
+    var indexes = _.values(this.playerIndex);
+    this.playerIndex[account] = indexes.length > 0 ? _.max(indexes) + 1 : 0;
+  }
 };
 
 Game.prototype.isEmpty = function() {
@@ -224,11 +252,11 @@ Game.prototype.nextPlayer = function() {
     self.playerTimer = {
       ellapsedTime : 0
     };
-    self.trigger('ellapsed-time', self.playerTimer.ellapsedTime);
+    self.trigger('player-ellapsed-time', self.playerTimer.ellapsedTime);
     self.playerTimer.timer = setInterval(function() {
       if (!self.playerTimer.stopped && !self.delayed) {
         self.playerTimer.ellapsedTime++;
-        self.trigger('ellapsed-time', self.playerTimer.ellapsedTime);
+        self.trigger('player-ellapsed-time', self.playerTimer.ellapsedTime);
         if (self.playerTimer.ellapsedTime === self.rule.score.add.total) {
           var currentPlayer = self.currentPlayer;
           self.stopPlayerTimer();
@@ -295,6 +323,13 @@ Game.prototype.updateScore = function(type, account, xy) {
   return score;
 };
 
+Game.prototype.stopTimer = function() {
+  if (this.timer) {
+    clearInterval(this.timer);
+  }
+  this.stopPlayerTimer();
+};
+
 Game.prototype.stopPlayerTimer = function() {
   if (this.playerTimer) {
     this.stopDelayTimer();
@@ -326,6 +361,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
           cb(error);
         } else {
           self.players[index] = user;
+          self.addPlayerIndex(account);
           self.knownCellValues[user.account] = {};
           PropDAO.findOneByAccount(account, function(error, prop) {
             if (error) {
@@ -359,42 +395,45 @@ Game.prototype.playerQuit = function(account, status, cb) {
   } else {
     this.stopPlayerTimer();
   }
-
-  if (this.isOngoing()) {
-    quitPlayer.rounds = quitPlayer.rounds + 1;
-    quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
-    var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
-      return e.floor > quitPlayer.points;
-    });
-    quitPlayer.grade = this.rule.grade[ceilingIndex - 1].code;
-    quitPlayer.save(function(error) {
-      if (error) {
-        cb(error);
-      } else {
-        self.quitPlayers.unshift(quitPlayer);
-        self.results.unshift(self.createResult(quitPlayer, status));
-        self.removePlayer(account);
-        self.trigger('player-quit', {
-          account : account,
-          status : status
-        });
-        self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
-        if (self.playersCount() <= 0) {
-          self.destroy();
+  if (quitPlayer) {
+    if (this.isOngoing()) {
+      quitPlayer.rounds = quitPlayer.rounds + 1;
+      quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
+      var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
+        return e.floor > quitPlayer.points;
+      });
+      quitPlayer.grade = this.rule.grade[ceilingIndex - 1].code;
+      quitPlayer.save(function(error) {
+        if (error) {
+          cb(error);
+        } else {
+          self.quitPlayers.unshift(quitPlayer);
+          self.results.unshift(self.createResult(quitPlayer, status));
+          self.removePlayer(account);
+          self.trigger('player-quit', {
+            account : account,
+            status : status
+          });
+          self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
+          if (self.playersCount() <= 0) {
+            self.destroy();
+          }
+          cb();
         }
-        cb();
+      });
+    } else {
+      this.removePlayer(account);
+      this.trigger('player-quit', {
+        account : account,
+        status : status
+      });
+      self.addMessage('用户[' + quitPlayer.name + ']退出');
+      if (self.playersCount() <= 0) {
+        self.destroy();
       }
-    });
-  } else {
-    this.removePlayer(account);
-    this.trigger('player-quit', {
-      account : account,
-      status : status
-    });
-    self.addMessage('用户[' + quitPlayer.name + ']退出');
-    if (self.playersCount() <= 0) {
-      self.destroy();
+      cb();
     }
+  } else {
     cb();
   }
 };
@@ -431,25 +470,28 @@ Game.prototype.removePlayer = function(account) {
 };
 
 Game.prototype.addMessage = function(message, account) {
-  var self = this;
-  var from = account ? this.findPlayer(account).name : '系统';
-  var convert = function(value) {
-    return value >= 10 ? value : '0' + value;
-  };
-  var now = new Date(),
-      year = now.getFullYear(),
-      month = convert(now.getMonth() + 1),
-      date = convert(now.getDate()),
-      hours = convert(now.getHours()),
-      minutes = convert(now.getMinutes()),
-      seconds = convert(now.getSeconds());
+  var from;
+  if (account) {
+    var player = this.findPlayer(account);
+    from = {
+      account : player.account,
+      name : player.name,
+      index : this.playerIndex[player.account]
+    };
+  } else {
+    from = {
+      account : 'system',
+      name : '系统',
+      index : 'system'
+    };
+  }
   message = {
     from : from,
-    date : year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds,
+    date : dateFormat(new Date(), 'yyyy/mm/dd hh:MM:ss'),
     content : message
   };
-  self.messages.push(message);
-  self.trigger('message-added', message);
+  this.messages.push(message);
+  this.trigger('message-added', message);
   return message;
 };
 
@@ -484,6 +526,7 @@ Game.prototype.toJSON = function(account) {
     waitTime : this.waitTime,
     startMode : this.startMode,
     duration : this.duration,
+    remainingTime : this.remainingTime,
     capacity : this.capacity,
     level : this.level,
     rule : this.rule,
@@ -509,7 +552,7 @@ Game.prototype.toJSON = function(account) {
     }),
     knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues,
     changedScore : account ? this.changedScores[account] : this.changedScores,
-    remainingTime : this.rule.score.add.total - this.playerTimer.ellapsedTime,
+    playerRemainingTime : this.rule.score.add.total - this.playerTimer.ellapsedTime,
     glassesUsed : account ? this.glassesUsed[account] ? true : false : this.glassesUsed,
     optionsOnce : account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
     optionsAlways : account ? this.optionsAlways[account] ? true : false : this.optionsAlways
@@ -534,6 +577,7 @@ Game.prototype.toSimpleJSON = function() {
     stepTime : this.rule.score.add.total,
     startMode : this.startMode,
     duration : this.duration,
+    remainingTime : this.remainingTime,
     capacity : this.capacity,
     level : this.level,
     mode : _.findKey(GameMode, function(value) {
@@ -618,33 +662,41 @@ Game.prototype.abort = function() {
 Game.prototype.over = function(cb) {
   var self = this;
   var players = _.compact(this.players);
-  this.stopPlayerTimer();
+  this.stopTimer();
   players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
     var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;
     return sourceScore - destScore;
   });
-  var index = 0;
-  async.eachSeries(players, function(player, cb) {
-    player.points = player.points + 100 * (self.results.length + 1);
-    var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
-      return e.floor > player.points;
-    });
-    player.grade = self.rule.grade[ceilingIndex - 1].code;
-    player.rounds = player.rounds + 1;
-    if (index === players - 1) {
-      player.wintimes = player.wintimes + 1;
-    }
-    player.save(function(error) {
-      if (error) {
-        cb(error);
-      } else {
-        self.results.unshift(self.createResult(player, 'normal'));
-        index++;
-        cb();
+  async.waterfall([
+  function(cb) {
+    var index = 0;
+    async.eachSeries(players, function(player, cb) {
+      player.points = player.points + 100 * (self.results.length + 1);
+      var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
+        return e.floor > player.points;
+      });
+      player.grade = self.rule.grade[ceilingIndex - 1].code;
+      player.rounds = player.rounds + 1;
+      if (index === players - 1) {
+        player.wintimes = player.wintimes + 1;
       }
-    });
-  }, function(error) {
+      player.save(function(error) {
+        if (error) {
+          cb(error);
+        } else {
+          self.results.unshift(self.createResult(player, 'normal'));
+          index++;
+          cb();
+        }
+      });
+    }, cb);
+  },
+  function(cb) {
+    async.eachSeries(players, function(player, cb) {
+      Mail.createFromSystem(player.id, '最新战报', 'Developing...', cb);
+    }, cb);
+  }], function(error) {
     if (error) {
       cb(error);
     } else {
@@ -879,7 +931,7 @@ Game.prototype.setOptionsAlways = function(account, cb) {
 };
 
 Game.prototype.destroy = function() {
-  this.stopPlayerTimer();
+  this.stopTimer();
   this.status = DESTROYED;
   winston.info('Game [' + this.id + '] destoryed');
   this.trigger('game-destroyed');

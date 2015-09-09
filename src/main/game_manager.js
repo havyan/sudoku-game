@@ -79,14 +79,18 @@ GameManager.prototype.playerJoin = function(gameId, account, index, params, cb) 
   } else {
     game = this.findGame(gameId);
     if (game) {
-      if (game.isEmpty()) {
-        game.init(account, params, function(error) {
-          if (error) {
-            cb(error);
-          } else {
-            game.playerJoin(account, 0, cb);
-          }
-        });
+      if (index === 0) {
+        if (game.isEmpty()) {
+          game.init(account, params, function(error) {
+            if (error) {
+              cb(error);
+            } else {
+              game.playerJoin(account, 0, cb);
+            }
+          });
+        } else {
+          cb('游戏已建立，请选择另外一桌。');
+        }
       } else {
         game.playerJoin(account, index, cb);
       }

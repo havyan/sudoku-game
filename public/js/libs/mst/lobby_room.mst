@@ -2,7 +2,7 @@
   {{#games}}
   <div class="lobby-game {{status}}" data-id="{{id}}">
     <div class="room-number">
-      {{tableOrder @index}}
+      {{tableOrder this}}
     </div>
     <div class="lobby-table">
       <div class="lobby-table-content">

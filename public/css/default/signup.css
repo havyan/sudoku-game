@@ -1,0 +1,75 @@
+input {
+  padding-left: 5px;
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid gray;
+}
+
+input:focus {
+  border: 1px solid gray;
+}
+
+.signup-form {
+  width: 400px;
+  margin: auto;
+}
+
+.signup-row {
+  margin-bottom: 25px;
+}
+
+.signup-row > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.signup-row .ok-sign {
+  display: none;
+}
+
+.signup-name {
+  width: 80px;
+}
+
+.signup-value {
+  width: 230px;
+  border-radius: 8px;
+  padding-left: 5px;
+  padding-right: 3px;
+}
+
+.vcode .signup-value {
+  width: 80px;
+}
+
+.vcode img {
+  width: 80px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.vcode a {
+  color: #fff100;
+}
+
+.protocol-read {
+  font-size: 10px;
+}
+
+.protocol-read input {
+  margin-left: 60px;
+  margin-right: 5px;
+}
+
+.common-actions {
+  text-align: center;
+}
+
+.common-actions button {
+  margin-right: 50px; 
+}
+
+.mandatory-sign {
+  display: inline-block;
+  vertical-align: middle;
+  color: red;
+}

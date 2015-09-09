@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/reset_password.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-2.1.1.min.js"></script>
+    <script src="{{@basejs}}/libs3/jquery.form.js"></script>
+    <script src="{{@basejs}}/libs3/lodash.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs/reset_password.js"></script>
+  </head>
+  <body data-key="{{key}}" data-account="{{account}}">
+    <div class="common-container">
+      <div class="common-header">
+        <div class="logo"></div>
+        <div class="game-label">
+          数独棋
+        </div>
+      </div>
+      <div class="common-separator">
+        <div class="above"></div>
+        <div class="below"></div>
+      </div>
+      <div class="common-content">
+        {{#if available}}
+        <p>账户已激活，<a href="/">开始玩数独游戏</a></p>
+        {{else}}
+        <p>您的链接已失效或者不存在，请重新<a href="/signup">注册</a></p>
+        {{/if}}
+      </div>
+    </div>
+  </body>
+</html>

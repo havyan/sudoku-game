@@ -1,14 +1,12 @@
 var _ = require('lodash');
-var PropDAO = require('./daos/prop');
-var UserDAO = require('./daos/user');
+var PropDAO = require('../daos/prop');
+var UserDAO = require('../daos/user');
 
-var PROP_TYPES = require('./models/prop_types.json');
+var PROP_TYPES = require('./prop_types.json');
 
-var PropManager = function() {
+var Prop = {};
 
-};
-
-PropManager.prototype.getPropData = function(account, cb) {
+Prop.getPropData = function(account, cb) {
   UserDAO.findOneByAccount(account, function(error, user) {
     if (error) {
       cb(error);
@@ -37,7 +35,7 @@ PropManager.prototype.getPropData = function(account, cb) {
   });
 };
 
-PropManager.prototype.buy = function(account, type, count, cb) {
+Prop.buy = function(account, type, count, cb) {
   var game = global.gameManager.findGameByUser(account);
   if (game && !game.isOver()) {
     cb(null, {
@@ -91,8 +89,8 @@ PropManager.prototype.buy = function(account, type, count, cb) {
   }
 };
 
-PropManager.prototype.reset = function(cb) {
+Prop.reset = function(cb) {
   PropDAO.reset(cb);
 };
 
-module.exports = PropManager;
+module.exports = Prop;

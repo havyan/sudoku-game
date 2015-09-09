@@ -8,11 +8,11 @@
 
     createGameEventReceiver : function(gameId) {
       var topics = ['player-joined', 'message-added', 'status-changed', 'countdown-stage',
-                    'cell-correct', 'cell-incorrect', 'switch-player', 'ellapsed-time',
+                    'cell-correct', 'cell-incorrect', 'switch-player', 'player-ellapsed-time',
                     'score-changed', 'game-over', 'puzzle-init', 'player-quit',
                     'max-timeout-reached', 'game-destroyed', 'quit-countdown-stage','game-destroyed',
                     'game-delayed', 'delay-countdown-stage', 'game-delay-cancelled', 'destroy-countdown-stage',
-                    'wait-countdown-stage', 'game-abort'];
+                    'wait-countdown-stage', 'game-abort', 'total-countdown-stage'];
       return new EventReceiver('/events/game/' + gameId, topics);
     }
   }, {

@@ -24,12 +24,13 @@
         done : function(e, data) {
           var $icon = element.find('.upload-icon-display');
           self.path = data.result.path;
-          self.setIconBound(function() {
+          self.setIconBound(function(bound) {
             $icon.css('background-image', 'url(' + data.result.path + ')');
             element.find('.inner-icon-display').css('background-image', 'url(' + data.result.path + ')');
             $icon.find('span').hide();
             element.find('.upload-icon-cutter').show();
-            self.resetCutter($icon.width() / 2 - 75, $icon.height() / 2 - 75, 150, 150);
+            var cutterSize = Math.min(bound.width, bound.height, 150);
+            self.resetCutter(bound.left + (bound.width - cutterSize) / 2, bound.top + (bound.height - cutterSize) / 2, cutterSize, cutterSize);
           });
         }
       });
@@ -154,7 +155,7 @@
           height : height
         };
         if (callback) {
-          callback();
+          callback(self.bound);
         }
       });
     },
