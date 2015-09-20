@@ -213,7 +213,17 @@ module.exports = function(router) {
   });
 
   router.get('/view/messages', function(req, res, next) {
-    res.render('messages', {});
+    UserDAO.findOneByAccount(req.session.account, function(error, user) {
+      if (error) {
+        next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
+      } else {
+        res.render('messages', {
+          userName : user.name,
+          userIcon : user.icon,
+          money : user.money
+        });
+      }
+    });
   });
 };
 

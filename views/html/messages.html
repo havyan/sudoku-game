@@ -4,14 +4,28 @@
     <meta charset="UTF-8">
     <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/messages.css" rel="stylesheet" type="text/css" />
     <script src="{{@basejs}}/libs3/jquery-2.1.1.min.js"></script>
     <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
     <script src="{{@basejs}}/libs3/lodash.js"></script>
     <script src="{{@basejs}}/libs3/can.jquery.js"></script>
     <script src="{{@basejs}}/libs/components/dialog.js"></script>
     <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs/messages_model.js"></script>
+    <script src="{{@basejs}}/libs/messages_panel.js"></script>
+    <script src="{{@basejs}}/libs/messages.js"></script>
   </head>
   <body>
+    <div class="top-actions">
+      <a class="user-button" href="/view/user">个人信息</a>
+      <a class="props-button" href="/view/props">道具</a>
+      <a class="setting-button" href="/setting">管理</a>
+      <a class="logout-button" href="/logout">注销</a>
+    </div>
+    <div class="welcome">
+      欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
+    </div>
 
+    <div id="messages"></div>
   </body>
 </html>
