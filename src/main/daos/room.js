@@ -5,6 +5,7 @@ var RoomSchema = new Schema({
   name : String,
   code : String,
   icon : String,
+  capacity : Number,
   virtual : Boolean,
   parent : String
 });

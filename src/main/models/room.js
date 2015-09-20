@@ -4,8 +4,9 @@ var Game = require('./game');
 var PREFIX = "game";
 var CAPACITY = 12;
 
-var Room = function(id, name, virtual) {
+var Room = function(id, name, virtual, capacity) {
   this.name = name;
+  this.capacity = capacity || CAPACITY;
   this.$ = new Observable();
   this.id = id || PREFIX + Date.now();
   this.virtual = virtual;
@@ -18,7 +19,7 @@ var Room = function(id, name, virtual) {
 
 Room.prototype.initGames = function() {
   this.games = [];
-  for (var i = 0; i < CAPACITY; i++) {
+  for (var i = 0; i < this.capacity; i++) {
     var game = new Game(this, i);
     this.bindGame(game);
     this.games.push(game);
