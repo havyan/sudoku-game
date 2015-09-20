@@ -4,6 +4,7 @@ var _ = require('lodash');
 var async = require('async');
 var winston = require('winston');
 var RuleDAO = require('../main/daos/rule');
+var PropTypeDAO = require('../main/daos/prop_type');
 var UserDAO = require('../main/daos/user');
 var PuzzleDAO = require('../main/daos/puzzle');
 var PropDAO = require('../main/daos/prop');
@@ -27,6 +28,19 @@ module.exports = function(cb) {
         }
       }
     });
+  },
+  function(cb) {
+    var propTypes = require('./predefined/prop_types.json');
+    async.eachSeries(propTypes, function(propType, cb) {
+      PropTypeDAO.findOneByType(propType.type, function(error, find) {
+        if (!find) {
+          winston.info('Create prop type [' + propType.name + '] from predefined');
+          PropTypeDAO.create(propType, cb);
+        } else {
+          cb();
+        }
+      });
+    }, cb);
   },
   function(cb) {
     var rooms = require('./predefined/rooms.json');
@@ -82,7 +96,12 @@ module.exports = function(cb) {
       terminal : false
     });
 
-    var source, puzzle, lineNumber = 0, questionlineNumber = 0, answerLineNumber = 0, mode = GameMode.MODE9;
+    var source,
+        puzzle,
+        lineNumber = 0,
+        questionlineNumber = 0,
+        answerLineNumber = 0,
+        mode = GameMode.MODE9;
     rl.on('line', function(line) {
       line = line.trim();
       var sourceSymbol = line.match(/^[\w\d]+-([ABCDE]+)-[\w\d-\.]*$/);

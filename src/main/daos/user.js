@@ -35,8 +35,8 @@ var UserSchema = new Schema({
     default : '/imgs/default/user_icons/default.png'
   },
   grade : {
-    type : String,
-    default : '0'
+    type : Number,
+    default : 0
   },
   points : {
     type : Number,

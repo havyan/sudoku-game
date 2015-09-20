@@ -40,16 +40,16 @@ RuleSchema.statics.updateRule = function(rule, cb) {
 var Rule = mongoose.model('Rule', RuleSchema);
 
 Rule.GRADE_NAMES = {
-  "0" : "新手",
-  "1" : "一段",
-  "2" : "二段",
-  "3" : "三段",
-  "4" : "四段",
-  "5" : "五段",
-  "6" : "六段",
-  "7" : "七段",
-  "8" : "八段",
-  "9" : "九段"
+  0 : "新手",
+  1 : "一段",
+  2 : "二段",
+  3 : "三段",
+  4 : "四段",
+  5 : "五段",
+  6 : "六段",
+  7 : "七段",
+  8 : "八段",
+  9 : "九段"
 };
 
 module.exports = Rule;

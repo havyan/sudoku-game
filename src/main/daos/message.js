@@ -34,6 +34,10 @@ var InboxSchema = new Schema({
   read : {
     type : Boolean,
     default : false
+  },
+  date : {
+    type : Date,
+    default : Date.now
   }
 });
 
@@ -69,18 +73,11 @@ MessageSchema.statics.findByFrom = function(from, cb) {
   }).sort('-date').populate('from', 'account name').populate('to', 'account name').exec(cb);
 };
 
-MessageSchema.statics.findByTo = function(to, cb) {
+MessageSchema.statics.findByTo = function(to, start, size, cb) {
   var self = this;
   Inbox.find({
     to : ObjectId(to)
-  }).populate({
-    path : 'message',
-    options : {
-      sort : {
-        date : -1
-      }
-    }
-  }).exec(function(error, results) {
+  }).skip(start).limit(size).populate('message').sort('-date').exec(function(error, results) {
     if (error) {
       cb(error);
     } else {
@@ -98,6 +95,12 @@ MessageSchema.statics.findByTo = function(to, cb) {
       });
     }
   });
+};
+
+MessageSchema.statics.countByTo = function(to, cb) {
+  Inbox.count({
+    to : ObjectId(to)
+  }, cb);
 };
 
 module.exports = mongoose.model('Message', MessageSchema);

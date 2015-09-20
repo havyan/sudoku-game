@@ -18,13 +18,23 @@ Message.sendFromSystem = function(to, title, content, cb) {
   }], cb);
 };
 
-Message.findByAccount = function(account, cb) {
+Message.findByAccount = function(account, start, size, cb) {
   async.waterfall([
   function(cb) {
     UserDAO.findOneByAccount(account, cb);
   },
   function(user, cb) {
-    MessageDAO.findByTo(user.id, cb);
+    MessageDAO.findByTo(user.id, start, size, cb);
+  }], cb);
+};
+
+Message.count = function(account, cb) {
+  async.waterfall([
+  function(cb) {
+    UserDAO.findOneByAccount(account, cb);
+  },
+  function(user, cb) {
+    MessageDAO.countByTo(user.id, cb);
   }], cb);
 };
 
