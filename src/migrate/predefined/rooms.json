@@ -65,13 +65,16 @@
   "children": [
     {
       "name": "房间一",
-      "virtual": false
+      "virtual": false,
+      "capacity": 12
     }, {
       "name": "房间二",
-      "virtual": false
+      "virtual": false,
+      "capacity": 24
     }, {
       "name": "房间三",
-      "virtual": false
+      "virtual": false,
+      "capacity": 36
     }
   ]
 }

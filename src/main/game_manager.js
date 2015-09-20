@@ -21,7 +21,7 @@ GameManager.prototype.init = function(cb) {
     } else {
       if (rooms) {
         var build = function(room) {
-          var room = new Room(room.id, room.name, room.virtual);
+          var room = new Room(room.id, room.name, room.virtual, room.capacity);
           if (room.virtual) {
             _.filter(rooms, {
               parent : room.id
