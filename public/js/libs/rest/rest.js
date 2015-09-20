@@ -376,11 +376,11 @@
     }
   }, {});
 
-  can.Model('Rest.Mail', {
-    getMails : function(success, error) {
+  can.Model('Rest.Message', {
+    getMessages : function(success, error) {
       return $.ajax({
         type : 'get',
-        url : '/mails',
+        url : '/messages',
         dataType : 'json',
         success : success,
         error : error

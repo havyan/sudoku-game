@@ -8,7 +8,7 @@ var UserDAO = require('../daos/user');
 var PropDAO = require('../daos/prop');
 var PuzzleDAO = require('../daos/puzzle');
 var GameMode = require('./game_mode');
-var Mail = require('./mail');
+var Message = require('./message');
 var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
@@ -694,7 +694,7 @@ Game.prototype.over = function(cb) {
   },
   function(cb) {
     async.eachSeries(players, function(player, cb) {
-      Mail.createFromSystem(player.id, '最新战报', 'Developing...', cb);
+      Message.sendFromSystem(player.id, '最新战报', 'Developing...', cb);
     }, cb);
   }], function(error) {
     if (error) {

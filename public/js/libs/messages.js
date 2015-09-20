@@ -1,6 +1,6 @@
 (function() {
   $(document).ready(function() {
-    Rest.Mail.getMails(function(mails) {
+    Rest.Message.getMessages(function(messages) {
     }, function(e) {
     });
   });

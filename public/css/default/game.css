@@ -648,7 +648,7 @@ to {
 
 .number-picker {
   display: none;
-  z-index: 999;
+  z-index: 9999;
   position: absolute;
   width: 96px;
   height: 96px;

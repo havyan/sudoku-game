@@ -5,7 +5,7 @@ var User = require('../models/user');
 var winston = require('winston');
 var RoomDAO = require('../daos/room');
 var UserDAO = require('../daos/user');
-var Mail = require('../models/mail');
+var Message = require('../models/message');
 
 module.exports = function(router) {
   var autoLogin = function(req, res, next) {
@@ -212,12 +212,12 @@ module.exports = function(router) {
     });
   });
 
-  router.get('/view/mails', function(req, res, next) {
-    Mail.findByAccount(req.session.account, function(error, mails) {
+  router.get('/view/messages', function(req, res, next) {
+    Message.findByAccount(req.session.account, function(error, messages) {
       if (error) {
         next(new HttpError('Error when get prop data for account' + req.session.account + ': ' + error));
       } else {
-        res.render('mails', mails);
+        res.render('messages', messages);
       }
     });
   });
