@@ -21,7 +21,7 @@
       {{#types}}
       <div class="item store-item" data-type="{{type}}">
         <div class="icon">
-          <img src="/imgs/default/prop_{{type}}.png">
+          <img src="{{icon}}">
         </div>
         <div>
           名称：{{name}}
@@ -50,7 +50,7 @@
       {{#props}}
       <div class="item  my-prop-item">
         <div class="my-count">
-          <img src="/imgs/default/prop_{{type}}.png"> X {{value}}
+          <img src="{{icon}}"> X {{value}}
         </div>
         <div>
           名称：{{name}}

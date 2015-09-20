@@ -5,6 +5,7 @@ var PropTypeSchema = new Schema({
   type : String,
   name : String,
   func : String,
+  icon : String,
   price : Number
 });
 

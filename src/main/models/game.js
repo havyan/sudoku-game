@@ -445,7 +445,7 @@ Game.prototype.playersCount = function() {
 Game.prototype.createResult = function(player, status) {
   return {
     playerName : player.name,
-    score : status === 'quit' ? '退出' : status === 'offline' ? '离线' : this.scores[player.account],
+    score : status === 'quit' ? '退出' : status === 'offline' ? '离线' : this.scores[player.account] || 0,
     status : status,
     points : player.points,
     money : player.money

@@ -213,13 +213,7 @@ module.exports = function(router) {
   });
 
   router.get('/view/messages', function(req, res, next) {
-    Message.findByAccount(req.session.account, function(error, messages) {
-      if (error) {
-        next(new HttpError('Error when get prop data for account' + req.session.account + ': ' + error));
-      } else {
-        res.render('messages', messages);
-      }
-    });
+    res.render('messages', {});
   });
 };
 
