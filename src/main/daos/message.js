@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
+var common = require('./common');
 var _ = require('lodash');
 var ObjectId = mongoose.Types.ObjectId;
 var async = require('async');
 var Schema = mongoose.Schema;
 
-var MessageSchema = new Schema({
+var MessageSchema = new Schema(common({
   from : {
     type : Schema.Types.ObjectId,
     ref : 'User'
@@ -20,9 +21,9 @@ var MessageSchema = new Schema({
     default : Date.now
   },
   type : String
-});
+}));
 
-var InboxSchema = new Schema({
+var InboxSchema = new Schema(common({
   to : {
     type : Schema.Types.ObjectId,
     ref : 'User'
@@ -31,6 +32,7 @@ var InboxSchema = new Schema({
     type : Schema.Types.ObjectId,
     ref : 'Message'
   },
+  title : String,
   read : {
     type : Boolean,
     default : false
@@ -39,7 +41,7 @@ var InboxSchema = new Schema({
     type : Date,
     default : Date.now
   }
-});
+}));
 
 var Inbox = mongoose.model('Inbox', InboxSchema);
 

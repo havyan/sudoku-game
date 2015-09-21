@@ -1,14 +1,15 @@
 var mongoose = require('mongoose');
+var common = require('./common');
 var Schema = mongoose.Schema;
 var Mixed = Schema.Types.Mixed;
 
-var PuzzleSchema = new Schema({
+var PuzzleSchema = new Schema(common({
   level : String,
   mode : String,
   source : String,
   question : Mixed,
   answer : Mixed
-});
+}));
 
 PuzzleSchema.statics.findOneBySource = function(source, cb) {
   this.findOne({

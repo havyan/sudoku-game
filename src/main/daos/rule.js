@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var common = require('./common');
 var Mixed = Schema.Types.Mixed;
 
-var RuleSchema = new Schema({
+var RuleSchema = new Schema(common({
   score : {
     add : [Mixed],
     reduce : Mixed
@@ -11,7 +12,7 @@ var RuleSchema = new Schema({
     code : String,
     floor : Number
   }]
-});
+}));
 
 RuleSchema.statics.getRule = function(cb) {
   this.findOne(function(error, rule) {

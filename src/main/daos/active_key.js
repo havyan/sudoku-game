@@ -1,16 +1,17 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var common = require('./common');
 var ObjectId = mongoose.Types.ObjectId;
 var EXPIRES = '24h';
 
-var ActiveKeySchema = new Schema({
+var ActiveKeySchema = new Schema(common({
   source : String,
   date : {
     type : Date,
     default : Date.now,
     expires : EXPIRES
   }
-});
+}));
 
 ActiveKeySchema.statics.createKey = function(source, cb) {
   this.create({

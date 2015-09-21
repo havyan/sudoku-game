@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var common = require('./common');
 var _ = require('lodash');
 var crypto = require('crypto');
 var winston = require('winston');
@@ -14,7 +15,7 @@ var STATES = {
   ACTIVE : 'active'
 };
 
-var UserSchema = new Schema({
+var UserSchema = new Schema(common({
   account : String,
   name : String,
   password : String,
@@ -54,7 +55,7 @@ var UserSchema = new Schema({
     type : Number,
     default : 5000
   }
-});
+}));
 
 UserSchema.statics.createUser = function(params, cb) {
   var self = this;

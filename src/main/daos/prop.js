@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
+var common = require('./common');
 var _ = require('lodash');
 var async = require('async');
 var Schema = mongoose.Schema;
 var PROP = require('./prop.json');
 
-var PropSchema = new Schema({
+var PropSchema = new Schema(common({
   account : String,
   magnifier : Number,
   impunity : Number,
@@ -12,7 +13,7 @@ var PropSchema = new Schema({
   glasses : Number,
   options_once : Number,
   options_always : Number
-});
+}));
 
 PropSchema.statics.findOneByAccount = function(account, cb) {
   this.findOne({

@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var common = require('./common');
 
-var RoomSchema = new Schema({
+var RoomSchema = new Schema(common({
   name : String,
   code : String,
   icon : String,
@@ -9,7 +10,7 @@ var RoomSchema = new Schema({
   capacity : Number,
   virtual : Boolean,
   parent : String
-});
+}));
 
 RoomSchema.statics.findOneByName = function(name, cb) {
   this.findOne({

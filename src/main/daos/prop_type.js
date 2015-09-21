@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var common = require('./common');
 
-var PropTypeSchema = new Schema({
+var PropTypeSchema = new Schema(common({
   type : String,
   name : String,
   func : String,
   icon : String,
   price : Number
-});
+}));
 
 PropTypeSchema.statics.findOneByType = function(type, cb) {
   this.findOne({
