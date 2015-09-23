@@ -693,9 +693,7 @@ Game.prototype.over = function(cb) {
     }, cb);
   },
   function(cb) {
-    async.eachSeries(players, function(player, cb) {
-      Message.sendFromSystem(player.id, '最新战报', 'Developing...', cb);
-    }, cb);
+    Message.sendFromSystem(_.pluck(players, 'id'), '最新战报', 'Developing...', cb);
   }], function(error) {
     if (error) {
       cb(error);
