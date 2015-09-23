@@ -1,13 +1,48 @@
 var fs = require('fs');
+var async = require('async');
 var HttpError = require('../http_error');
 var Prop = require('../models/prop');
 var User = require('../models/user');
 var winston = require('winston');
 var RoomDAO = require('../daos/room');
 var UserDAO = require('../daos/user');
+var LoginHistoryDAO = require('../daos/login_history');
 var Message = require('../models/message');
 
 module.exports = function(router) {
+  var login = function(req, account, password, cb) {
+    async.waterfall([
+    function(cb) {
+      UserDAO.findOne({
+        account : account,
+        password : password,
+        status : UserDAO.STATUS.ACTIVE
+      }, cb);
+    },
+    function(user, cb) {
+      if (user) {
+        user.logintime = new Date();
+        user.login_ip = req.ip;
+        user.save(cb);
+      } else {
+        cb(null, null, 0);
+      }
+    },
+    function(user, count, cb) {
+      if (user) {
+        LoginHistoryDAO.createHistory(user.id, req.ip, function(error) {
+          if (error) {
+            cb(error);
+          } else {
+            cb(null, user);
+          }
+        });
+      } else {
+        cb(null, null);
+      }
+    }], cb);
+  };
+
   var autoLogin = function(req, res, next) {
     RoomDAO.allVirtuals(function(error, rooms) {
       var render = function(user) {
@@ -28,16 +63,16 @@ module.exports = function(router) {
         });
       } else {
         if (req.cookies.account && req.cookies.password) {
-          UserDAO.findOne({
-            account : req.cookies.account,
-            password : req.cookies.password
-          }, function(error, user) {
+          login(req, req.cookies.account, req.cookies.password, function(error, user) {
             if (error) {
-              next(new HttpError('Error when processing auto login: ' + error));
-              return;
+              next(new HttpError('Error when login by account ' + req.body.account + ': ' + error));
             } else {
-              req.session.account = req.cookies.account;
-              render(user);
+              if (user) {
+                req.session.account = req.cookies.account;
+                render(user);
+              } else {
+                res.redirect('/login?error=true');
+              }
             }
           });
         } else {
@@ -59,36 +94,24 @@ module.exports = function(router) {
 
   router.post('/login', function(req, res, next) {
     var password = UserDAO.encryptPassword(req.body.password);
-    UserDAO.findOne({
-      account : req.body.account,
-      password : password,
-      state : 'active'
-    }, function(error, user) {
+    login(req, req.body.account, password, function(error, user) {
       if (error) {
-        next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
-        return;
-      }
-      if (user) {
-        user.login_at = new Date();
-        user.login_ip = req.ip;
-        user.save(function(error) {
-          if (error) {
-            next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
-          } else {
-            if (req.body.remember_me) {
-              res.cookie('account', user.account, {
-                maxAge : 3600000 * 24 * 30
-              });
-              res.cookie('password', password, {
-                maxAge : 3600000 * 24 * 30
-              });
-            }
-            req.session.account = user.account;
-            res.redirect('/main');
-          }
-        });
+        next(new HttpError('Error when login by account ' + req.body.account + ': ' + error));
       } else {
-        res.redirect('/login?error=true');
+        if (user) {
+          if (req.body.remember_me) {
+            res.cookie('account', user.account, {
+              maxAge : 3600000 * 24 * 30
+            });
+            res.cookie('password', password, {
+              maxAge : 3600000 * 24 * 30
+            });
+          }
+          req.session.account = user.account;
+          res.redirect('/main');
+        } else {
+          res.redirect('/login?error=true');
+        }
       }
     });
   });

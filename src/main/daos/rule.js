@@ -11,7 +11,10 @@ var RuleSchema = new Schema(common({
   grade : [{
     code : String,
     floor : Number
-  }]
+  }],
+  ui : {
+    zoom : Number
+  }
 }));
 
 RuleSchema.statics.getRule = function(cb) {

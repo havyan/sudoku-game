@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = mongoose.Types.ObjectId;
 var common = require('./common');
 
 var LoginHistorySchema = new Schema(common({
@@ -9,5 +10,12 @@ var LoginHistorySchema = new Schema(common({
   },
   ip : String
 }));
+
+LoginHistorySchema.statics.createHistory = function(user, ip, cb) {
+  this.create({
+    user : ObjectId(user),
+    ip : ip
+  }, cb);
+};
 
 module.exports = mongoose.model('LoginHistory', LoginHistorySchema);

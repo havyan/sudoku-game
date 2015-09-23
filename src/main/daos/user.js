@@ -10,26 +10,23 @@ var RuleDAO = require('./rule');
 var PropDAO = require('./prop');
 var ActiveKeyDAO = require('./active_key');
 var MONEY = 50000;
-var STATES = {
-  NEW : 'new',
-  ACTIVE : 'active'
+var STATUS = {
+  NEW : 10,
+  ACTIVE : 1,
+  FROZEN : 0
 };
 
 var UserSchema = new Schema(common({
   account : String,
   name : String,
   password : String,
-  state : {
-    type : String,
-    default : STATES.NEW
+  status : {
+    type : Number,
+    default : STATUS.NEW
   },
   email : String,
-  create_at : {
-    type : Date,
-    default : Date.now
-  },
   create_ip : String,
-  login_at : Date,
+  logintime : Date,
   login_ip : String,
   icon : {
     type : String,
@@ -50,6 +47,10 @@ var UserSchema = new Schema(common({
   wintimes : {
     type : Number,
     default : 0
+  },
+  recharge : {
+    type : Boolean,
+    default : false
   },
   money : {
     type : Number,
@@ -80,14 +81,14 @@ UserSchema.statics.createUser = function(params, cb) {
     }
   },
   function(prop, cb) {
-    if (params.state !== STATES.ACTIVE) {
+    if (params.status !== STATUS.ACTIVE) {
       ActiveKeyDAO.createKey(params.account, cb);
     } else {
       cb(null, null);
     }
   },
   function(key, cb) {
-    if (params.state !== STATES.ACTIVE) {
+    if (params.status !== STATUS.ACTIVE) {
       var link = global.config.server.domain + ':' + global.config.server.port + '/active_user?key=' + key.id;
       emailer.send({
         to : params.email,
@@ -102,7 +103,7 @@ UserSchema.statics.createUser = function(params, cb) {
 
 UserSchema.statics.findInactive = function(cb) {
   this.find({
-    state : STATES.NEW
+    status : STATUS.NEW
   }, cb);
 };
 
@@ -187,7 +188,7 @@ UserSchema.statics.activeUser = function(account, cb) {
   this.update({
     account : account
   }, {
-    state : STATES.ACTIVE
+    status : STATUS.ACTIVE
   }, cb);
 };
 
@@ -210,4 +211,7 @@ UserSchema.set('toJSON', {
   virtuals : true
 });
 
-module.exports = mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);
+User.STATUS = STATUS;
+
+module.exports = User;

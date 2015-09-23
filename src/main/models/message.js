@@ -24,7 +24,7 @@ Message.findByAccount = function(account, start, size, cb) {
     UserDAO.findOneByAccount(account, cb);
   },
   function(user, cb) {
-    MessageDAO.findByTo(user.id, start, size, cb);
+    MessageDAO.inbox(user.id, start, size, cb);
   }], cb);
 };
 
@@ -34,7 +34,7 @@ Message.count = function(account, cb) {
     UserDAO.findOneByAccount(account, cb);
   },
   function(user, cb) {
-    MessageDAO.countByTo(user.id, cb);
+    MessageDAO.inboxCount(user.id, cb);
   }], cb);
 };
 
