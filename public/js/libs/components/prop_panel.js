@@ -33,7 +33,7 @@
       var value = parseInt(valueElement.val());
       var current = _.find(this.model.attr('props'), {
         type : element.closest('.store-item').data('type')
-      }).value;
+      }).count;
       if (value < (999 - current)) {
         valueElement.val(value + 1);
         this.resetItem(element);
@@ -90,7 +90,7 @@
             self.model.attr('money', result.money);
             _.find(self.model.attr('props'), {
               type : type.attr('type')
-            }).attr('value', result.count);
+            }).attr('count', result.count);
             Dialog.message('购买成功');
           } else {
             Dialog.message('购买失败: ' + result.reason);

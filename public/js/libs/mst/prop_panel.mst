@@ -50,7 +50,7 @@
       {{#props}}
       <div class="item  my-prop-item">
         <div class="my-count">
-          <img src="{{icon}}"> X {{value}}
+          <img src="{{icon}}"> X {{count}}
         </div>
         <div>
           名称：{{name}}

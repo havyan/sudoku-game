@@ -10,51 +10,16 @@
       <a class="button chessboard-plain-mode-action action-active">普通</a><a class="button chessboard-options-mode-action" {{#unless optionsEnabled}}disabled="true"{{/unless}}>候选</a>
     </div>
   </div>
-  <ul class="prop">
-    {{#prop}}
-    <li class="magnifier prop-item {{#unless magnifier}}empty{{/unless}}">
-      <div class="prop-item-content"><img src="/imgs/default/prop_magnifier.png"> x {{magnifier}}
+  <ul class="props">
+    {{#props}}
+    <li class="{{type}} prop-item {{#unless count}}empty{{/unless}}">
+      <div class="prop-item-content"><img src="{{icon}}"> x {{count}}
       </div>
       <div class="prop-item-tip">
-        {{magnifier}}
+        {{count}}
       </div>
     </li>
-    <li class="impunity prop-item {{#unless impunity}}empty{{/unless}}">
-      <div class="prop-item-content"><img src="/imgs/default/prop_impunity.png"> x {{impunity}}
-      </div>
-      <div class="prop-item-tip">
-        {{impunity}}
-      </div>
-    </li>
-    <li class="delay prop-item {{#unless delay}}empty{{/unless}}">
-      <div class="prop-item-content"><img src="/imgs/default/prop_delay.png"> x {{delay}}
-      </div>
-      <div class="prop-item-tip">
-        {{delay}}
-      </div>
-    </li>
-    <li class="glasses prop-item {{#unless glasses}}empty{{/unless}}">
-      <div class="prop-item-content"><img src="/imgs/default/prop_glasses.png"> x {{glasses}}
-      </div>
-      <div class="prop-item-tip">
-        {{glasses}}
-      </div>
-    </li>
-    <li class="options_once prop-item {{#unless options_once}}empty{{/unless}}">
-      <div class="prop-item-content"><img src="/imgs/default/prop_options_once.png"> x {{options_once}}
-      </div>
-      <div class="prop-item-tip">
-        {{options_once}}
-      </div>
-    </li>
-    <li class="options_always prop-item {{#unless options_always}}empty{{/unless}}">
-      <div class="prop-item-content"><img src="/imgs/default/prop_options_always.png"> x {{options_always}}
-      </div>
-      <div class="prop-item-tip">
-        {{options_always}}
-      </div>
-    </li>
-    {{/prop}}
+    {{/props}}
   </ul>
   <div class="chessboard-panel {{#if active}}active{{else}}inactive{{/if}}">
     {{#cellDatas}}

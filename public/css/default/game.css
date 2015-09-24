@@ -776,7 +776,7 @@ to {
   font-weight: bold;
 }
 
-.prop {
+.props {
   position: absolute;
   left: 10px;
   bottom: -20px;
@@ -790,7 +790,7 @@ to {
   width: auto !important;
 }
 
-.prop li {
+.props li {
   list-style: none;
   padding: 8px 16px 8px 16px;
   position: relative;
@@ -801,11 +801,11 @@ to {
   box-sizing: border-box;
 }
 
-.prop li:last-of-type {
+.props li:last-of-type {
   border: none;
 }
 
-.prop li .prop-item-tip {
+.props li .prop-item-tip {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -822,17 +822,17 @@ to {
   z-index: 100;
 }
 
-.prop li.active {
+.props li.active {
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
 }
 
-.prop li.prop-item.empty {
+.props li.prop-item.empty {
   opacity: 0.5;
   color: gray;
 }
 
-.prop li.prop-item.empty img {
+.props li.prop-item.empty img {
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
   -ms-filter: grayscale(100%);
@@ -841,23 +841,23 @@ to {
   filter: gray;
 }
 
-.prop li .prop-item-content {
+.props li .prop-item-content {
   display: block;
   height: 100%;
   cursor: default;
 }
 
-.prop li.active .prop-item-content {
+.props li.active .prop-item-content {
   cursor: pointer;
 }
 
-.prop li .prop-item-content img {
+.props li .prop-item-content img {
   width: 24px;
   height: 24px;
   margin-right: 5px;
 }
 
-.prop li * {
+.props li * {
   vertical-align: middle;
 }
 
@@ -967,7 +967,7 @@ to {
   top: 26%;
 }
 
-.chessboard-container.big .prop {
+.chessboard-container.big .props {
   font-size: 0px;
   width: 141px !important;
   left: -2%;
@@ -975,7 +975,7 @@ to {
   border-width: 1px 0px 0px 1px;
 }
 
-.chessboard-container.big .prop li {
+.chessboard-container.big .props li {
   display: inline-block;
   padding: 5px;
   border-width: 0px 1px 1px 0px;
@@ -983,13 +983,13 @@ to {
   border-style: solid;
 }
 
-.chessboard-container.big .prop li .prop-item-content img {
+.chessboard-container.big .props li .prop-item-content img {
   margin: 0px;
   width: 36px;
   height: 36px;
 }
 
-.chessboard-container.big .prop li:hover .prop-item-tip {
+.chessboard-container.big .props li:hover .prop-item-tip {
   display: block;
   opacity: 1;
 }

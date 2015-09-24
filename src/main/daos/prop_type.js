@@ -5,9 +5,12 @@ var common = require('./common');
 var PropTypeSchema = new Schema(common({
   type : String,
   name : String,
+  status : Number,
+  order : Number,
   func : String,
   icon : String,
-  price : Number
+  price : Number,
+  sales : Number
 }));
 
 PropTypeSchema.statics.findOneByType = function(type, cb) {
@@ -17,7 +20,7 @@ PropTypeSchema.statics.findOneByType = function(type, cb) {
 };
 
 PropTypeSchema.statics.all = function(cb) {
-  this.find({}, cb);
+  this.find({}).sort('order').exec(cb);
 };
 
 module.exports = mongoose.model('PropType', PropTypeSchema);

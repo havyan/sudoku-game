@@ -35,7 +35,7 @@ Prop.getPropData = function(account, cb) {
             name : type.name,
             func : type.func,
             icon : type.icon,
-            value : prop[type.type]
+            count : prop[type.type]
           };
         })
       };

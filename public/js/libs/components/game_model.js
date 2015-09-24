@@ -8,6 +8,7 @@
       this.initRanking();
       this.initMessages();
       this.initCellDatas();
+      this.initProp();
       this.initOptions();
       this.initActive();
       this.initUI();
@@ -52,6 +53,16 @@
       }
       this.attr('editStatus', 'submit');
       this.attr('viewStatus', 'plain');
+    },
+
+    initProp : function() {
+      var propTypes = this.attr('propTypes').attr();
+      var prop = this.attr('prop').attr();
+      this.attr('props', propTypes.map(function(propType) {
+        propType.count = prop[propType.type];
+        return propType;
+      }));
+      this.removeAttr('prop');
     },
 
     initOptions : function() {
@@ -348,10 +359,25 @@
       });
     },
 
+    findProp : function(type) {
+      return _.find(this.attr('props'), {
+        type : type
+      });
+    },
+
+    reduceProp : function(type) {
+      var prop = self.findProp(type);
+      prop.attr('count', self.attr('count') - 1);
+    },
+
+    hasProp : function(type) {
+      return this.findProp(type).attr('count') > 0;
+    },
+
     autoSubmit : function(xy) {
       var self = this;
       Rest.Game.autoSubmit(this.attr('id'), xy, function(result) {
-        self.attr('prop.magnifier', self.attr('prop.magnifier') - 1);
+        self.reduceProp('magnifier');
       }, function() {
       });
     },
@@ -359,7 +385,7 @@
     peep : function(xy) {
       var self = this;
       Rest.Game.peep(this.attr('id'), xy, function(result) {
-        self.attr('prop.magnifier', self.attr('prop.magnifier') - 1);
+        self.reduceProp('magnifier');
         self.attr('knownCellValues').attr(xy, result.result);
       }, function() {
       });
@@ -392,7 +418,7 @@
     delay : function(success) {
       var self = this;
       Rest.Game.delay(this.attr('id'), function(result) {
-        self.attr('prop.delay', self.attr('prop.delay') - 1);
+        self.reduceProp('delay');
         if (success) {
           success(result);
         }
@@ -404,7 +430,7 @@
       var self = this;
       Rest.Game.useGlasses(this.attr('id'), function(result) {
         self.attr('glassesUsed', true);
-        self.attr('prop.glasses', self.attr('prop.glasses') - 1);
+        self.reduceProp('glasses');
         if (success) {
           success(result);
         }
@@ -416,7 +442,7 @@
       var self = this;
       Rest.Game.setOptionsOnce(this.attr('id'), function(result) {
         self.attr('optionsOnce', true);
-        self.attr('prop.options_once', self.attr('prop.options_once') - 1);
+        self.reduceProp('options_once');
         if (success) {
           success(result);
         }
@@ -428,7 +454,7 @@
       var self = this;
       Rest.Game.setOptionsAlways(this.attr('id'), function(result) {
         self.attr('optionsAlways', true);
-        self.attr('prop.options_always', self.attr('prop.options_always') - 1);
+        self.reduceProp('options_always');
         if (success) {
           success(result);
         }
@@ -439,7 +465,7 @@
     impunish : function(success) {
       var self = this;
       Rest.Game.impunish(this.attr('id'), this.attr('account'), function(result) {
-        self.attr('prop.impunity', self.attr('prop.impunity') - 1);
+        self.reduceProp('impunity');
         if (success) {
           success(result);
         }

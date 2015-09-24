@@ -46,7 +46,7 @@
           }
         }
       });
-      this.element.find('.game-timer-panel, .game-zoom, .chessboard-actions, .prop').draggable();
+      this.element.find('.game-timer-panel, .game-zoom, .chessboard-actions, .props').draggable();
     },
 
     render : function() {
@@ -107,40 +107,35 @@
 
     resetPropStatus : function() {
       var model = this.options.model;
-      if (this.selectedChassCell && (model.isDraft() || model.isActive()) && model.attr('prop.magnifier') > 0) {
-        this.element.find('.prop .magnifier').addClass('active');
+      if (this.selectedChassCell && (model.isDraft() || model.isActive()) && model.hasProp('magnifier')) {
+        this.element.find('.props .magnifier').addClass('active');
       } else {
-        this.element.find('.prop .magnifier').removeClass('active');
+        this.element.find('.props .magnifier').removeClass('active');
       }
-      if (model.attr('changedScore.changed') < 0 && model.attr('prop.impunity') > 0) {
-        this.element.find('.prop .impunity').addClass('active');
+      if (model.attr('changedScore.changed') < 0 && model.hasProp('impunity')) {
+        this.element.find('.props .impunity').addClass('active');
       } else {
-        this.element.find('.prop .impunity').removeClass('active');
+        this.element.find('.props .impunity').removeClass('active');
       }
-      if (model.attr('changedScore.changed') < 0 && model.attr('prop.impunity') > 0) {
-        this.element.find('.prop .impunity').addClass('active');
+      if (model.isActive() && !model.attr('delayed') && model.hasProp('delay')) {
+        this.element.find('.props .delay').addClass('active');
       } else {
-        this.element.find('.prop .impunity').removeClass('active');
+        this.element.find('.props .delay').removeClass('active');
       }
-      if (model.isActive() && !model.attr('delayed') && model.attr('prop.delay') > 0) {
-        this.element.find('.prop .delay').addClass('active');
+      if (!model.isActive() && model.isSubmit() && !model.attr('glassesUsed') && model.hasProp('glasses')) {
+        this.element.find('.props .glasses').addClass('active');
       } else {
-        this.element.find('.prop .delay').removeClass('active');
+        this.element.find('.props .glasses').removeClass('active');
       }
-      if (!model.isActive() && model.isSubmit() && !model.attr('glassesUsed')) {
-        this.element.find('.prop .glasses').addClass('active');
+      if (model.isActive() && !model.attr('optionsEnabled') && model.hasProp('options_once')) {
+        this.element.find('.props .options_once').addClass('active');
       } else {
-        this.element.find('.prop .glasses').removeClass('active');
+        this.element.find('.props .options_once').removeClass('active');
       }
-      if (model.isActive() && !model.attr('optionsEnabled') && model.attr('prop.options_once') > 0) {
-        this.element.find('.prop .options_once').addClass('active');
+      if (model.hasProp('options_always') && !model.attr('optionsAlways')) {
+        this.element.find('.props .options_always').addClass('active');
       } else {
-        this.element.find('.prop .options_once').removeClass('active');
-      }
-      if (model.attr('prop.options_always') > 0 && !model.attr('optionsAlways')) {
-        this.element.find('.prop .options_always').addClass('active');
-      } else {
-        this.element.find('.prop .options_always').removeClass('active');
+        this.element.find('.props .options_always').removeClass('active');
       }
     },
 

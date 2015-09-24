@@ -6,6 +6,7 @@ var Observable = require('../base/observable');
 var RuleDAO = require('../daos/rule');
 var UserDAO = require('../daos/user');
 var PropDAO = require('../daos/prop');
+var PropTypeDAO = require('../daos/prop_type');
 var PuzzleDAO = require('../daos/puzzle');
 var GameMode = require('./game_mode');
 var Message = require('./message');
@@ -51,73 +52,73 @@ var Game = function(room, index, mode) {
 Game.prototype.init = function(account, params, cb) {
   var self = this;
   var level = params.level || DEFAULT_LEVEL;
-  UserDAO.findOneByAccount(account, function(error, user) {
-    if (error) {
-      cb(error);
+  async.waterfall([
+  function(cb) {
+    UserDAO.findOneByAccount(account, cb);
+  },
+  function(user, cb) {
+    var money = user.money;
+    var cost = _.findIndex(PuzzleDAO.LEVELS, {
+      code : level
+    }) * 100;
+    if (money < cost) {
+      cb('You don not have enough money, please recharge');
     } else {
-      var money = user.money;
-      var cost = _.findIndex(PuzzleDAO.LEVELS, {
-        code : level
-      }) * 100;
-      if (money < cost) {
-        cb('You don not have enough money, please recharge');
-      } else {
-        self.cost = cost;
-        user.money = money - cost;
-        user.save(function(error) {
+      self.cost = cost;
+      user.money = money - cost;
+      user.save(cb);
+    }
+  },
+  function(user, count, cb) {
+    PropTypeDAO.all(cb);
+  },
+  function(propTypes, cb) {
+    self.propTypes = propTypes.map(function(propType) {
+      return propType.toJSON();
+    });
+    RuleDAO.getRule(cb);
+  },
+  function(rule, cb) {
+    var add = rule.score.add;
+    rule.score.add = _.find(add, function(e) {
+      return e.total === params.stepTime;
+    });
+    if (!rule.score.add) {
+      rule.score.add = _.find(add, function(e) {
+        return e.selected;
+      });
+    }
+    self.rule = rule;
+    self.initParams(params);
+    self.trigger('init', self.toSimpleJSON());
+    self.timer = setInterval(function() {
+      self.remainingTime--;
+      self.trigger('total-countdown-stage', self.remainingTime);
+      if (self.remainingTime <= 0) {
+        self.stopTimer();
+        self.over(function(error) {
           if (error) {
-            cb(error);
-          } else {
-            RuleDAO.getRule(function(error, rule) {
-              if (error) {
-                cb(error);
-              } else {
-                var add = rule.score.add;
-                rule.score.add = _.find(add, function(e) {
-                  return e.total === params.stepTime;
-                });
-                if (!rule.score.add) {
-                  rule.score.add = _.find(add, function(e) {
-                    return e.selected;
-                  });
-                }
-                self.rule = rule;
-                self.initParams(params);
-                self.trigger('init', self.toSimpleJSON());
-                self.timer = setInterval(function() {
-                  self.remainingTime--;
-                  self.trigger('total-countdown-stage', self.remainingTime);
-                  if (self.remainingTime <= 0) {
-                    self.stopTimer();
-                    self.over(function(error) {
-                      if (error) {
-                        winston.error(error);
-                      }
-                    });
-                  }
-                }, 1000);
-                var countdown = self.waitTime * 60;
-                var countDownTimer = setInterval(function() {
-                  if (self.isWaiting()) {
-                    if (countdown >= 0) {
-                      self.trigger('wait-countdown-stage', countdown);
-                      countdown--;
-                    } else {
-                      clearInterval(countDownTimer);
-                      self.abort();
-                    }
-                  } else {
-                    clearInterval(countDownTimer);
-                  }
-                }, 1000);
-                cb();
-              }
-            });
+            winston.error(error);
           }
         });
       }
-    }
-  });
+    }, 1000);
+    var countdown = self.waitTime * 60;
+    var countDownTimer = setInterval(function() {
+      if (self.isWaiting()) {
+        if (countdown >= 0) {
+          self.trigger('wait-countdown-stage', countdown);
+          countdown--;
+        } else {
+          clearInterval(countDownTimer);
+          self.abort();
+        }
+      } else {
+        clearInterval(countDownTimer);
+      }
+    }, 1000);
+    cb();
+  }], cb);
 };
 
 Game.prototype.initParams = function(params) {
@@ -530,6 +531,7 @@ Game.prototype.toJSON = function(account) {
     capacity : this.capacity,
     level : this.level,
     rule : this.rule,
+    propTypes : this.propTypes,
     initCellValues : this.initCellValues,
     userCellValues : this.userCellValues,
     players : this.players.map(function(player) {
