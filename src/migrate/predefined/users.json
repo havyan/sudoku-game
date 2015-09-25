@@ -3,7 +3,7 @@
     "account": "SYSTEM",
     "name": "系统",
     "password": "123@abc",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/default.png",
     "grade": 0,
     "points": 0,
@@ -13,7 +13,7 @@
   }, {
     "account": "zhangsan",
     "name": "张三",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/default.png",
     "grade": 0,
     "points": 0,
@@ -23,7 +23,7 @@
   }, {
     "account": "lisi",
     "name": "李四",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/1.png",
     "grade": 0,
     "points": 0,
@@ -33,7 +33,7 @@
   }, {
     "account": "wangmazi",
     "name": "王麻子",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/2.png",
     "grade": 0,
     "points": 0,
@@ -43,7 +43,7 @@
   }, {
     "account": "xiaoming",
     "name": "小明",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/3.png",
     "grade": 0,
     "points": 0,
@@ -53,7 +53,7 @@
   }, {
     "account": "xiaohong",
     "name": "小红",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/4.png",
     "grade": 0,
     "points": 0,
@@ -63,7 +63,7 @@
   }, {
     "account": "xiaoqiang",
     "name": "小强",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/5.png",
     "grade": 0,
     "points": 0,
@@ -73,7 +73,7 @@
   }, {
     "account": "xiaofang",
     "name": "小Fang",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/6.png",
     "grade": 0,
     "points": 0,
@@ -83,7 +83,7 @@
   }, {
     "account": "tom",
     "name": "Tom",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/7.png",
     "grade": 0,
     "points": 0,
@@ -93,7 +93,7 @@
   }, {
     "account": "lucy",
     "name": "Lucy",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/8.png",
     "grade": 0,
     "points": 0,
@@ -103,7 +103,7 @@
   }, {
     "account": "kobe",
     "name": "Kobe",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/9.png",
     "grade": 0,
     "points": 0,
@@ -113,7 +113,7 @@
   }, {
     "account": "james",
     "name": "James",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/10.png",
     "grade": 0,
     "points": 0,
@@ -123,7 +123,7 @@
   }, {
     "account": "lily",
     "name": "Lily",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/11.png",
     "grade": 0,
     "points": 0,
@@ -133,7 +133,7 @@
   }, {
     "account": "EEE",
     "name": "EEE",
-    "status": 1,
+    "status": "1",
     "icon": "/imgs/default/user_icons/12.png",
     "grade": 12,
     "points": 0,

@@ -78,23 +78,26 @@ Prop.buy = function(account, type, count, cb) {
             reason : '天才币余额不足，请充值。'
           });
         } else {
-          prop.set(type, prop[type] + count);
-          user.money = user.money - propType.price * count;
-          user.save(function(error) {
+          async.series([
+          function(cb) {
+            user.money = user.money - propType.price * count;
+            user.save(cb);
+          },
+          function(cb) {
+            prop.set(type, prop[type] + count);
+            prop.save(cb);
+          },
+          function(cb) {
+            PropTypeDAO.addSales(type, count, cb);
+          }], function(error) {
             if (error) {
               cb(error);
             } else {
-              prop.save(function(error) {
-                if (error) {
-                  cb(error);
-                } else {
-                  cb(null, {
-                    success : true,
-                    money : user.money,
-                    type : type,
-                    count : prop[type]
-                  });
-                }
+              cb(null, {
+                success : true,
+                money : user.money,
+                type : type,
+                count : prop[type]
               });
             }
           });

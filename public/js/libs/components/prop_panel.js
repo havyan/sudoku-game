@@ -91,6 +91,7 @@
             _.find(self.model.attr('props'), {
               type : type.attr('type')
             }).attr('count', result.count);
+            type.attr('sales', type.attr('sales') + count);
             Dialog.message('购买成功');
           } else {
             Dialog.message('购买失败: ' + result.reason);

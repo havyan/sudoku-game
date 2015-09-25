@@ -4,14 +4,14 @@ var common = require('./common');
 var ObjectId = mongoose.Types.ObjectId;
 var EXPIRES = '24h';
 
-var ActiveKeySchema = new Schema(common({
+var ActiveKeySchema = new Schema({
   source : String,
   date : {
     type : Date,
     default : Date.now,
     expires : EXPIRES
   }
-}));
+});
 
 ActiveKeySchema.statics.createKey = function(source, cb) {
   this.create({
@@ -36,5 +36,7 @@ ActiveKeySchema.statics.findOneBySource = function(source, cb) {
     source : source
   }, cb);
 };
+
+ActiveKeySchema.plugin(common);
 
 module.exports = mongoose.model('ActiveKey', ActiveKeySchema);

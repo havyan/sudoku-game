@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var common = require('./common');
 var Mixed = Schema.Types.Mixed;
 
-var RuleSchema = new Schema(common({
+var RuleSchema = new Schema({
   score : {
     add : [Mixed],
     reduce : Mixed
@@ -15,7 +15,7 @@ var RuleSchema = new Schema(common({
   ui : {
     zoom : Number
   }
-}));
+});
 
 RuleSchema.statics.getRule = function(cb) {
   this.findOne(function(error, rule) {
@@ -36,10 +36,13 @@ RuleSchema.statics.getRule = function(cb) {
 RuleSchema.statics.updateRule = function(rule, cb) {
   var id = rule._id;
   delete rule._id;
+  rule.updatetime = new Date();
   this.update({
     '_id' : id
   }, rule, cb);
 };
+
+RuleSchema.plugin(common);
 
 var Rule = mongoose.model('Rule', RuleSchema);
 

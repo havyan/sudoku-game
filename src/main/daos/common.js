@@ -10,6 +10,16 @@ var COMMON = {
   updatetime : Date
 };
 
-module.exports = function(schema) {
-  return _.merge(schema, COMMON);
+module.exports = function(schema, options) {
+  schema.add(_.cloneDeep(COMMON));
+
+  schema.pre('save', function(next) {
+    this.updatetime = new Date();
+    next();
+  });
+
+  schema.pre('update', function(next) {
+    this.updatetime = new Date();
+    next();
+  });
 };

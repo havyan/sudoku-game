@@ -11,17 +11,17 @@ var PropDAO = require('./prop');
 var ActiveKeyDAO = require('./active_key');
 var MONEY = 50000;
 var STATUS = {
-  NEW : 10,
-  ACTIVE : 1,
-  FROZEN : 0
+  NEW : '10',
+  ACTIVE : '1',
+  FROZEN : '0'
 };
 
-var UserSchema = new Schema(common({
+var UserSchema = new Schema({
   account : String,
   name : String,
   password : String,
   status : {
-    type : Number,
+    type : String,
     default : STATUS.NEW
   },
   email : String,
@@ -56,7 +56,7 @@ var UserSchema = new Schema(common({
     type : Number,
     default : 5000
   }
-}));
+});
 
 UserSchema.statics.createUser = function(params, cb) {
   var self = this;
@@ -121,6 +121,7 @@ UserSchema.statics.findOneByAccount = function(account, cb) {
 
 UserSchema.statics.updateByAccount = function(account, data, cb) {
   var self = this;
+  data.updatetime = new Date();
   if (data.points !== undefined) {
     RuleDAO.getRule(function(error, rule) {
       if (error) {
@@ -188,7 +189,8 @@ UserSchema.statics.activeUser = function(account, cb) {
   this.update({
     account : account
   }, {
-    status : STATUS.ACTIVE
+    status : STATUS.ACTIVE,
+    updatetime : new Date()
   }, cb);
 };
 
@@ -210,6 +212,8 @@ UserSchema.set('toJSON', {
   getters : true,
   virtuals : true
 });
+
+UserSchema.plugin(common);
 
 var User = mongoose.model('User', UserSchema);
 User.STATUS = STATUS;

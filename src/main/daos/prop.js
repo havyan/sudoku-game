@@ -5,7 +5,7 @@ var async = require('async');
 var Schema = mongoose.Schema;
 var PROP = require('./prop.json');
 
-var PropSchema = new Schema(common({
+var PropSchema = new Schema({
   account : String,
   magnifier : Number,
   impunity : Number,
@@ -13,7 +13,7 @@ var PropSchema = new Schema(common({
   glasses : Number,
   options_once : Number,
   options_always : Number
-}));
+});
 
 PropSchema.statics.findOneByAccount = function(account, cb) {
   this.findOne({
@@ -39,5 +39,7 @@ PropSchema.statics.reset = function(cb) {
     }
   });
 };
+
+PropSchema.plugin(common);
 
 module.exports = mongoose.model('Prop', PropSchema);

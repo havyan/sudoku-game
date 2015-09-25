@@ -32,6 +32,9 @@
         <div>
           价格：{{price}}天才币
         </div>
+        <div>
+          销量：{{sales}}
+        </div>
         <div class="count">
           购买数量：<img class="subtract" src="/imgs/default/subtract.png" />
           <input type="text" value="0"/>

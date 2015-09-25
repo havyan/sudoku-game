@@ -5,7 +5,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var async = require('async');
 var Schema = mongoose.Schema;
 
-var MessageSchema = new Schema(common({
+var MessageSchema = new Schema({
   from : {
     type : Schema.Types.ObjectId,
     ref : 'User'
@@ -26,9 +26,9 @@ var MessageSchema = new Schema(common({
     type : Boolean,
     default : false
   }
-}));
+});
 
-var InboxSchema = new Schema(common({
+var InboxSchema = new Schema({
   from : {
     type : Schema.Types.ObjectId,
     ref : 'User'
@@ -50,7 +50,9 @@ var InboxSchema = new Schema(common({
     type : Date,
     default : Date.now
   }
-}));
+});
+
+InboxSchema.plugin(common);
 
 var Inbox = mongoose.model('Inbox', InboxSchema);
 
@@ -101,5 +103,7 @@ MessageSchema.statics.inboxCount = function(to, cb) {
     to : ObjectId(to)
   }, cb);
 };
+
+MessageSchema.plugin(common);
 
 module.exports = mongoose.model('Message', MessageSchema);

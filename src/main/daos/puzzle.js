@@ -3,13 +3,13 @@ var common = require('./common');
 var Schema = mongoose.Schema;
 var Mixed = Schema.Types.Mixed;
 
-var PuzzleSchema = new Schema(common({
+var PuzzleSchema = new Schema({
   level : String,
   mode : String,
   source : String,
   question : Mixed,
   answer : Mixed
-}));
+});
 
 PuzzleSchema.statics.findOneBySource = function(source, cb) {
   this.findOne({
@@ -38,6 +38,8 @@ PuzzleSchema.statics.findRandomOneByLevel = function(level, cb) {
     }
   });
 };
+
+PuzzleSchema.plugin(common);
 
 var Puzzle = mongoose.model('Puzzle', PuzzleSchema);
 Puzzle.LEVELS = [{
