@@ -1,0 +1,15 @@
+<div class="pagination-bar">
+  <a class="button first" href="javascript:void(0)">首页</a>
+  <a class="button previous" href="javascript:void(0)">上一页</a>
+  <a class="previous-arrow" href="javascript:void(0)">&lt;</a>
+
+  <a class="previous-arrow" href="javascript:void(0)">&gt;</a>
+  <a class="button previous" href="javascript:void(0)">下一页</a>
+  <a class="button first" href="javascript:void(0)">末页</a>
+  {{#if editable}}
+  <input class="eidt-goto" type="number" min="1" max="{{count}}" step="1" value="1" />
+  {{else}}
+  <div class="current">{{current}}/{{count}}</div>
+  {{/if}}
+  <a class="button goto" href="javascript:void(0)">跳转</a>
+</div>
