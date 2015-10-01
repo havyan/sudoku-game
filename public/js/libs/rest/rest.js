@@ -377,7 +377,7 @@
   }, {});
 
   can.Model('Rest.Message', {
-    messages : function(start, size, success, error) {
+    getMessages : function(start, size, success, error) {
       return $.ajax({
         type : 'get',
         url : '/messages',
@@ -391,10 +391,10 @@
       });
     },
 
-    count : function(success, error) {
+    getTotal : function(success, error) {
       return $.ajax({
         type : 'get',
-        url : '/messages/count',
+        url : '/messages/total',
         dataType : 'json',
         success : success,
         error : error

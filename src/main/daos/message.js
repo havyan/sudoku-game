@@ -95,7 +95,7 @@ MessageSchema.statics.inbox = function(to, start, size, cb) {
   var self = this;
   Inbox.find({
     to : ObjectId(to)
-  }).skip(start).limit(size).populate('from').sort('-date').exec(cb);
+  }).skip(start).limit(size).populate('from', 'account name').sort('-date').exec(cb);
 };
 
 MessageSchema.statics.inboxCount = function(to, cb) {

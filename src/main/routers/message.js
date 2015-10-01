@@ -4,8 +4,8 @@ var winston = require('winston');
 
 module.exports = function(router) {
   router.get('/messages', function(req, res, next) {
-    var start = req.body.start || 0;
-    var size = req.body.size || 10;
+    var start = parseInt(req.query.start || 0);
+    var size = parseInt(req.query.size || 10);
     Message.findByAccount(req.session.account, start, size, function(error, messages) {
       if (error) {
         next(new HttpError('Error when get messages for account' + req.session.account + ': ' + error));
@@ -17,13 +17,13 @@ module.exports = function(router) {
     });
   });
 
-  router.get('/messages/count', function(req, res, next) {
+  router.get('/messages/total', function(req, res, next) {
     Message.count(req.session.account, function(error, count) {
       if (error) {
         next(new HttpError('Error when get messages for account' + req.session.account + ': ' + error));
       } else {
         res.send({
-          count : count
+          total : count
         });
       }
     });

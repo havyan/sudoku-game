@@ -1,0 +1,33 @@
+<div class="messages-panel">
+  <div class="messages-header">
+    <input class="select-all" type="checkbox" />
+    <span>全选</span>
+    <a class="button" href="javascript:void(0)">删除</a>
+  </div>
+  <div class="messages-content">
+    <table class="messages-table">
+      <thead>
+        <th class="select"></th>
+        <th class="from">发件人</th>
+        <th class="title">标题</th>
+        <th class="date">日期</th>
+        <th class="notes">备注</th>
+      </thead>
+      <tbody>
+        {{#messages}}
+        <tr data-id="{{_id}}">
+          <td><input type="checkbox" /></td>
+          <td>{{from.name}}</td>
+          <td>{{title}}</td>
+          <td>{{date}}</td>
+          <td>{{notes}}</td>
+        </tr>
+        {{/results}}
+      </tbody>
+    </table>
+    <div class="messages-pagination-bar"></div>
+  </div>
+  <div class="messages-actions">
+    <a class="rich-button messages-close" href="/main">关闭</a>
+  </div>
+</div>

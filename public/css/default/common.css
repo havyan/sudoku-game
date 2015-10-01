@@ -40,9 +40,7 @@ input:focus, textarea:focus {
   color: #FFF000;
 }
 
-input[disabled=disabled], input[disabled=true],
-button[disabled=disabled], button[disabled=true],
-textarea[disabled=disabled], textarea[disabled=true] {
+input[disabled=disabled], input[disabled=true], button[disabled=disabled], button[disabled=true], textarea[disabled=disabled], textarea[disabled=true] {
   color: gray !important;
 }
 
@@ -51,6 +49,18 @@ a {
 }
 
 a:hover {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:active {
   text-decoration: none;
 }
 
@@ -418,4 +428,70 @@ fade {from {
 to {
   opacity: 0;
 }
+}
+
+.pagination-bar {
+  text-align: center;
+}
+
+.pagination-bar > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.pagination-bar .previous-arrow, .pagination-bar .next-arrow {
+  color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.pagination-bar .previous-arrow:hover, .pagination-bar .next-arrow:hover {
+  color: #FFF000;
+}
+
+.pagination-bar .page-item {
+  color: white;
+  width: 24px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.pagination-bar .page-item:hover {
+  background-color: #3781c4;
+}
+
+.pagination-bar .page-item.ellipsis {
+  cursor: default;
+  background-color: inherit !important;
+}
+
+.pagination-bar .page-item.selected {
+  background-color: #3781c4;
+  color: #FFF000;
+}
+
+.pagination-bar .edit-goto {
+  display: none;
+  background-color: rgba(0,61,232,0.3);
+  padding-right: 3px;
+  color: #FFF000;
+  height: 20px;
+  font-size: 12px;
+  border: 1px solid gray;
+  text-align: center;
+  width: 40px;
+}
+
+.pagination-bar.editable .edit-goto {
+  display: inline-block;
+}
+
+.pagination-bar .current {
+  width: 40px;
+  text-align: center;
+}
+.pagination-bar.editable .current {
+  display: none;
 }
