@@ -44,8 +44,8 @@
           });
         }
       } else {
-        if (current <= 4) {
-          for (var i = 1; i <= current + 3; i++) {
+        if (current <= 5) {
+          for (var i = 1; i <= Math.max(5, current + 3); i++) {
             pages.push({
               type : 'page',
               selected : i === current,
@@ -63,8 +63,8 @@
               value : i
             });
           }
-        } else if (current >= count - 3) {
-          for (var i = current - 3; i <= count; i++) {
+        } else if (current >= count - 4) {
+          for (var i = Math.min(count - 4, current - 3); i <= count; i++) {
             pages.push({
               type : 'page',
               selected : i === current,
