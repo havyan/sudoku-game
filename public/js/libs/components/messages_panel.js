@@ -3,10 +3,9 @@
   }, {
     init : function() {
       this.pageSize = 10;
-      this.reset();
     },
 
-    reset : function() {
+    reload : function() {
       this.attr('cache', {});
       this.getTotal();
       this.getMessages(1);
@@ -52,6 +51,7 @@
         model : this.paginationModel
       });
       this.initEvents();
+      this.options.model.reload();
     },
 
     initEvents : function() {
