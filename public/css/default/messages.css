@@ -18,7 +18,7 @@
 .messages-header input.select-all {
   margin: 0px;
   vertical-align: middle;
-  margin-left: 25px;
+  margin-left: 35px;
   margin-right: 3px;
 }
 
@@ -43,6 +43,14 @@
 .messages-table tbody tr {
   height: 40px;
   cursor: pointer;
+}
+
+.messages-table tbody tr:hover {
+  background-color: #3781c4;
+}
+
+.messages-table .select-one {
+  margin-left: 10px;
 }
 
 .messages-table tbody tr[data-read=false] {
