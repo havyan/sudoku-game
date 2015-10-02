@@ -412,6 +412,16 @@
         success : success,
         error : error
       });
+    },
+
+    read : function(id, success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/message/' + id,
+        dataType : 'json',
+        success : success,
+        error : error
+      });
     }
   }, {});
 })();

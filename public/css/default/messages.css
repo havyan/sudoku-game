@@ -42,6 +42,15 @@
 
 .messages-table tbody tr {
   height: 40px;
+  cursor: pointer;
+}
+
+.messages-table tbody tr[data-read=false] {
+  color: #e60012;
+}
+
+.messages-table tbody tr[data-from=SYSTEM] {
+  color: #FFF000;
 }
 
 .messages-table thead .select {

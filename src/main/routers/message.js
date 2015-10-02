@@ -1,6 +1,7 @@
 var HttpError = require('../http_error');
 var Message = require('../models/message');
 var winston = require('winston');
+var formatDate = require('dateformat');
 
 module.exports = function(router) {
   router.get('/messages', function(req, res, next) {
@@ -11,7 +12,9 @@ module.exports = function(router) {
         next(new HttpError('Error when get messages for account' + req.session.account + ': ' + error));
       } else {
         res.send(messages.map(function(message) {
-          return message.toJSON();
+          var json = message.toJSON();
+          json.date = formatDate(json.date, 'yyyy年mm月dd日 hh:MM:ss');
+          return json;
         }));
       }
     });
@@ -37,6 +40,18 @@ module.exports = function(router) {
         res.send({
           status : 'ok'
         });
+      }
+    });
+  });
+
+  router.get('/message/:id', function(req, res, next) {
+    Message.read(req.session.account, req.params.id, function(error, message) {
+      if (error) {
+        next(new HttpError('Error when read message: ' + error));
+      } else {
+        var json = message.toJSON();
+        json.date = formatDate(json.date, 'yyyy年mm月dd日 hh:MM:ss');
+        res.send(json);
       }
     });
   });

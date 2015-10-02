@@ -28,6 +28,16 @@ Message.findByAccount = function(account, start, size, cb) {
   }], cb);
 };
 
+Message.read = function(account, messageId, cb) {
+  async.waterfall([
+  function(cb) {
+    UserDAO.findOneByAccount(account, cb);
+  },
+  function(user, cb) {
+    MessageDAO.read(messageId, user.id, cb);
+  }], cb);
+};
+
 Message.count = function(account, cb) {
   async.waterfall([
   function(cb) {

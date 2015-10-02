@@ -91,6 +91,24 @@ MessageSchema.statics.findByFrom = function(from, cb) {
   }).sort('-date').populate('from', 'account name').populate('to', 'account name').exec(cb);
 };
 
+MessageSchema.statics.read = function(messageId, to, cb) {
+  var self = this;
+  Inbox.findOneAndUpdate({
+    to : ObjectId(to),
+    message : ObjectId(messageId)
+  }, {
+    read : true
+  }, function(error) {
+    if (error) {
+      cb(error);
+    } else {
+      self.findOne({
+        _id : ObjectId(messageId)
+      }).populate('from', 'account name').populate('to', 'account name').exec(cb);
+    }
+  });
+};
+
 MessageSchema.statics.inbox = function(to, start, size, cb) {
   Inbox.find({
     to : ObjectId(to)

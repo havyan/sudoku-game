@@ -6,7 +6,8 @@
     },
 
     reload : function() {
-      this.attr('cache', {});
+      this.attr('inboxCache', {});
+      this.attr('messageCache', {});
       this.getTotal();
       this.getMessages(1);
     },
@@ -78,11 +79,32 @@
       }
     },
 
+    read : function(id, success, error) {
+      var messageCache = this.attr('messageCache');
+      var message = messageCache.attr(id);
+      var messages = this.attr('messages');
+      if (message) {
+        if (success) {
+          success(message);
+        }
+      } else {
+        Rest.Message.read(id, function(message) {
+          messageCache.attr(id, message);
+          _.find(messages, {
+            message : id
+          }).attr('read', true);
+          if (success) {
+            success(message);
+          }
+        }, error);
+      }
+    },
+
     getMessages : function(page) {
       var self = this;
       var total = this.attr('total');
-      var cache = this.attr('cache');
-      var messages = cache.attr(page);
+      var inboxCache = this.attr('inboxCache');
+      var messages = inboxCache.attr(page);
       if (messages) {
         messages.forEach(function(message) {
           message.attr('selected', false);
@@ -93,7 +115,7 @@
         var start = pageSize * (page - 1);
         var size = (start + pageSize) > total ? total - start : pageSize;
         Rest.Message.getMessages(start, size, function(result) {
-          cache.attr(page, result);
+          inboxCache.attr(page, result);
           self.attr('messages', result);
         }, function() {
         });
@@ -140,6 +162,12 @@
       } else {
         this.options.model.deselectAll();
       }
+    },
+
+    '.messages-table tbody tr dblclick' : function(element) {
+      this.options.model.read(element.data('message'), function(message) {
+        Dialog.message(JSON.stringify(message));
+      }, function(){});
     },
 
     '.messages-remove click' : function() {
