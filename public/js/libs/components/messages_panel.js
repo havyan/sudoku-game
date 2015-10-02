@@ -80,6 +80,7 @@
     },
 
     read : function(id, success, error) {
+      var self = this;
       var messageCache = this.attr('messageCache');
       var message = messageCache.attr(id);
       var messages = this.attr('messages');
@@ -91,6 +92,9 @@
         Rest.Message.read(id, function(message) {
           messageCache.attr(id, message);
           _.find(messages, {
+            message : id
+          }).attr('read', true);
+          _.find(self.attr('inboxCache').attr(self.attr('page')), {
             message : id
           }).attr('read', true);
           if (success) {
@@ -116,6 +120,7 @@
         var size = (start + pageSize) > total ? total - start : pageSize;
         Rest.Message.getMessages(start, size, function(result) {
           inboxCache.attr(page, result);
+          self.attr('page', page);
           self.attr('messages', result);
         }, function() {
         });
@@ -166,8 +171,14 @@
 
     '.messages-table tbody tr dblclick' : function(element) {
       this.options.model.read(element.data('message'), function(message) {
-        Dialog.message(JSON.stringify(message));
-      }, function(){});
+        Dialog.show({
+          title : '邮件',
+          template : '/js/libs/mst/message.mst',
+          data : message,
+          actions : [Dialog.CLOSE_ACTION]
+        });
+      }, function() {
+      });
     },
 
     '.messages-remove click' : function() {
