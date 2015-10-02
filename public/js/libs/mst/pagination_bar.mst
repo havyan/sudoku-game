@@ -8,7 +8,7 @@
   <a class="next-arrow" href="javascript:void(0)">&gt;</a>
   <a class="button next" href="javascript:void(0)">下一页</a>
   <a class="button last" href="javascript:void(0)">末页</a>
-  <input class="edit-goto" type="number" min="1" max="{{count}}" step="1" value="{{current}}" />
+  <input class="edit-goto" type="number" min="{{start}}" max="{{count}}" step="1" value="{{current}}" />
   <div class="current">
     {{current}}/{{count}}
   </div>

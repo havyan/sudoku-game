@@ -2,7 +2,7 @@
   can.Model('Models.PaginationModel', {
   }, {
     init : function() {
-      this.attr('count', this.attr('count') || 11);
+      this.attr('count', this.attr('count') || 0);
       this.reset();
       this.initEvents();
     },
@@ -22,7 +22,9 @@
     },
 
     reset : function() {
-      this.attr('current', 1);
+      var start = this.attr('count') > 0 ? 1 : 0;
+      this.attr('start', start);
+      this.attr('current', start);
       this.resetPages();
     },
 
@@ -134,7 +136,7 @@
     },
 
     first : function() {
-      this.attr('current', 1);
+      this.attr('current', this.attr('start'));
     },
 
     last : function() {

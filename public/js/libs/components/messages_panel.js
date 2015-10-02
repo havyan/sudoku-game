@@ -20,7 +20,7 @@
     },
 
     getPageCount : function() {
-      return Math.ceil(this.attr('total') / this.pageSize) || 1;
+      return Math.ceil(this.attr('total') / this.pageSize);
     },
 
     select : function(id) {
