@@ -1,17 +1,17 @@
 <div class="message">
   <div class="message-row from">
-    发件人: {{from.name}}
+    <span class="message-label">发件人:</span> {{from.name}}
   </div>
   <div class="message-row to">
-    收件人: {{#to}}{{name}};{{/to}}
+    <span class="message-label">收件人:</span> {{#to}}{{name}};{{/to}}
   </div>
   <div class="message-row title">
-    标题: {{title}}
+    <span class="message-label">标题:</span> {{title}}
   </div>
   <div class="message-row date">
-    日期: {{date}}
+    <span class="message-label">日期:</span> {{date}}
   </div>
   <div class="message-row content">
-    {{content}}
+    {{{content}}}
   </div>
 </div>

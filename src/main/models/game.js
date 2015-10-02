@@ -10,6 +10,7 @@ var PropTypeDAO = require('../daos/prop_type');
 var PuzzleDAO = require('../daos/puzzle');
 var GameMode = require('./game_mode');
 var Message = require('./message');
+var Template = require('./template');
 var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
@@ -695,7 +696,15 @@ Game.prototype.over = function(cb) {
     }, cb);
   },
   function(cb) {
-    Message.sendFromSystem(_.pluck(players, 'id'), '最新战报', 'Developing...', cb);
+    self.results.forEach(function(result, index) {
+      result.rank = index + 1;
+    });
+    Template.generate('game_results', {
+      results : self.results
+    }, cb);
+  },
+  function(content, cb) {
+    Message.sendFromSystem(_.pluck(players, 'id'), '最新战报', content, cb);
   }], function(error) {
     if (error) {
       cb(error);
@@ -703,9 +712,6 @@ Game.prototype.over = function(cb) {
       var oldStatus = self.status;
       self.status = OVER;
       self.trigger('status-changed', self.status, oldStatus);
-      self.results.forEach(function(result, index) {
-        result.rank = index + 1;
-      });
       self.trigger('game-over', self.results);
       var countdown = DESTROY_COUNTDOWN_TOTAL;
       self.trigger('destroy-countdown-stage', countdown);

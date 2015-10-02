@@ -6,7 +6,8 @@ var TemplateSchema = new Schema({
   name : String,
   code : String,
   event : String,
-  content : String
+  content : String,
+  type : String
 });
 
 TemplateSchema.statics.findOneByCode = function(code, cb) {

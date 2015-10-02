@@ -9,6 +9,7 @@ var UserDAO = require('../main/daos/user');
 var PuzzleDAO = require('../main/daos/puzzle');
 var PropDAO = require('../main/daos/prop');
 var RoomDAO = require('../main/daos/room');
+var TemplateDAO = require('../main/daos/template');
 var GameMode = require('../main/models/game_mode');
 
 module.exports = function(cb) {
@@ -86,6 +87,29 @@ module.exports = function(cb) {
         });
       }], function(error) {
         cb(error);
+      });
+    }, cb);
+  },
+  function(cb) {
+    var templateDir = 'src/migrate/predefined/templates';
+    var files = fs.readdirSync(templateDir);
+    async.eachSeries(files, function(file, cb) {
+      var code = file.substr(0, file.lastIndexOf('.'));
+      TemplateDAO.findOneByCode(code, function(error, find) {
+        if (error) {
+          cb(error);
+        } else {
+          if (find) {
+            cb();
+          } else {
+            var content = fs.readFileSync(templateDir + '/' + file, "utf-8");
+            winston.info('Create template [' + code + '] from predefined.');
+            TemplateDAO.create({
+              code : code,
+              content : content
+            }, cb);
+          }
+        }
       });
     }, cb);
   },

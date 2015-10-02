@@ -113,6 +113,7 @@
         messages.forEach(function(message) {
           message.attr('selected', false);
         });
+        self.attr('page', page);
         this.attr('messages', messages);
       } else {
         var pageSize = this.pageSize;
