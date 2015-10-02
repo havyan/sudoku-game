@@ -38,4 +38,8 @@ Message.count = function(account, cb) {
   }], cb);
 };
 
+Message.removeInbox = function(ids, cb) {
+  MessageDAO.removeInbox(ids, cb);
+};
+
 module.exports = Message;

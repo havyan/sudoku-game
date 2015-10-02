@@ -92,7 +92,6 @@ MessageSchema.statics.findByFrom = function(from, cb) {
 };
 
 MessageSchema.statics.inbox = function(to, start, size, cb) {
-  var self = this;
   Inbox.find({
     to : ObjectId(to)
   }).skip(start).limit(size).populate('from', 'account name').sort('-date').exec(cb);
@@ -101,6 +100,36 @@ MessageSchema.statics.inbox = function(to, start, size, cb) {
 MessageSchema.statics.inboxCount = function(to, cb) {
   Inbox.count({
     to : ObjectId(to)
+  }, cb);
+};
+
+MessageSchema.statics.removeInbox = function(ids, cb) {
+  var self = this;
+  async.each(ids, function(id, cb) {
+    async.waterfall([
+    function(cb) {
+      Inbox.findOneAndRemove({
+        _id : ObjectId(id)
+      }, cb);
+    },
+    function(inbox, cb) {
+      Inbox.findOne({
+        message : inbox.message
+      }, function(error, find) {
+        if (error) {
+          cb(error);
+        } else {
+          if (find) {
+            cb();
+          } else {
+            self.findOneAndRemove({
+              _id : inbox.message,
+              deleted : true
+            }, cb);
+          }
+        }
+      });
+    }], cb);
   }, cb);
 };
 

@@ -28,4 +28,16 @@ module.exports = function(router) {
       }
     });
   });
+
+  router.delete('/messages/inbox', function(req, res, next) {
+    Message.removeInbox(JSON.parse(req.body.ids), function(error) {
+      if (error) {
+        next(new HttpError('Error when deleting inbox: ' + error));
+      } else {
+        res.send({
+          status : 'ok'
+        });
+      }
+    });
+  });
 };

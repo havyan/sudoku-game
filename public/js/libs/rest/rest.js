@@ -399,6 +399,19 @@
         success : success,
         error : error
       });
+    },
+
+    removeInbox : function(ids, success, error) {
+      return $.ajax({
+        type : 'delete',
+        url : '/messages/inbox',
+        dataType : 'json',
+        data : {
+          ids : JSON.stringify(ids)
+        },
+        success : success,
+        error : error
+      });
     }
   }, {});
 })();

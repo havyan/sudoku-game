@@ -2,7 +2,7 @@
   <div class="messages-header">
     <input class="select-all" type="checkbox" />
     <span>全选</span>
-    <a class="button" href="javascript:void(0)">删除</a>
+    <a class="button messages-remove" href="javascript:void(0)">删除</a>
   </div>
   <div class="messages-content">
     <table class="messages-table">
@@ -16,7 +16,7 @@
       <tbody>
         {{#messages}}
         <tr data-id="{{_id}}">
-          <td><input type="checkbox" /></td>
+          <td><input class="select-one" type="checkbox" {{#selected}}checked{{/selected}} /></td>
           <td>{{from.name}}</td>
           <td>{{title}}</td>
           <td>{{date}}</td>
