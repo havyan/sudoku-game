@@ -48,6 +48,12 @@
       });
     },
 
+    isAllSelected : function() {
+      return _.every(this.attr('messages'), {
+        selected : true
+      });
+    },
+
     deselectAll : function(id) {
       var messages = this.attr('messages');
       messages.forEach(function(message) {
@@ -125,6 +131,7 @@
       } else {
         this.options.model.deselect(id);
       }
+      this.element.find('.select-all').attr('checked', this.options.model.isAllSelected());
     },
 
     '.select-all click' : function(element) {
