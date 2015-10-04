@@ -1,0 +1,15 @@
+#recharge {
+  margin-top: 80px;
+}
+
+.recharge-panel .navigator {
+  float: left;
+  width: 12%;
+  margin-left: 10%;
+}
+
+.recharge-panel .recharge-container {
+  margin-left: 27%;
+  width: 60%;
+  min-width: 800px;
+}

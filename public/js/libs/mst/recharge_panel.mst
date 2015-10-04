@@ -1,0 +1,14 @@
+<div class="recharge-panel">
+  <div class="navigator">
+    <div class="rich-button item balance active" data-target="recharge-balance">
+      账户余额
+    </div>
+    <div class="rich-button item recharge" data-target="recharge-recharge">
+      我要充值
+    </div>
+    <div class="rich-button item record" data-target="recharge-record">
+      充值记录
+    </div>
+  </div>
+  <div class="recharge-container"></div>
+</div>

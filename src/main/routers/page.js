@@ -248,5 +248,19 @@ module.exports = function(router) {
       }
     });
   });
+
+  router.get('/view/recharge', function(req, res, next) {
+    UserDAO.findOneByAccount(req.session.account, function(error, user) {
+      if (error) {
+        next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
+      } else {
+        res.render('recharge', {
+          userName : user.name,
+          userIcon : user.icon,
+          money : user.money
+        });
+      }
+    });
+  });
 };
 
