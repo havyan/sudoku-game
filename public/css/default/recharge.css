@@ -11,5 +11,49 @@
 .recharge-panel .recharge-container {
   margin-left: 27%;
   width: 60%;
-  min-width: 800px;
+  min-width: 600px;
+}
+
+.recharge-panel .recharge-back {
+  margin-top: 30px;
+  margin-left: 80%;
+}
+
+.recharge-container {
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid #296db6;
+  border-radius: 15px;
+  padding: 15px 25px;
+  box-sizing: border-box;
+}
+
+.recharge-container .item {
+  display: none;
+}
+
+.recharge-container .item.active {
+  display: block;
+}
+
+.recharge-balance {
+  height: 300px;
+}
+
+.balance-content {
+  margin-top: 120px;
+  font-size: 25px;
+  padding-left: 50px;
+}
+
+.balance-content .hello span {
+  color: #f8b62b;
+}
+
+.balance-content .amount span {
+  color: #FFF000;
+  margin: 0px 5px;
+}
+
+.balance-content .amount {
+  text-indent: 2em;
 }

@@ -6,9 +6,42 @@
     <div class="rich-button item recharge" data-target="recharge-recharge">
       我要充值
     </div>
-    <div class="rich-button item record" data-target="recharge-record">
+    <div class="rich-button item record" data-target="recharge-records">
       充值记录
     </div>
   </div>
-  <div class="recharge-container"></div>
+  <div class="recharge-container">
+    <div class="recharge-balance item active">
+      <div class="balance-content">
+        <p class="hello">
+          您好，<span>张三</span>
+        </p>
+        <p class="amount">
+          您的当前账号余额为<span>50000</span>金币。
+        </p>
+      </div>
+    </div>
+    <div class="recharge-recharge item"></div>
+    <div class="recharge-records item">
+      <table class="records-table">
+        <thead>
+          <th class="trans_code">交易号</th>
+          <th class="status">状态</th>
+          <th class="date">充值时间</th>
+          <th class="from_account">充值账号</th>
+          <th class="to_account">被充值账号</th>
+          <th class="cost">充值金额</th>
+          <th class="channel">充值渠道</th>
+        </thead>
+        <tbody>
+          {{#records}}
+          {{/records}}
+        </tbody>
+      </table>
+      <div class="records-pagination-bar"></div>
+    </div>
+  </div>
+  <div class="recharge-actions">
+    <a class="rich-button recharge-back" href="/main">返回</a>
+  </div>
 </div>
