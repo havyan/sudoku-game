@@ -21,7 +21,28 @@
         </p>
       </div>
     </div>
-    <div class="recharge-recharge item"></div>
+    <div class="recharge-recharge item">
+      <div class="recharge-steps">
+        <div class="recharge-step order active" data-step="1">
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">提交充值订单</span>
+        </div>
+        <div class="recharge-step pay-method" data-step="2">
+          <span  class="recharge-step-icon"></span><span  class="recharge-step-label">选择充值方式</span>
+        </div>
+        <div class="recharge-step pay" data-step="3">
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">用户付款</span>
+        </div>
+        <div class="recharge-step result" data-step="4">
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">充值结果</span>
+        </div>
+      </div>
+      <div class="recharge-step-component order">
+        <div class="genius-currency-label">请选择您要充值的金额:</div>
+        <div class="genius-currency-container">
+          
+        </div>
+      </div>
+    </div>
     <div class="recharge-records item">
       <table class="records-table">
         <thead>

@@ -23,7 +23,7 @@
   background-color: rgba(0,61,232,0.3);
   border: 1px solid #296db6;
   border-radius: 15px;
-  padding: 15px 25px;
+  padding: 20px 30px;
   box-sizing: border-box;
 }
 
@@ -56,4 +56,47 @@
 
 .balance-content .amount {
   text-indent: 2em;
+}
+
+.recharge-steps {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #042d82;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.recharge-step {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.recharge-step span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.recharge-step-icon {
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background-color: #004a7e;
+  border: 2px solid #4f577d;
+  margin-right: 10px;
+}
+
+.recharge-step.active .recharge-step-icon {
+  border-color: white;
+  background-color: #00a0e9;
+}
+
+.recharge-step-label {
+  margin-right: 20px;
+  color: #51597f;
+}
+
+.recharge-step.active .recharge-step-label {
+  color: white;
 }
