@@ -37,10 +37,50 @@
         </div>
       </div>
       <div class="recharge-step-component order">
-        <div class="genius-currency-label">请选择您要充值的金额:</div>
-        <div class="genius-currency-container">
-          
+        <div class="genius-currency-label">
+          请选择您要充值的金额:
         </div>
+        <div class="genius-currency-container">
+          <div class="genius-currency-row">
+            <input type="radio" checked="checked" name="genius_currency"/>
+            <span class="genius-currency-value">100</span><span>天才币</span>
+          </div>
+          <div class="genius-currency-row">
+            <input type="radio" name="genius_currency"/>
+            <span class="genius-currency-value">500</span><span>天才币</span>
+          </div>
+          <div class="genius-currency-row">
+            <input type="radio" name="genius_currency"/>
+            <span class="genius-currency-value">1000</span><span>天才币</span>
+          </div>
+          <div class="genius-currency-row custom">
+            <input type="radio" name="genius_currency"/>
+            <span>我需要购买</span>
+            <input type="text">
+            <span>天才币</span>
+          </div>
+        </div>
+        <div class="recharge-separator"></div>
+        <div class="recharge-money">
+          <span class="recharge-money-label">所需人民币金额:</span><span class="recharge-money-value">200</span>
+        </div>
+        <div class="recharge-target-label">
+          充值对象:
+        </div>
+        <div class="recharge-target">
+          <div class="recharge-target-row me">
+            <input type="radio" name="target"/>
+            <span>给自己</span>
+          </div>
+          <div class="recharge-target-row other">
+            <input type="radio" name="target"/>
+            <span>给他人</span>
+            <input type="text" />
+          </div>
+        </div>
+      </div>
+      <div class="recharge-steps-actions">
+        <a class="rich-button next" href="javascript:void(0);">下一步</a>
       </div>
     </div>
     <div class="recharge-records item">
