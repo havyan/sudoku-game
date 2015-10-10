@@ -103,6 +103,11 @@
 
 .recharge-step-component {
   font-size: 16px;
+  display: none;
+}
+
+.recharge-step-component.active {
+  display: block;
 }
 
 .genius-currency-label {
@@ -111,7 +116,7 @@
 }
 
 .genius-currency-container {
-  margin-left: 180px;
+  margin-left: 190px;
 }
 
 .recharge-separator {
@@ -173,7 +178,7 @@
 }
 
 .recharge-target {
-  margin-left: 180px;
+  margin-left: 190px;
 }
 
 .recharge-target-row {
@@ -181,8 +186,14 @@
   margin-bottom: 10px;
 }
 
+.recharge-target-row > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .recharge-target-row input[type=radio] {
   margin-right: 10px;
+  margin-top: 0px;
 }
 
 .recharge-target-row.other input[type=text] {
@@ -201,4 +212,24 @@
 .recharge-steps-actions {
   text-align: right;
   margin-top: 20px;
+}
+
+.pay-method-header {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.pay-method-row {
+  padding-left: 50px;
+  margin-bottom: 20px;
+}
+
+.pay-method-row .name {
+  margin-right: 10px;
+}
+
+.pay-method-row.money .value {
+  margin-right: 10px;
+  color: #FFF000;
 }

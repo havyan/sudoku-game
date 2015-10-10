@@ -36,7 +36,7 @@
           <span class="recharge-step-icon"></span><span  class="recharge-step-label">充值结果</span>
         </div>
       </div>
-      <div class="recharge-step-component order">
+      <div class="recharge-step-component order active">
         <div class="genius-currency-label">
           请选择您要充值的金额:
         </div>
@@ -77,6 +77,26 @@
             <span>给他人</span>
             <input type="text" />
           </div>
+        </div>
+      </div>
+      <div class="recharge-step-component pay-method">
+        <div class="pay-method-header">
+          订单已提交，请尽快付款
+        </div>
+        <div class="pay-method-row">
+          <span class="name">充值到账号：</span><span class="value">zhangsan</span>
+        </div>
+        <div class="pay-method-row">
+          <span class="name">充值天才币数量：</span><span class="value">889</span>
+        </div>
+        <div class="pay-method-row">
+          <span class="name">您的订单号：</span><span class="value">ABC000001</span>
+        </div>
+        <div class="pay-method-row money">
+          <span class="name">应付金额：</span><span class="value">80</span>元
+        </div>
+        <div class="pay-method-row">
+          <span class="name">选择支付方式：</span>
         </div>
       </div>
       <div class="recharge-steps-actions">
