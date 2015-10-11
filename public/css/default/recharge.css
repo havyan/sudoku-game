@@ -110,12 +110,12 @@
   display: block;
 }
 
-.genius-currency-label {
+.purchase-label {
   width: 180px;
   text-align: right;
 }
 
-.genius-currency-container {
+.purchase-container {
   margin-left: 190px;
 }
 
@@ -126,27 +126,27 @@
   margin-bottom: 20px;
 }
 
-.genius-currency-row {
+.purchase-row {
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.genius-currency-row * {
+.purchase-row * {
   display: inline-block;
   vertical-align: middle;
   margin-top: 0px !important;
 }
 
-.genius-currency-row input[type=radio] {
+.purchase-row input[type=radio] {
   margin-right: 10px;
 }
 
-.genius-currency-value {
+.purchase-value {
   margin-right: 10px;
   color: #FFF000;
 }
 
-.genius-currency-row.custom input[type=text] {
+.purchase-row.custom input[type=text] {
   width: 80px;
   text-align: center;
   height: 25px;
@@ -157,6 +157,12 @@
   border: 1px solid gray;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.purchase-row.custom .error {
+  margin-left: 10px;
+  color: red;
+  display: none;
 }
 
 .recharge-money-label {
@@ -263,4 +269,48 @@
 .pay-method-bank input[type=radio] {
   margin-top: 0px;
   margin-right: 5px;
+}
+
+.recharge-target-row.other .error {
+  margin-left: 10px;
+  color: red;
+  display: none;
+}
+
+.records-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.records-table thead tr {
+  height: 40px;
+  border-bottom: 1px solid #296db6;
+}
+
+.records-table th.trans-code {
+  width: 20%
+}
+
+.records-table th.status {
+  width: 10%
+}
+
+.records-table th.date {
+  width: 15%
+}
+
+.records-table th.from {
+  width: 15%
+}
+
+.records-table th.target {
+  width: 15%
+}
+
+.records-table th.cost {
+  width: 10%
+}
+
+.records-table th.channel {
+  width: 15%
 }

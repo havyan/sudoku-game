@@ -106,7 +106,8 @@
 
     getMessages : function(page) {
       var self = this;
-      var total = this.attr('total');
+      var pageSize = this.pageSize;
+      var total = this.attr('total') || pageSize;
       var inboxCache = this.attr('inboxCache');
       var messages = inboxCache.attr(page);
       if (messages) {
@@ -116,7 +117,6 @@
         self.attr('page', page);
         this.attr('messages', messages);
       } else {
-        var pageSize = this.pageSize;
         var start = pageSize * (page - 1);
         var size = (start + pageSize) > total ? total - start : pageSize;
         Rest.Message.getMessages(start, size, function(result) {

@@ -434,6 +434,43 @@
         success : success,
         error : error
       });
-    }
+    },
+
+    create : function(data, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/recharge',
+        data : {
+          data : JSON.stringify(data)
+        },
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    getTotal : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/recharge/records/total',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    getRecords : function(start, size, success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/recharge/records',
+        dataType : 'json',
+        data : {
+          start : start,
+          size : size
+        },
+        success : success,
+        error : error
+      });
+    },
   }, {});
 })();

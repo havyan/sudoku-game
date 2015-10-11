@@ -39,45 +39,47 @@
         </div>
       </div>
       <div class="recharge-step-component order active">
-        <div class="genius-currency-label">
+        <div class="purchase-label">
           请选择您要充值的金额:
         </div>
-        <div class="genius-currency-container">
-          <div class="genius-currency-row">
-            <input type="radio" checked="checked" name="genius_currency"/>
-            <span class="genius-currency-value">100</span><span>天才币</span>
+        <div class="purchase-container">
+          <div class="purchase-row" data-value="100">
+            <input type="radio" checked="checked" name="purchase"/>
+            <span class="purchase-value">100</span><span>天才币</span>
           </div>
-          <div class="genius-currency-row">
-            <input type="radio" name="genius_currency"/>
-            <span class="genius-currency-value">500</span><span>天才币</span>
+          <div class="purchase-row" data-value="500">
+            <input type="radio" name="purchase"/>
+            <span class="purchase-value">500</span><span>天才币</span>
           </div>
-          <div class="genius-currency-row">
-            <input type="radio" name="genius_currency"/>
-            <span class="genius-currency-value">1000</span><span>天才币</span>
+          <div class="purchase-row" data-value="1000">
+            <input type="radio" name="purchase"/>
+            <span class="purchase-value">1000</span><span>天才币</span>
           </div>
-          <div class="genius-currency-row custom">
-            <input type="radio" name="genius_currency"/>
+          <div class="purchase-row custom">
+            <input type="radio" name="purchase"/>
             <span>我需要购买</span>
-            <input type="text">
+            <input type="text" disabled="disabled" />
             <span>天才币</span>
+            <span class="error">天才币不能为空</span>
           </div>
         </div>
         <div class="recharge-separator"></div>
         <div class="recharge-money">
-          <span class="recharge-money-label">所需人民币金额:</span><span class="recharge-money-value">200</span>
+          <span class="recharge-money-label">所需人民币金额:</span><span class="recharge-money-value">{{cost}}</span> 元
         </div>
         <div class="recharge-target-label">
           充值对象:
         </div>
         <div class="recharge-target">
           <div class="recharge-target-row me">
-            <input type="radio" name="target"/>
+            <input type="radio" name="target"  checked="checked"/>
             <span>给自己</span>
           </div>
           <div class="recharge-target-row other">
             <input type="radio" name="target"/>
             <span>给他人</span>
-            <input type="text" />
+            <input type="text"  disabled="disabled" />
+            <span class="error">账号不存在</span>
           </div>
         </div>
       </div>
@@ -85,18 +87,20 @@
         <div class="pay-method-header">
           订单已提交，请尽快付款
         </div>
+        {{#order}}
         <div class="pay-method-row">
-          <span class="name">充值到账号：</span><span class="value">zhangsan</span>
+          <span class="name">充值到账号：</span><span class="value">{{target}}</span>
         </div>
         <div class="pay-method-row">
-          <span class="name">充值天才币数量：</span><span class="value">889</span>
+          <span class="name">充值天才币数量：</span><span class="value">{{purchase}}</span>
         </div>
         <div class="pay-method-row">
-          <span class="name">您的订单号：</span><span class="value">ABC000001</span>
+          <span class="name">您的订单号：</span><span class="value">{{trans_code}}</span>
         </div>
         <div class="pay-method-row money">
-          <span class="name">应付金额：</span><span class="value">80</span>元
+          <span class="name">应付金额：</span><span class="value">{{cost}}</span>元
         </div>
+        {{/order}}
         <div class="pay-method-row method">
           <span class="name">选择支付方式：</span>
           <img src="/imgs/default/ali_pay.png" />
@@ -118,16 +122,25 @@
     <div class="recharge-records item">
       <table class="records-table">
         <thead>
-          <th class="trans_code">交易号</th>
+          <th class="trans-code">交易号</th>
           <th class="status">状态</th>
           <th class="date">充值时间</th>
-          <th class="from_account">充值账号</th>
-          <th class="to_account">被充值账号</th>
+          <th class="from">充值账号</th>
+          <th class="target">被充值账号</th>
           <th class="cost">充值金额</th>
           <th class="channel">充值渠道</th>
         </thead>
         <tbody>
           {{#records}}
+          <tr>
+            <td>{{trans_code}}</td>
+            <td>{{status}}</td>
+            <td>{{date}}</td>
+            <td>{{from}}</td>
+            <td>{{target}}</td>
+            <td>{{cost}}</td>
+            <td>{{channel}}</td>
+          </tr>
           {{/records}}
         </tbody>
       </table>

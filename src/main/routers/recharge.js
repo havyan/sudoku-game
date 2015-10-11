@@ -1,6 +1,8 @@
 var HttpError = require('../http_error');
 var UserDAO = require('../daos/user');
+var Recharge = require('../models/recharge');
 var winston = require('winston');
+var formatDate = require('dateformat');
 
 module.exports = function(router) {
   router.get('/recharge/data', function(req, res, next) {
@@ -11,6 +13,45 @@ module.exports = function(router) {
         res.send({
           user : user.toJSON()
         });
+      }
+    });
+  });
+
+  router.post('/recharge', function(req, res, next) {
+    var data = JSON.parse(req.body.data);
+    Recharge.create(data, function(error, recharge) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(recharge.toJSON());
+      }
+    });
+  });
+
+  router.get('/recharge/records/total', function(req, res, next) {
+    Recharge.count(req.session.account, function(error, count) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          total : count
+        });
+      }
+    });
+  });
+
+  router.get('/recharge/records', function(req, res, next) {
+    var start = parseInt(req.query.start || 0);
+    var size = parseInt(req.query.size || 10);
+    Recharge.findByAccount(req.session.account, start, size, function(error, records) {
+      if (error) {
+        next(new HttpError('Error when get recharge records for account' + req.session.account + ': ' + error));
+      } else {
+        res.send(records.map(function(record) {
+          var json = record.toJSON();
+          json.date = formatDate(json.date, 'yyyy年mm月dd日 hh:MM:ss');
+          return json;
+        }));
       }
     });
   });
