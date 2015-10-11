@@ -232,7 +232,7 @@
     },
 
     'input[type=text] keydown' : function(e, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+      return Utils.isIntKey(event.keyCode);
     },
 
     '.add-rule-to blur' : function(e) {
@@ -342,7 +342,7 @@
     },
 
     '.grade-table .value input keydown' : function(e, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+      return Utils.isIntKey(event.keyCode);
     },
 
     '.setting-grade input blur' : function(e) {

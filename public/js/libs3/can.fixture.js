@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.5
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 22 Apr 2015 15:03:29 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
@@ -67,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.5#util/object/object*/
+/*can@2.2.9#util/object/object*/
 define('can/util/object/object', ['can/util/util'], function (can) {
     var isArray = can.isArray;
     can.Object = {};
@@ -161,7 +161,7 @@ define('can/util/object/object', ['can/util/util'], function (can) {
     compareMethods.eqeq = compareMethods.similar;
     return can.Object;
 });
-/*can@2.2.5#util/fixture/fixture*/
+/*can@2.2.9#util/fixture/fixture*/
 define('can/util/fixture/fixture', [
     'can/util/util',
     'can/util/string/string',
@@ -219,7 +219,7 @@ define('can/util/fixture/fixture', [
                 settings.type = 'GET';
                 if (!settings.error) {
                     settings.error = function (xhr, error, message) {
-                        throw 'fixtures.js Error ' + error + ' ' + message;
+                        throw new Error('fixtures.js Error ' + error + ' ' + message);
                     };
                 }
             } else {

@@ -26,6 +26,10 @@
       var hours = Math.round((value - (minutes * 60) - seconds) / (60 * 60));
       hours = hours >= 10 ? hours : '0' + hours;
       return hours + ':' + minutes + ':' + seconds;
+    },
+
+    isIntKey : function(keyCode) {
+      return (keyCode > 47 && keyCode < 58) || (keyCode > 95 && keyCode < 106) || keyCode === 8 || keyCode === 37 || keyCode === 39 || keyCode === 46;
     }
   };
 

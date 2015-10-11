@@ -1,7 +1,10 @@
 (function() {
   $(document).ready(function() {
-    new Components.RechargePanel($('#recharge'), {
-      model : new Models.RechargeModel()
+    Rest.Recharge.getData(function(data) {
+      new Components.RechargePanel($('#recharge'), {
+        model : new Models.RechargeModel(data)
+      });
+    }, function() {
     });
   });
 })();

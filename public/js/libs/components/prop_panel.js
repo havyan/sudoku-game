@@ -41,14 +41,14 @@
     },
 
     '.container .store .count input keydown' : function(element, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+      return Utils.isIntKey(event.keyCode);
     },
 
     '.container .store .count input blur' : function(element, event) {
       var value = parseInt(element.val());
       var current = _.find(this.model.attr('props'), {
         type : element.closest('.store-item').data('type')
-      }).value;
+      }).count;
       if (value > (999 - current)) {
         element.val(999 - current);
       }
@@ -78,7 +78,7 @@
       var count = parseInt($value.val());
       var current = _.find(this.model.attr('props'), {
         type : element.closest('.store-item').data('type')
-      }).value;
+      }).count;
       if ((count + current) > 999) {
         Dialog.message('单个道具最多只能买999个。');
         $value.val(999 - current);

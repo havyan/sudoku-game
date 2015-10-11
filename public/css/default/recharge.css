@@ -225,6 +225,10 @@
   margin-bottom: 20px;
 }
 
+.pay-method-row > * {
+  vertical-align: middle;
+}
+
 .pay-method-row .name {
   margin-right: 10px;
 }
@@ -232,4 +236,31 @@
 .pay-method-row.money .value {
   margin-right: 10px;
   color: #FFF000;
+}
+
+.pay-method-row.method img {
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.pay-method-banks {
+  margin-left: 172px;
+  width: 500px;
+}
+
+.pay-method-bank {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 30px;
+  margin-bottom: 20px;
+}
+
+.pay-method-bank > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.pay-method-bank input[type=radio] {
+  margin-top: 0px;
+  margin-right: 5px;
 }

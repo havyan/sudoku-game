@@ -424,4 +424,16 @@
       });
     }
   }, {});
+
+  can.Model('Rest.Recharge', {
+    getData : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/recharge/data',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
 })();

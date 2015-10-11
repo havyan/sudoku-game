@@ -13,26 +13,28 @@
   <div class="recharge-container">
     <div class="recharge-balance item active">
       <div class="balance-content">
+        {{#user}}
         <p class="hello">
-          您好，<span>张三</span>
+          您好，<span>{{name}}</span>
         </p>
         <p class="amount">
-          您的当前账号余额为<span>50000</span>金币。
+          您的当前账号余额为<span>{{money}}</span>金币。
         </p>
+        {{/user}}
       </div>
     </div>
     <div class="recharge-recharge item">
       <div class="recharge-steps">
-        <div class="recharge-step order active" data-step="1">
+        <div class="recharge-step order active">
           <span class="recharge-step-icon"></span><span  class="recharge-step-label">提交充值订单</span>
         </div>
-        <div class="recharge-step pay-method" data-step="2">
+        <div class="recharge-step pay-method">
           <span  class="recharge-step-icon"></span><span  class="recharge-step-label">选择充值方式</span>
         </div>
-        <div class="recharge-step pay" data-step="3">
+        <div class="recharge-step pay">
           <span class="recharge-step-icon"></span><span  class="recharge-step-label">用户付款</span>
         </div>
-        <div class="recharge-step result" data-step="4">
+        <div class="recharge-step result">
           <span class="recharge-step-icon"></span><span  class="recharge-step-label">充值结果</span>
         </div>
       </div>
@@ -95,8 +97,18 @@
         <div class="pay-method-row money">
           <span class="name">应付金额：</span><span class="value">80</span>元
         </div>
-        <div class="pay-method-row">
+        <div class="pay-method-row method">
           <span class="name">选择支付方式：</span>
+          <img src="/imgs/default/ali_pay.png" />
+          <img src="/imgs/default/union_pay.png" />
+        </div>
+        <div class="pay-method-banks">
+          {{#banks}}
+          <div class="pay-method-bank">
+            <input type="radio" name="bank" data-bank="{{this}}" />
+            <img src="/imgs/default/banks/{{this}}.png" />
+          </div>
+          {{/banks}}
         </div>
       </div>
       <div class="recharge-steps-actions">

@@ -3,6 +3,11 @@
   }, {
     init : function() {
       this.attr('step', 1);
+      this.initBanks();
+    },
+
+    initBanks : function() {
+      this.attr('banks', ['icbc', 'cmb', 'ccb', 'abc']);
     },
 
     setStep : function(step) {
@@ -18,7 +23,7 @@
 
   can.Control('Components.RechargePanel', {}, {
     init : function(element, options) {
-      element.html(can.view('/js/libs/mst/recharge_panel.mst', {}));
+      element.html(can.view('/js/libs/mst/recharge_panel.mst', this.options.model));
       this.paginationModel = new Models.PaginationModel();
       this.paginationBar = new Components.PaginationBar(element.find('.records-pagination-bar'), {
         model : this.paginationModel
@@ -37,6 +42,10 @@
 
     '.recharge-steps-actions .next click' : function() {
       this.options.model.next();
-    }
+    },
+
+    '.genius-currency-row.custom input[type=text] keydown' : function(element, event) {
+      return Utils.isIntKey(event.keyCode);
+    },
   });
 })();
