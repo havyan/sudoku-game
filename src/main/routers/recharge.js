@@ -49,7 +49,7 @@ module.exports = function(router) {
       } else {
         res.send(records.map(function(record) {
           var json = record.toJSON();
-          json.date = formatDate(json.date, 'yyyy年mm月dd日 hh:MM:ss');
+          json.date = formatDate(json.createtime, 'yyyy年mm月dd日 hh:MM:ss');
           return json;
         }));
       }
