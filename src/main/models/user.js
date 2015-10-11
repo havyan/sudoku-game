@@ -122,14 +122,12 @@ User.checkAccount = function(account, cb) {
         cb(error);
       } else {
         cb(null, {
-          valid : user == null
+          exist : user != null
         });
       }
     });
   } else {
-    cb(null, {
-      valid : false
-    });
+    cb('account can not be null.');
   }
 };
 
@@ -142,48 +140,45 @@ User.checkEmail = function(email, cb) {
         cb(error);
       } else {
         cb(null, {
-          valid : user == null
+          exist : user != null
         });
       }
     });
   } else {
-    cb(null, {
-      valid : false
-    });
+    cb('email can not be null');
   }
 };
 
 User.createUser = function(params, cb) {
   var self = this;
-  this.checkAccount(params.account, function(error, result) {
-    if (error) {
-      cb(error);
+  async.waterfall([
+  function(cb) {
+    self.checkAccount(params.account, cb);
+  },
+  function(result, cb) {
+    if (result.exist) {
+      cb('账号不合法');
     } else {
-      if (result.valid) {
-        self.checkEmail(params.email, function(error, result) {
-          if (result.valid) {
-            UserDAO.createUser(params, function(error) {
-              if (error) {
-                cb(error);
-              } else {
-                cb(null, {
-                  success : true
-                });
-              }
-            });
-          } else {
-            cb(null, {
-              success : false,
-              reason : '邮箱不合法'
-            });
-          }
-        });
-      } else {
-        cb(null, {
-          success : false,
-          reason : '账号不合法'
-        });
-      }
+      self.checkEmail(params.email, cb);
+    }
+  },
+  function(result, cb) {
+    if (result.exist) {
+      cb('邮箱不合法');
+    } else {
+      UserDAO.createUser(params, cb);
+    }
+  }], function(error) {
+    if (error) {
+      winston.error('Error happened when create new user: ' + error);
+      cb(null, {
+        success : false,
+        reason : error
+      });
+    } else {
+      cb(null, {
+        success : true
+      });
     }
   });
 };

@@ -30,7 +30,7 @@
           var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
           if (reg.test(email)) {
             Rest.User.checkEmail(email, function(result) {
-              if (!result.valid) {
+              if (result.exist) {
                 $send.addClass('available').removeAttr('disabled');
                 $sign.removeClass('wrong');
               } else {

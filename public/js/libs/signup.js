@@ -25,12 +25,12 @@
         var $sign = e.siblings('.ok-sign');
         if (!_.isEmpty(account)) {
           Rest.User.checkAccount(account, function(result) {
-            if (result.valid) {
-              $sign.removeClass('wrong');
-              self.validation.account = true;
-            } else {
+            if (result.exist) {
               $sign.addClass('wrong');
               self.validation.account = false;
+            } else {
+              $sign.removeClass('wrong');
+              self.validation.account = true;
             }
             $sign.css('display', 'inline-block');
           }, function() {
@@ -95,12 +95,12 @@
           var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
           if (reg.test(email)) {
             Rest.User.checkEmail(email, function(result) {
-              if (result.valid) {
-                self.validation.email = true;
-                $sign.removeClass('wrong');
-              } else {
+              if (result.exist) {
                 $sign.addClass('wrong');
                 self.validation.email = false;
+              } else {
+                self.validation.email = true;
+                $sign.removeClass('wrong');
               }
               $sign.css('display', 'inline-block');
             }, function() {
