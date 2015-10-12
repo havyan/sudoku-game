@@ -55,6 +55,7 @@
 
 .messages-table tbody tr[data-read=false] {
   color: #e60012;
+  font-weight: bold;
 }
 
 .messages-table tbody tr[data-from=SYSTEM] {
