@@ -23,6 +23,7 @@
 
     reloadRecords : function() {
       this.attr('recordsCache', {});
+      this.removeAttr('recordsTotal');
       this.getTotal();
       this.getRecords(1);
     },
@@ -40,21 +41,23 @@
     },
 
     getRecords : function(page) {
-      var self = this;
-      var pageSize = this.pageSize;
-      var total = this.attr('recordsTotal') || pageSize;
-      var recordsCache = this.attr('recordsCache');
-      var records = recordsCache.attr(page);
-      if (records) {
-        this.attr('records', records);
-      } else {
-        var start = pageSize * (page - 1);
-        var size = (start + pageSize) > total ? total - start : pageSize;
-        Rest.Recharge.getRecords(start, size, function(result) {
-          recordsCache.attr(page, result);
-          self.attr('records', result);
-        }, function() {
-        });
+      if (page > 0) {
+        var self = this;
+        var pageSize = this.pageSize;
+        var total = this.attr('recordsTotal') || pageSize;
+        var recordsCache = this.attr('recordsCache');
+        var records = recordsCache.attr(page);
+        if (records) {
+          this.attr('records', records);
+        } else {
+          var start = pageSize * (page - 1);
+          var size = (start + pageSize) > total ? total - start : pageSize;
+          Rest.Recharge.getRecords(start, size, function(result) {
+            recordsCache.attr(page, result);
+            self.attr('records', result);
+          }, function() {
+          });
+        }
       }
     },
 
