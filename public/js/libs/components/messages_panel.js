@@ -91,11 +91,11 @@
       } else {
         Rest.Message.read(id, function(message) {
           messageCache.attr(id, message);
-          _.find(messages, {
-            message : id
+          _.find(messages, function(message) {
+            return message.message._id === id;
           }).attr('read', true);
-          _.find(self.attr('inboxCache').attr(self.attr('page')), {
-            message : id
+          _.find(self.attr('inboxCache').attr(self.attr('page')), function(message) {
+            return message.message._id === id;
           }).attr('read', true);
           if (success) {
             success(message);

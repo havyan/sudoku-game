@@ -21,7 +21,6 @@ var MessageSchema = new Schema({
     default : Date.now
   },
   type : String,
-  to_type : String,
   deleted : {
     type : Boolean,
     default : false
@@ -41,14 +40,9 @@ var InboxSchema = new Schema({
     type : Schema.Types.ObjectId,
     ref : 'Message'
   },
-  title : String,
   read : {
     type : Boolean,
     default : false
-  },
-  date : {
-    type : Date,
-    default : Date.now
   }
 });
 
@@ -67,7 +61,7 @@ MessageSchema.statics.send = function(from, to, title, content, cb) {
     self.create({
       from : ObjectId(from),
       to : to,
-      date : date,
+      createtime : date,
       title : title,
       content : content
     }, cb);
@@ -77,8 +71,7 @@ MessageSchema.statics.send = function(from, to, title, content, cb) {
       Inbox.create({
         from : ObjectId(from),
         to : to,
-        date : date,
-        title : title,
+        createtime : date,
         message : message,
       }, cb);
     }, cb);
@@ -88,7 +81,7 @@ MessageSchema.statics.send = function(from, to, title, content, cb) {
 MessageSchema.statics.findByFrom = function(from, cb) {
   this.find({
     from : ObjectId(from)
-  }).sort('-date').populate('from', 'account name').populate('to', 'account name').exec(cb);
+  }).populate('from', 'account name').populate('to', 'account name').sort('-createtime').exec(cb);
 };
 
 MessageSchema.statics.read = function(messageId, to, cb) {
@@ -112,7 +105,7 @@ MessageSchema.statics.read = function(messageId, to, cb) {
 MessageSchema.statics.inbox = function(to, start, size, cb) {
   Inbox.find({
     to : ObjectId(to)
-  }).skip(start).limit(size).populate('from', 'account name').sort('-date').exec(cb);
+  }).skip(start).limit(size).populate('from', 'account name').populate('message', 'title').sort('-createtime').exec(cb);
 };
 
 MessageSchema.statics.inboxCount = function(to, cb) {

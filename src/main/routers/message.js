@@ -13,7 +13,7 @@ module.exports = function(router) {
       } else {
         res.send(messages.map(function(message) {
           var json = message.toJSON();
-          json.date = formatDate(json.date, 'yyyy年mm月dd日 hh:MM:ss');
+          json.date = formatDate(json.createtime, 'yyyy年mm月dd日 hh:MM:ss');
           return json;
         }));
       }
@@ -50,7 +50,7 @@ module.exports = function(router) {
         next(new HttpError('Error when read message: ' + error));
       } else {
         var json = message.toJSON();
-        json.date = formatDate(json.date, 'yyyy年mm月dd日 hh:MM:ss');
+        json.date = formatDate(json.createtime, 'yyyy年mm月dd日 hh:MM:ss');
         res.send(json);
       }
     });
