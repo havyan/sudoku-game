@@ -9,9 +9,6 @@
 
     initEvents : function() {
       var self = this;
-      this.bind('count', function() {
-        self.reset();
-      });
       this.bind('current', function() {
         self.resetPages();
       });
@@ -19,6 +16,7 @@
 
     setCount : function(count) {
       this.attr('count', count);
+      this.reset();
     },
 
     reset : function() {
