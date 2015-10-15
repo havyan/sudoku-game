@@ -9,7 +9,11 @@ var RoomSchema = new Schema({
   description : String,
   capacity : Number,
   virtual : Boolean,
-  parent : String
+  parent : String,
+  seat : Number,
+  help : String,
+  order : Number,
+  status : String
 });
 
 RoomSchema.statics.findOneByName = function(name, cb) {

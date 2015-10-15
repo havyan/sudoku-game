@@ -119,6 +119,10 @@ UserSchema.statics.findOneByAccount = function(account, cb) {
   }, cb);
 };
 
+UserSchema.statics.findSystem = function(cb) {
+  this.findOneByAccount('SYSTEM', cb);
+};
+
 UserSchema.statics.updateByAccount = function(account, data, cb) {
   var self = this;
   data.updatetime = new Date();

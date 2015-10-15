@@ -11,7 +11,7 @@ Message.send = function(from, to, title, content, cb) {
 Message.sendFromSystem = function(to, title, content, cb) {
   async.waterfall([
   function(cb) {
-    UserDAO.findOneByAccount('SYSTEM', cb);
+    UserDAO.findSystem(cb);
   },
   function(system, cb) {
     MessageDAO.send(system.id, to, title, content, cb);
