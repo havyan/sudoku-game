@@ -103,7 +103,9 @@
         {{/order}}
         <div class="pay-method-row method">
           <span class="name">选择支付方式：</span>
+          <input type="radio" name="bank" data-bank="ali" />
           <img src="/imgs/default/ali_pay.png" />
+          <input type="radio" name="bank" data-bank="union" />
           <img src="/imgs/default/union_pay.png" />
         </div>
         <div class="pay-method-banks">

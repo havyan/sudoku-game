@@ -1,48 +1,53 @@
 {
-	"server": {
-	  "domain": "http://localhost",
-		"port": 9191
-	},
-	"mongodb": {
-		"url": "mongodb://localhost",
-		"database": "sudoku_game"
-	},
-	"app": {
-		"params": {
-			"conf.path.public": "public",
-			"conf.path.views": "views/html",
-			"conf.path.viewlibs": "views/viewlibs",
-			"conf.path.favicon": "public/imgs/web/favicon.ico"
-		},
-		"locals": {
-			"base": "/",
-			"baseimg": "/imgs/default",
-			"basecss": "/css/default",
-			"basejs": "/js",
-			"basefile": "/"
-		},
-		"mail" : {
-		  "service" : "163",
-		  "from": "zxx.968@163.com",
-		  "password": "genius"
-		}
-	},
-	"winston": {
-		"transport": {
-			"type": "File",
-			"level": "debug",
-			"filename": "logs/app.log",
-			"timestamp": true,
-			"maxsize": 5000000,
-			"maxFiles": 5,
-			"json": false
-		},
-		"levels": {
-			"debug": 1,
-			"info": 2,
-			"warn": 3,
-			"error": 4,
-			"fatal": 5
-		}
-	}
+  "server": {
+    "domain": "http://localhost",
+    "port": 9191
+  },
+  "mongodb": {
+    "url": "mongodb://localhost",
+    "database": "sudoku_game"
+  },
+  "app": {
+    "params": {
+      "conf.path.public": "public",
+      "conf.path.views": "views/html",
+      "conf.path.viewlibs": "views/viewlibs",
+      "conf.path.favicon": "public/imgs/web/favicon.ico"
+    },
+    "locals": {
+      "base": "/",
+      "baseimg": "/imgs/default",
+      "basecss": "/css/default",
+      "basejs": "/js",
+      "basefile": "/"
+    },
+    "mail": {
+      "service": "163",
+      "from": "zxx.968@163.com",
+      "password": "genius"
+    },
+    "pay": {
+      "apiuid": "uid11111111111111111111111111111",
+      "apipay": "http://account.supergenius.cn/api/{apiuid}/recharge/{payuid}",
+      "apiquery": "http://account.supergenius.cn/api/{apiuid}/recharge/query/{payuid}"
+    }
+  },
+  "winston": {
+    "transport": {
+      "type": "File",
+      "level": "debug",
+      "filename": "logs/app.log",
+      "timestamp": true,
+      "maxsize": 5000000,
+      "maxFiles": 5,
+      "json": false
+    },
+    "levels": {
+      "debug": 1,
+      "info": 2,
+      "warn": 3,
+      "error": 4,
+      "fatal": 5
+    }
+  }
 }
