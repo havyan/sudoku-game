@@ -18,6 +18,11 @@ var migrate = require('../migrate');
 var GameManager = require('./game_manager');
 var NOLOGIN_ACTIONS = require('./nologin_actions.json');
 
+process.on('uncaughtException', function(error) {
+  winston.error("UncaughtException Message: ", error.message || "Unknow error.");
+  winston.error("UncaughtException stack:", error.stack || "Unknow error.");
+});
+
 hbs.localsAsTemplateData(app);
 config.initialize(app);
 
