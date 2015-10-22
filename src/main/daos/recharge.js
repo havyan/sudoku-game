@@ -2,12 +2,17 @@ var mongoose = require('mongoose');
 var formatDate = require('dateformat');
 var Schema = mongoose.Schema;
 var common = require('./common');
+var uuid = require('node-uuid');
 
 var RechargeSchema = new Schema({
   trans_code : String,
   status : String,
   from : String,
   target : String,
+  payuid : {
+    type : String,
+    default : uuid.v10
+  },
   purchase : Number,
   cost : Number,
   channel : String

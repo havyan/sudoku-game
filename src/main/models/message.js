@@ -48,6 +48,16 @@ Message.count = function(account, cb) {
   }], cb);
 };
 
+Message.unreadCount = function(account, cb) {
+  async.waterfall([
+  function(cb) {
+    UserDAO.findOneByAccount(account, cb);
+  },
+  function(user, cb) {
+    MessageDAO.unreadCount(user.id, cb);
+  }], cb);
+};
+
 Message.removeInbox = function(ids, cb) {
   MessageDAO.removeInbox(ids, cb);
 };

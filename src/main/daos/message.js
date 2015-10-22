@@ -114,6 +114,13 @@ MessageSchema.statics.inboxCount = function(to, cb) {
   }, cb);
 };
 
+MessageSchema.statics.unreadCount = function(to, cb) {
+  Inbox.count({
+    to : ObjectId(to),
+    read : false
+  }, cb);
+};
+
 MessageSchema.statics.removeInbox = function(ids, cb) {
   var self = this;
   async.each(ids, function(id, cb) {

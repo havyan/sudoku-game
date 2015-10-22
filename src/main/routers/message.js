@@ -32,6 +32,18 @@ module.exports = function(router) {
     });
   });
 
+  router.get('/messages/unread/count', function(req, res, next) {
+    Message.unreadCount(req.session.account, function(error, count) {
+      if (error) {
+        next(new HttpError('Error when get messages for account' + req.session.account + ': ' + error));
+      } else {
+        res.send({
+          count : count
+        });
+      }
+    });
+  });
+
   router.delete('/messages/inbox', function(req, res, next) {
     Message.removeInbox(JSON.parse(req.body.ids), function(error) {
       if (error) {

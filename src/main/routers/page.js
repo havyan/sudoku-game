@@ -128,16 +128,24 @@ module.exports = function(router) {
     if (game && (game.isOngoing() || game.isWaiting())) {
       res.redirect('/table/' + game.id);
     } else {
-      UserDAO.findOneByAccount(req.session.account, function(error, user) {
+      async.parallel([
+      function(cb) {
+        UserDAO.findOneByAccount(req.session.account, cb);
+      },
+      function(cb) {
+        Message.unreadCount(req.session.account, cb);
+      }], function(error, results) {
         if (error) {
-          next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
+          next(new HttpError('Error when init main by account ' + req.session.account + ': ' + error));
           return;
         }
+        var user = results[0];
         if (user) {
           res.render('lobby', {
             userName : user.name,
             userIcon : user.icon,
-            money : user.money
+            money : user.money,
+            unreadMessagesCount : results[1]
           });
         } else {
           req.session.account = undefined;

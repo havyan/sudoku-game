@@ -28,12 +28,10 @@ module.exports = function(router) {
       } else {
         var json = recharge.toJSON();
         var pay = global.config.app.pay;
-        var payuid = uuid.v1().replace(/-/g, '');
         json.apiuid = pay.apiuid;
-        json.payuid = payuid;
         json.notifyurl = pay.notifyurl;
-        json.apipay = pay.apipay.replace('{apiuid}', pay.apiuid).replace('{payuid}', payuid);
-        json.apiquery = pay.apiquery.replace('{apiuid}', pay.apiuid).replace('{payuid}', payuid);
+        json.apipay = pay.apipay.replace('{payuid}', json.payuid);
+        json.apiquery = pay.apiquery.replace('{payuid}', json.payuid);
         res.send(json);
       }
     });

@@ -401,6 +401,16 @@
       });
     },
 
+    getUnreadCount : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/messages/unread/count',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     removeInbox : function(ids, success, error) {
       return $.ajax({
         type : 'delete',

@@ -176,7 +176,7 @@
           }
         }, {
           name : '付款遇到问题',
-          userClass : 'btn-primary',
+          userClass : 'btn-danger',
           callback : function() {
             this.hide();
             model.next();

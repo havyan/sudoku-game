@@ -28,9 +28,9 @@
     },
     "pay": {
       "apiuid": "uid11111111111111111111111111111",
-      "apipay": "http://account.supergenius.cn/api/{apiuid}/recharge/{payuid}",
+      "apipay": "http://account.supergenius.cn/api/uid11111111111111111111111111111/recharge/{payuid}",
       "notifyurl": "",
-      "apiquery": "http://account.supergenius.cn/api/{apiuid}/recharge/query/{payuid}"
+      "apiquery": "http://account.supergenius.cn/api/uid11111111111111111111111111111/recharge/query/{payuid}"
     }
   },
   "winston": {

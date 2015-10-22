@@ -8,5 +8,29 @@
       });
     }, function(e) {
     });
+
+    var $messagesCount = $('.header .messages-count');
+
+    var showMessagesCount = function() {
+      var count = $messagesCount.html();
+      if (count && count.length > 0) {
+        count = parseInt(count);
+      } else {
+        count = 0;
+      }
+      if (count > 0) {
+        $messagesCount.show();
+      } else {
+        $messagesCount.hide();
+      }
+    };
+    setInterval(function() {
+      Rest.Message.getUnreadCount(function(result) {
+        $messagesCount.html(result.count);
+        showMessagesCount();
+      }, function() {
+      });
+    }, 3000);
+    showMessagesCount();
   });
 })();

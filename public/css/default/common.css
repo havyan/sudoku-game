@@ -144,13 +144,34 @@ a:active {
   min-width: 1264px;
 }
 
-.header-actions a {
+.header-action {
+  display: block;
   float: left;
+  position: relative;
+  margin-top: 16px;
+  margin-left: 61px;
+}
+
+.header-action .messages-count {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+  background-color: #FFF000;
+  border-radius: 25px;
+  text-align: center;
+  right: -5px;
+  color: black;
+  border: 1px solid white;
+  box-sizing: border-box;
+}
+
+.header-actions a {
+  display: block;
   height: 97px;
   width: 93px;
   vertical-align: middle;
-  margin-top: 16px;
-  margin-left: 61px;
   line-height: 97px;
   color: white;
   font-size: 18px;
@@ -162,7 +183,7 @@ a:active {
   color: #FFF000;
 }
 
-.header-actions a:first-of-type {
+.header-action:first-of-type {
   margin-left: 42px;
 }
 
