@@ -30,7 +30,7 @@
         showMessagesCount();
       }, function() {
       });
-    }, 3000);
+    }, 10000);
     showMessagesCount();
   });
 })();
