@@ -29,6 +29,7 @@
     "pay": {
       "apiuid": "uid11111111111111111111111111111",
       "apipay": "http://account.supergenius.cn/api/{apiuid}/recharge/{payuid}",
+      "notifyurl": "",
       "apiquery": "http://account.supergenius.cn/api/{apiuid}/recharge/query/{payuid}"
     }
   },

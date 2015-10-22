@@ -217,7 +217,7 @@
 
 .recharge-steps-actions {
   text-align: right;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .pay-method-header {
@@ -271,10 +271,53 @@
   margin-right: 5px;
 }
 
+.recharge-form-hide {
+  display: none;
+}
+
+.pay-confirm-dialog .modal-title {
+  text-align: center;
+}
+
+.pay-confirm-dialog .modal-body {
+  text-align: center;
+}
+
+.pay-confirm-dialog .close {
+  display: none;
+}
+
+.pay-confirm-dialog .modal-footer {
+  text-align: center;
+}
+
 .recharge-target-row.other .error {
   margin-left: 10px;
   color: red;
   display: none;
+}
+
+.recharge-step-component.pay {
+  height: 300px;
+}
+
+.recharge-step-component.result {
+  height: 300px;
+}
+
+.recharge-step-component.result p {
+  text-align: center;
+  font-size: 25px;
+}
+
+.recharge-step-component.result p:first-of-type {
+  margin-top: 120px;
+}
+
+.recharge-step-component.result .money {
+  color: #FFF000;
+  font-weight: bold;
+  margin: 0px 5px;
 }
 
 .records-table {

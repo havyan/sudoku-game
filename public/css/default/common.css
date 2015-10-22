@@ -44,6 +44,10 @@ input[disabled=disabled], input[disabled=true], button[disabled=disabled], butto
   color: gray !important;
 }
 
+input[type=radio] {
+  margin: 0px;
+}
+
 a {
   text-decoration: none;
 }

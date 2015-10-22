@@ -82,43 +82,68 @@
             <span class="error">账号不存在</span>
           </div>
         </div>
+        <div class="recharge-steps-actions">
+          <a class="rich-button order-next" href="javascript:void(0);">下一步</a>
+        </div>
       </div>
       <div class="recharge-step-component pay-method">
-        <div class="pay-method-header">
-          订单已提交，请尽快付款
-        </div>
-        {{#order}}
-        <div class="pay-method-row">
-          <span class="name">充值到账号：</span><span class="value">{{target}}</span>
-        </div>
-        <div class="pay-method-row">
-          <span class="name">充值天才币数量：</span><span class="value">{{purchase}}</span>
-        </div>
-        <div class="pay-method-row">
-          <span class="name">您的订单号：</span><span class="value">{{trans_code}}</span>
-        </div>
-        <div class="pay-method-row money">
-          <span class="name">应付金额：</span><span class="value">{{cost}}</span>元
-        </div>
-        {{/order}}
-        <div class="pay-method-row method">
-          <span class="name">选择支付方式：</span>
-          <input type="radio" name="bank" data-bank="ali" />
-          <img src="/imgs/default/ali_pay.png" />
-          <input type="radio" name="bank" data-bank="union" />
-          <img src="/imgs/default/union_pay.png" />
-        </div>
-        <div class="pay-method-banks">
-          {{#banks}}
-          <div class="pay-method-bank">
-            <input type="radio" name="bank" data-bank="{{this}}" />
-            <img src="/imgs/default/banks/{{this}}.png" />
+        <form class="recharge-form" action="{{order.apipay}}" method="post" target="_blank">
+          <div class="pay-method-header">
+            订单已提交，请尽快付款
           </div>
-          {{/banks}}
-        </div>
+          {{#order}}
+          <div class="pay-method-row">
+            <span class="name">充值到账号：</span><span class="value">{{target}}</span>
+          </div>
+          <div class="pay-method-row">
+            <span class="name">充值天才币数量：</span><span class="value">{{purchase}}</span>
+          </div>
+          <div class="pay-method-row">
+            <span class="name">您的订单号：</span><span class="value">{{trans_code}}</span>
+          </div>
+          <div class="pay-method-row money">
+            <span class="name">应付金额：</span><span class="value">{{cost}}</span>元
+          </div>
+          {{/order}}
+          <div class="recharge-form-hide">
+            <input type="text" name="money" value="{{order.cost}}">
+            <input name="notifyurl" type="text" value="{{order.notifyurl}}" />
+            <input name="resulturl" type="text" value="" />
+            <input name="userip" type="text" value="{{user.ip}}" />
+            <input name="site" type="text" value="1" />
+            <input name="type" type="text" value="0" />
+            <input name="useruid" type="text" value="{{user._id}}" />
+            <input name="username" type="text" value="{{user.name}}" />
+            <input name="useremail" type="text" value="{{user.email}}" />
+          </div>
+          <div class="pay-method-row method">
+            <span class="name">选择支付方式：</span>
+            <input type="radio" name="banktype" data-bank="ali" value="5" />
+            <img src="/imgs/default/ali_pay.png" />
+            <input type="radio" name="banktype" data-bank="union" value="6" checked="checked"/>
+            <img src="/imgs/default/union_pay.png" />
+          </div>
+          <div class="pay-method-banks">
+            {{#banks}}
+            <div class="pay-method-bank">
+              <input type="radio" name="banktype" data-bank="{{code}}" value="{{value}}" />
+              <img src="/imgs/default/banks/{{code}}.png" />
+            </div>
+            {{/banks}}
+          </div>
+          <div class="recharge-steps-actions">
+            <input class="rich-button pay-method-submit" name="submit" type="submit" value="立即充值">
+          </div>
+        </form>
       </div>
-      <div class="recharge-steps-actions">
-        <a class="rich-button next" href="javascript:void(0);">下一步</a>
+      <div class="recharge-step-component pay"></div>
+      <div class="recharge-step-component result">
+        <p>
+          充值天才币成功！
+        </p>
+        <p>
+          您的当前天才币为：<span class="money">{{user.money}}</span>天才币。
+        </p>
       </div>
     </div>
     <div class="recharge-records item">

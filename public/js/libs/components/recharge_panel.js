@@ -11,7 +11,19 @@
     },
 
     initBanks : function() {
-      this.attr('banks', ['icbc', 'cmb', 'ccb', 'abc']);
+      this.attr('banks', [{
+        code : 'icbc',
+        value : 0
+      }, {
+        code : 'cmb',
+        value : 1
+      }, {
+        code : 'ccb',
+        value : 4
+      }, {
+        code : 'abc',
+        value : 3
+      }]);
     },
 
     initEvents : function() {
@@ -131,26 +143,46 @@
       this.element.find('.recharge-container .item').removeClass('active').filter('.' + target).addClass('active');
     },
 
-    '.recharge-steps-actions .next click' : function() {
+    '.order-next click' : function() {
       var model = this.options.model;
-      var current = model.attr('step');
-      if (current === 1) {
-        var purchase = model.attr('purchase');
-        if (purchase) {
-          var target = model.attr('target');
-          if (target) {
-            model.createOrder(function() {
-              model.next();
-            });
-          } else {
-            Dialog.message('请正确输入你要充值的对象.');
-          }
+      var purchase = model.attr('purchase');
+      if (purchase) {
+        var target = model.attr('target');
+        if (target) {
+          model.createOrder(function() {
+            model.next();
+          });
         } else {
-          Dialog.message('请选择或输入你要购买的天才币.');
+          Dialog.message('请正确输入你要充值的对象.');
         }
       } else {
-        this.options.model.next();
+        Dialog.message('请选择或输入你要购买的天才币.');
       }
+    },
+
+    '.pay-method-submit click' : function() {
+      var model = this.options.model;
+      model.next();
+      Dialog.show({
+        title : '付款确认',
+        userClass : 'pay-confirm-dialog',
+        content : '请在新开网银页面完成付款。<br>支付成功后订单状态可能会延迟更新，可稍后查看。',
+        actions : [{
+          name : '已完成付款',
+          userClass : 'btn-primary',
+          callback : function() {
+            this.hide();
+            model.next();
+          }
+        }, {
+          name : '付款遇到问题',
+          userClass : 'btn-primary',
+          callback : function() {
+            this.hide();
+            model.next();
+          }
+        }]
+      });
     },
 
     '.purchase-row.custom input[type=text] keydown' : function(element, event) {

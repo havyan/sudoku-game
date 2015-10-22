@@ -3,6 +3,7 @@ var UserDAO = require('../daos/user');
 var Recharge = require('../models/recharge');
 var winston = require('winston');
 var formatDate = require('dateformat');
+var uuid = require('node-uuid');
 
 module.exports = function(router) {
   router.get('/recharge/data', function(req, res, next) {
@@ -10,8 +11,10 @@ module.exports = function(router) {
       if (error) {
         next(new HttpError(error));
       } else {
+        var json = user.toJSON();
+        json.ip = req.ip;
         res.send({
-          user : user.toJSON()
+          user : json
         });
       }
     });
@@ -23,7 +26,15 @@ module.exports = function(router) {
       if (error) {
         next(new HttpError(error));
       } else {
-        res.send(recharge.toJSON());
+        var json = recharge.toJSON();
+        var pay = global.config.app.pay;
+        var payuid = uuid.v1().replace(/-/g, '');
+        json.apiuid = pay.apiuid;
+        json.payuid = payuid;
+        json.notifyurl = pay.notifyurl;
+        json.apipay = pay.apipay.replace('{apiuid}', pay.apiuid).replace('{payuid}', payuid);
+        json.apiquery = pay.apiquery.replace('{apiuid}', pay.apiuid).replace('{payuid}', payuid);
+        res.send(json);
       }
     });
   });
