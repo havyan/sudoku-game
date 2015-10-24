@@ -110,7 +110,7 @@
             <input name="notifyurl" type="text" value="{{order.notifyurl}}" />
             <input name="resulturl" type="text" value="" />
             <input name="userip" type="text" value="{{user.ip}}" />
-            <input name="site" type="text" value="1" />
+            <input name="site" type="text" value="{{order.site}}" />
             <input name="type" type="text" value="0" />
             <input name="useruid" type="text" value="{{user._id}}" />
             <input name="username" type="text" value="{{user.name}}" />

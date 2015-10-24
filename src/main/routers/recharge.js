@@ -29,6 +29,7 @@ module.exports = function(router) {
         var json = recharge.toJSON();
         var pay = global.config.app.pay;
         json.apiuid = pay.apiuid;
+        json.site = pay.site;
         json.notifyurl = pay.notifyurl;
         json.apipay = pay.apipay.replace('{payuid}', json.payuid);
         json.apiquery = pay.apiquery.replace('{payuid}', json.payuid);
