@@ -264,4 +264,32 @@ User.checkActiveKey = function(key, cb) {
   });
 };
 
+User.clearInactiveUsers = function(cb) {
+  winston.info('Start to clear inactive users');
+  async.waterfall([
+  function(cb) {
+    UserDAO.findInactive(cb);
+  },
+  function(users, cb) {
+    if (users && users.length > 0) {
+      async.eachSeries(users, function(user, cb) {
+        ActiveKeyDAO.findOneBySource(user.account, function(error, key) {
+          if (error) {
+            cb(error);
+          } else {
+            if (!key) {
+              winston.info('Remove inactive user [' + user.account + '].');
+              user.remove(cb);
+            } else {
+              cb();
+            }
+          }
+        });
+      }, cb);
+    } else {
+      cb();
+    }
+  }], cb);
+};
+
 module.exports = User;

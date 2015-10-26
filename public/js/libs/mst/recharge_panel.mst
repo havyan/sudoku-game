@@ -108,7 +108,7 @@
           <div class="recharge-form-hide">
             <input type="text" name="money" value="{{order.cost}}">
             <input name="notifyurl" type="text" value="{{order.notifyurl}}" />
-            <input name="resulturl" type="text" value="" />
+            <input name="resulturl" type="text" value="http://192.168.1.1:9191/recharge/result" />
             <input name="userip" type="text" value="{{user.ip}}" />
             <input name="site" type="text" value="{{order.site}}" />
             <input name="type" type="text" value="0" />

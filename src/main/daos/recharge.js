@@ -4,9 +4,19 @@ var Schema = mongoose.Schema;
 var common = require('./common');
 var uuid = require('node-uuid');
 
+var STATUS = {
+  INIT : '0',
+  SUCCESS : '1',
+  WAITING : '2',
+  FAIL : '-1'
+};
+
 var RechargeSchema = new Schema({
   trans_code : String,
-  status : String,
+  status : {
+    type : String,
+    default : STATUS.INIT
+  },
   from : String,
   target : String,
   payuid : {
@@ -31,10 +41,24 @@ RechargeSchema.statics.countByFrom = function(from, cb) {
   }, cb);
 };
 
+RechargeSchema.statics.findOneByPayuid = function(payuid, cb) {
+  this.findOne({
+    payuid : payuid
+  }, cb);
+};
+
 RechargeSchema.statics.findByRange = function(from, start, size, cb) {
   this.find({
     from : from
   }).skip(start).limit(size).sort('-createtime').exec(cb);
+};
+
+RechargeSchema.statics.findUnfinished = function(cb) {
+  this.find({
+    status : {
+      $in : [STATUS.INIT, STATUS.WAITING]
+    }
+  }, cb);
 };
 
 RechargeSchema.statics.genTransCode = function() {
@@ -52,4 +76,7 @@ RechargeSchema.statics.genTransCode = function() {
 
 RechargeSchema.plugin(common);
 
-module.exports = mongoose.model('Recharge', RechargeSchema);
+var Recharge = mongoose.model('Recharge', RechargeSchema);
+Recharge.STATUS = STATUS;
+
+module.exports = Recharge;
