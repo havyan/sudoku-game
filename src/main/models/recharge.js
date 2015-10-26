@@ -51,16 +51,26 @@ Recharge.check = function(recharge, cb) {
       }
     }, cb);
   },
-  function(res, body) {
+  function(res, body, cb) {
     var result = JSON.parse(body);
     if (res.statusCode == 200) {
       var status = result.result.toString();
       if (_.contains(RechargeDAO.STATUS, status)) {
         recharge.status = status;
-        recharge.save(cb);
+        recharge.save(function(error) {
+          if (error) {
+            cb(error);
+          } else {
+            cb(null, {
+              status : status
+            });
+          }
+        });
       } else {
         winston.info('Query pay status got: ' + status);
-        cb();
+        cb(null, {
+          status : status
+        });
       }
     } else {
       cb('Get pay status error: ' + res.statusCode);
