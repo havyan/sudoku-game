@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var formatDate = require('dateformat');
 var Schema = mongoose.Schema;
+var ObjectId = mongoose.Types.ObjectId;
 var common = require('./common');
 var uuid = require('node-uuid');
 
@@ -30,8 +31,6 @@ var RechargeSchema = new Schema({
 
 RechargeSchema.statics.createRecharge = function(params, cb) {
   params.trans_code = this.genTransCode();
-  // TODO algorithm to calculate cost
-  params.cost = params.purchase / 10;
   this.create(params, cb);
 };
 
@@ -44,6 +43,12 @@ RechargeSchema.statics.countByFrom = function(from, cb) {
 RechargeSchema.statics.findOneByPayuid = function(payuid, cb) {
   this.findOne({
     payuid : payuid
+  }, cb);
+};
+
+RechargeSchema.statics.findOneById = function(id, cb) {
+  this.findOne({
+    _id : ObjectId(id)
   }, cb);
 };
 

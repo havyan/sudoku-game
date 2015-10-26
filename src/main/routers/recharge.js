@@ -4,6 +4,9 @@ var Recharge = require('../models/recharge');
 var winston = require('winston');
 var formatDate = require('dateformat');
 var uuid = require('node-uuid');
+var _ = require('lodash');
+var async = require('async');
+var request = require('request');
 
 module.exports = function(router) {
   router.get('/recharge/data', function(req, res, next) {
@@ -26,14 +29,39 @@ module.exports = function(router) {
       if (error) {
         next(new HttpError(error));
       } else {
-        var json = recharge.toJSON();
+        res.send(recharge.toJSON());
+      }
+    });
+  });
+
+  router.post('/recharge/:id/pay', function(req, res, next) {
+    async.parallel([
+    function(cb) {
+      UserDAO.findOneByAccount(req.session.account, cb);
+    },
+    function(cb) {
+      Recharge.findOneById(req.params.id, cb);
+    }], function(error, results) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        var user = results[0];
+        var recharge = results[1];
         var pay = global.config.app.pay;
-        json.apiuid = pay.apiuid;
-        json.site = pay.site;
-        json.notifyurl = pay.notifyurl;
-        json.apipay = pay.apipay.replace('{payuid}', json.payuid);
-        json.apiquery = pay.apiquery.replace('{payuid}', json.payuid);
-        res.send(json);
+        var form = {
+          money : Recharge.convertCost(recharge.purchase),
+          banktype : req.body.banktype,
+          notifyurl : pay.notifyurl,
+          site : pay.site,
+          resulturl : 'http://192.168.1.1:9191/recharge/result',
+          type : '0',
+          useruid : user._id.toString(),
+          userip : req.ip,
+          username : user.name,
+          useremail : user.email
+        };
+        var url = pay.apipay.replace('{payuid}', recharge.payuid);
+        request.post(url).form(form).pipe(res);
       }
     });
   });

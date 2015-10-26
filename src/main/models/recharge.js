@@ -6,12 +6,22 @@ var RechargeDAO = require('../daos/recharge');
 
 var Recharge = {};
 
+// TODO algorithm to calculate cost
+Recharge.convertCost = function(purchase) {
+  return purchase / 10;
+};
+
 Recharge.create = function(params, cb) {
+  params.cost = this.convertCost(params.purchase);
   RechargeDAO.createRecharge(params, cb);
 };
 
 Recharge.count = function(account, cb) {
   RechargeDAO.countByFrom(account, cb);
+};
+
+Recharge.findOneById = function(id, cb) {
+  RechargeDAO.findOneById(id, cb);
 };
 
 Recharge.findByAccount = function(account, start, size, cb) {
