@@ -5,6 +5,9 @@ if (!global.config.server.port) {
   global.config.server.port = 80;
 }
 
+var server = global.config.server;
+global.domain = server.port === 80 ? server.domain : server.domain + ':' + server.port;
+
 var Config = function() {
 };
 

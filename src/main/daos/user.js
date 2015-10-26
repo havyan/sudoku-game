@@ -89,7 +89,7 @@ UserSchema.statics.createUser = function(params, cb) {
   },
   function(key, cb) {
     if (params.status !== STATUS.ACTIVE) {
-      var link = global.config.server.domain + ':' + global.config.server.port + '/active_user?key=' + key.id;
+      var link = global.domain + '/active_user?key=' + key.id;
       emailer.send({
         to : params.email,
         subject : ' 激活超天才账户',

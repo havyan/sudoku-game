@@ -2,6 +2,7 @@ var async = require('async');
 var _ = require('lodash');
 var request = require('request');
 var winston = require('winston');
+var UserDAO = require('../daos/user');
 var RechargeDAO = require('../daos/recharge');
 
 var Recharge = {};
@@ -57,11 +58,26 @@ Recharge.check = function(recharge, cb) {
       var status = result.result.toString();
       if (_.contains(RechargeDAO.STATUS, status)) {
         recharge.status = status;
-        recharge.save(function(error) {
+        async.waterfall([
+        function(cb) {
+          recharge.save(cb);
+        },
+        function(recharge, count, cb) {
+          UserDAO.findOneByAccount(recharge.target, cb);
+        },
+        function(user, cb) {
+          if (status === RechargeDAO.STATUS.SUCCESS) {
+            user.money = user.money + recharge.purchase;
+            user.save(cb);
+          } else {
+            cb(null, user, 0);
+          }
+        }], function(error, user) {
           if (error) {
             cb(error);
           } else {
             cb(null, {
+              money : user.money,
               status : status
             });
           }

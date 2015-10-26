@@ -1,4 +1,19 @@
 (function() {
+  var STATUS = {
+    '0' : '充值未完成',
+    '1' : '充值成功',
+    '2' : '已付款，等待处理',
+    '9' : '开始充值',
+    '-1' : '充值失败'
+  };
+  var BANK = {
+    '0' : '中国工商银行',
+    '1' : '招商银行',
+    '3' : '中国农业银行',
+    '4' : '中国建设银行',
+    '5' : '支付宝',
+    '6' : '中国银联'
+  };
   can.Model('Models.RechargeModel', {
   }, {
     init : function() {
@@ -110,7 +125,15 @@
 
   can.Control('Components.RechargePanel', {}, {
     init : function(element, options) {
-      element.html(can.view('/js/libs/mst/recharge_panel.mst', this.options.model));
+      element.html(can.view('/js/libs/mst/recharge_panel.mst', this.options.model, {
+        rechargeStatus : function(status) {
+          return STATUS[status()];
+        },
+
+        rechargeBank : function(bank) {
+          return BANK[bank()];
+        }
+      }));
       this.paginationModel = new Models.PaginationModel();
       this.paginationBar = new Components.PaginationBar(element.find('.records-pagination-bar'), {
         model : this.paginationModel
@@ -163,7 +186,24 @@
     '.pay-method-submit click' : function() {
       var model = this.options.model;
       model.next();
-      Dialog.show({
+      var check = function() {
+        Rest.Recharge.getPayStatus(model.attr('order.payuid'), function(result) {
+          model.attr('order.status', result.status);
+          if (result.status === '1') {
+            model.attr('user.money', result.money);
+            dialog.hide();
+            model.next();
+            clearInterval(timer);
+          } else if (result.status === '-1') {
+            dialog.hide();
+            model.next();
+            clearInterval(timer);
+          }
+        }, function() {
+        });
+      };
+      var timer = setInterval(check, 3000);
+      var dialog = Dialog.show({
         title : '付款确认',
         userClass : 'pay-confirm-dialog',
         content : '请在新开网银页面完成付款。<br>支付成功后订单状态可能会延迟更新，可稍后查看。',
@@ -171,6 +211,8 @@
           name : '已完成付款',
           userClass : 'btn-primary',
           callback : function() {
+            check();
+            clearInterval(timer);
             this.hide();
             model.next();
           }
@@ -178,6 +220,8 @@
           name : '付款遇到问题',
           userClass : 'btn-danger',
           callback : function() {
+            check();
+            clearInterval(timer);
             this.hide();
             model.next();
           }

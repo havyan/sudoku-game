@@ -29,7 +29,8 @@
     "pay": {
       "apiuid": "7fb943a08b2b45e9911966fcf7d228bd",
       "site": "0",
-      "notifyurl": "http://192.168.1.1:9191/recharge/pay",
+      "notifyurl": "/recharge/pay/{payuid}/result",
+      "resulturl": "/view/recharge/pay/{payuid}",
       "apipay": "http://account.supergenius.cn/api/7fb943a08b2b45e9911966fcf7d228bd/recharge/{payuid}",
       "apiquery": "http://account.supergenius.cn/api/7fb943a08b2b45e9911966fcf7d228bd/recharge/query/{payuid}"
     }

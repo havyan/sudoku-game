@@ -144,18 +144,18 @@
           <th class="from">充值账号</th>
           <th class="target">被充值账号</th>
           <th class="cost">充值金额</th>
-          <th class="channel">充值渠道</th>
+          <th class="bank">充值渠道</th>
         </thead>
         <tbody>
           {{#records}}
           <tr>
             <td>{{trans_code}}</td>
-            <td>{{status}}</td>
+            <td>{{rechargeStatus status}}</td>
             <td>{{date}}</td>
             <td>{{from}}</td>
             <td>{{target}}</td>
             <td>{{cost}}</td>
-            <td>{{channel}}</td>
+            <td>{{rechargeBank bank}}</td>
           </tr>
           {{/records}}
         </tbody>

@@ -6,6 +6,7 @@ var User = require('../models/user');
 var winston = require('winston');
 var RoomDAO = require('../daos/room');
 var UserDAO = require('../daos/user');
+var RechargeDAO = require('../daos/recharge');
 var LoginHistoryDAO = require('../daos/login_history');
 var Message = require('../models/message');
 
@@ -263,6 +264,28 @@ module.exports = function(router) {
         next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
       } else {
         res.render('recharge', {
+          userName : user.name,
+          userIcon : user.icon,
+          money : user.money
+        });
+      }
+    });
+  });
+
+  router.get('/view/recharge/pay/:id', function(req, res, next) {
+    async.parallel([
+    function(cb) {
+      UserDAO.findOneByAccount(req.session.account, cb);
+    },
+    function(cb) {
+      RechargeDAO.findOneByPayuid(req.params.id, cb);
+    }], function(error, results) {
+      if (error) {
+        next(new HttpError('Error when finding user or recharge: ' + error));
+      } else {
+        var user = results[0];
+        var recharge = results[1];
+        res.render('pay_result', {
           userName : user.name,
           userIcon : user.icon,
           money : user.money

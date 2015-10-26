@@ -24,7 +24,7 @@ setInterval(function() {
     if (error) {
       winston.error('Error when checking recharge status: ' + error);
     } else {
-      winston.info('Finished clearing inactive users');
+      winston.info('Finished checking recharge status');
     }
   });
 }, CHECK_RECHARGE_INTERVAL);

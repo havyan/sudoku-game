@@ -482,5 +482,15 @@
         error : error
       });
     },
+
+    getPayStatus : function(payuid, success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/recharge/pay/' + payuid + '/status',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
   }, {});
 })();

@@ -221,7 +221,7 @@ User.sendResetMail = function(email, cb) {
     }
   },
   function(key, cb) {
-    var link = global.config.server.domain + ':' + global.config.server.port + '/reset_password?key=' + key.id;
+    var link = global.domain + '/reset_password?key=' + key.id;
     emailer.send({
       to : email,
       subject : '重置超天才数独游戏登录密码',

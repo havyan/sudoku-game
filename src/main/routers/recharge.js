@@ -34,6 +34,34 @@ module.exports = function(router) {
     });
   });
 
+  router.get('/recharge/pay/:id/status', function(req, res, next) {
+    Recharge.checkByPayuid(req.params.id, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(result);
+      }
+    });
+  });
+
+  router.get('/recharge/pay/:id/result', function(req, res, next) {
+    Recharge.checkByPayuid(req.params.id, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        if (result.status === 1) {
+          res.send({
+            result : 0
+          });
+        } else {
+          res.send({
+            result : 1
+          });
+        }
+      }
+    });
+  });
+
   router.post('/recharge/:id/pay', function(req, res, next) {
     async.parallel([
     function(cb) {
@@ -47,21 +75,28 @@ module.exports = function(router) {
       } else {
         var user = results[0];
         var recharge = results[1];
-        var pay = global.config.app.pay;
-        var form = {
-          money : Recharge.convertCost(recharge.purchase),
-          banktype : req.body.banktype,
-          notifyurl : pay.notifyurl,
-          site : pay.site,
-          resulturl : 'http://192.168.1.1:9191/recharge/result',
-          type : '0',
-          useruid : user._id.toString(),
-          userip : req.ip,
-          username : user.name,
-          useremail : user.email
-        };
-        var url = pay.apipay.replace('{payuid}', recharge.payuid);
-        request.post(url).form(form).pipe(res);
+        recharge.bank = req.body.banktype;
+        recharge.save(function(error) {
+          if (error) {
+            next(new HttpError(error));
+          } else {
+            var pay = global.config.app.pay;
+            var form = {
+              money : Recharge.convertCost(recharge.purchase),
+              banktype : req.body.banktype,
+              notifyurl : global.domain + pay.notifyurl.replace('{payuid}', recharge.payuid),
+              site : pay.site,
+              resulturl : global.domain + pay.resulturl.replace('{payuid}', recharge.payuid),
+              type : '0',
+              useruid : user._id.toString(),
+              userip : req.ip,
+              username : user.name,
+              useremail : user.email
+            };
+            var url = pay.apipay.replace('{payuid}', recharge.payuid);
+            request.post(url).form(form).pipe(res);
+          }
+        });
       }
     });
   });
@@ -81,7 +116,13 @@ module.exports = function(router) {
   router.get('/recharge/records', function(req, res, next) {
     var start = parseInt(req.query.start || 0);
     var size = parseInt(req.query.size || 10);
-    Recharge.findByAccount(req.session.account, start, size, function(error, records) {
+    async.waterfall([
+    function(cb) {
+      Recharge.checkAll(cb);
+    },
+    function(cb) {
+      Recharge.findByAccount(req.session.account, start, size, cb);
+    }], function(error, records) {
       if (error) {
         next(new HttpError('Error when get recharge records for account' + req.session.account + ': ' + error));
       } else {

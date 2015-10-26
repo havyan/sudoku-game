@@ -6,7 +6,8 @@ var common = require('./common');
 var uuid = require('node-uuid');
 
 var STATUS = {
-  INIT : '0',
+  INIT : '9',
+  PAYING : '0',
   SUCCESS : '1',
   WAITING : '2',
   FAIL : '-1'
@@ -26,7 +27,7 @@ var RechargeSchema = new Schema({
   },
   purchase : Number,
   cost : Number,
-  channel : String
+  bank : String
 });
 
 RechargeSchema.statics.createRecharge = function(params, cb) {
@@ -61,7 +62,7 @@ RechargeSchema.statics.findByRange = function(from, start, size, cb) {
 RechargeSchema.statics.findUnfinished = function(cb) {
   this.find({
     status : {
-      $in : [STATUS.INIT, STATUS.WAITING]
+      $in : [STATUS.INIT, STATUS.PAYING, STATUS.WAITING]
     }
   }, cb);
 };
