@@ -158,13 +158,15 @@ a:active {
   height: 40px;
   line-height: 40px;
   font-size: 20px;
-  background-color: #FFF000;
+  background-color: red;
   border-radius: 25px;
   text-align: center;
   right: -5px;
-  color: black;
   border: 1px solid white;
   box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .header-actions a {
