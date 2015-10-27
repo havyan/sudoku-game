@@ -26,7 +26,7 @@
     };
     setInterval(function() {
       Rest.Message.getUnreadCount(function(result) {
-        $messagesCount.html(result.count);
+        $messagesCount.html(result.count).attr('title', result.count);
         showMessagesCount();
       }, function() {
       });
