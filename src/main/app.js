@@ -16,7 +16,7 @@ var config = require('./config');
 var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
-var NOLOGIN_ACTIONS = require('./nologin_actions.json');
+var NOLOGIN = require('./nologin.json');
 
 process.on('uncaughtException', function(error) {
   winston.error("UncaughtException Message: ", error.message || "Unknow error.");
@@ -54,7 +54,14 @@ app.engine('html', hbs.__express);
 app.use(function(req, res, next) {
   var action = req.method + " " + req.path;
   winston.info("Start " + action);
-  if (!_.contains(NOLOGIN_ACTIONS, action) && !req.session.account) {
+  var find = _.find(NOLOGIN, function(e) {
+    if (e.indexOf('[RE]') === 0) {
+      return new RegExp(e.replace('[RE]', '').trim()).test(action);
+    } else {
+      return e === action;
+    }
+  });
+  if (!find && !req.session.account) {
     req.params.error = true;
     res.redirect('/login');
   } else {

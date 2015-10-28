@@ -13,5 +13,6 @@
   "POST /user/reset_mail",
   "GET /reset_password",
   "PUT /user/password",
-  "GET /active_user"
+  "GET /active_user",
+  "[RE]GET /recharge/pay/\\w{32}/result"
 ]
