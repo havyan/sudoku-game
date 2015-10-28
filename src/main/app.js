@@ -56,7 +56,7 @@ app.use(function(req, res, next) {
   winston.info("Start " + action);
   var find = _.find(NOLOGIN, function(e) {
     if (e.indexOf('[RE]') === 0) {
-      return new RegExp(e.replace('[RE]', '').trim()).test(action);
+      return new RegExp('^' + e.replace('[RE]', '').trim() + '$').test(action);
     } else {
       return e === action;
     }
