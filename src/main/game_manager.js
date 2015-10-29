@@ -32,7 +32,7 @@ GameManager.prototype.init = function(cb) {
           return room;
         };
         _.filter(rooms, function(room) {
-          return _.isEmpty(room.parent);
+          return room.virtual && _.isEmpty(room.parent);
         }).forEach(function(room) {
           self.rooms.push(build(room));
         });
