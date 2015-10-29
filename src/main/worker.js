@@ -14,7 +14,7 @@ setInterval(function() {
     if (error) {
       winston.error('Error when clearing inactive users: ' + error);
     } else {
-      winston.info('Finished clearing inactive users');
+      winston.debug('Finished clearing inactive users');
     }
   });
 }, CLEAR_USER_INTERVAL);
@@ -24,7 +24,7 @@ setInterval(function() {
     if (error) {
       winston.error('Error when checking recharge status: ' + error);
     } else {
-      winston.info('Finished checking recharge status');
+      winston.debug('Finished checking recharge status');
     }
   });
 }, CHECK_RECHARGE_INTERVAL);

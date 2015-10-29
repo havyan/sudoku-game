@@ -44,7 +44,7 @@ Recharge.check = function(recharge, cb) {
   async.waterfall([
   function(cb) {
     var url = global.config.app.pay.apiquery.replace('{payuid}', recharge.payuid);
-    winston.info('Call pay query api to get pay status of ' + recharge.payuid);
+    winston.debug('Call pay query api to get pay status of ' + recharge.payuid);
     request({
       url : url,
       qs : {
@@ -83,7 +83,7 @@ Recharge.check = function(recharge, cb) {
           }
         });
       } else {
-        winston.info('Query pay status got: ' + status);
+        winston.debug('Query pay status got: ' + status);
         cb(null, {
           status : status
         });

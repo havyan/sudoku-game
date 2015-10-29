@@ -265,7 +265,7 @@ User.checkActiveKey = function(key, cb) {
 };
 
 User.clearInactiveUsers = function(cb) {
-  winston.info('Start to clear inactive users');
+  winston.debug('Start to clear inactive users');
   async.waterfall([
   function(cb) {
     UserDAO.findInactive(cb);

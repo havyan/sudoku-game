@@ -1,5 +1,6 @@
 var HttpError = require('../http_error');
 var winston = require('winston');
+var GameManager = require('../game_manager');
 
 module.exports = function(router) {
   router.post('/system/reset', function(req, res, next) {
@@ -10,7 +11,7 @@ module.exports = function(router) {
           reason : '有游戏在进行中，无法重置。'
         });
       } else {
-        global.gameManager.destory();
+        global.gameManager.destroy();
         global.gameManager = new GameManager();
         global.gameManager.init(function(error) {
           if (error) {
