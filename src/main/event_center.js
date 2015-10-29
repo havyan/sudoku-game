@@ -5,6 +5,10 @@ var SYSTEM_GAME_TOPICS = ['init', 'player-joined', 'player-quit', 'status-change
 var EventCenter = function(io) {
   this.io = io;
   this.systemEmitter = this.io.of('/events/system');
+  this.reset();
+};
+
+EventCenter.prototype.reset = function() {
   this.gameEmitters = {};
   this.initEvents();
 };

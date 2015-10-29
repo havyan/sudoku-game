@@ -17,6 +17,7 @@ module.exports = function(router) {
           if (error) {
             next(new HttpError('Error when init  game manager: ' + error));
           } else {
+            global.eventCenter.reset();
             res.send({
               success : true
             });
