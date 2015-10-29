@@ -3,6 +3,7 @@
     "domain": "http://localhost",
     "port": 9191
   },
+  "admin": "",
   "mongodb": {
     "url": "mongodb://localhost",
     "database": "sudoku_game"

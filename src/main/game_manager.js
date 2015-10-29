@@ -205,6 +205,10 @@ GameManager.prototype.findGameByUser = function(account) {
   return game;
 };
 
+GameManager.prototype.destroy = function() {
+  //TODO release resources
+};
+
 _.merge(GameManager.prototype, Observable.general);
 
 module.exports = GameManager;
