@@ -1,5 +1,6 @@
 var _ = require('lodash');
-var Observable = require('./base/observable');
+var util = require("util");
+var EventEmitter = require('events').EventEmitter;
 var RoomDAO = require('./daos/room');
 var RuleDAO = require('./daos/rule');
 var UserDAO = require('./daos/user');
@@ -9,9 +10,10 @@ var PLAYING = 'playing';
 var FREE = 'free';
 
 var GameManager = function() {
-  this.$ = new Observable();
+  EventEmitter.call(this);
   this.rooms = [];
 };
+util.inherits(GameManager, EventEmitter);
 
 GameManager.prototype.reload = function(cb) {
   var self = this;
@@ -20,7 +22,7 @@ GameManager.prototype.reload = function(cb) {
     if (error) {
       cb(error);
     } else {
-      self.trigger('game-manager-reload');
+      self.emit('game-manager-reload');
       cb();
     }
   });
@@ -50,7 +52,7 @@ GameManager.prototype.init = function(cb) {
           self.rooms.push(build(room));
         });
       }
-      self.trigger('game-manager-init');
+      self.emit('game-manager-init');
       cb();
     }
   });
@@ -221,7 +223,5 @@ GameManager.prototype.findGameByUser = function(account) {
 GameManager.prototype.destroy = function() {
   //TODO release resources
 };
-
-_.merge(GameManager.prototype, Observable.general);
 
 module.exports = GameManager;

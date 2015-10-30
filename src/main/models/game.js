@@ -2,7 +2,8 @@ var _ = require('lodash');
 var winston = require('winston');
 var async = require('async');
 var dateFormat = require('dateformat');
-var Observable = require('../base/observable');
+var util = require("util");
+var EventEmitter = require('events').EventEmitter;
 var RuleDAO = require('../daos/rule');
 var UserDAO = require('../daos/user');
 var PropDAO = require('../daos/prop');
@@ -42,13 +43,14 @@ var SCORE_TYPE = {
 };
 
 var Game = function(room, index, mode) {
-  this.$ = new Observable();
+  EventEmitter.call(this);
   this.room = room;
   this.id = room.id + '-' + index + '-' + Date.now();
   this.mode = mode || GameMode.MODE9;
   this.status = EMPTY;
   this.players = new Array(CAPACITY);
 };
+util.inherits(Game, EventEmitter);
 
 Game.prototype.init = function(account, params, cb) {
   var self = this;
@@ -91,10 +93,10 @@ Game.prototype.init = function(account, params, cb) {
     }
     self.rule = rule;
     self.initParams(params);
-    self.trigger('init', self.toSimpleJSON());
+    self.emit('init', self.toSimpleJSON());
     self.timer = setInterval(function() {
       self.remainingTime--;
-      self.trigger('total-countdown-stage', self.remainingTime);
+      self.emit('total-countdown-stage', self.remainingTime);
       if (self.remainingTime <= 0) {
         self.stopTimer();
         self.over(function(error) {
@@ -108,7 +110,7 @@ Game.prototype.init = function(account, params, cb) {
     var countDownTimer = setInterval(function() {
       if (self.isWaiting()) {
         if (countdown >= 0) {
-          self.trigger('wait-countdown-stage', countdown);
+          self.emit('wait-countdown-stage', countdown);
           countdown--;
         } else {
           clearInterval(countDownTimer);
@@ -189,7 +191,7 @@ Game.prototype.isOver = function() {
 Game.prototype.setStatus = function(status) {
   var oldStatus = this.status;
   this.status = status;
-  this.trigger('status-changed', status, oldStatus);
+  this.emit('status-changed', status, oldStatus);
   var self = this;
   if (oldStatus === WAITING && status === LOADING) {
     PuzzleDAO.findRandomOneByLevel(this.level, function(error, puzzle) {
@@ -199,12 +201,12 @@ Game.prototype.setStatus = function(status) {
         puzzleJson = puzzle.toJSON();
         self.initCellValues = puzzleJson.question;
         self.answer = puzzleJson.answer;
-        self.trigger('puzzle-init', self.initCellValues);
+        self.emit('puzzle-init', self.initCellValues);
         setTimeout(function() {
           var countdown = COUNTDOWN_TOTAL;
           var countDownTimer = setInterval(function() {
             if (countdown >= 0) {
-              self.trigger('countdown-stage', countdown);
+              self.emit('countdown-stage', countdown);
               countdown--;
             } else {
               clearInterval(countDownTimer);
@@ -212,7 +214,7 @@ Game.prototype.setStatus = function(status) {
                 self.start();
               }, 2000);
               self.status = ONGOING;
-              self.trigger('status-changed', self.status, status);
+              self.emit('status-changed', self.status, status);
             }
           }, 1000);
         }, 1000);
@@ -249,16 +251,16 @@ Game.prototype.nextPlayer = function() {
   } else {
     this.currentPlayer = this.players[0].account;
   }
-  this.trigger('switch-player', this.currentPlayer);
+  this.emit('switch-player', this.currentPlayer);
   setTimeout(function() {
     self.playerTimer = {
       ellapsedTime : 0
     };
-    self.trigger('player-ellapsed-time', self.playerTimer.ellapsedTime);
+    self.emit('player-ellapsed-time', self.playerTimer.ellapsedTime);
     self.playerTimer.timer = setInterval(function() {
       if (!self.playerTimer.stopped && !self.delayed) {
         self.playerTimer.ellapsedTime++;
-        self.trigger('player-ellapsed-time', self.playerTimer.ellapsedTime);
+        self.emit('player-ellapsed-time', self.playerTimer.ellapsedTime);
         if (self.playerTimer.ellapsedTime === self.rule.score.add.total) {
           var currentPlayer = self.currentPlayer;
           self.stopPlayerTimer();
@@ -268,12 +270,12 @@ Game.prototype.nextPlayer = function() {
           }
           self.timeoutCounter[currentPlayer]++;
           if (self.timeoutCounter[currentPlayer] >= MAX_TIMEOUT_ROUNDS) {
-            self.trigger('max-timeout-reached', currentPlayer);
+            self.emit('max-timeout-reached', currentPlayer);
             var countdown = QUIT_COUNTDOWN_TOTAL;
             self.timeoutTimer[currentPlayer] = setInterval(function() {
               countdown--;
               if (countdown > 0) {
-                self.trigger('quit-countdown-stage', currentPlayer, countdown);
+                self.emit('quit-countdown-stage', currentPlayer, countdown);
               } else {
                 clearInterval(self.timeoutTimer[currentPlayer]);
                 self.playerQuit(currentPlayer, 'offline', function(error) {
@@ -320,7 +322,7 @@ Game.prototype.updateScore = function(type, account, xy) {
       type : type,
       xy : xy
     };
-    this.trigger('score-changed', account, this.changedScores[account]);
+    this.emit('score-changed', account, this.changedScores[account]);
   }
   return score;
 };
@@ -347,7 +349,7 @@ Game.prototype.stopDelayTimer = function() {
   if (this.delayTimer) {
     clearInterval(this.delayTimer);
   }
-  this.trigger('game-delay-cancelled');
+  this.emit('game-delay-cancelled');
 };
 
 Game.prototype.playerJoin = function(account, index, cb) {
@@ -370,7 +372,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
               cb(error);
             } else {
               self.props.push(prop);
-              self.trigger('player-joined', index, user.toJSON());
+              self.emit('player-joined', index, user.toJSON());
               self.addMessage('用户[' + user.name + ']加入');
               if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
                 self.setStatus(LOADING);
@@ -412,7 +414,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
           self.quitPlayers.unshift(quitPlayer);
           self.results.unshift(self.createResult(quitPlayer, status));
           self.removePlayer(account);
-          self.trigger('player-quit', {
+          self.emit('player-quit', {
             account : account,
             status : status
           });
@@ -425,7 +427,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
       });
     } else {
       this.removePlayer(account);
-      this.trigger('player-quit', {
+      this.emit('player-quit', {
         account : account,
         status : status
       });
@@ -493,7 +495,7 @@ Game.prototype.addMessage = function(message, account) {
     content : message
   };
   this.messages.push(message);
-  this.trigger('message-added', message);
+  this.emit('message-added', message);
   return message;
 };
 
@@ -612,12 +614,12 @@ Game.prototype.submit = function(account, xy, value, cb) {
       for (key in this.knownCellValues) {
         delete this.knownCellValues[key][xy];
       }
-      this.trigger('cell-correct', xy, value);
+      this.emit('cell-correct', xy, value);
       result.score = this.updateScore(SCORE_TYPE.CORRECT, this.currentPlayer, xy);
       over = this.checkOver();
       result.success = true;
     } else {
-      this.trigger('cell-incorrect', xy);
+      this.emit('cell-incorrect', xy);
       result.score = this.updateScore(SCORE_TYPE.INCORRECT, this.currentPlayer, xy);
       result.success = false;
     }
@@ -653,7 +655,7 @@ Game.prototype.abort = function() {
         }
       }, function() {
         self.status = ABORTED;
-        self.trigger('game-abort');
+        self.emit('game-abort');
         setTimeout(function() {
           self.destroy();
         }, 5000);
@@ -711,13 +713,13 @@ Game.prototype.over = function(cb) {
     } else {
       var oldStatus = self.status;
       self.status = OVER;
-      self.trigger('status-changed', self.status, oldStatus);
-      self.trigger('game-over', self.results);
+      self.emit('status-changed', self.status, oldStatus);
+      self.emit('game-over', self.results);
       var countdown = DESTROY_COUNTDOWN_TOTAL;
-      self.trigger('destroy-countdown-stage', countdown);
+      self.emit('destroy-countdown-stage', countdown);
       var destroyTimer = setInterval(function() {
         countdown--;
-        self.trigger('destroy-countdown-stage', countdown);
+        self.emit('destroy-countdown-stage', countdown);
         if (countdown === 0) {
           clearInterval(destroyTimer);
           self.destroy();
@@ -747,7 +749,7 @@ Game.prototype.autoSubmit = function(account, xy, cb) {
             winston.error('Error when updating prop: ' + error);
             cb(error);
           } else {
-            self.trigger('magnifier-changed', prop.magnifier);
+            self.emit('magnifier-changed', prop.magnifier);
             cb(null, result);
           }
         });
@@ -832,12 +834,12 @@ Game.prototype.delay = function(account, cb) {
       prop.delay = delay - 1;
       var countdown = DELAY_COUNTDOWN_TOTAL;
       self.delayCountdownStage = countdown;
-      self.trigger('delay-countdown-stage', countdown);
-      self.trigger('game-delayed', countdown);
+      self.emit('delay-countdown-stage', countdown);
+      self.emit('game-delayed', countdown);
       self.delayTimer = setInterval(function() {
         countdown--;
         self.delayCountdownStage = countdown;
-        self.trigger('delay-countdown-stage', countdown);
+        self.emit('delay-countdown-stage', countdown);
         if (countdown === 0) {
           self.stopDelayTimer();
         }
@@ -940,9 +942,7 @@ Game.prototype.destroy = function() {
   this.stopTimer();
   this.status = DESTROYED;
   winston.info('Game [' + this.id + '] destoryed');
-  this.trigger('game-destroyed');
+  this.emit('game-destroyed');
 };
-
-_.merge(Game.prototype, Observable.general);
 
 module.exports = Game;

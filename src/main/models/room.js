@@ -1,13 +1,14 @@
 var _ = require('lodash');
-var Observable = require('../base/observable');
+var util = require("util");
+var EventEmitter = require('events').EventEmitter;
 var Game = require('./game');
 var PREFIX = "game";
 var CAPACITY = 12;
 
 var Room = function(id, name, virtual, capacity) {
+  EventEmitter.call(this);
   this.name = name;
   this.capacity = capacity || CAPACITY;
-  this.$ = new Observable();
   this.id = id || PREFIX + Date.now();
   this.virtual = virtual;
   if (virtual) {
@@ -16,6 +17,7 @@ var Room = function(id, name, virtual, capacity) {
     this.initGames();
   }
 };
+util.inherits(Room, EventEmitter);
 
 Room.prototype.initGames = function() {
   this.games = [];
@@ -46,7 +48,7 @@ Room.prototype.resetGame = function(game) {
   var index = this.games.indexOf(game);
   this.games[index] = new Game(this, index);
   this.bindGame(this.games[index]);
-  this.trigger('game-reset', this.games[index], game);
+  this.emit('game-replace', this.games[index], game);
 };
 
 Room.prototype.getRealRooms = function() {
@@ -140,7 +142,5 @@ Room.prototype.findGameByUser = function(account) {
   };
   return find(this);
 };
-
-_.merge(Room.prototype, Observable.general);
 
 module.exports = Room;

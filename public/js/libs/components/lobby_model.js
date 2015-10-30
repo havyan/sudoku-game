@@ -51,7 +51,7 @@
       this.eventReceiver.on('game-player-quit', function(gameId, data) {
         self.playerQuit(gameId, data.account);
       });
-      this.eventReceiver.on('game-reset', function(gameId, newGame) {
+      this.eventReceiver.on('game-replace', function(gameId, newGame) {
         self.replaceGame(gameId, newGame);
       });
     },

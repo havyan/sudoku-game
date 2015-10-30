@@ -493,4 +493,26 @@
       });
     }
   }, {});
+
+  can.Model('Rest.Events', {
+    getSystem : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/events/system',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    getGame : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/events/game',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
 })();

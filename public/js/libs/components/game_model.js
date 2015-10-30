@@ -366,8 +366,8 @@
     },
 
     reduceProp : function(type) {
-      var prop = self.findProp(type);
-      prop.attr('count', self.attr('count') - 1);
+      var prop = this.findProp(type);
+      prop.attr('count', prop.attr('count') - 1);
     },
 
     hasProp : function(type) {
