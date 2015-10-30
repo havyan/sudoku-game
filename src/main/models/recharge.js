@@ -95,7 +95,7 @@ Recharge.check = function(recharge, cb) {
 };
 
 Recharge.checkAll = function(cb) {
-  winston.info('Start to check recharge status');
+  winston.debug('Start to check recharge status');
   var self = this;
   async.waterfall([
   function(cb) {
