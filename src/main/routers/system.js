@@ -22,7 +22,7 @@ module.exports = function(router) {
         });
       }
     } else {
-      next(new HttpError('Only administrator has the authorization.'));
+      next(new HttpError('Only administrator has the authorization.', HttpError.UNAUTHORIZED));
     }
   });
 };
