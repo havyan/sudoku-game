@@ -13,6 +13,19 @@ var GameManager = function() {
   this.rooms = [];
 };
 
+GameManager.prototype.reload = function(cb) {
+  var self = this;
+  this.rooms = [];
+  this.init(function(error) {
+    if (error) {
+      cb(error);
+    } else {
+      self.trigger('game-manager-reload');
+      cb();
+    }
+  });
+};
+
 GameManager.prototype.init = function(cb) {
   var self = this;
   RoomDAO.all(function(error, rooms) {

@@ -14,6 +14,6 @@
   "GET /reset_password",
   "PUT /user/password",
   "GET /active_user",
-  "POST /system/reset",
+  "POST /system/reload",
   "[RE]GET /recharge/pay/\\w{32}/result"
 ]
