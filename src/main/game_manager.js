@@ -17,6 +17,7 @@ util.inherits(GameManager, EventEmitter);
 
 GameManager.prototype.reload = function(cb) {
   var self = this;
+  this.destroy();
   this.rooms = [];
   this.init(function(error) {
     if (error) {
@@ -221,7 +222,10 @@ GameManager.prototype.findGameByUser = function(account) {
 };
 
 GameManager.prototype.destroy = function() {
-  //TODO release resources
+  this.rooms.forEach(function(room) {
+    room.destroy();
+  });
+  this.emit('game-manager-destroyed');
 };
 
 module.exports = GameManager;

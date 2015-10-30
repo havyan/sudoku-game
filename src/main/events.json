@@ -1,12 +1,13 @@
 {
-  "SYSTEM": [
+  "system": [
     "game-init",
     "game-player-joined",
     "game-replace",
     "game-player-quit",
-    "game-status-changed"
+    "game-status-changed",
+    "system-reload"
   ],
-  "GAME": [
+  "game": [
     "init",
     "player-joined",
     "message-added",
@@ -21,7 +22,6 @@
     "puzzle-init",
     "player-quit",
     "max-timeout-reached",
-    "game-destroyed",
     "quit-countdown-stage",
     "game-destroyed",
     "game-delayed",
@@ -32,7 +32,7 @@
     "game-abort",
     "total-countdown-stage"
   ],
-  "SYSTEM_GAME" : [
+  "system_game" : [
     "init",
     "player-joined",
     "player-quit",

@@ -18,7 +18,7 @@
       this.socket = io.connect(url);
       topics.forEach(function(topic) {
         self.socket.on(topic, function(data) {
-          var args = JSON.parse(data);
+          var args = data ? JSON.parse(data) : [];
           args.unshift(topic);
           self.trigger(args);
         });

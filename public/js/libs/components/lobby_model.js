@@ -54,6 +54,9 @@
       this.eventReceiver.on('game-replace', function(gameId, newGame) {
         self.replaceGame(gameId, newGame);
       });
+      this.eventReceiver.on('system-reload', function() {
+        self.attr('reload', Date.now());
+      });
     },
 
     playerQuit : function(gameId, account) {

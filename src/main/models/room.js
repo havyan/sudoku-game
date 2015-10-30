@@ -31,7 +31,9 @@ Room.prototype.initGames = function() {
 Room.prototype.bindGame = function(game) {
   var self = this;
   game.on('game-destroyed', function() {
-    self.resetGame(game);
+    if (!self.destroying) {
+      self.resetGame(game);
+    }
   });
 };
 
@@ -141,6 +143,19 @@ Room.prototype.findGameByUser = function(account) {
     return game;
   };
   return find(this);
+};
+
+Room.prototype.destroy = function() {
+  this.destroying = true;
+  if (this.virtual) {
+    this.children.forEach(function(child) {
+      child.destroy();
+    });
+  } else {
+    this.games.forEach(function(game) {
+      game.destroy();
+    });
+  }
 };
 
 module.exports = Room;

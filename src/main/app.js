@@ -83,9 +83,13 @@ app.use(function(err, req, res, next) {
   if (err.responseType === 'json') {
     res.send(err.toJSON());
   } else {
+    var error = err.error || err;
+    if (error && error.stack) {
+      winston.error(error.stack);
+    }
     res.render('error', {
       message : err.message,
-      error : env === 'development' ? (err.error || err) : {}
+      error : error
     });
   }
 });

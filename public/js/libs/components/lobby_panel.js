@@ -126,6 +126,10 @@
       this.selectRoom(selectedRoom);
     },
 
+    '{model} reload' : function() {
+      window.location.reload();
+    },
+
     '.free .lobby-game.empty .lobby-table click' : function(e) {
       var self = this;
       var model = self.options.model;

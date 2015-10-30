@@ -15,6 +15,7 @@ EventCenter.prototype.initEvents = function() {
   this.initGameEvents();
   global.gameManager.on('game-manager-reload', function() {
     self.initGameEvents();
+    self.systemEmitter.emit('system-reload');
   });
 };
 
@@ -34,14 +35,19 @@ EventCenter.prototype.initGameEvents = function() {
 
 EventCenter.prototype.bindGame = function(game) {
   var self = this;
-  this.gameEmitters[game.id] = this.io.of('/events/game/' + game.id);
-  EVENTS.GAME.forEach(function(topic) {
+  var ns = '/events/game/' + game.id;
+  this.gameEmitters[game.id] = this.io.of(ns);
+  EVENTS.game.forEach(function(topic) {
     game.on(topic, function() {
       self.gameEmitters[game.id].emit(topic, JSON.stringify(_.values(arguments)));
+      if (topic === 'game-destroyed') {
+        delete self.gameEmitters[game.id];
+        self.io.removeOf(ns);
+      }
     });
   });
 
-  EVENTS.SYSTEM_GAME.forEach(function(topic) {
+  EVENTS.system_game.forEach(function(topic) {
     game.on(topic, function() {
       var args = _.values(arguments);
       args.unshift(game.id);

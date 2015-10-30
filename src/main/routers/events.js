@@ -4,10 +4,10 @@ var EVENTS = require('../events.json');
 
 module.exports = function(router) {
   router.get('/events/system', function(req, res, next) {
-    res.send(EVENTS.SYSTEM);
+    res.send(EVENTS.system);
   });
 
   router.get('/events/game', function(req, res, next) {
-    res.send(EVENTS.GAME);
+    res.send(EVENTS.game);
   });
 };
