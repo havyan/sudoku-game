@@ -5,7 +5,7 @@ var User = require('./models/user');
 var Recharge = require('./models/recharge');
 
 var CLEAR_USER_INTERVAL = 30 * 60 * 1000;
-var CHECK_RECHARGE_INTERVAL = 10 * 10 * 1000;
+var CHECK_RECHARGE_INTERVAL = 10 * 60 * 1000;
 
 winston.info('Start worker');
 
