@@ -1,5 +1,6 @@
 var fs = require('fs');
 var async = require('async');
+var _ = require('lodash');
 var HttpError = require('../http_error');
 var Prop = require('../models/prop');
 var User = require('../models/user');
@@ -23,7 +24,7 @@ module.exports = function(router) {
     function(user, cb) {
       if (user) {
         user.logintime = new Date();
-        user.login_ip = req.ip;
+        user.login_ip = _.ip(req.ip);
         user.save(cb);
       } else {
         cb(null, null, 0);
@@ -31,7 +32,7 @@ module.exports = function(router) {
     },
     function(user, count, cb) {
       if (user) {
-        LoginHistoryDAO.createHistory(user.id, req.ip, function(error) {
+        LoginHistoryDAO.createHistory(user.id, _.ip(req.ip), function(error) {
           if (error) {
             cb(error);
           } else {

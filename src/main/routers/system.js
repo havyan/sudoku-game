@@ -1,10 +1,11 @@
 var HttpError = require('../http_error');
 var winston = require('winston');
+var _ = require('lodash');
 var GameManager = require('../game_manager');
 
 module.exports = function(router) {
   router.post('/system/reload', function(req, res, next) {
-    if (global.config.admin === req.ip) {
+    if (global.config.admin === _.ip(req.ip)) {
       if (global.gameManager.hasLiveGame()) {
         res.send({
           success : false,

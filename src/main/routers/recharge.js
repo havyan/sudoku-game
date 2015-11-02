@@ -15,7 +15,7 @@ module.exports = function(router) {
         next(new HttpError(error));
       } else {
         var json = user.toJSON();
-        json.ip = req.ip;
+        json.ip = _.ip(req.ip);
         res.send({
           user : json
         });
@@ -89,7 +89,7 @@ module.exports = function(router) {
               resulturl : global.domain + pay.resulturl.replace('{payuid}', recharge.payuid),
               type : '0',
               useruid : user._id.toString(),
-              userip : req.ip,
+              userip : _.ip(req.ip),
               username : user.name,
               useremail : user.email
             };

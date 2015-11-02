@@ -95,7 +95,7 @@ module.exports = function(router) {
       });
     } else {
       var params = _.cloneDeep(req.body);
-      params.create_ip = req.ip;
+      params.create_ip = _ip(req.ip);
       User.createUser(params, function(error, result) {
         if (error) {
           next(new HttpError(error));
