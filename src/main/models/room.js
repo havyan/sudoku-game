@@ -5,12 +5,13 @@ var Game = require('./game');
 var PREFIX = "game";
 var CAPACITY = 12;
 
-var Room = function(id, name, virtual, capacity) {
+var Room = function(id, name, virtual, capacity, order) {
   EventEmitter.call(this);
   this.name = name;
   this.capacity = capacity || CAPACITY;
   this.id = id || PREFIX + Date.now();
   this.virtual = virtual;
+  this.order = order;
   if (virtual) {
     this.children = [];
   } else {
@@ -40,6 +41,7 @@ Room.prototype.bindGame = function(game) {
 Room.prototype.addRoom = function(room) {
   if (this.virtual) {
     this.children.push(room);
+    _.sortBy(this.children, 'order');
     return true;
   } else {
     return false;
