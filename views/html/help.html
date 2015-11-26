@@ -33,13 +33,16 @@
           九联数独玩法
         </div>
         <div class="rich-button item grade-spec" data-target="grade-spec">
-          积分段位天才币说明
+          积分段位和天才币
         </div>
         <div class="rich-button item system-spec" data-target="system-spec">
           系统操作介绍
         </div>
         <div class="rich-button item constellation-spec" data-target="constellation-spec">
           星座介绍
+        </div>
+        <div class="rich-button item contact-us" data-target="contact-us">
+          联系我们
         </div>
       </div>
       <div class="help-container">
@@ -57,6 +60,141 @@
             基本规则和标准数独一致，红色标注为重复宫，所在宫数字为两个数独共用
           </p>
           <img src="/imgs/default/help/nine_nine.png" />
+        </div>
+        <div class="item how-to-play">
+          <h2>游戏界面</h2>
+          <img src="/imgs/default/help/game.png" />
+          <ul>
+            <li>
+              <span>【倒计时】：</span>中间显示时间为每步时间，答题时间越快，分数越高
+            </li>
+            <li>
+              <span>【草稿/提交模式】：</span>草稿模式下可以在空格内填入1-4个数字或字母用于标记，可以更改；提交模式下，点击格子弹出气泡，选择该格正确答案，不可更改，提交后判断，答对加分，答错扣分
+              <br>
+              <span>【普通/候选模式】：</span>普通模式下，没有作答的格子内为空；候选模式下，显示所有未作答格子的候选数（1-4个），候选模式通过道具开启
+            </li>
+            <li>
+              <span>【游戏界面按钮】：</span>可调整当前界面的大小，最小1倍，最大1.5倍
+            </li>
+            <li>
+              <span>【道具图标】：</span>每种道具后面的数字为当前所拥有的个数，可在道具商城查看每种道具功能及购买
+            </li>
+            <li>
+              <span>【棋盘】：</span>九联数独棋盘区域
+            </li>
+            <li>
+              <span>【灯泡】：</span>轮到自己作答时灯泡亮起，别人作答时灯泡熄灭
+            </li>
+            <li>
+              <span>【Pass键】：</span>每轮作答时，如果没有得出确切答案，可点击pass，所扣分数为答错时的一半，不过每局游戏只可使用5次。
+            </li>
+            <li>
+              <span>【头像显示区】：</span>显示此局游戏所有玩家，轮到谁作答，谁的头像外有一圈黄色光环。鼠标悬停在用户头像上时，可显示此人的段位积分等信息。
+              <br>
+            </li>
+            <li>
+              <span>【及时排名区】：</span>实时显示玩家的得分情况
+            </li>
+            <li>
+              <span>【聊天区】：</span>可在游戏中进行交流
+            </li>
+            <li>
+              <span>【退出键】：</span>可在开始后退出游戏，但在玩家是庄家身份时，不退还建桌的天才币
+            </li>
+          </ul>
+        </div>
+        <div class="item grade-spec">
+          <h2>积分段位：</h2>
+          <table>
+            <thead>
+              <th class="name">段位</th>
+              <th class="value">积分</th>
+            </thead>
+            <tbody>
+              {{#each grade}}
+              <tr data-grade="{{code}}" data-index="{{@index}}">
+                <td class="name">{{name}}</td>
+                <td class="value"><span>{{floor}}</span></td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          <h2>天才币汇率：</h2>
+          <p>
+            1人民币 = 100天才币
+          </p>
+        </div>
+        <div class="item system-spec">
+          <h2>功能介绍</h2>
+          <ul>
+            <li>
+              <span>【个人信息】：</span>在此可以查看用户的段位，积分，天才币等信息，并可更改头像
+            </li>
+            <li>
+              <span>【道具】：</span>可在此处购买道具及查看自己道具的数量
+            </li>
+            <li>
+              <span>【管理】：</span>可在此处设置游戏界面倍数
+            </li>
+            <li>
+              <span>【邮箱】：</span>查看系统发送的各类消息，包括节日活动通知和每局游戏排名
+            </li>
+            <li>
+              <span>【充值】：</span>点击进入充值界面
+            </li>
+            <li>
+              <span>【帮助】：</span>进入帮助页面
+            </li>
+            <li>
+              <span>【注销】：</span>退出登录，返回首页
+            </li>
+            <li>
+              <span>【左侧星座】：</span>点击星座名称显示该星座下房间，点击房间名称进入该房间
+            </li>
+            <li>
+              <span>【桌子】：</span>点击空桌时，弹出建桌窗口，此时用户为庄家，需支付天才币作为建桌费；点击非空桌时，用户为普通身份，不用支付天才币
+            </li>
+          </ul>
+        </div>
+        <div class="item constellation-spec">
+          <h2>星座</h2>
+          <ul>
+            <li>
+              <span>【水瓶座】：</span>三个房间，每房间40张桌子，每桌2-4人
+            </li>
+            <li>
+              <span>【双鱼座】：</span>四个房间，每房间40张桌子，每桌5-9人
+            </li>
+            <li>
+              <span>【白羊座】：</span>三个房间，每房间36张桌子，每桌2-9人
+            </li>
+          </ul>
+        </div>
+        <div class="item contact-us">
+          <div class="common-header">
+            <div class="logo"></div>
+            <div class="game-label">
+              数独棋
+            </div>
+          </div>
+          <div class="common-separator">
+            <div class="above"></div>
+            <div class="below"></div>
+          </div>
+          <div class="common-content">
+            <p>
+              超天才技术开发(北京)有限责任公司
+            </p>
+            <p>
+              邮箱：service@genius59.com
+            </p>
+            <p>
+              电话：56296776
+            </p>
+            <p>
+              地址：北京市上地三街金隅嘉华大厦A座401
+            </p>
+          </div>
         </div>
       </div>
     </div>

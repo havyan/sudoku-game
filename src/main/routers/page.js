@@ -7,6 +7,7 @@ var User = require('../models/user');
 var winston = require('winston');
 var RoomDAO = require('../daos/room');
 var UserDAO = require('../daos/user');
+var RuleDAO = require('../daos/rule');
 var RechargeDAO = require('../daos/recharge');
 var LoginHistoryDAO = require('../daos/login_history');
 var Message = require('../models/message');
@@ -258,7 +259,26 @@ module.exports = function(router) {
   });
 
   router.get('/help', function(req, res, next) {
-    handleCommon(req, res, next, 'help');
+    async.parallel([
+    function(cb) {
+      UserDAO.findOneByAccount(req.session.account, cb);
+    },
+    function(cb) {
+      RuleDAO.getRule(cb);
+    }], function(error, results) {
+      if (error) {
+        next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
+      } else {
+        var user = results[0],
+            rule = results[1];
+        res.render('help', {
+          userName : user.name,
+          userIcon : user.icon,
+          money : user.money,
+          grade : rule.grade
+        });
+      }
+    });
   });
 
   router.get('/view/recharge/pay/:id', function(req, res, next) {
