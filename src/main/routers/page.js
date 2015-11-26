@@ -84,6 +84,20 @@ module.exports = function(router) {
     });
   };
 
+  var handleCommon = function(req, res, next, template) {
+    UserDAO.findOneByAccount(req.session.account, function(error, user) {
+      if (error) {
+        next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
+      } else {
+        res.render(template, {
+          userName : user.name,
+          userIcon : user.icon,
+          money : user.money
+        });
+      }
+    });
+  };
+
   /* GET home page. */
   router.get('/', function(req, res, next) {
     autoLogin(req, res, next);
@@ -161,17 +175,7 @@ module.exports = function(router) {
 
   /* GET Setting page. */
   router.get('/setting', function(req, res, next) {
-    UserDAO.findOneByAccount(req.session.account, function(error, user) {
-      if (error) {
-        next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
-      } else {
-        res.render('setting', {
-          userName : user.name,
-          userIcon : user.icon,
-          money : user.money
-        });
-      }
-    });
+    handleCommon(req, res, next, 'setting');
   });
 
   /* GET Game page. */
@@ -246,31 +250,15 @@ module.exports = function(router) {
   });
 
   router.get('/view/messages', function(req, res, next) {
-    UserDAO.findOneByAccount(req.session.account, function(error, user) {
-      if (error) {
-        next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
-      } else {
-        res.render('messages', {
-          userName : user.name,
-          userIcon : user.icon,
-          money : user.money
-        });
-      }
-    });
+    handleCommon(req, res, next, 'messages');
   });
 
   router.get('/view/recharge', function(req, res, next) {
-    UserDAO.findOneByAccount(req.session.account, function(error, user) {
-      if (error) {
-        next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
-      } else {
-        res.render('recharge', {
-          userName : user.name,
-          userIcon : user.icon,
-          money : user.money
-        });
-      }
-    });
+    handleCommon(req, res, next, 'recharge');
+  });
+
+  router.get('/help', function(req, res, next) {
+    handleCommon(req, res, next, 'help');
   });
 
   router.get('/view/recharge/pay/:id', function(req, res, next) {

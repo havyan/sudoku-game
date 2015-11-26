@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/help.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-2.1.1.min.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/lodash.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/components/utils.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs/help.js"></script>
+  </head>
+  <body>
+    <div class="top-actions">
+      <a class="user-button" href="/view/user">个人信息</a>
+      <a class="props-button" href="/view/props">道具</a>
+      <a class="setting-button" href="/setting">管理</a>
+      <a class="logout-button" href="/logout">注销</a>
+    </div>
+    <div class="welcome">
+      欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
+    </div>
+    <div class="main">
+      <div class="navigator">
+        <div class="rich-button item game-spec active" data-target="game-spec">
+          九联数独介绍
+        </div>
+        <div class="rich-button item how-to-play" data-target="how-to-play">
+          九联数独玩法
+        </div>
+        <div class="rich-button item grade-spec" data-target="grade-spec">
+          积分段位天才币说明
+        </div>
+        <div class="rich-button item system-spec" data-target="system-spec">
+          系统操作介绍
+        </div>
+        <div class="rich-button item constellation-spec" data-target="constellation-spec">
+          星座介绍
+        </div>
+      </div>
+      <div class="help-container">
+        <div class="item game-spec">
+          <h2>基本规则：</h2>
+          <h3>九宫格：</h3>
+          <p>
+            在空格内填入数字1-9，使得每行、每列、及每宫数字都是1-9不重复
+          </p>
+          <img src="/imgs/default/help/nine.png" />
+          <img src="/imgs/default/help/nine_desc.png" />
+          <img src="/imgs/default/help/nine_input.png" />
+          <h3>九联数独：</h3>
+          <p>
+            基本规则和标准数独一致，红色标注为重复宫，所在宫数字为两个数独共用
+          </p>
+          <img src="/imgs/default/help/nine_nine.png" />
+        </div>
+      </div>
+    </div>
+    <div class="bottom-actions">
+      <a class="rich-button back" href="/main">返回</a>
+    </div>
+  </body>
+</html>

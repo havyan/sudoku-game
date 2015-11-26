@@ -1,0 +1,40 @@
+.main {
+  position: relative;
+  top: 60px;
+  clear: both;
+}
+
+.navigator {
+  float: left;
+  width: 15%;
+  margin-left: 5%;
+}
+
+.help-container {
+  width: 60%;
+  margin-left: 22%;
+}
+
+.help-container .game-spec h3 {
+  text-indent: 1em;
+}
+
+.help-container .game-spec p {
+  text-indent: 3em;
+}
+
+.help-container .game-spec img {
+  display: block;
+  margin-left: 5em;
+  margin-bottom: 10px;
+  width: 450px;
+  height: 450px;
+}
+
+.bottom-actions {
+  width: 80%;
+  margin: auto;
+  text-align: right;
+  position: relative;
+  top: 60px;
+}
