@@ -48,6 +48,14 @@
   font-size: 16px;
 }
 
+.help-container .item {
+  display: none;
+}
+
+.help-container .item.active {
+  display: block;
+}
+
 .help-container .how-to-play ul li {
   margin-bottom: 5px;
 }

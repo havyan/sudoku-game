@@ -4,7 +4,7 @@
       var $e = $(e.target);
       $('.navigator .item').removeClass('active');
       $e.addClass('active');
-      $('.help-container .item').hide().filter('.' + $(e.target).data('target')).show();
+      $('.help-container .item').removeClass('active').filter('.' + $(e.target).data('target')).addClass('active');
     });
   });
 })();
