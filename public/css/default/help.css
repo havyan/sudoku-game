@@ -12,8 +12,13 @@
 }
 
 .help-container {
-  width: 60%;
+  width: 70%;
   margin-left: 22%;
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid #296db6;
+  border-radius: 15px;
+  padding: 20px 30px;
+  box-sizing: border-box;
 }
 
 .help-container .game-spec h3 {
@@ -25,12 +30,19 @@
   font-size: 16px;
 }
 
-.help-container .game-spec img {
+.help-container .game-spec p.board9 {
+  text-align: center;
+}
+
+.help-container .game-spec .board9 img {
+  display: inline-block;
+  width: 28%;
+}
+
+.help-container .game-spec .board99 {
   display: block;
-  margin-left: 5em;
-  margin-bottom: 10px;
-  width: 450px;
-  height: 450px;
+  width: 80%;
+  margin: auto;
 }
 
 .help-container .how-to-play h2 {
@@ -68,6 +80,7 @@
 .help-container .grade-spec table {
   margin-left: 2em;
   font-size: 16px;
+  background-image: url(/imgs/default/help/grade_bg.png); 
 }
 
 .help-container .grade-spec table tr {
@@ -120,4 +133,5 @@
   text-align: right;
   position: relative;
   top: 60px;
+  margin-top: 30px;
 }
