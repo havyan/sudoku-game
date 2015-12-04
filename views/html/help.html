@@ -107,22 +107,30 @@
         </div>
         <div class="item grade-spec">
           <h2>积分段位：</h2>
-          <table>
-            <thead>
-              <th class="name">段位</th>
-              <th class="value">积分</th>
-            </thead>
-            <tbody>
-              {{#each grade}}
-              <tr data-grade="{{code}}" data-index="{{@index}}">
-                <td class="name">{{name}}</td>
-                <td class="value"><span>{{floor}}</span></td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
+          <div class="grade-container">
+            <div class="grade-row grade-head">
+              <div class="grade-name">
+                段位
+              </div>
+              <div class="grade-connection"></div>
+              <div class="grade-value">
+                积分
+              </div>
+            </div>
+            {{#grade}}
+            <div class="grade-row">
+              <div class="grade-name">
+                {{name}}
+              </div>
+              <div class="grade-connection"></div>
+              <div class="grade-value">
+                {{floor}}
+              </div>
+            </div>
+            {{/grade}}
+          </div>
           <h2>天才币汇率：</h2>
-          <p>
+          <p class="exchange-rate">
             1人民币 = 100天才币
           </p>
         </div>
@@ -159,43 +167,47 @@
           </ul>
         </div>
         <div class="item constellation-spec">
-          <h2>星座</h2>
-          <ul>
-            <li>
-              <span>【水瓶座】：</span>三个房间，每房间40张桌子，每桌2-4人
-            </li>
-            <li>
-              <span>【双鱼座】：</span>四个房间，每房间40张桌子，每桌5-9人
-            </li>
-            <li>
-              <span>【白羊座】：</span>三个房间，每房间36张桌子，每桌2-9人
-            </li>
-          </ul>
+          <div class="inner-container">
+            <h2>星座</h2>
+            <ul>
+              <li>
+                <span>【水瓶座】：</span>三个房间，每房间40张桌子，每桌2-4人
+              </li>
+              <li>
+                <span>【双鱼座】：</span>四个房间，每房间40张桌子，每桌5-9人
+              </li>
+              <li>
+                <span>【白羊座】：</span>三个房间，每房间36张桌子，每桌2-9人
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="item contact-us">
-          <div class="common-header">
-            <div class="logo"></div>
-            <div class="game-label">
-              数独棋
+          <div class="inner-container">
+            <div class="common-header">
+              <div class="logo"></div>
+              <div class="game-label">
+                数独棋
+              </div>
             </div>
-          </div>
-          <div class="common-separator">
-            <div class="above"></div>
-            <div class="below"></div>
-          </div>
-          <div class="common-content">
-            <p>
-              超天才技术开发(北京)有限责任公司
-            </p>
-            <p>
-              邮箱：service@genius59.com
-            </p>
-            <p>
-              电话：56296776
-            </p>
-            <p>
-              地址：北京市上地三街金隅嘉华大厦A座401
-            </p>
+            <div class="common-separator">
+              <div class="above"></div>
+              <div class="below"></div>
+            </div>
+            <div class="common-content">
+              <p>
+                超天才技术开发(北京)有限责任公司
+              </p>
+              <p>
+                邮箱：service@genius59.com
+              </p>
+              <p>
+                电话：56296776
+              </p>
+              <p>
+                地址：北京市上地三街金隅嘉华大厦A座401
+              </p>
+            </div>
           </div>
         </div>
       </div>

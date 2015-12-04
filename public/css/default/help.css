@@ -36,7 +36,9 @@
 
 .help-container .game-spec .board9 img {
   display: inline-block;
-  width: 28%;
+  margin-left: 2%;
+  margin-right: 2%;
+  width: 25%;
 }
 
 .help-container .game-spec .board99 {
@@ -52,6 +54,7 @@
 .help-container .how-to-play img {
   width: 100%;
   margin: auto;
+  border-radius: 20px;
 }
 
 .help-container .how-to-play ul {
@@ -80,7 +83,7 @@
 .help-container .grade-spec table {
   margin-left: 2em;
   font-size: 16px;
-  background-image: url(/imgs/default/help/grade_bg.png); 
+  background-image: url(/imgs/default/help/grade_bg.png);
 }
 
 .help-container .grade-spec table tr {
@@ -95,6 +98,80 @@
 .help-container .grade-spec p {
   font-size: 16px;
   text-indent: 2em;
+}
+
+.grade-container {
+  width: 80%;
+  margin: auto;
+}
+
+.grade-row {
+  font-size: 0px;
+  margin-bottom: 10px;
+}
+
+.grade-row.grade-head .grade-connection {
+  height: 0px;
+  border-width: 0px;
+}
+
+.grade-row.grade-head > * {
+  font-weight: bold;
+  background-color: #27829e;
+}
+
+.grade-row > * {
+  display: inline-block;
+  position: relative;
+  font-size: 20px;
+  color: #FFF000;
+  vertical-align: middle;
+}
+
+.grade-name {
+  background-color: #1e5973;
+  width: 35%;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.grade-connection {
+  width: 30px;
+  height: 5px;
+  background-color: #1e5973;
+  border-color: white;
+  border-style: solid;
+  border-width: 2px 0px 2px 0px;
+  left: -2px;
+  z-index: 100;
+}
+
+.grade-value {
+  background-color: #1e5973;
+  width: 35%;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  border: 2px solid white;
+  text-align: center;
+  left: -4px;
+}
+
+.exchange-rate {
+  width: 30%;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  margin: 10px auto;
+  background-color: #282a5f;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #FFF000
 }
 
 .help-container .system-spec ul {
@@ -123,10 +200,6 @@
   color: green;
 }
 
-.help-container .contact-us {
-  width: 60%;
-}
-
 .bottom-actions {
   width: 80%;
   margin: auto;
@@ -134,4 +207,16 @@
   position: relative;
   top: 60px;
   margin-top: 30px;
+}
+
+.inner-container {
+  width: 50%;
+  margin: 30px auto;
+  background-color: #282a5f;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+
+.help-container .constellation-spec h2 {
+  text-align: center;
 }
