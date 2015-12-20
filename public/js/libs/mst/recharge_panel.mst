@@ -107,15 +107,9 @@
           {{/order}}
           <div class="pay-method-row method">
             <span class="name">选择支付方式：</span>
-            <input type="radio" name="banktype" data-bank="ali" value="5" />
-            <img src="/imgs/default/ali_pay.png" />
-            <input type="radio" name="banktype" data-bank="union" value="6" checked="checked"/>
-            <img src="/imgs/default/union_pay.png" />
-          </div>
-          <div class="pay-method-banks">
             {{#banks}}
-            <div class="pay-method-bank">
-              <input type="radio" name="banktype" data-bank="{{code}}" value="{{value}}" />
+            <div class="pay-method-bank {{code}}">
+              <input type="radio" name="banktype" data-bank="{{code}}" value="{{value}}" {{#isBankChecked value}}checked="checked"{{/isBankChecked}}/>
               <img src="/imgs/default/banks/{{code}}.png" />
             </div>
             {{/banks}}
@@ -145,10 +139,11 @@
           <th class="target">被充值账号</th>
           <th class="cost">充值金额</th>
           <th class="bank">充值渠道</th>
+          <th class="actions"></th>
         </thead>
         <tbody>
           {{#records}}
-          <tr>
+          <tr data-record="{{_id}}">
             <td>{{trans_code}}</td>
             <td>{{rechargeStatus status}}</td>
             <td>{{date}}</td>
@@ -156,6 +151,7 @@
             <td>{{target}}</td>
             <td>{{cost}}</td>
             <td>{{rechargeBank bank}}</td>
+            <td> {{#isUnfinished status}} <a class="continue-pay button" href="javascript:void(0)">继续支付</a> {{/isUnfinished}} </td>
           </tr>
           {{/records}}
         </tbody>

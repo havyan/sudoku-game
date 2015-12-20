@@ -249,9 +249,9 @@
   margin-right: 20px;
 }
 
-.pay-method-banks {
-  margin-left: 172px;
-  width: 500px;
+.pay-method-row.method .name {
+  display: inline-block;
+  margin-bottom: 20px;
 }
 
 .pay-method-bank {
@@ -259,6 +259,10 @@
   vertical-align: middle;
   margin-right: 30px;
   margin-bottom: 20px;
+}
+
+.pay-method-bank.icbc, .pay-method-bank.ccb {
+  margin-left: 110px;
 }
 
 .pay-method-bank > * {
@@ -343,11 +347,11 @@
 }
 
 .records-table th.from {
-  width: 15%
+  width: 10%
 }
 
 .records-table th.target {
-  width: 15%
+  width: 10%
 }
 
 .records-table th.cost {
@@ -355,5 +359,13 @@
 }
 
 .records-table th.bank {
-  width: 15%
+  width: 10%
+}
+
+.records-table th.actions {
+  width: 10%
+}
+
+.records-table .continue-pay {
+  padding: 3px 6px;
 }

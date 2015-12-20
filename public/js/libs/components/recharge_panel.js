@@ -27,17 +27,23 @@
 
     initBanks : function() {
       this.attr('banks', [{
+        code : 'ali',
+        value : '5'
+      }, {
+        code : 'union',
+        value : '6'
+      }, {
         code : 'icbc',
-        value : 0
+        value : '0'
       }, {
         code : 'cmb',
-        value : 1
+        value : '1'
       }, {
         code : 'ccb',
-        value : 4
+        value : '4'
       }, {
         code : 'abc',
-        value : 3
+        value : '3'
       }]);
     },
 
@@ -112,6 +118,12 @@
       this.attr('target', target);
     },
 
+    findRecord : function(id) {
+      return _.find(this.attr('records'), {
+        _id : id
+      });
+    },
+
     createOrder : function(success, error) {
       var self = this;
       var data = {
@@ -131,13 +143,36 @@
 
   can.Control('Components.RechargePanel', {}, {
     init : function(element, options) {
-      element.html(can.view('/js/libs/mst/recharge_panel.mst', this.options.model, {
+      var model = options.model;
+      element.html(can.view('/js/libs/mst/recharge_panel.mst', model, {
         rechargeStatus : function(status) {
           return STATUS[status()];
         },
 
         rechargeBank : function(bank) {
           return BANK[bank()];
+        },
+
+        isUnfinished : function(status, options) {
+          status = status();
+          if (status === '9' || status === '0' || status === '2') {
+            return options.fn(this);
+          } else {
+            return options.inverse(this);
+          }
+        },
+
+        isBankChecked : function(bank, options) {
+          bank = bank();
+          var currentBank = model.attr('order.bank');
+          if (currentBank == null) {
+            currentBank = '6';
+          }
+          if (currentBank === bank) {
+            return options.fn(this);
+          } else {
+            return options.inverse(this);
+          }
         }
       }));
       this.paginationModel = new Models.PaginationModel();
@@ -160,18 +195,23 @@
 
     '{model} step' : function(model, e, step) {
       this.element.find('.recharge-step:lt(' + step + ')').addClass('active');
+      this.element.find('.recharge-step:gt(' + (step - 1) + ')').removeClass('active');
       this.element.find('.recharge-step-component').removeClass('active').filter(':eq(' + (step - 1) + ')').addClass('active');
     },
 
     '.navigator .item click' : function(e) {
-      e.addClass('active').siblings('.item').removeClass('active');
       var target = e.data('target');
       if (target === 'recharge-recharge') {
         this.options.model.resetOrder();
       } else if (target === 'recharge-records') {
         this.options.model.reloadRecords();
       }
-      this.element.find('.recharge-container .item').removeClass('active').filter('.' + target).addClass('active');
+      this.activeItem(e);
+    },
+
+    activeItem : function(e) {
+      e.addClass('active').siblings('.item').removeClass('active');
+      this.element.find('.recharge-container .item').removeClass('active').filter('.' + e.data('target')).addClass('active');
     },
 
     '.order-next click' : function() {
@@ -292,6 +332,15 @@
         $customText.attr('disabled', true);
         this.options.model.setPurchase($parent.data('value'));
         $error.hide();
+      }
+    },
+
+    '.continue-pay click' : function(e) {
+      var record = this.options.model.findRecord(e.closest('tr').data('record'));
+      if (record) {
+        this.options.model.attr('order', record);
+        this.options.model.setStep(2);
+        this.activeItem(this.element.find('.navigator .item.recharge'));
       }
     },
 
