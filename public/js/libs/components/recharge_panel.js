@@ -155,7 +155,7 @@
 
         isUnfinished : function(status, options) {
           status = status();
-          if (status === '9' || status === '0' || status === '2') {
+          if (status === '9') {
             return options.fn(this);
           } else {
             return options.inverse(this);
