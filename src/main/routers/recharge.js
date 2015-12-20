@@ -1,5 +1,6 @@
 var HttpError = require('../http_error');
 var UserDAO = require('../daos/user');
+var RuleDAO = require('../daos/rule');
 var Recharge = require('../models/recharge');
 var winston = require('winston');
 var formatDate = require('dateformat');
@@ -10,14 +11,19 @@ var request = require('request');
 
 module.exports = function(router) {
   router.get('/recharge/data', function(req, res, next) {
-    UserDAO.findOneByAccount(req.session.account, function(error, user) {
+    async.parallel([
+    function(cb) {
+      UserDAO.findOneByAccount(req.session.account, cb);
+    },
+    function(cb) {
+      RuleDAO.getRule(cb);
+    }], function(error, results) {
       if (error) {
         next(new HttpError(error));
       } else {
-        var json = user.toJSON();
-        json.ip = _.ip(req.ip);
         res.send({
-          user : json
+          user : results[0],
+          rule : results[1]
         });
       }
     });
@@ -82,7 +88,7 @@ module.exports = function(router) {
           } else {
             var pay = global.config.app.pay;
             var form = {
-              money : Recharge.convertCost(recharge.purchase),
+              money : recharge.cost, // TODO need to recaculate for security
               banktype : req.body.banktype,
               notifyurl : global.domain + pay.notifyurl.replace('{payuid}', recharge.payuid),
               site : pay.site,

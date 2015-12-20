@@ -78,9 +78,16 @@
 
     initUI : function() {
       var ui = window.localStorage.getItem(this.attr('account') + '_ui');
-      this.attr('ui', ui ? JSON.parse(ui) : {
-        zoom : 1
-      });
+      if (ui) {
+        ui = JSON.parse(ui);
+      } else if (this.attr('rule.ui')) {
+        ui = this.attr('rule.ui').attr();
+      } else {
+        ui = {
+          zoom : 1
+        };
+      }
+      this.attr('ui', ui);
     },
 
     resetOptions : function() {

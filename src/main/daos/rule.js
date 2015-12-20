@@ -12,6 +12,9 @@ var RuleSchema = new Schema({
     code : String,
     floor : Number
   }],
+  exchange : {
+    rate : Number
+  },
   ui : {
     zoom : Number
   }

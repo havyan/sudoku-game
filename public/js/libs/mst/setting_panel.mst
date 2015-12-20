@@ -6,6 +6,9 @@
     <div class="rich-button item grade" data-target="setting-grade">
       段位积分
     </div>
+    <div class="rich-button item exchange" data-target="setting-exchange">
+      天才币汇率
+    </div>
     <div class="rich-button item game-ui" data-target="setting-game-ui">
       游戏界面
     </div>
@@ -90,7 +93,17 @@
         </tbody>
       </table>
     </div>
-    {{/rule}}
+    {{#exchange}}
+    <div class="setting-exchange item" data-nav="exchange">
+      <div class="exchange-form">
+        <div class="exchange-rate">
+          1人民币 =
+          <input type="number" value="{{rate}}" />
+          天才币
+        </div>
+      </div>
+    </div>
+    {{/exchange}}
     {{#ui}}
     <div class="setting-game-ui item" data-nav="game-ui">
       <div class="ui-form">
@@ -105,6 +118,7 @@
       </div>
     </div>
     {{/ui}}
+    {{/rule}}
   </div>
   <div class="setting-actions">
     <input class="rich-button setting-back-action" type="button" value="返回" />

@@ -3,18 +3,30 @@ var _ = require('lodash');
 var request = require('request');
 var winston = require('winston');
 var UserDAO = require('../daos/user');
+var RuleDAO = require('../daos/rule');
 var RechargeDAO = require('../daos/recharge');
 
 var Recharge = {};
 
-// TODO algorithm to calculate cost
-Recharge.convertCost = function(purchase) {
-  return purchase / 10;
+Recharge.convertCost = function(purchase, cb) {
+  RuleDAO.getRule(function(error, rule) {
+    if (error) {
+      cb(error);
+    } else {
+      cb(null, (purchase / rule.exchange.rate).toFixed(2));
+    }
+  });
 };
 
 Recharge.create = function(params, cb) {
-  params.cost = this.convertCost(params.purchase);
-  RechargeDAO.createRecharge(params, cb);
+  this.convertCost(params.purchase, function(error, cost) {
+    if (error) {
+      cb(error);
+    } else {
+      params.cost = cost;
+      RechargeDAO.createRecharge(params, cb);
+    }
+  });
 };
 
 Recharge.count = function(account, cb) {

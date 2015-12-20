@@ -43,8 +43,9 @@
 
     initEvents : function() {
       var self = this;
+      var rate = this.attr('rule.exchange.rate');
       this.bind('purchase', function(e, purchase) {
-        self.attr('cost', purchase / 10);
+        self.attr('cost', (purchase / rate).toFixed(2));
       });
     },
 

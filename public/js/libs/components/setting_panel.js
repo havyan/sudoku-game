@@ -10,9 +10,6 @@
       model.attr('rule').bind('change', function() {
         self.ruleChanged = true;
       });
-      model.attr('ui').bind('change', function() {
-        self.uiChanged = true;
-      });
       element.html(can.view('/js/libs/mst/setting_panel.mst', model, {
         disableLastTo : function(ruleRow) {
           var isLast = false;
@@ -36,19 +33,11 @@
 
     initModel : function(rule) {
       var account = $('body').data('account');
-      var ui = window.localStorage.getItem(account + '_ui');
       this.model = new can.Model({
         rule : rule,
-        account : account,
-        ui : ui ? JSON.parse(ui) : {
-          zoom : 1.0
-        }
+        account : account
       });
       return this.model;
-    },
-
-    saveUI : function() {
-      window.localStorage.setItem(this.model.attr('account') + '_ui', JSON.stringify(this.model.attr('ui').attr()));
     },
 
     '.navigator .item click' : function(e) {
@@ -148,10 +137,6 @@
       var self = this;
       if (this.validate()) {
         var rule = this.getRule();
-        if (this.uiChanged) {
-          self.saveUI();
-          this.uiChanged = false;
-        }
         if (this.ruleChanged) {
           Rest.Rule.updateRule(rule, function(res) {
             self.ruleChanged = false;
@@ -174,7 +159,7 @@
     },
 
     '.setting-back-action click' : function() {
-      if (this.ruleChanged || this.uiChanged) {
+      if (this.ruleChanged) {
         Dialog.confirm('设置已被修改，是否放弃？', function() {
           window.location.href = "/main";
         });
@@ -354,7 +339,7 @@
     '.ui-value-zoom input change' : function(e, event) {
       var value = parseFloat(e.val());
       if (isNaN(value)) {
-        value = this.model.attr('ui.zoom');
+        value = this.model.attr('rule.ui.zoom');
         e.val(value);
       } else {
         if (value < 1) {
@@ -365,7 +350,16 @@
           e.val(value);
         }
       }
-      this.model.attr('ui.zoom', value);
+      this.model.attr('rule.ui.zoom', value);
+    },
+
+    '.exchange-rate input change' : function(e, event) {
+      var value = parseFloat(e.val());
+      if (isNaN(value) || value < 0) {
+        value = this.model.attr('rule.exchange.rate');
+        e.val(value);
+      }
+      this.model.attr('rule.exchange.rate', value);
     },
 
     '.setting-main input blur' : function() {

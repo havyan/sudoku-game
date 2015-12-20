@@ -275,7 +275,8 @@ module.exports = function(router) {
           userName : user.name,
           userIcon : user.icon,
           money : user.money,
-          grade : rule.grade
+          grade : rule.grade,
+          exchange: rule.exchange
         });
       }
     });
