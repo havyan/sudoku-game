@@ -89,6 +89,11 @@
       }
     },
 
+    resetOrder : function() {
+      this.attr('order', null);
+      this.setStep(1);
+    },
+
     setStep : function(step) {
       this.attr('step', step);
     },
@@ -161,7 +166,9 @@
     '.navigator .item click' : function(e) {
       e.addClass('active').siblings('.item').removeClass('active');
       var target = e.data('target');
-      if (target === 'recharge-records') {
+      if (target === 'recharge-recharge') {
+        this.options.model.resetOrder();
+      } else if (target === 'recharge-records') {
         this.options.model.reloadRecords();
       }
       this.element.find('.recharge-container .item').removeClass('active').filter('.' + target).addClass('active');
