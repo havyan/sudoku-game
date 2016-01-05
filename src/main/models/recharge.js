@@ -80,20 +80,24 @@ Recharge.check = function(recharge, cb) {
         function(user, cb) {
           if (status === RechargeDAO.STATUS.WAITING && !recharge.used) {
             user.money = user.money + recharge.purchase;
-            user.save(cb);
+            user.save(function(error) {
+              if (error) {
+                cb(error);
+              } else {
+                recharge.used = true;
+                recharge.save(function(error) {
+                  if (error) {
+                    cb(error);
+                  } else {
+                    cb(null, user.money);
+                  }
+                });
+              }
+            });
           } else {
-            cb(null, user, 0);
+            cb(null, user.money);
           }
-        },function(user, count, cb) {
-          recharge.used = true;
-          recharge.save(function(error) {
-            if(error) {
-              cb(error);
-            } else {
-              cb(null, user.money);
-            }
-          });
-        },], function(error, money) {
+        }], function(error, money) {
           if (error) {
             cb(error);
           } else {
