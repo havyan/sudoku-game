@@ -78,7 +78,7 @@ Recharge.check = function(recharge, cb) {
           UserDAO.findOneByAccount(recharge.target, cb);
         },
         function(user, cb) {
-          if (status === RechargeDAO.STATUS.SUCCESS) {
+          if (status === RechargeDAO.STATUS.WAITING) {
             user.money = user.money + recharge.purchase;
             user.save(cb);
           } else {

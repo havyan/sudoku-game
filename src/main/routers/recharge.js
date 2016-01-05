@@ -55,7 +55,7 @@ module.exports = function(router) {
       if (error) {
         next(new HttpError(error));
       } else {
-        if (result.status === 1) {
+        if (result.status === 1 || result.status === 2) {
           res.send({
             result : 0
           });
