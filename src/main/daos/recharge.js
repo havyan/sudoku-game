@@ -27,7 +27,11 @@ var RechargeSchema = new Schema({
   },
   purchase : Number,
   cost : Number,
-  bank : String
+  bank : String,
+  used : {
+    type : Boolean,
+    default : false
+  }
 });
 
 RechargeSchema.statics.createRecharge = function(params, cb) {

@@ -78,18 +78,27 @@ Recharge.check = function(recharge, cb) {
           UserDAO.findOneByAccount(recharge.target, cb);
         },
         function(user, cb) {
-          if (status === RechargeDAO.STATUS.WAITING) {
+          if (status === RechargeDAO.STATUS.WAITING && !recharge.used) {
             user.money = user.money + recharge.purchase;
             user.save(cb);
           } else {
             cb(null, user, 0);
           }
-        }], function(error, user) {
+        },function(user, count, cb) {
+          recharge.used = true;
+          recharge.save(function(error) {
+            if(error) {
+              cb(error);
+            } else {
+              cb(null, user.money);
+            }
+          });
+        },], function(error, money) {
           if (error) {
             cb(error);
           } else {
             cb(null, {
-              money : user.money,
+              money : money,
               status : status
             });
           }
