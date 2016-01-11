@@ -122,7 +122,7 @@
       <div class="recharge-step-component pay"></div>
       <div class="recharge-step-component result">
         <p>
-          充值天才币成功！
+          {{rechargeResult order.status}}
         </p>
         <p>
           您的当前天才币为：<span class="money">{{user.money}}</span>天才币。

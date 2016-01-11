@@ -149,6 +149,15 @@
           return STATUS[status()];
         },
 
+        rechargeResult : function(status) {
+          status = status();
+          if (status === '1' || status === '2') {
+            return '充值天才币成功！';
+          } else {
+            return '充值天才币失败！';
+          }
+        },
+
         rechargeBank : function(bank) {
           return BANK[bank()];
         },
