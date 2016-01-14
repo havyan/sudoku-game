@@ -41,7 +41,9 @@ Room.prototype.bindGame = function(game) {
 Room.prototype.addRoom = function(room) {
   if (this.virtual) {
     this.children.push(room);
-    _.sortBy(this.children, 'order');
+    this.children.sort(function(child1, child2) {
+      return (child1.order || 0) - (child2.order || 0);
+    });
     return true;
   } else {
     return false;
