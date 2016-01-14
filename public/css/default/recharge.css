@@ -318,6 +318,12 @@
   margin-top: 120px;
 }
 
+.recharge-step-component.result .target {
+  color: #FFF000;
+  font-weight: bold;
+  margin: 0px 5px;
+}
+
 .recharge-step-component.result .money {
   color: #FFF000;
   font-weight: bold;

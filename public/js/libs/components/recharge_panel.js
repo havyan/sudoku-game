@@ -247,8 +247,10 @@
         Rest.Recharge.getPayStatus(model.attr('order.payuid'), function(result) {
           model.attr('order.status', result.status);
           if (result.status === '2' || result.status === '1') {
-            model.attr('user.money', result.money);
-            $('.welcome .money').html(result.money);
+            if (result.account === model.attr('user.account')) {
+              model.attr('user.money', result.money);
+              $('.welcome .money').html(result.money);
+            }
             dialog.hide();
             model.next();
             clearInterval(timer);

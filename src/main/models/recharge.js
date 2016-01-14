@@ -89,20 +89,21 @@ Recharge.check = function(recharge, cb) {
                   if (error) {
                     cb(error);
                   } else {
-                    cb(null, user.money);
+                    cb(null, user);
                   }
                 });
               }
             });
           } else {
-            cb(null, user.money);
+            cb(null, user);
           }
-        }], function(error, money) {
+        }], function(error, user) {
           if (error) {
             cb(error);
           } else {
             cb(null, {
-              money : money,
+              account : user.account,
+              money : user.money,
               status : status
             });
           }

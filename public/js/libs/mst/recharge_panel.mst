@@ -125,7 +125,7 @@
           {{rechargeResult order.status}}
         </p>
         <p>
-          您的当前天才币为：<span class="money">{{user.money}}</span>天才币。
+          <span class="target">{{order.target}}</span>的当前天才币为：<span class="money">{{user.money}}</span>天才币。
         </p>
       </div>
     </div>
