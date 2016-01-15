@@ -57,11 +57,11 @@ module.exports = function(router) {
       } else {
         if (result.status === '1' || result.status === '2') {
           res.send({
-            result : 0
+            result : '0'
           });
         } else {
           res.send({
-            result : 1
+            result : '1'
           });
         }
       }
