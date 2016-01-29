@@ -3,7 +3,7 @@
   }, {
     init : function(element, options) {
       var self = this;
-      can.view('/js/libs/mst/number_picker.mst', function(frag) {
+      can.view('/js/libs/mst/number_picker.mst', {}, function(frag) {
         this.element.append(frag);
       }.bind(this));
       document.onclick = function() {

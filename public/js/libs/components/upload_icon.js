@@ -2,7 +2,7 @@
   var DRAGGER_WIDTH = 3;
   can.Control('UploadIconPanel', {}, {
     init : function(element, options) {
-      can.view('/js/libs/mst/upload_icon.mst', function(frag) {
+      can.view('/js/libs/mst/upload_icon.mst', {},function(frag) {
         element.html(frag);
         this.initEvents();
       }.bind(this));
