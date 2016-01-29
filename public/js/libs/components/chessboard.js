@@ -57,7 +57,7 @@
       var cellUsedHeight = 100 / dimension.height;
       var cellWidth = cellUsedWidth * 0.9;
       var cellHeight = cellUsedHeight * 0.9;
-      this.element.html(can.view('/js/libs/mst/chessboard.mst', this.options.model, {
+      can.view('/js/libs/mst/chessboard.mst', this.options.model, {
         cellLayout : function(cellData) {
           var style = 'width: ' + cellWidth + '%; height: ' + cellHeight + '%;';
           var rx = cellData.x % 3;
@@ -81,28 +81,30 @@
           style += (' left: ' + left + '%; top: ' + top + '%;');
           return style;
         }
-      }));
-      this.chessCells = {};
-      this.element.find('.chess-cell').each(function() {
-        var chessCell = $(this);
-        self.chessCells[chessCell.data('xy')] = chessCell;
-      });
-      this.numberPicker = new NumberPicker(this.element.find('.chessboard-container'), {});
-      this.zoomBar = new ZoomBar(this.element.find('.game-zoom'), {
-        min : 1.0,
-        max : 1.5,
-        step : 0.1,
-        value : this.options.model.attr('ui.zoom'),
-        callback : function(zoom) {
-          self.options.model.setZoom(zoom);
-        }
-      });
-      this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
-        model : this.options.model
-      });
-      this.resetPropStatus();
-      this.resize();
-      this.layout();
+      }, function(frag) {
+        this.element.html(frag);
+        this.chessCells = {};
+        this.element.find('.chess-cell').each(function() {
+          var chessCell = $(this);
+          self.chessCells[chessCell.data('xy')] = chessCell;
+        });
+        this.numberPicker = new NumberPicker(this.element.find('.chessboard-container'), {});
+        this.zoomBar = new ZoomBar(this.element.find('.game-zoom'), {
+          min : 1.0,
+          max : 1.5,
+          step : 0.1,
+          value : this.options.model.attr('ui.zoom'),
+          callback : function(zoom) {
+            self.options.model.setZoom(zoom);
+          }
+        });
+        this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
+          model : this.options.model
+        });
+        this.resetPropStatus();
+        this.resize();
+        this.layout();
+      }.bind(this));
     },
 
     resetPropStatus : function() {

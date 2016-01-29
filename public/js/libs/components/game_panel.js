@@ -1,7 +1,7 @@
 (function() {
   can.Control('Components.GamePanel', {}, {
     init : function(element, options) {
-      element.html(can.view('/js/libs/mst/game_panel.mst', options.model, {
+      can.view('/js/libs/mst/game_panel.mst', options.model, {
         formatMessage : function(message) {
           if (message.content) {
             return message.content.split('\n').reduce(function(previous, current) {
@@ -11,15 +11,17 @@
             return message.content;
           }
         }
-      }));
-      if (options.model.attr('status') === 'waiting') {
-        this.showWaiting();
-      } else if (options.model.attr('status') === 'ongoing') {
-        this.showOngoing();
-      }
-      this.initEvents();
-      this.messageToBottom();
-      this.activePlayer(options.model.attr('currentPlayer'));
+      }, function(frag) {
+        element.html(frag);
+        if (options.model.attr('status') === 'waiting') {
+          this.showWaiting();
+        } else if (options.model.attr('status') === 'ongoing') {
+          this.showOngoing();
+        }
+        this.initEvents();
+        this.messageToBottom();
+        this.activePlayer(options.model.attr('currentPlayer'));
+      }.bind(this));
     },
 
     initEvents : function() {
@@ -171,12 +173,14 @@
 
     '.game-player mouseenter' : function(e) {
       var player = this.getPlayer(e);
-      $('body').append(can.view('/js/libs/mst/player_tip.mst', player));
-      var playerTip = $('.player-tip');
-      playerTip.css({
-        top : e.offset().top + e.outerHeight(),
-        left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
-      });
+      can.view('/js/libs/mst/player_tip.mst', player, function(frag) {
+        $('body').append(frag);
+        var playerTip = $('.player-tip');
+        playerTip.css({
+          top : e.offset().top + e.outerHeight(),
+          left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
+        });
+      }.bind(this));
     },
 
     '.game-player mouseleave' : function(e) {
@@ -239,8 +243,10 @@
     },
 
     showWaiting : function() {
-      $('.game-main-area').empty().html(can.view('/js/libs/mst/game_waiting.mst', this.options.model));
-      this.resetStartButton();
+      can.view('/js/libs/mst/game_waiting.mst', this.options.model, function(frag) {
+        $('.game-main-area').empty().html(frag);
+        this.resetStartButton();
+      }.bind(this));
     },
 
     showLoading : function(countdown) {

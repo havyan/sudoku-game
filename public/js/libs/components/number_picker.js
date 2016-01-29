@@ -3,7 +3,9 @@
   }, {
     init : function(element, options) {
       var self = this;
-      this.element.append(can.view('/js/libs/mst/number_picker.mst'));
+      can.view('/js/libs/mst/number_picker.mst', function(frag) {
+        this.element.append(frag);
+      }.bind(this));
       document.onclick = function() {
         self.element.find('.number-picker').hide();
       };

@@ -145,7 +145,9 @@
   can.Control('Components.PaginationBar', {
   }, {
     init : function(element, options) {
-      this.element.append(can.view('/js/libs/mst/pagination_bar.mst', options.model));
+      can.view('/js/libs/mst/pagination_bar.mst', options.model, function(frag) {
+        this.element.append(frag);
+      }.bind(this));
     },
 
     '.current click' : function() {

@@ -3,7 +3,9 @@
   }, {
     init : function(element, options) {
       this.createModel();
-      this.element.append(can.view('/js/libs/mst/lobby_game_form.mst', this.model));
+      can.view('/js/libs/mst/lobby_game_form.mst', this.model, function(frag) {
+        this.element.append(frag);
+      }.bind(this));
     },
 
     createModel : function() {
@@ -36,7 +38,7 @@
         duration : this.element.find('.value.duration option:selected').data('value'),
         capacity : this.element.find('.value.capacity option:selected').data('value'),
         startMode : this.element.find('.value.start-mode input:checked').data('value'),
-        waitTime: this.element.find('.value.wait-time option:selected').data('value')
+        waitTime : this.element.find('.value.wait-time option:selected').data('value')
       };
     },
 

@@ -24,9 +24,11 @@
           options.callback(value);
         }
       });
-      this.element.append(can.view('/js/libs/mst/zoom_bar.mst', options.model));
-      this.renderValue();
-      this.initEvents();
+      can.view('/js/libs/mst/zoom_bar.mst', options.model, function(frag) {
+        this.element.append(frag);
+        this.renderValue();
+        this.initEvents();
+      }.bind(this));
     },
 
     '.zoom-in-button click' : function() {

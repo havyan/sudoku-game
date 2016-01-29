@@ -2,7 +2,9 @@
   can.Control('Components.PropPanel', {}, {
     init : function(element, options) {
       this.model = new can.Model(options.data);
-      element.html(can.view('/js/libs/mst/prop_panel.mst', this.model));
+      can.view('/js/libs/mst/prop_panel.mst', this.model, function(frag) {
+        element.html(frag);
+      }.bind(this));
     },
 
     '.navigator .item click' : function(element) {

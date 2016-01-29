@@ -10,7 +10,7 @@
       model.attr('rule').bind('change', function() {
         self.ruleChanged = true;
       });
-      element.html(can.view('/js/libs/mst/setting_panel.mst', model, {
+      can.view('/js/libs/mst/setting_panel.mst', model, {
         disableLastTo : function(ruleRow) {
           var isLast = false;
           self.model.attr('rule.score.add').forEach(function(addRule) {
@@ -23,7 +23,9 @@
             return '';
           }
         }
-      }));
+      }, function(frag) {
+        element.html(frag);
+      }.bind(this));
     },
 
     getRule : function() {
