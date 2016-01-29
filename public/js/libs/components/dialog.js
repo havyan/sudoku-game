@@ -145,7 +145,6 @@
     show : function(options) {
       var $parent,
           $dialog,
-          dialog,
           modal;
       options = $.extend({
         title : 'Dialog',
@@ -154,10 +153,11 @@
         parent : 'body'
       }, options);
       $parent = $(options.parent);
-      $parent.append(can.view('/js/libs/mst/dialog.mst', options));
-      $dialog = $parent.find('#' + options.id);
-      dialog = new Dialog($dialog, options);
-      return dialog;
+      can.view('/js/libs/mst/dialog.mst', options, function(frag) {
+        $parent.append(frag);
+        $dialog = $parent.find('#' + options.id);
+        new Dialog($dialog, options);
+      }.bind(this));
     }
   }, {
     init : function(element, options) {
@@ -166,7 +166,9 @@
       if (options.control) {
         this.control = new options.control($content, options.data ? options.data : {});
       } else if (options.template) {
-        $content.html(can.view(options.template, options.data ? options.data : {}));
+        can.view(options.template, options.data ? options.data : {}, function(frag) {
+          $content.html(frag);
+        }.bind(this));
       } else if (options.content) {
         $content.html(options.content);
       }
