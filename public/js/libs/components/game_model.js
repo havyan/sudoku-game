@@ -99,8 +99,10 @@
     },
 
     initActive : function() {
-      var self = this;
-      self.attr('active', self.attr('currentPlayer') === self.attr('account'));
+      this.attr('active', this.attr('currentPlayer') === this.attr('account'));
+      this.bind('active', function() {
+        this.deselectCell();
+      }.bind(this));
     },
 
     initRanking : function() {
@@ -237,7 +239,7 @@
 
     findCellData : function(xy) {
       var cellDatas = this.attr('cellDatas');
-      if (cellDatas) {
+      if (xy && cellDatas) {
         var splits = xy.split(','),
             index = parseInt(splits[1]) * this.dimension.width + parseInt(splits[0]),
             start = 0,
@@ -357,6 +359,26 @@
       this.findCellData(xy).attr('draft', null);
       if (this.isOptions()) {
         this.resetAllCellOptions();
+      }
+    },
+
+    deselectCell : function() {
+      var cellDatas = this.attr('cellDatas');
+      _.filter(cellDatas, {
+        selected : true
+      }).forEach(function(cellData) {
+        cellData.attr('selected', false);
+      });
+      this.removeAttr('selectedCell');
+    },
+
+    selectCell : function(xy) {
+      var self = this;
+      this.deselectCell();
+      var cellData = this.findCellData(xy);
+      if (cellData) {
+        cellData.attr('selected', true);
+        self.attr('selectedCell', xy);
       }
     },
 
