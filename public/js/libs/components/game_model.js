@@ -373,12 +373,11 @@
     },
 
     selectCell : function(xy) {
-      var self = this;
       this.deselectCell();
       var cellData = this.findCellData(xy);
       if (cellData) {
         cellData.attr('selected', true);
-        self.attr('selectedCell', xy);
+        this.attr('selectedCell', xy);
       }
     },
 
