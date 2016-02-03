@@ -146,8 +146,8 @@
   }, {
     init : function(element, options) {
       can.view('/js/libs/mst/pagination_bar.mst', options.model, function(frag) {
-        this.element.append(frag);
-      }.bind(this));
+        element.append(frag);
+      });
     },
 
     '.current click' : function() {
