@@ -143,6 +143,7 @@
 
   can.Control('Components.RechargePanel', {}, {
     init : function(element, options) {
+      var self = this;
       var model = options.model;
       can.view('/js/libs/mst/recharge_panel.mst', model, {
         rechargeStatus : function(status) {
@@ -185,12 +186,12 @@
         }
       }, function(frag) {
         element.html(frag);
-        this.paginationModel = new Models.PaginationModel();
-        this.paginationBar = new Components.PaginationBar(element.find('.records-pagination-bar'), {
-          model : this.paginationModel
+        self.paginationModel = new Models.PaginationModel();
+        self.paginationBar = new Components.PaginationBar(element.find('.records-pagination-bar'), {
+          model : self.paginationModel
         });
-        this.initEvents();
-      }.bind(this));
+        self.initEvents();
+      });
     },
 
     initEvents : function() {

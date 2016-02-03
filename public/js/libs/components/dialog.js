@@ -89,7 +89,7 @@
             destOptions.actions = srcActions;
           } else {
             destOptions.actions = [];
-            destActions.forEach(function(destAction) {
+            $.each(destActions, function(i, destAction) {
               destOptions.actions.push($.extend({}, destAction, srcActions[destAction.name]));
             });
           }
@@ -101,7 +101,7 @@
             destOptions.leftActions = srcLeftActions;
           } else {
             destOptions.leftActions = [];
-            destLeftActions.forEach(function(destLeftAction) {
+            $.each(destLeftActions, function(i, destLeftAction) {
               destOptions.leftActions.push($.extend({}, destLeftAction, srcLeftActions[destLeftAction.name]));
             });
           }
@@ -184,7 +184,7 @@
     initActions : function() {
       var self = this;
       if (this.options.actions) {
-        this.options.actions.forEach(function(action, index) {
+        $.each(this.options.actions, function(index, action) {
           var actionName = action.name ? action.name : action.type ? action.type + index : 'action' + index;
           self.dom[actionName] = self.element.find('.modal-footer .action-item:eq(' + index + ')');
           if (action.callback) {
