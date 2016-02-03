@@ -5,7 +5,7 @@
       $(window).unload(function() {
         window.localStorage.setItem('lobby_open', false);
       });
-      element.html(can.view('/js/libs/mst/lobby_panel.mst', options.model, {
+      can.view('/js/libs/mst/lobby_panel.mst', options.model, {
         playersCount : function(room) {
           var count = function(room) {
             var result = 0;
@@ -26,15 +26,17 @@
           };
           return count(room).toString();
         }
-      }));
-      var selectedRoom = options.model.attr('selectedRoom');
-      this.selectRoom(selectedRoom);
-      this.toggleExpand(this.element.find('#' + selectedRoom).closest('.lobby-nav-item'));
-      this.gameForm = new LobbyGameForm(this.element, {
-        user : this.options.model.attr('user').attr(),
-        rule : this.options.model.attr('rule').attr(),
-        levels : this.options.model.attr('levels').attr()
-      });
+      }, function(frag) {
+        element.html(frag);
+        var selectedRoom = options.model.attr('selectedRoom');
+        this.selectRoom(selectedRoom);
+        this.toggleExpand(this.element.find('#' + selectedRoom).closest('.lobby-nav-item'));
+        this.gameForm = new LobbyGameForm(this.element, {
+          user : this.options.model.attr('user').attr(),
+          rule : this.options.model.attr('rule').attr(),
+          levels : this.options.model.attr('levels').attr()
+        });
+      }.bind(this));
     },
 
     selectRoom : function(roomId) {
@@ -43,7 +45,7 @@
       var $room = this.element.find('.lobby-nav-real-room[data-id=' + roomId + ']');
       this.element.find('.lobby-nav-real-room, .lobby-nav-virtual-room').removeClass('active');
       $room.addClass('active').parents('.lobby-nav-item').find('.lobby-nav-virtual-room').addClass('active');
-      this.element.find('.lobby-content').html(can.view('/js/libs/mst/lobby_room.mst', room, {
+      can.view('/js/libs/mst/lobby_room.mst', room, {
         tableOrder : function(game) {
           return _.findIndex(room.attr('games'), {
             id : game.id
@@ -73,7 +75,9 @@
             return 'unavailable';
           }
         }
-      }));
+      }, function(frag) {
+        this.element.find('.lobby-content').html(frag);
+      }.bind(this));
     },
 
     '.lobby-nav-virtual-room click' : function(e) {
@@ -193,12 +197,14 @@
     '.lobby-player.existent mouseenter' : function(e) {
       var player = this.options.model.findPlayer(e.data('id'));
       if (player) {
-        $('body').append(can.view('/js/libs/mst/player_tip.mst', player));
-        var playerTip = $('.player-tip');
-        playerTip.css({
-          top : e.offset().top + e.outerHeight() / 2,
-          left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
-        });
+        can.view('/js/libs/mst/player_tip.mst', player, function(frag) {
+          $('body').append(frag);
+          var playerTip = $('.player-tip');
+          playerTip.css({
+            top : e.offset().top + e.outerHeight() / 2,
+            left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
+          });
+        }.bind(this));
       }
     },
 

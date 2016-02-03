@@ -335,7 +335,8 @@ body {
   height: 100%;
 }
 
-.chess-cell:focus {
+.chess-cell.selected {
+  background: white !important;
   outline: #FD8C04 ridge 2px;
   z-index: 1000;
 }
@@ -348,21 +349,14 @@ body {
   background: white;
   border-radius: 3px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .chessboard-panel.inactive .chess-cell {
   background: #adbcd3;
 }
 
-.chess-cell:focus {
-  background: white !important;
-}
-
-.chess-cell:hover {
-  cursor: pointer;
-}
-
-.chess-cell.has-value:hover {
+.chess-cell.has-value {
   cursor: default;
 }
 
@@ -387,7 +381,6 @@ body {
   text-align: center;
   font-size: 0.75rem;
   line-height: 1rem;
-  background-color: inherit;
   border-radius: inherit;
   z-index: 300;
 }

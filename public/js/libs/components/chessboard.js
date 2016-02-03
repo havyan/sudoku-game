@@ -1,7 +1,6 @@
 (function() {
   can.Control('Chessboard', {}, {
     init : function(element, options) {
-      var self = this;
       this.render();
       this.initEvents();
     },
@@ -57,7 +56,7 @@
       var cellUsedHeight = 100 / dimension.height;
       var cellWidth = cellUsedWidth * 0.9;
       var cellHeight = cellUsedHeight * 0.9;
-      this.element.html(can.view('/js/libs/mst/chessboard.mst', this.options.model, {
+      can.view('/js/libs/mst/chessboard.mst', this.options.model, {
         cellLayout : function(cellData) {
           var style = 'width: ' + cellWidth + '%; height: ' + cellHeight + '%;';
           var rx = cellData.x % 3;
@@ -81,33 +80,39 @@
           style += (' left: ' + left + '%; top: ' + top + '%;');
           return style;
         }
-      }));
-      this.chessCells = {};
-      this.element.find('.chess-cell').each(function() {
-        var chessCell = $(this);
-        self.chessCells[chessCell.data('xy')] = chessCell;
-      });
-      this.numberPicker = new NumberPicker(this.element.find('.chessboard-container'), {});
-      this.zoomBar = new ZoomBar(this.element.find('.game-zoom'), {
-        min : 1.0,
-        max : 1.5,
-        step : 0.1,
-        value : this.options.model.attr('ui.zoom'),
-        callback : function(zoom) {
-          self.options.model.setZoom(zoom);
-        }
-      });
-      this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
-        model : this.options.model
-      });
+      }, function(frag) {
+        this.element.html(frag);
+        this.chessCells = {};
+        this.element.find('.chess-cell').each(function() {
+          var chessCell = $(this);
+          self.chessCells[chessCell.data('xy')] = chessCell;
+        });
+        this.numberPicker = new NumberPicker(this.element.find('.chessboard-container'), {});
+        this.zoomBar = new ZoomBar(this.element.find('.game-zoom'), {
+          min : 1.0,
+          max : 1.5,
+          step : 0.1,
+          value : this.options.model.attr('ui.zoom'),
+          callback : function(zoom) {
+            self.options.model.setZoom(zoom);
+          }
+        });
+        this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
+          model : this.options.model
+        });
+        this.resetPropStatus();
+        this.resize();
+        this.layout();
+      }.bind(this));
+    },
+
+    '{model} change' : function() {
       this.resetPropStatus();
-      this.resize();
-      this.layout();
     },
 
     resetPropStatus : function() {
       var model = this.options.model;
-      if (this.selectedChassCell && (model.isDraft() || model.isActive()) && model.hasProp('magnifier')) {
+      if (model.attr('selectedCell') && (model.isDraft() || model.isActive()) && model.hasProp('magnifier')) {
         this.element.find('.props .magnifier').addClass('active');
       } else {
         this.element.find('.props .magnifier').removeClass('active');
@@ -203,7 +208,6 @@
 
     '{model} active' : function(model, e, active) {
       this.numberPicker.hide();
-      this.resetPropStatus();
     },
 
     '{model} optionsEnabled' : function(model, e, optionsEnabled) {
@@ -289,12 +293,12 @@
       setTimeout(function() {
         messageElement.fadeOut();
       }, 1000);
-      this.resetPropStatus();
     },
 
-    '.chess-cell click' : function(element, event) {
+    '.chess-cell.no-value click' : function(element, event) {
       var model = this.options.model;
       var xy = element.data('xy');
+      model.selectCell(xy);
       if (model.isActive() && model.isPlain() && model.isSubmit()) {
         if (model.getKnownCellValue(xy) !== undefined) {
           model.submit(xy, model.getKnownCellValue(xy));
@@ -414,25 +418,14 @@
       this.options.model.setZoom(parseFloat(this.element.find('.game-zoom-bar').val()));
     },
 
-    '.chess-cell focus' : function(element, event) {
-      var model = this.options.model;
-      var xy = element.data('xy');
-      this.selectedChassCell = this.chessCells[xy];
-      this.resetPropStatus();
-    },
-
-    '.chess-cell blur' : function(element, event) {
-      this.selectedChassCell = null;
-      this.resetPropStatus();
-    },
-
     '.magnifier click' : function(element, event) {
-      if (this.selectedChassCell) {
+      var selectedCell = this.options.model.attr('selectedCell');
+      if (selectedCell) {
         if (this.options.model.isDraft()) {
-          this.options.model.peep(this.selectedChassCell.data('xy'));
+          this.options.model.peep(selectedCell);
         } else {
           if (this.options.model.isActive()) {
-            this.options.model.autoSubmit(this.selectedChassCell.data('xy'));
+            this.options.model.autoSubmit(selectedCell);
           }
         }
       }
@@ -442,7 +435,6 @@
       var self = this;
       if (element.hasClass('active')) {
         this.options.model.delay(function() {
-          self.resetPropStatus();
         });
       }
     },
@@ -451,7 +443,6 @@
       var self = this;
       if (element.hasClass('active')) {
         this.options.model.impunish(function() {
-          self.resetPropStatus();
         });
       }
     },
@@ -460,7 +451,6 @@
       var self = this;
       if (element.hasClass('active') && !this.options.model.attr('glassesUsed')) {
         this.options.model.useGlasses(function() {
-          self.resetPropStatus();
         });
       }
     },
@@ -469,7 +459,6 @@
       var self = this;
       if (element.hasClass('active') && !this.options.model.attr('optionsOnce')) {
         this.options.model.setOptionsOnce(function() {
-          self.resetPropStatus();
         });
       }
     },
@@ -478,7 +467,6 @@
       var self = this;
       if (element.hasClass('active') && !this.options.model.attr('optionsAlways')) {
         this.options.model.setOptionsAlways(function() {
-          self.resetPropStatus();
         });
       }
     },

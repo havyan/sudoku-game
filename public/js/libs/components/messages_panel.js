@@ -131,13 +131,15 @@
 
   can.Control('Components.MessagesPanel', {}, {
     init : function(element, options) {
-      element.html(can.view('/js/libs/mst/messages_panel.mst', this.options.model));
-      this.paginationModel = new Models.PaginationModel();
-      this.paginationBar = new Components.PaginationBar(element.find('.messages-pagination-bar'), {
-        model : this.paginationModel
-      });
-      this.initEvents();
-      this.options.model.reload();
+      can.view('/js/libs/mst/messages_panel.mst', this.options.model, function(frag) {
+        element.html(frag);
+        this.paginationModel = new Models.PaginationModel();
+        this.paginationBar = new Components.PaginationBar(element.find('.messages-pagination-bar'), {
+          model : this.paginationModel
+        });
+        this.initEvents();
+        this.options.model.reload();
+      }.bind(this));
     },
 
     initEvents : function() {
