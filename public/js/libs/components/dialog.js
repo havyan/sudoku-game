@@ -157,7 +157,7 @@
         $parent.append(frag);
         $dialog = $parent.find('#' + options.id);
         new Dialog($dialog, options);
-      }.bind(this));
+      });
     }
   }, {
     init : function(element, options) {
@@ -168,7 +168,7 @@
       } else if (options.template) {
         can.view(options.template, options.data ? options.data : {}, function(frag) {
           $content.html(frag);
-        }.bind(this));
+        });
       } else if (options.content) {
         $content.html(options.content);
       }
