@@ -612,6 +612,7 @@
       });
       this.eventReceiver.on('game-over', function(results) {
         self.attr('status', 'over');
+        self.attr('awardResult', _.find(results, {account: self.attr('account')}).awardResult);
         self.attr('results', results);
       });
       this.eventReceiver.on('game-destroyed', function() {

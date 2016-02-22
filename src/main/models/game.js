@@ -12,6 +12,7 @@ var PuzzleDAO = require('../daos/puzzle');
 var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
+var Award = require('./award');
 var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
@@ -406,13 +407,24 @@ Game.prototype.playerQuit = function(account, status, cb) {
       var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
         return e.floor > quitPlayer.points;
       });
+      var oldGrade = quitPlayer.grade;
       quitPlayer.grade = this.rule.grade[ceilingIndex - 1].code;
-      quitPlayer.save(function(error) {
+      async.waterfall([
+      function(cb) {
+        quitPlayer.save(cb);
+      },
+      function(quitPlayer, count, cb) {
+        if (parseInt(quitPlayer.grade) > parseInt(oldGrade)) {
+          Award.perform('upgrade-to-' + quitPlayer.grade, quitPlayer.account, cb);
+        } else {
+          cb(null);
+        }
+      }], function(error, awardResult) {
         if (error) {
           cb(error);
         } else {
           self.quitPlayers.unshift(quitPlayer);
-          self.results.unshift(self.createResult(quitPlayer, status));
+          self.results.unshift(self.createResult(quitPlayer, status, awardResult));
           self.removePlayer(account);
           self.emit('player-quit', {
             account : account,
@@ -446,13 +458,15 @@ Game.prototype.playersCount = function() {
   return _.compact(this.players).length;
 };
 
-Game.prototype.createResult = function(player, status) {
+Game.prototype.createResult = function(player, status, awardResult) {
   return {
+    account: player.account,
     playerName : player.name,
     score : status === 'quit' ? '退出' : status === 'offline' ? '离线' : this.scores[player.account] || 0,
     status : status,
     points : player.points,
-    money : player.money
+    money : player.money,
+    awardResult : awardResult
   };
 };
 
@@ -681,16 +695,27 @@ Game.prototype.over = function(cb) {
       var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
         return e.floor > player.points;
       });
+      var oldGrade = player.grade;
       player.grade = self.rule.grade[ceilingIndex - 1].code;
       player.rounds = player.rounds + 1;
       if (index === players - 1) {
         player.wintimes = player.wintimes + 1;
       }
-      player.save(function(error) {
+      async.waterfall([
+      function(cb) {
+        player.save(cb);
+      },
+      function(player, count, cb) {
+        if (parseInt(player.grade) > parseInt(oldGrade)) {
+          Award.perform('upgrade-to-' + player.grade, player.account, cb);
+        } else {
+          cb(null);
+        }
+      }], function(error, awardResult) {
         if (error) {
           cb(error);
         } else {
-          self.results.unshift(self.createResult(player, 'normal'));
+          self.results.unshift(self.createResult(player, 'normal', awardResult));
           index++;
           cb();
         }

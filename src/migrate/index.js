@@ -10,6 +10,7 @@ var PuzzleDAO = require('../main/daos/puzzle');
 var PropDAO = require('../main/daos/prop');
 var RoomDAO = require('../main/daos/room');
 var TemplateDAO = require('../main/daos/template');
+var AwardDAO = require('../main/daos/award');
 var GameMode = require('../main/models/game_mode');
 
 module.exports = function(cb) {
@@ -110,6 +111,29 @@ module.exports = function(cb) {
             }, cb);
           }
         }
+      });
+    }, cb);
+  },
+  function(cb) {
+    var awards = require('./predefined/awards.json');
+    async.eachSeries(awards, function(award, cb) {
+      async.series([
+      function(cb) {
+        AwardDAO.findOneByCode(award.code, function(error, find) {
+          if (error) {
+            winston.error('Error happens when getting award from db: ' + error);
+            cb(error);
+          } else {
+            if (!find) {
+              winston.info('Create Award [' + award.code + '] from predefined');
+              AwardDAO.create(award, cb);
+            } else {
+              cb();
+            }
+          }
+        });
+      }], function(error) {
+        cb(error);
       });
     }, cb);
   },

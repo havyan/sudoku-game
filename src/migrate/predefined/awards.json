@@ -1,0 +1,183 @@
+[
+  {
+    "type": "upgrade",
+    "code": "upgrade-to-1",
+    "title": "恭喜您成功晋升为一段选手！",
+    "money": 0,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }, {
+    "type": "upgrade",
+    "code": "upgrade-to-2",
+    "title": "恭喜您成功晋升为二段选手！",
+    "money": 200,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }, {
+    "type": "upgrade",
+    "code": "upgrade-to-3",
+    "title": "恭喜您成功晋升为三段选手！",
+    "money": 300,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }, {
+    "type": "upgrade",
+    "code": "upgrade-to-4",
+    "title": "恭喜您成功晋升为四段选手！",
+    "money": 400,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }, {
+    "type": "upgrade",
+    "code": "upgrade-to-5",
+    "title": "恭喜您成功晋升为五段选手！",
+    "money": 500,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }, {
+    "type": "upgrade",
+    "code": "upgrade-to-6",
+    "title": "恭喜您成功晋升为六段选手！",
+    "money": 600,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }, {
+    "type": "upgrade",
+    "code": "upgrade-to-7",
+    "title": "恭喜您成功晋升为七段选手！",
+    "money": 700,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }, {
+    "type": "upgrade",
+    "code": "upgrade-to-8",
+    "title": "恭喜您成功晋升为八段选手！",
+    "money": 800,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }, {
+    "type": "upgrade",
+    "code": "upgrade-to-9",
+    "title": "恭喜您成功晋升为九段选手！",
+    "money": 900,
+    "props": [
+      {
+        "type": "magnifier",
+        "count": 10
+      }, {
+        "type": "impunity",
+        "count": 20
+      }, {
+        "type": "delay",
+        "count": 30
+      }, {
+        "type": "options_always",
+        "count": 5
+      }
+    ]
+  }
+]

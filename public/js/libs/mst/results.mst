@@ -1,3 +1,27 @@
+{{#awardResult}}
+{{#award}}
+<div class="award">
+  <div class="title">
+    {{title}}
+  </div>
+  <div class="award-label">
+    您将获得<span>{{money}}</span>个天才币和以下的道具作为奖励:
+  </div>
+  <div class="award-props">
+    {{#props}}
+    <div class="row">
+      <div class="name">
+        <span class="icon" style="background-image: {{icon}}"></span>{{name}}
+      </div>
+      <div class="value">
+        {{count}}
+      </div>
+    </div>
+    {{/props}}
+  </div>
+</div>
+{{/award}}
+{{/awardResult}}
 <table class="table game-results-table">
   <thead>
     <th>排名</th>
