@@ -55,3 +55,7 @@ node-inspector
 ```
 node --debug bin/startup.js
 ```
+
+# TODO List
+* Build prop class hierarchy, separate prop's code from game model
+* Change prop data structure to array, it's good for extension

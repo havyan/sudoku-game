@@ -54,7 +54,14 @@ Award.perform = function(code, to, cb) {
       function(cb) {
         awardResult = {
           currentMoney : user.money,
-          currentProp : prop.toJSON(),
+          currentProps : propTypes.map(function(propType) {
+            return {
+              type : propType.type,
+              name : propType.name,
+              icon : propType.icon,
+              count : prop[propType.type]
+            };
+          }),
           award : awardJson
         };
         async.waterfall([

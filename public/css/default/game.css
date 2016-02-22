@@ -986,3 +986,52 @@ to {
   display: block;
   opacity: 1;
 }
+
+.award {
+  border: 1px solid #FFD700;
+  border-radius: 20px;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+}
+
+.award .title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #FFD700;
+}
+
+.award .award-label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.award .award-label span {
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+  color: #FFD700;
+}
+
+.award .award-prop {
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.award .award-prop .icon {
+  width: 32px;
+  height: 32px;
+}
+
+.award .award-prop > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.award .award-prop .text span {
+  color: #FFD700;
+  font-weight: bold;
+}
