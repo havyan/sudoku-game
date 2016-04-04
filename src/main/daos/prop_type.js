@@ -5,7 +5,10 @@ var common = require('./common');
 var PropTypeSchema = new Schema({
   type : String,
   name : String,
-  status : String,
+  status : {
+    type : String,
+    default : '1'
+  },
   order : Number,
   func : String,
   icon : String,
@@ -23,7 +26,9 @@ PropTypeSchema.statics.findOneByType = function(type, cb) {
 };
 
 PropTypeSchema.statics.all = function(cb) {
-  this.find({}).sort('order').exec(cb);
+  this.find({
+    status : '1'
+  }).sort('order').exec(cb);
 };
 
 PropTypeSchema.statics.addSales = function(type, add, cb) {
