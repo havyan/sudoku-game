@@ -8,9 +8,9 @@
         </div>
         <div class="value level">
           <select>
-            {{#levels}}
-            <option data-code="{{code}}">{{name}}</option>
-            {{/levels}}
+            {{#each levels}}
+            <option data-code="{{code}}" {{#unlesss @index}}selected{{/unless}}>{{name}}</option>
+            {{/each}}
           </select>
         </div>
       </div>
@@ -20,9 +20,9 @@
         </div>
         <div class="value step-time">
           <select>
-            {{#stepTimes}}
-            <option data-total="{{total}}">{{total}}秒</option>
-            {{/stepTimes}}
+            {{#each stepTimes}}
+            <option data-total="{{total}}" {{#unlesss @index}}selected{{/unless}}>{{total}}秒</option>
+            {{/each}}
           </select>
         </div>
       </div>
@@ -32,9 +32,9 @@
         </div>
         <div class="value duration">
           <select>
-            {{#durations}}
-            <option data-value="{{this}}">{{this}}小时</option>
-            {{/durations}}
+            {{#each durations}}
+            <option data-value="{{this}}" {{#unlesss @index}}selected{{/unless}}>{{this}}小时</option>
+            {{/each}}
           </select>
         </div>
       </div>
@@ -44,9 +44,9 @@
         </div>
         <div class="value capacity">
           <select>
-            {{#capacities}}
-            <option data-value="{{this}}">{{this}}人</option>
-            {{/capacities}}
+            {{#each capacities}}
+            <option data-value="{{this}}" {{#unlesss @index}}selected{{/unless}}>{{this}}人</option>
+            {{/each}}
           </select>
         </div>
       </div>
@@ -67,9 +67,9 @@
         </div>
         <div class="value wait-time">
           <select>
-            {{#waitTimes}}
-            <option data-value="{{this}}">{{this}}分钟</option>
-            {{/waitTimes}}
+            {{#each waitTimes}}
+            <option data-value="{{this}}" {{#unlesss @index}}selected{{/unless}}>{{this}}分钟</option>
+            {{/each}}
           </select>
         </div>
       </div>

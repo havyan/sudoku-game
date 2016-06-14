@@ -15,6 +15,18 @@ module.exports = function(router) {
     }
   });
 
+  router.get('/game/:id/status', function(req, res) {
+    var game = global.gameManager.findGame(req.params.id);
+    if (game) {
+      res.send({
+        result : game.status
+      });
+    } else {
+      winston.error('No game for id: ' + req.params.id);
+      next(new HttpError('No game for id: ' + req.params.id, HttpError.NOT_FOUND));
+    }
+  });
+
   router.put('/game/:id/status', function(req, res) {
     global.gameManager.setGameStatus(req.session.account, req.params.id, req.body.status);
     res.send({

@@ -34,6 +34,16 @@
       });
     },
 
+    getGameStatus : function(id, success, error) {
+      return $.ajax({
+        type : 'GET',
+        url : '/game/' + id + '/status',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     playerJoin : function(id, index, params, success, error) {
       return $.ajax({
         type : 'post',

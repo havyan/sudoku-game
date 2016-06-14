@@ -149,18 +149,21 @@
           if (cost > 0) {
             Dialog.confirm('您需要花费' + cost + '个天才币，是否继续？', function($e) {
               Rest.Game.playerJoin(gameId, 0, params, function(result) {
-                window.open('/table/' + result.gameId, '_blank');
                 $e.closest('.modal').modal('hide');
               }, function(error) {
-                Dialog.error('建桌失败, ' + error.responseJSON.message);
+                var message = '建桌失败, ' + error.responseJSON.message;
+                $e.closest('.modal').modal('hide');
+                Dialog.error(message);
               });
+              window.open('/table/' + gameId, '_blank');
             });
           } else {
             Rest.Game.playerJoin(gameId, 0, params, function(result) {
-              window.open('/table/' + result.gameId, '_blank');
             }, function(error) {
-              Dialog.error('建桌失败, ' + error.responseJSON.message);
+              var message = '建桌失败, ' + error.responseJSON.message;
+              Dialog.error(message);
             });
+            window.open('/table/' + gameId, '_blank');
           }
         }
       });
