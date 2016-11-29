@@ -3,7 +3,7 @@ var formatDate = require('dateformat');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
 var common = require('./common');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 
 var STATUS = {
   INIT : '9',

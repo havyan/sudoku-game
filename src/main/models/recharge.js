@@ -68,7 +68,7 @@ Recharge.check = function(recharge, cb) {
     var result = JSON.parse(body);
     if (res.statusCode == 200) {
       var status = result.result.toString();
-      if (_.contains(RechargeDAO.STATUS, status)) {
+      if (_.includes(RechargeDAO.STATUS, status)) {
         recharge.status = status;
         async.waterfall([
         function(cb) {

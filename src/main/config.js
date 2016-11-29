@@ -20,6 +20,7 @@ Config.prototype.initialize = function(app) {
     app.locals[name] = config.app.locals[name];
   }
 
+  mongoose.Promise = global.Promise;
   mongoose.connect(config.mongodb.url + '/' + config.mongodb.database);
 };
 

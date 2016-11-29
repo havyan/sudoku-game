@@ -45,13 +45,6 @@
       "maxsize": 5000000,
       "maxFiles": 5,
       "json": false
-    },
-    "levels": {
-      "debug": 1,
-      "info": 2,
-      "warn": 3,
-      "error": 4,
-      "fatal": 5
     }
   }
 }

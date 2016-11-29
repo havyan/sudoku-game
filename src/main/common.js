@@ -2,7 +2,7 @@ var formatDate = require('dateformat');
 var hbs = require('hbs');
 var _ = require('lodash');
 var Socketio = require('socket.io');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 
 var RE_IPV4 = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 var RE_IPV6 = /^[\w:]+$/;

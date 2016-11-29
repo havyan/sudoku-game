@@ -731,7 +731,7 @@ Game.prototype.over = function(cb) {
     }, cb);
   },
   function(content, cb) {
-    Message.sendFromSystem(_.pluck(players, 'id'), '最新战报', content, cb);
+    Message.sendFromSystem(_.map(players, 'id'), '最新战报', content, cb);
   }], function(error) {
     if (error) {
       cb(error);
