@@ -1,3 +1,5 @@
 #!/bin/sh
+#chkconfig: 2345 80 80 
+#description: auto start sudoku game
 
 node /data/web/sudoku-game/bin/startup.js

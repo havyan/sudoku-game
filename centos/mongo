@@ -1,3 +1,5 @@
 #!/bin/sh
+#chkconfig: 2345 80 80 
+#description: auto start mongo
 
 mongod -dbpath "/data/mongo/data"
