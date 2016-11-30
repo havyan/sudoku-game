@@ -1,0 +1,3 @@
+#!/bin/sh
+
+node /data/web/sudoku-game/bin/startup.js
