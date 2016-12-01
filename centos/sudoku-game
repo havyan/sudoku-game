@@ -1,6 +1,20 @@
 #!/bin/sh
-#chkconfig: 2345 80 80 
-#description: auto start sudoku game
 
-cd /data/web/sudoku-game
-node ./bin/startup.js
+echo "Sudoku game script"
+
+start() {
+  echo "Start sudoku game service"
+  cd /data/web/sudoku-game
+  node ./bin/startup.js
+}
+
+stop() {
+  echo "Stop sudoku game service"
+  pkill node
+}
+
+case $1 in
+  start|stop)
+    "$1"
+    ;;
+esac

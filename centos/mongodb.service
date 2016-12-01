@@ -1,0 +1,13 @@
+[Unit]
+Description=MongoDB Service
+After=network.target iptables.service
+
+[Service]
+Type=forking
+User=root
+ExecStart=/data/web/sudoku-game/centos/mongodb start
+ExecStop=/data/web/sudoku-game/centos/mongodb stop
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
