@@ -3,7 +3,7 @@ Description=MongoDB Service
 After=network.target iptables.service
 
 [Service]
-Type=forking
+Type=simple
 User=root
 ExecStart=/data/web/sudoku-game/centos/mongodb start
 ExecStop=/data/web/sudoku-game/centos/mongodb stop
