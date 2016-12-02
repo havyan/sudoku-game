@@ -5,7 +5,7 @@ echo "Sudoku game script"
 start() {
   echo "Start sudoku game service"
   cd /data/web/sudoku-game
-  node ./bin/startup.js
+  node ./bin/startup.js env=production
 }
 
 stop() {

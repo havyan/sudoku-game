@@ -1,0 +1,50 @@
+{
+  "server": {
+    "domain": "http://game.supergenius.cn/",
+    "port": 80
+  },
+  "admin": "127.0.0.1",
+  "mongodb": {
+    "url": "mongodb://localhost",
+    "database": "sudoku_game"
+  },
+  "app": {
+    "params": {
+      "conf.path.public": "public",
+      "conf.path.views": "views/html",
+      "conf.path.viewlibs": "views/viewlibs",
+      "conf.path.favicon": "public/imgs/web/favicon.ico"
+    },
+    "locals": {
+      "base": "/",
+      "baseimg": "/imgs/default",
+      "basecss": "/css/default",
+      "basejs": "/js",
+      "basefile": "/"
+    },
+    "mail": {
+      "service": "163",
+      "from": "zxx.968@163.com",
+      "password": "genius"
+    },
+    "pay": {
+      "apiuid": "7fb943a08b2b45e9911966fcf7d228bd",
+      "site": "0",
+      "notifyurl": "/recharge/pay/{payuid}/result",
+      "resulturl": "/view/recharge/pay/{payuid}",
+      "apipay": "http://account.supergenius.cn/api/7fb943a08b2b45e9911966fcf7d228bd/recharge/{payuid}",
+      "apiquery": "http://account.supergenius.cn/api/7fb943a08b2b45e9911966fcf7d228bd/recharge/query/{payuid}"
+    }
+  },
+  "winston": {
+    "transport": {
+      "type": "File",
+      "level": "info",
+      "filename": "logs/app.log",
+      "timestamp": true,
+      "maxsize": 5000000,
+      "maxFiles": 5,
+      "json": false
+    }
+  }
+}

@@ -4,7 +4,7 @@ echo "MongoDB service script"
 
 start() {
   echo "Start MongoDB service"
-  mongod -dbpath "/data/mongo/data"
+  mongod -dbpath "/var/lib/mongo"
 }
 
 stop() {
