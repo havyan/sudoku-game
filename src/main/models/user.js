@@ -2,14 +2,12 @@ var _ = require('lodash');
 var fs = require('fs');
 var gm = require('gm');
 var async = require('async');
-var formidable = require('formidable');
 var winston = require('winston');
 var vcode = require('verify-code');
 var emailer = require('../emailer');
 var UserDAO = require('../daos/user');
 var ResetKeyDAO = require('../daos/reset_key');
 var ActiveKeyDAO = require('../daos/active_key');
-var TMP_ICON_DIR = '/imgs/web/tmp';
 var ICON_DIR = '/imgs/web/user_icons';
 var RESET_PASSWORD_EXPIRED = 30;
 
@@ -55,7 +53,7 @@ User.updateIconByAccount = function(account, icon, library, bound, cb) {
   } else {
     var fileName = icon.substring(icon.lastIndexOf('/') + 1, icon.length);
     var iconPath = ICON_DIR + '/' + fileName;
-    var source = 'public' + icon;
+    var source = icon;
     var dest = 'public' + iconPath;
     gm(source).size(function(error, size) {
       if (error) {
@@ -224,7 +222,7 @@ User.sendResetMail = function(email, cb) {
     var link = global.domain + '/reset_password?key=' + key.id;
     emailer.send({
       to : email,
-      subject : '重置超天才数独游戏登录密码',
+      subject : '重置天才数独游戏登录密码',
       html : '<p>请点击重置链接来重置密码: <a href="' + link + '">重置</a></p>'
     }, cb);
   }], cb);

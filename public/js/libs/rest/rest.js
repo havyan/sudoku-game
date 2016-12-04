@@ -282,17 +282,19 @@
     },
 
     setIcon : function(icon, library, bound, success, error) {
+      var formData = new FormData();
+      formData.append('icon', icon);
+      formData.append('library', library);
+      formData.append('bound', JSON.stringify(bound));
       return $.ajax({
         type : 'put',
         url : '/user/icon',
         dataType : 'json',
-        data : {
-          icon : icon,
-          library : library,
-          bound : JSON.stringify(bound)
-        },
+        data : formData,
         success : success,
-        error : error
+        error : error,
+        processData : false,
+        contentType : false
       });
     },
 

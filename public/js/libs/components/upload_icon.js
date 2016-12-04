@@ -2,7 +2,7 @@
   var DRAGGER_WIDTH = 3;
   can.Control('UploadIconPanel', {}, {
     init : function(element, options) {
-      can.view('/js/libs/mst/upload_icon.mst', {},function(frag) {
+      can.view('/js/libs/mst/upload_icon.mst', {}, function(frag) {
         element.html(frag);
         this.initEvents();
       }.bind(this));
@@ -17,25 +17,6 @@
       var $right = element.find('.dragger-right');
       var $top = element.find('.dragger-top');
       var $bottom = element.find('.dragger-bottom');
-      element.find('.upload-action input').fileupload({
-        dataType : 'json',
-        progressall : function(e, data) {
-          var progress = parseInt(data.loaded / data.total * 100);
-          element.find('.progress-bar').css('width', progress + '%').html(progress + '%');
-        },
-        done : function(e, data) {
-          var $icon = element.find('.upload-icon-display');
-          self.path = data.result.path;
-          self.setIconBound(function(bound) {
-            $icon.css('background-image', 'url(' + data.result.path + ')');
-            element.find('.inner-icon-display').css('background-image', 'url(' + data.result.path + ')');
-            $icon.find('span').hide();
-            element.find('.upload-icon-cutter').show();
-            var cutterSize = Math.min(bound.width, bound.height, 150);
-            self.resetCutter(bound.left + (bound.width - cutterSize) / 2, bound.top + (bound.height - cutterSize) / 2, cutterSize, cutterSize);
-          });
-        }
-      });
 
       $innerIconContainer.draggable({
         drag : function(event, ui) {
@@ -138,10 +119,38 @@
       });
     },
 
-    setIconBound : function(callback) {
+    '.select-icon .btn click' : function() {
+      this.element.find('.icon-chooser').click();
+    },
+
+    '.icon-chooser change' : function($e) {
+      this.iconFile = $e[0].files[0];
+      this.preview();
+    },
+
+    preview : function() {
+      var self = this;
+      var element = this.element;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var $icon = element.find('.upload-icon-display');
+        var icon = e.target.result;
+        self.setIconBound(icon, function(bound) {
+          $icon.css('background-image', 'url(' + icon + ')');
+          element.find('.inner-icon-display').css('background-image', 'url(' + icon + ')');
+          $icon.find('span').hide();
+          element.find('.upload-icon-cutter').show();
+          var cutterSize = Math.min(bound.width, bound.height, 150);
+          self.resetCutter(bound.left + (bound.width - cutterSize) / 2, bound.top + (bound.height - cutterSize) / 2, cutterSize, cutterSize);
+        });
+      };
+      reader.readAsDataURL(this.iconFile);
+    },
+
+    setIconBound : function(icon, callback) {
       var self = this;
       var image = new Image();
-      image.src = this.path;
+      image.src = icon;
       $icon = this.element.find('.upload-icon-display');
       $(image).load(function() {
         var zoom = $icon.width() / this.width;

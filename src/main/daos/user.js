@@ -92,8 +92,8 @@ UserSchema.statics.createUser = function(params, cb) {
       var link = global.domain + '/active_user?key=' + key.id;
       emailer.send({
         to : params.email,
-        subject : ' 激活超天才账户',
-        html : '<p>请点击激活来激活超天才账户: <a href="' + link + '">激活</a></p>'
+        subject : ' 激活天才数独棋账户',
+        html : '<p>请点击激活来激活天才数独棋账户: <a href="' + link + '">激活</a></p>'
       }, cb);
     } else {
       cb();

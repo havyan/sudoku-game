@@ -1,7 +1,10 @@
 var _ = require('lodash');
+var formidable = require('formidable');
+var async = require('async');
 var HttpError = require('../http_error');
 var winston = require('winston');
 var User = require('../models/user');
+var TMP_ICON_DIR = '/imgs/web/tmp';
 
 module.exports = function(router) {
   router.post('/user/reset_money', function(req, res, next) {
@@ -57,24 +60,21 @@ module.exports = function(router) {
   });
 
   router.put('/user/icon', function(req, res, next) {
-    var account = req.session.account;
-    var icon = req.body.icon;
-    var library = JSON.parse(req.body.library);
-    var bound = req.body.bound ? JSON.parse(req.body.bound) : {};
-    User.updateIconByAccount(account, icon, library, bound, function(error, path) {
-      if (error) {
-        next(new HttpError(error));
-      } else {
-        res.send({
-          status : 'ok',
-          path : path
-        });
-      }
-    });
-  });
-
-  router.post('/user/icon', function(req, res, next) {
-    User.uploadIcon(req, function(error, path) {
+    async.waterfall([
+    function(cb) {
+      var form = new formidable.IncomingForm();
+      form.uploadDir = 'public' + TMP_ICON_DIR;
+      form.keepExtensions = true;
+      form.parse(req, cb);
+    },
+    function(fields, files, cb) {
+      var account = req.session.account;
+      var library = JSON.parse(fields.library);
+      var icon = library ? fields.icon : files['icon'].path;
+      winston.info(icon);
+      var bound = fields.bound ? JSON.parse(fields.bound) : {};
+      User.updateIconByAccount(account, icon, library, bound, cb);
+    }], function(error, path) {
       if (error) {
         next(new HttpError(error));
       } else {

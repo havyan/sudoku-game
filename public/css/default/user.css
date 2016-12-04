@@ -176,6 +176,16 @@ input:focus {
   background-size: contain;
 }
 
+.select-icon {
+  vertical-align: middle;
+}
+
+.select-icon .btn {
+  font-size: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .upload-icon-cutter {
   display: none;
   width: 100%;
