@@ -31,68 +31,52 @@ User.updateByAccount = function(account, json, cb) {
 
 User.updateIconByAccount = function(account, icon, library, bound, cb) {
   if (library) {
-    UserDAO.findOneByAccount(account, function(error, user) {
-      if (error) {
-        cb(error);
-      } else {
-        var oldIcon = user.icon;
-        UserDAO.updateByAccount(account, {
-          icon : icon
-        }, function(error, result) {
-          if (error) {
-            cb(error);
-          } else {
-            cb(null, icon);
-          }
-        });
-        if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
-          removeFile('public' + oldIcon);
-        }
+    async.waterfall([
+    function(cb) {
+      UserDAO.findOneByAccount(account, cb);
+    },
+    function(user, cb) {
+      var oldIcon = user.icon;
+      UserDAO.updateByAccount(account, cb);
+      if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
+        removeFile('public' + oldIcon);
       }
-    });
+    },
+    function(result, cb) {
+      cb(null, icon);
+    }], cb);
   } else {
     var fileName = icon.substring(icon.lastIndexOf('/') + 1, icon.length);
     var iconPath = ICON_DIR + '/' + fileName;
     var source = icon;
     var dest = 'public' + iconPath;
-    gm(source).size(function(error, size) {
-      if (error) {
-        cb(error);
-      } else {
-        var width = size.width * bound.width;
-        var height = size.height * bound.height;
-        var x = size.width * bound.x;
-        var y = size.height * bound.y;
-        gm(source).crop(width, height, x, y).write(dest, function(error) {
-          if (error) {
-            cb(error);
-          } else {
-            UserDAO.findOneByAccount(account, function(error, user) {
-              if (error) {
-                cb(error);
-              } else {
-                var oldIcon = user.icon;
-                UserDAO.updateByAccount(account, {
-                  icon : iconPath
-                }, function(error, result) {
-                  if (error) {
-                    cb(error);
-                  } else {
-                    cb(null, iconPath);
-                  }
-                });
-                if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
-                  removeFile('public' + oldIcon);
-                }
-              }
-            });
-          }
-          setTimeout(function() {
-            removeFile(source);
-          }, 1000);
-        });
+    async.waterfall([
+    function(cb) {
+      gm(source).size(cb);
+    },
+    function(size, cb) {
+      var width = size.width * bound.width;
+      var height = size.height * bound.height;
+      var x = size.width * bound.x;
+      var y = size.height * bound.y;
+      gm(source).crop(width, height, x, y).write(dest, cb);
+    },
+    function() {
+      removeFile(source);
+      UserDAO.findOneByAccount(account, _.last(arguments));
+    },
+    function(user, cb) {
+      var oldIcon = user.icon;
+      UserDAO.updateByAccount(account, {
+        icon : iconPath
+      }, cb);
+      if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
+        removeFile('public' + oldIcon);
       }
-    });
+    },
+    function(result, cb) {
+      cb(null, iconPath);
+    }], cb);
   }
 };
 
