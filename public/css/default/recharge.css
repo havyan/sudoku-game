@@ -265,6 +265,10 @@
   display: none;
 }
 
+.pay-method-bank.union {
+  margin-right: 200px;
+}
+
 .pay-method-bank img {
   border-radius: 10px;
 }
