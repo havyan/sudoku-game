@@ -71,7 +71,6 @@ module.exports = function(router) {
       var account = req.session.account;
       var library = JSON.parse(fields.library);
       var icon = library ? fields.icon : files['icon'].path;
-      winston.info(icon);
       var bound = fields.bound ? JSON.parse(fields.bound) : {};
       User.updateIconByAccount(account, icon, library, bound, cb);
     }], function(error, path) {
