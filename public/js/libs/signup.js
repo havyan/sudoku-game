@@ -41,6 +41,20 @@
         }
       },
 
+      '.name .signup-value blur' : function(e) {
+        var name = e.val();
+        var $sign = e.siblings('.ok-sign');
+        var reg = /\S{1,30}/g;
+        if (reg.test(name)) {
+          $sign.removeClass('wrong');
+          this.validation.name = true;
+        } else {
+          $sign.addClass('wrong');
+          this.validation.name = false;
+        }
+        $sign.css('display', 'inline-block');
+      },
+
       '.password .signup-value blur' : function(e) {
         this.verifyPassword();
       },
@@ -145,7 +159,7 @@
       '.signup-submit click' : function() {
         var self = this;
         var validation = self.validation;
-        if (validation.account && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
+        if (validation.account && validation.name && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
           $('.signup-form').ajaxSubmit({
             success : function(result) {
               if (result.success) {
