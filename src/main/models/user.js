@@ -37,7 +37,9 @@ User.updateIconByAccount = function(account, icon, library, bound, cb) {
     },
     function(user, cb) {
       var oldIcon = user.icon;
-      UserDAO.updateByAccount(account, cb);
+      UserDAO.updateByAccount(account, {
+        icon : icon
+      }, cb);
       if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
         removeFile('public' + oldIcon);
       }
