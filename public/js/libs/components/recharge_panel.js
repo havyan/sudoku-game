@@ -39,7 +39,7 @@
         code : 'cmb',
         value : '1'
       }, {
-        code : 'ccb',
+        code : 'bcm',
         value : '4'
       }, {
         code : 'abc',

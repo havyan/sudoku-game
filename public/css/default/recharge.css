@@ -261,7 +261,15 @@
   margin-bottom: 20px;
 }
 
-.pay-method-bank.icbc, .pay-method-bank.ccb {
+.pay-method-bank.ali {
+  display: none;
+}
+
+.pay-method-bank img {
+  border-radius: 10px;
+}
+
+.pay-method-bank.icbc, .pay-method-bank.bcm {
   margin-left: 110px;
 }
 
