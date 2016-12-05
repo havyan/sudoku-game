@@ -1,6 +1,6 @@
 {
   "server": {
-    "domain": "http://game.supergenius.cn/",
+    "domain": "http://game.supergenius.cn",
     "port": 80
   },
   "admin": "127.0.0.1",
