@@ -2,14 +2,12 @@ var _ = require('lodash');
 var fs = require('fs');
 var gm = require('gm');
 var async = require('async');
-var formidable = require('formidable');
 var winston = require('winston');
 var vcode = require('verify-code');
 var emailer = require('../emailer');
 var UserDAO = require('../daos/user');
 var ResetKeyDAO = require('../daos/reset_key');
 var ActiveKeyDAO = require('../daos/active_key');
-var TMP_ICON_DIR = '/imgs/web/tmp';
 var ICON_DIR = '/imgs/web/user_icons';
 var RESET_PASSWORD_EXPIRED = 30;
 
@@ -33,68 +31,54 @@ User.updateByAccount = function(account, json, cb) {
 
 User.updateIconByAccount = function(account, icon, library, bound, cb) {
   if (library) {
-    UserDAO.findOneByAccount(account, function(error, user) {
-      if (error) {
-        cb(error);
-      } else {
-        var oldIcon = user.icon;
-        UserDAO.updateByAccount(account, {
-          icon : icon
-        }, function(error, result) {
-          if (error) {
-            cb(error);
-          } else {
-            cb(null, icon);
-          }
-        });
-        if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
-          removeFile('public' + oldIcon);
-        }
+    async.waterfall([
+    function(cb) {
+      UserDAO.findOneByAccount(account, cb);
+    },
+    function(user, cb) {
+      var oldIcon = user.icon;
+      UserDAO.updateByAccount(account, {
+        icon : icon
+      }, cb);
+      if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
+        removeFile('public' + oldIcon);
       }
-    });
+    },
+    function(result, cb) {
+      cb(null, icon);
+    }], cb);
   } else {
     var fileName = icon.substring(icon.lastIndexOf('/') + 1, icon.length);
     var iconPath = ICON_DIR + '/' + fileName;
-    var source = 'public' + icon;
+    var source = icon;
     var dest = 'public' + iconPath;
-    gm(source).size(function(error, size) {
-      if (error) {
-        cb(error);
-      } else {
-        var width = size.width * bound.width;
-        var height = size.height * bound.height;
-        var x = size.width * bound.x;
-        var y = size.height * bound.y;
-        gm(source).crop(width, height, x, y).write(dest, function(error) {
-          if (error) {
-            cb(error);
-          } else {
-            UserDAO.findOneByAccount(account, function(error, user) {
-              if (error) {
-                cb(error);
-              } else {
-                var oldIcon = user.icon;
-                UserDAO.updateByAccount(account, {
-                  icon : iconPath
-                }, function(error, result) {
-                  if (error) {
-                    cb(error);
-                  } else {
-                    cb(null, iconPath);
-                  }
-                });
-                if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
-                  removeFile('public' + oldIcon);
-                }
-              }
-            });
-          }
-          setTimeout(function() {
-            removeFile(source);
-          }, 1000);
-        });
+    async.waterfall([
+    function(cb) {
+      gm(source).size(cb);
+    },
+    function(size, cb) {
+      var width = size.width * bound.width;
+      var height = size.height * bound.height;
+      var x = size.width * bound.x;
+      var y = size.height * bound.y;
+      gm(source).crop(width, height, x, y).write(dest, cb);
+    },
+    function() {
+      removeFile(source);
+      UserDAO.findOneByAccount(account, _.last(arguments));
+    },
+    function(user, cb) {
+      var oldIcon = user.icon;
+      UserDAO.updateByAccount(account, {
+        icon : iconPath
+      }, cb);
+      if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
+        removeFile('public' + oldIcon);
       }
-    });
+    },
+    function(result, cb) {
+      cb(null, iconPath);
+    }], cb);
   }
 };
 
@@ -224,7 +208,7 @@ User.sendResetMail = function(email, cb) {
     var link = global.domain + '/reset_password?key=' + key.id;
     emailer.send({
       to : email,
-      subject : '重置超天才数独游戏登录密码',
+      subject : '重置天才数独游戏登录密码',
       html : '<p>请点击重置链接来重置密码: <a href="' + link + '">重置</a></p>'
     }, cb);
   }], cb);

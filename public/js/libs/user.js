@@ -81,7 +81,7 @@
             userClass : 'btn-primary',
             callback : function(element) {
               var bound = this.control.getCutterBound();
-              Rest.User.setIcon(this.control.path, false, bound, function(result) {
+              Rest.User.setIcon(this.control.iconFile, false, bound, function(result) {
                 $icon.attr('src', result.path);
                 $icons.find('img').removeClass('selected');
               }, function() {
