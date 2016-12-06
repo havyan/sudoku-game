@@ -206,6 +206,7 @@ module.exports = function(router) {
           } else {
             res.render('user', {
               user : user,
+              isAdmin : user.account === 'SYSTEM',
               defaultIcons : files.map(function(file) {
                 return '/imgs/default/user_icons/' + file;
               })
