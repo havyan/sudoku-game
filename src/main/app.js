@@ -16,7 +16,7 @@ var config = require('./config');
 var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
-var NOLOGIN = require('./nologin.json');
+var Permission = require('./permission');
 
 process.on('uncaughtException', function(error) {
   winston.error("UncaughtException Message: ", error.message || "Unknow error.");
@@ -50,23 +50,21 @@ app.set('view engine', 'html');
 app.engine('html', hbs.__express);
 // 运行hbs模块
 
-// authority handler
+// Permission handler
 app.use(function(req, res, next) {
+  var account = req.session.account;
   var action = req.method + " " + req.path;
   winston.info("Start " + action);
-  var find = _.find(NOLOGIN, function(e) {
-    if (e.indexOf('[RE]') === 0) {
-      return new RegExp('^' + e.replace('[RE]', '').trim() + '$').test(action);
+  Permission.check(account, action, function(error, proceed){
+    if (error) {
+      next(new HttpError(error, HttpError.UNAUTHORIZED));
+    } else if (proceed) {
+      next();
     } else {
-      return e === action;
+      req.params.error = true;
+      res.redirect('/login');
     }
   });
-  if (!find && !req.session.account) {
-    req.params.error = true;
-    res.redirect('/login');
-  } else {
-    next();
-  }
 });
 
 route.initialize(app);

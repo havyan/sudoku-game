@@ -41,17 +41,21 @@
         </div>
         <div class="info-row points-row">
           <span class="name">积分：</span><span class="value">{{user.points}}</span>
+          {{#isAdmin}}
           <input class="button modify-button" type="button" value="更改" />
           <input class="value-field" type="text" value="{{user.points}}" />
           <input class="button confirm" type="button" value="确认" />
           <input class="button cancel" type="button" value="取消" />
+          {{/isAdmin}}
         </div>
         <div class="info-row money-row">
           <span class="name">天才币：</span><span class="value">{{user.money}}</span>
+          {{#isAdmin}}
           <input class="button modify-button" type="button" value="更改" />
           <input class="value-field" type="text" value="{{user.money}}" />
           <input class="button confirm" type="button" value="确认" />
           <input class="button cancel" type="button" value="取消" />
+          {{/isAdmin}}
         </div>
         <div class="info-row">
           <span class="name">局数：</span><span class="value">{{user.rounds}}</span>
@@ -91,11 +95,13 @@
           {{/defaultIcons}}
         </div>
       </div>
+      {{#isAdmin}}
       <div class="actions">
         <input class="button freeze-button" type="button" value="冻结" />
         <input class="button unfreeze-button" type="button" value="解冻" />
         <input class="button block-button" type="button" value="封IP" />
       </div>
+      {{/isAdmin}}
     </div>
     <div class="bottom">
       <input class="rich-button close-button" type="button" value="关闭" />

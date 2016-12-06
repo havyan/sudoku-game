@@ -91,6 +91,7 @@ module.exports = function(router) {
         next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
       } else {
         res.render(template, {
+          account : user.account,
           userName : user.name,
           userIcon : user.icon,
           money : user.money
@@ -205,6 +206,7 @@ module.exports = function(router) {
           } else {
             res.render('user', {
               user : user,
+              isAdmin : user.account === 'SYSTEM',
               defaultIcons : files.map(function(file) {
                 return '/imgs/default/user_icons/' + file;
               })
