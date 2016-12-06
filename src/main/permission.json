@@ -1,0 +1,27 @@
+{
+  "nologin": [
+    "GET /",
+    "GET /login",
+    "POST /login",
+    "GET /signup",
+    "POST /user",
+    "POST /user/check_account",
+    "POST /user/check_email",
+    "GET /user/vcode",
+    "GET /contact",
+    "POST /user/check_vcode",
+    "GET /retrieve_password",
+    "POST /user/reset_mail",
+    "GET /reset_password",
+    "PUT /user/password",
+    "GET /active_user",
+    "POST /system/reload",
+    "[RE]GET /recharge/pay/\\w{32}/result"
+  ],
+  "admin": [
+    "PUT /user/points",
+    "POST /user/reset_money",
+    "PUT /user/money",
+    "PUT /rule"
+  ]
+}

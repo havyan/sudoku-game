@@ -22,6 +22,9 @@
           } else {
             return '';
           }
+        },
+        disableEdit : function() {
+          return self.model.attr('editable') ? '' : 'disabled="disabled"';
         }
       }, function(frag) {
         element.html(frag);
@@ -37,7 +40,8 @@
       var account = $('body').data('account');
       this.model = new can.Model({
         rule : rule,
-        account : account
+        account : account,
+        editable : account === 'SYSTEM'
       });
       return this.model;
     },
@@ -149,7 +153,7 @@
             }
           });
         } else {
-          Dialog.message('更新规则成功');
+          Dialog.message('没有修改任何规则');
         }
       } else {
         var $invalid = this.element.find('input.invalid:first');
@@ -322,6 +326,7 @@
     },
 
     '.grade-table .value span click' : function(e) {
+      if (!this.model.attr('editable')) return;
       var index = parseInt(e.closest('tr').data('index'));
       if (index > 0) {
         e.closest('.value').addClass('edit').find('input').val(this.model.attr('rule.grade.' + index + '.floor')).focus();
