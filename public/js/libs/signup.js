@@ -24,17 +24,24 @@
         var account = e.val();
         var $sign = e.siblings('.ok-sign');
         if (!_.isEmpty(account)) {
-          Rest.User.checkAccount(account, function(result) {
-            if (result.exist) {
-              $sign.addClass('wrong');
-              self.validation.account = false;
-            } else {
-              $sign.removeClass('wrong');
-              self.validation.account = true;
-            }
+          var reg = /^\w{1,30}$/g;
+          if (reg.test(account)) {
+            Rest.User.checkAccount(account, function(result) {
+              if (result.exist) {
+                $sign.addClass('wrong');
+                self.validation.account = false;
+              } else {
+                $sign.removeClass('wrong');
+                self.validation.account = true;
+              }
+              $sign.css('display', 'inline-block');
+            }, function() {
+            });
+          } else {
+            $sign.addClass('wrong');
+            self.validation.account = false;
             $sign.css('display', 'inline-block');
-          }, function() {
-          });
+          }
         } else {
           $sign.hide();
           self.validation.account = false;
@@ -44,15 +51,20 @@
       '.name .signup-value blur' : function(e) {
         var name = e.val();
         var $sign = e.siblings('.ok-sign');
-        var reg = /\S{1,30}/g;
-        if (reg.test(name)) {
-          $sign.removeClass('wrong');
-          this.validation.name = true;
+        if (!_.isEmpty(name)) {
+          var reg = /^\S{1,30}$/g;
+          if (reg.test(name)) {
+            $sign.removeClass('wrong');
+            this.validation.name = true;
+          } else {
+            $sign.addClass('wrong');
+            this.validation.name = false;
+          }
+          $sign.css('display', 'inline-block');
         } else {
-          $sign.addClass('wrong');
+          $sign.hide();
           this.validation.name = false;
         }
-        $sign.css('display', 'inline-block');
       },
 
       '.password .signup-value blur' : function(e) {

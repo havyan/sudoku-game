@@ -160,6 +160,7 @@ module.exports = function(router) {
         var user = results[0];
         if (user) {
           res.render('lobby', {
+            account : user.account,
             userName : user.name,
             userIcon : user.icon,
             money : user.money,
