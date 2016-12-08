@@ -185,15 +185,15 @@
     joinGame : function(game, index) {
       var model = this.options.model;
       var grade = model.attr('user.grade');
+      var gameId = game.attr('id');
       var levelIndex = _.findIndex(model.attr('levels'), {
         code : game.attr('level')
       });
       if (parseInt(grade) < levelIndex) {
         Dialog.message('您不能加入题目等级比自己段数高的游戏');
       } else {
-        Rest.Game.playerJoin(game.attr('id'), index, {}, function(result) {
-          window.open('/table/' + result.gameId, '_blank');
-        });
+        Rest.Game.playerJoin(gameId, index, {}, function(result) {});
+        window.open('/table/' + gameId, '_blank');
       }
     },
 
