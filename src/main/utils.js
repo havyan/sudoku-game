@@ -15,7 +15,7 @@ var getIp = function(ip) {
 };
 
 var clientIp = function(req) {
-  return getIp(req.headers['X-Real-IP'] || req.ip);
+  return getIp(req.headers['x-real-ip'] || req.ip);
 }
 
 module.exports = {
