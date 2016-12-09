@@ -95,7 +95,7 @@ module.exports = function(router) {
               resulturl : global.domain + pay.resulturl.replace('{payuid}', recharge.payuid),
               type : '0',
               useruid : user._id.toString(),
-              userip : _.ip(req.ip),
+              userip : Utils.clientIp(req),
               username : user.name,
               useremail : user.email
             };
@@ -141,4 +141,3 @@ module.exports = function(router) {
     });
   });
 };
-

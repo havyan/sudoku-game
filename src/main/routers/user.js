@@ -94,7 +94,7 @@ module.exports = function(router) {
       });
     } else {
       var params = _.cloneDeep(req.body);
-      params.create_ip = _.ip(req.ip);
+      params.create_ip = Utils.clientIp(req);
       User.createUser(params, function(error, result) {
         if (error) {
           next(new HttpError(error));
@@ -153,4 +153,3 @@ module.exports = function(router) {
     });
   });
 };
-

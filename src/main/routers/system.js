@@ -5,7 +5,7 @@ var GameManager = require('../game_manager');
 
 module.exports = function(router) {
   router.post('/system/reload', function(req, res, next) {
-    if (global.config.admin === _.ip(req.ip)) {
+    if (global.config.admin === Utils.clientIp(req)) {
       if (global.gameManager.hasLiveGame()) {
         res.send({
           success : false,

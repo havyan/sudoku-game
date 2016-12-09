@@ -25,7 +25,7 @@ module.exports = function(router) {
     function(user, cb) {
       if (user) {
         user.logintime = new Date();
-        user.login_ip = _.ip(req.ip);
+        user.login_ip = Utils.clientIp(req);
         user.save(cb);
       } else {
         cb(null, null, 0);
@@ -33,7 +33,7 @@ module.exports = function(router) {
     },
     function(user, count, cb) {
       if (user) {
-        LoginHistoryDAO.createHistory(user.id, _.ip(req.ip), function(error) {
+        LoginHistoryDAO.createHistory(user.id, Utils.clientIp(req), function(error) {
           if (error) {
             cb(error);
           } else {
@@ -307,4 +307,3 @@ module.exports = function(router) {
     });
   });
 };
-
