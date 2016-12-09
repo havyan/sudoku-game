@@ -11,7 +11,7 @@
     '1' : '招商银行',
     '3' : '中国农业银行',
     '4' : '中国建设银行',
-    '5' : '支付宝',
+    '11' : '支付宝',
     '6' : '中国银联'
   };
   can.Model('Models.RechargeModel', {
@@ -28,7 +28,7 @@
     initBanks : function() {
       this.attr('banks', [{
         code : 'ali',
-        value : '5'
+        value : '11'
       }, {
         code : 'union',
         value : '6'
