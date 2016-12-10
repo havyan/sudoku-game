@@ -39,7 +39,10 @@ EventCenter.prototype.bindGame = function(game) {
   this.gameEmitters[game.id] = this.io.of(ns);
   EVENTS.game.forEach(function(topic) {
     game.on(topic, function() {
-      self.gameEmitters[game.id].emit(topic, JSON.stringify(_.values(arguments)));
+      var gameEmitter = self.gameEmitters[game.id];
+      if (gameEmitter) {
+        gameEmitter.emit(topic, JSON.stringify(_.values(arguments)));
+      }
       if (topic === 'game-destroyed') {
         delete self.gameEmitters[game.id];
         self.io.removeOf(ns);
