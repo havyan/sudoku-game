@@ -65,6 +65,7 @@ Recharge.check = function(recharge, cb) {
     }, cb);
   },
   function(res, body, cb) {
+    winston.info('Payment result of uid [' + recharge.payuid + '] is: ' + body);
     var result = JSON.parse(body);
     if (res.statusCode == 200) {
       var status = result.result.toString();

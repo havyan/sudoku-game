@@ -207,7 +207,9 @@
     },
 
     '{model} active' : function(model, e, active) {
-      this.numberPicker.hide();
+      if (this.numberPicker) {
+        this.numberPicker.hide();
+      }
     },
 
     '{model} optionsEnabled' : function(model, e, optionsEnabled) {

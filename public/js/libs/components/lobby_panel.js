@@ -2,7 +2,7 @@
   can.Control('Components.LobbyPanel', {}, {
     init : function(element, options) {
       window.localStorage.setItem('lobby_open', true);
-      $(window).unload(function() {
+      $(window).on('beforeunload', function() {
         window.localStorage.setItem('lobby_open', false);
       });
       can.view('/js/libs/mst/lobby_panel.mst', options.model, {

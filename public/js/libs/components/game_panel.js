@@ -32,7 +32,7 @@
           }
         }
       });
-      $(window).bind('beforeunload', function() {
+      $(window).on('beforeunload', function() {
         return '确定离开游戏页面吗？';
       });
     },

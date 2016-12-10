@@ -152,7 +152,7 @@
       var image = new Image();
       image.src = icon;
       $icon = this.element.find('.upload-icon-display');
-      $(image).load(function() {
+      $(image).on('load', function() {
         var zoom = $icon.width() / this.width;
         if (zoom * this.height > $icon.height()) {
           zoom = $icon.height() / this.height;
