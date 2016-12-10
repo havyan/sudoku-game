@@ -50,8 +50,8 @@
 		<div class="game-state-separator light"></div>
 		<textarea class="game-message-input"></textarea>
 		<div class="game-state-actions">
-			<input class="rich-button game-quit-button" type="button" value="退出" />
-			<input class="rich-button game-send-message-button" type="button" value="发送" />
+			<div class="rich-button game-quit-button">退出</div>
+			<div class="rich-button game-send-message-button">发送</div>
 		</div>
 		<a class="game-state-hide-button" href="javascript:void(0);"></a>
 	</div>
