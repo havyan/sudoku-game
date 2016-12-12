@@ -55,7 +55,7 @@ Recharge.checkByPayuid = function(payuid, cb) {
 Recharge.check = function(recharge, cb) {
   if (recharge.used) {
     async.waterfall([
-    function(recharge, count, cb) {
+    function(cb) {
       UserDAO.findOneByAccount(recharge.target, cb);
     },
     function(user, cb) {
