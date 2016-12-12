@@ -53,6 +53,21 @@ Recharge.checkByPayuid = function(payuid, cb) {
 };
 
 Recharge.check = function(recharge, cb) {
+  if (recharge.used) {
+    async.waterfall([
+    function(recharge, count, cb) {
+      UserDAO.findOneByAccount(recharge.target, cb);
+    },
+    function(user, cb) {
+      cb(null, {
+        account : user.account,
+        money : user.money,
+        status : recharge.status
+      });
+    }], cb);
+    return;
+  }
+
   async.waterfall([
   function(cb) {
     var url = global.config.app.pay.apiquery.replace('{payuid}', recharge.payuid);
