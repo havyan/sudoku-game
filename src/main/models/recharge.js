@@ -86,6 +86,8 @@ Recharge.check = function(recharge, cb) {
                 cb(error);
               } else {
                 recharge.used = true;
+                status = RechargeDAO.STATUS.SUCCESS;
+                recharge.status = status;
                 recharge.save(function(error) {
                   if (error) {
                     cb(error);
