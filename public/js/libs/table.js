@@ -1,10 +1,15 @@
 (function() {
   $(document).ready(function() {
     var gameId = _.last(window.location.pathname.split('/'));
+    var stopped = false;
+    var stop = function() {
+      stopped = true;
+      clearInterval(timer);
+    };
     var timer = setInterval(function() {
       Rest.Game.getGameStatus(gameId, function(result) {
-        if (_.contains(['waiting', 'loading', 'ongoing'], result.result)) {
-          clearInterval(timer);
+        if (!stopped && _.contains(['waiting', 'loading', 'ongoing'], result.result)) {
+          stop();
           Rest.Game.getGame(gameId, function(game) {
             EventReceiver.createGameEventReceiver(gameId, function(eventReceiver) {
               var gameModel = new Models.GameModel(game, eventReceiver);
@@ -13,11 +18,11 @@
               });
             });
           }, function(e) {
-            clearInterval(timer);
+            stop();
           });
         }
       }, function(e) {
-        clearInterval(timer);
+        stop();
       });
     }, 500);
   });
