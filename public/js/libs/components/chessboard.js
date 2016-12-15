@@ -2,7 +2,6 @@
   can.Control('Chessboard', {}, {
     init : function(element, options) {
       this.render();
-      this.initEvents();
     },
 
     initEvents : function() {
@@ -103,6 +102,7 @@
         this.resetPropStatus();
         this.resize();
         this.layout();
+        this.initEvents();
       }.bind(this));
     },
 
