@@ -95,32 +95,7 @@ Game.prototype.init = function(account, params, cb) {
     self.rule = rule;
     self.initParams(params);
     self.emit('init', self.toSimpleJSON());
-    self.timer = setInterval(function() {
-      self.remainingTime--;
-      self.emit('total-countdown-stage', self.remainingTime);
-      if (self.remainingTime <= 0) {
-        self.stopTimer();
-        self.over(function(error) {
-          if (error) {
-            winston.error(error);
-          }
-        });
-      }
-    }, 1000);
-    var countdown = self.waitTime * 60;
-    var countDownTimer = setInterval(function() {
-      if (self.isWaiting()) {
-        if (countdown >= 0) {
-          self.emit('wait-countdown-stage', countdown);
-          countdown--;
-        } else {
-          clearInterval(countDownTimer);
-          self.abort();
-        }
-      } else {
-        clearInterval(countDownTimer);
-      }
-    }, 1000);
+    self.startWaitTimer();
     cb();
   }], cb);
 };
@@ -213,12 +188,12 @@ Game.prototype.setStatus = function(status) {
               clearInterval(countDownTimer);
               setTimeout(function() {
                 self.start();
-              }, 2000);
+              }, 3000);
               self.status = ONGOING;
               self.emit('status-changed', self.status, status);
             }
           }, 1000);
-        }, 1000);
+        }, 2000);
       }
     });
   }
@@ -232,6 +207,7 @@ Game.prototype.goahead = function(account) {
 };
 
 Game.prototype.start = function() {
+  this.startTimer();
   this.nextPlayer();
 };
 
@@ -326,6 +302,40 @@ Game.prototype.updateScore = function(type, account, xy) {
     this.emit('score-changed', account, this.changedScores[account]);
   }
   return score;
+};
+
+Game.prototype.startTimer = function() {
+  var self = this;
+  this.timer = setInterval(function() {
+    self.remainingTime--;
+    self.emit('total-countdown-stage', self.remainingTime);
+    if (self.remainingTime <= 0) {
+      self.stopTimer();
+      self.over(function(error) {
+        if (error) {
+          winston.error(error);
+        }
+      });
+    }
+  }, 1000);
+};
+
+Game.prototype.startWaitTimer = function() {
+  var self = this;
+  var countdown = this.waitTime * 60;
+  var countDownTimer = setInterval(function() {
+    if (self.isWaiting()) {
+      if (countdown >= 0) {
+        self.emit('wait-countdown-stage', countdown);
+        countdown--;
+      } else {
+        clearInterval(countDownTimer);
+        self.abort();
+      }
+    } else {
+      clearInterval(countDownTimer);
+    }
+  }, 1000);
 };
 
 Game.prototype.stopTimer = function() {
@@ -460,7 +470,7 @@ Game.prototype.playersCount = function() {
 
 Game.prototype.createResult = function(player, status, awardResult) {
   return {
-    account: player.account,
+    account : player.account,
     playerName : player.name,
     score : status === 'quit' ? '退出' : status === 'offline' ? '离线' : this.scores[player.account] || 0,
     status : status,

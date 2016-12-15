@@ -9,7 +9,7 @@
         <div class="value level">
           <select>
             {{#each levels}}
-            <option data-code="{{code}}" {{#unlesss @index}}selected{{/unless}}>{{name}}</option>
+            <option data-code="{{code}}" {{isSelected @index}}>{{name}}</option>
             {{/each}}
           </select>
         </div>
@@ -21,7 +21,7 @@
         <div class="value step-time">
           <select>
             {{#each stepTimes}}
-            <option data-total="{{total}}" {{#unlesss @index}}selected{{/unless}}>{{total}}秒</option>
+            <option data-total="{{total}}" {{isSelected @index}}>{{total}}秒</option>
             {{/each}}
           </select>
         </div>
@@ -33,7 +33,7 @@
         <div class="value duration">
           <select>
             {{#each durations}}
-            <option data-value="{{this}}" {{#unlesss @index}}selected{{/unless}}>{{this}}小时</option>
+            <option data-value="{{this}}" {{isSelected @index}}>{{this}}小时</option>
             {{/each}}
           </select>
         </div>
@@ -45,7 +45,7 @@
         <div class="value capacity">
           <select>
             {{#each capacities}}
-            <option data-value="{{this}}" {{#unlesss @index}}selected{{/unless}}>{{this}}人</option>
+            <option data-value="{{this}}" {{isSelected @index}}>{{this}}人</option>
             {{/each}}
           </select>
         </div>
@@ -68,7 +68,7 @@
         <div class="value wait-time">
           <select>
             {{#each waitTimes}}
-            <option data-value="{{this}}" {{#unlesss @index}}selected{{/unless}}>{{this}}分钟</option>
+            <option data-value="{{this}}" {{isSelected @index}}>{{this}}分钟</option>
             {{/each}}
           </select>
         </div>

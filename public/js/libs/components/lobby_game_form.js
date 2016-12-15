@@ -3,7 +3,14 @@
   }, {
     init : function(element, options) {
       this.createModel();
-      can.view('/js/libs/mst/lobby_game_form.mst', this.model, function(frag) {
+      can.view('/js/libs/mst/lobby_game_form.mst', this.model, {
+        isSelected : function(index) {
+          if (index() === 0) {
+            return 'selected';
+          }
+          return '';
+        }
+      }, function(frag) {
         this.element.append(frag);
       }.bind(this));
     },
