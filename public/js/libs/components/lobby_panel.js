@@ -189,7 +189,7 @@
       var levelIndex = _.findIndex(model.attr('levels'), {
         code : game.attr('level')
       });
-      if (parseInt(grade) < levelIndex) {
+      if (parseInt(grade) < levelIndex - 1) {
         Dialog.message('您不能加入题目等级比自己段数高的游戏');
       } else {
         Rest.Game.playerJoin(gameId, index, {}, function(result) {});
