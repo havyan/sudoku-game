@@ -119,7 +119,7 @@ a:active {
 .top-actions {
   text-align: right;
   float: right;
-  margin-right: 5%;
+  margin-right: 2%;
   margin-top: 10px;
 }
 
@@ -197,7 +197,7 @@ a:active {
 
 .welcome {
   width: 50%;
-  margin-left: 10%;
+  margin-left: 5%;
   position: relative;
   top: 20px;
 }
