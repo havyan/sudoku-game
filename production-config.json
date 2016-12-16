@@ -12,7 +12,7 @@
     "params": {
       "conf.path.public": "public",
       "conf.path.views": "views/html",
-      "conf.path.viewlibs": "views/viewlibs",
+      "conf.path.partials": "views/partials",
       "conf.path.favicon": "public/imgs/web/favicon.ico"
     },
     "locals": {
