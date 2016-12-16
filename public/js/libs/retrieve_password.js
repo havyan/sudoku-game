@@ -21,7 +21,7 @@
         });
       },
 
-      '.email blur' : function(e) {
+      '.email keyup' : _.debounce(function(e) {
         var self = this;
         var email = e.val();
         var $sign = e.siblings('.ok-sign');
@@ -49,7 +49,7 @@
           $sign.hide();
           $send.removeClass('available').attr('disabled', 'disabled');
         }
-      }
+      }, 500)
     });
 
     new RetrievePasswordPanel($('.common-container'));

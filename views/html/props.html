@@ -16,6 +16,13 @@
     <script src="{{@basejs}}/libs/props.js"></script>
   </head>
   <body>
-
+    {{> top_actions }}
+    <div class="welcome">
+      欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
+    </div>
+    <div class="main"></div>
+    <div class="bottom-actions">
+      <input class="rich-button back" type="button" value="返回" />
+    </div>
   </body>
 </html>

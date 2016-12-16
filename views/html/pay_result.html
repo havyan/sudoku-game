@@ -15,12 +15,7 @@
     <script src="{{@basejs}}/libs/components/pagination_bar.js"></script>
   </head>
   <body>
-    <div class="top-actions">
-      <a class="user-button" href="/view/user">个人信息</a>
-      <a class="props-button" href="/view/props">道具</a>
-      <a class="setting-button" href="/setting">管理</a>
-      <a class="logout-button" href="/logout">注销</a>
-    </div>
+    {{> top_actions }}
     <div class="welcome">
       欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
     </div>

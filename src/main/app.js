@@ -44,7 +44,7 @@ app.use(express.static(app.get('conf.path.public')));
 app.set('views', app.get('conf.path.views'));
 
 //hbs.registerHelper('helper_name', function(...) { ... });
-hbs.registerPartials(app.get('conf.path.viewlibs'));
+hbs.registerPartials(app.get('conf.path.partials'));
 app.set('view engine', 'html');
 // 指定模板文件的后缀名为html
 app.engine('html', hbs.__express);

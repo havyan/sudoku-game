@@ -1,71 +1,57 @@
-<div class="top-actions">
-  <a class="user-button" href="/view/user">个人信息</a>
-  <a class="props-button" href="/view/props">道具</a>
-  <a class="setting-button" href="/setting">管理</a>
-  <a class="logout-button" href="/logout">注销</a>
-</div>
-<div class="welcome">
-  欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
-</div>
-<div class="main">
-  <div class="navigator">
-    <div class="rich-button item store active">
-      道具商城
-    </div>
-    <div class="rich-button item my-prop">
-      我的道具
-    </div>
+<div class="navigator">
+  <div class="rich-button item store active">
+    道具商城
   </div>
-  <div class="container">
-    <div class="store card active">
-      {{#types}}
-      <div class="item store-item" data-type="{{type}}">
-        <div class="icon">
-          <img src="{{icon}}">
-        </div>
-        <div>
-          名称：{{name}}
-        </div>
-        <div>
-          功能：{{func}}
-        </div>
-        <div>
-          价格：{{price}}天才币
-        </div>
-        <div>
-          销量：{{sales}}
-        </div>
-        <div class="count">
-          购买数量：<img class="subtract" src="/imgs/default/subtract.png" />
-          <input type="text" value="0"/>
-          <img class="plus" src="/imgs/default/plus.png" />
-        </div>
-        <div class="total">
-          所需天才币：<span>0</span>
-        </div>
-        <div class="actions">
-          <input type="button" class="btn buy" value="兑换" disabled="true"/>
-        </div>
-      </div>
-      {{/types}}
-    </div>
-    <div class="card my-prop">
-      {{#props}}
-      <div class="item  my-prop-item">
-        <div class="my-count">
-          <img src="{{icon}}"> X {{count}}
-        </div>
-        <div>
-          名称：{{name}}
-        </div>
-        <div>
-          功能：{{func}}
-        </div>
-      </div>
-      {{/props}}
-    </div>
+  <div class="rich-button item my-prop">
+    我的道具
   </div>
 </div>
-<div class="bottom-actions">
-  <input class="rich-button back" type="button" value="返回" />
+<div class="container">
+  <div class="store card active">
+    {{#types}}
+    <div class="item store-item" data-type="{{type}}">
+      <div class="icon">
+        <img src="{{icon}}">
+      </div>
+      <div>
+        名称：{{name}}
+      </div>
+      <div>
+        功能：{{func}}
+      </div>
+      <div>
+        价格：{{price}}天才币
+      </div>
+      <div>
+        销量：{{sales}}
+      </div>
+      <div class="count">
+        购买数量：<img class="subtract" src="/imgs/default/subtract.png" />
+        <input type="text" value="0"/>
+        <img class="plus" src="/imgs/default/plus.png" />
+      </div>
+      <div class="total">
+        所需天才币：<span>0</span>
+      </div>
+      <div class="actions">
+        <input type="button" class="btn buy" value="兑换" disabled="true"/>
+      </div>
+    </div>
+    {{/types}}
+  </div>
+  <div class="card my-prop">
+    {{#props}}
+    <div class="item  my-prop-item">
+      <div class="my-count">
+        <img src="{{icon}}"> X {{count}}
+      </div>
+      <div>
+        名称：{{name}}
+      </div>
+      <div>
+        功能：{{func}}
+      </div>
+    </div>
+    {{/props}}
+  </div>
 </div>

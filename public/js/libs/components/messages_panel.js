@@ -172,7 +172,7 @@
       }
     },
 
-    '.messages-table tbody tr dblclick' : function(element) {
+    '.messages-table tbody tr click' : function(element) {
       this.options.model.read(element.data('message'), function(message) {
         Dialog.show({
           title : '邮件',
