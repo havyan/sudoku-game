@@ -100,7 +100,12 @@ module.exports = function(router) {
               useremail : user.email
             };
             var url = pay.apipay.replace('{payuid}', recharge.payuid);
-            request.post(url).form(form).pipe(res);
+            request.post({
+              url : url,
+              headers : {
+                'User-Agent' : req.headers['user-agent']
+              }
+            }).form(form).pipe(res);
           }
         });
       }
