@@ -1,8 +1,8 @@
 <div class="chessboard-container {{editStatus}} {{viewStatus}}">
-  <div class="game-zoom"></div>
-  <div class="game-timer-panel"></div>
+  <div class="game-zoom always-above"></div>
+  <div class="game-timer-panel always-above"></div>
   <div class="active-status" active="{{active}}"></div>
-  <div class="chessboard-actions">
+  <div class="chessboard-actions always-above">
     <div class="chessboard-edit-mode">
       <a class="button chessboard-submit-mode-action action-active">提交</a><a class="button chessboard-draft-mode-action">草稿</a>
     </div>
@@ -10,7 +10,7 @@
       <a class="button chessboard-plain-mode-action action-active">普通</a><a class="button chessboard-options-mode-action" {{#unless optionsEnabled}}disabled="true"{{/unless}}>候选</a>
     </div>
   </div>
-  <ul class="props">
+  <ul class="props always-above">
     {{#props}}
     <li class="{{type}} prop-item {{#unless count}}empty{{/unless}}">
       <div class="prop-item-content"><img src="{{icon}}"> x {{count}}

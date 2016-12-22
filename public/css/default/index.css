@@ -62,7 +62,7 @@ input[type=text], input[type=password] {
   width: 300px;
   height: 340px;
   margin: auto;
-  margin-top: 250px;
+  margin-top: 220px;
   text-align: center;
   overflow: hidden;
 }
@@ -86,8 +86,12 @@ input[type=text], input[type=password] {
   background-image: url(/imgs/default/login_btn.png);
 }
 
+.genius-title {
+  font-size: 35px;
+}
+
 .login-title {
-  font-size: 40px;
+  font-size: 35px;
   margin-bottom: 10px;
 }
 

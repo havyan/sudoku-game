@@ -53,7 +53,7 @@
         },
         tableInfo : function(game) {
           if (game.status === 'empty') {
-            return '空桌';
+            return '建桌';
           } else if (game.status === 'waiting') {
             var level = _.find(model.attr('levels'), {
               code : game.level

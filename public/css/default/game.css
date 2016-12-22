@@ -1035,3 +1035,7 @@ to {
   color: #FFD700;
   font-weight: bold;
 }
+
+.always-above {
+  z-index: 999;
+}
