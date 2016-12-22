@@ -44,7 +44,7 @@
           }
         }
       });
-      this.element.find('.game-timer-panel, .game-zoom, .chessboard-actions, .props').draggable();
+      this.$draggables.draggable();
     },
 
     render : function() {
@@ -99,6 +99,7 @@
         this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
           model : this.options.model
         });
+        this.$draggables = this.element.find('.game-timer-panel, .game-zoom, .chessboard-actions, .props');
         this.resetPropStatus();
         this.resize();
         this.layout();
@@ -163,6 +164,42 @@
         'height' : chessboardSize.height + 'px'
       });
       $('html').css('font-size', this.getCellSize() * 0.9 + 'px');
+      this.$draggables.each(function(i, e) {
+        this.relocate($(e));
+      }.bind(this));
+    },
+    
+    relocate : function($e) {
+      $e.css({
+        top: '',
+        left: ''
+      });
+      var $body = $(document.body);
+      var width = $e.width();
+      var height = $e.height();
+      var offset = $e.offset();
+      var top = offset.top;
+      var left = offset.left;
+      var bodyWidth = $body.width();
+      var bodyHeight = $body.height();
+      if (top < 0) {
+        top = 0;
+      }
+      if (left < 0) {
+        left = 0;
+      }
+      if ((left + width) > bodyWidth) {
+        left = bodyWidth - width;
+      }
+      if ((top + height) > bodyHeight) {
+        top = bodyHeight - height;
+      }
+      if (top != offset.top || left != offset.left) {
+        $e.offset({
+          top: top,
+          left: left
+        });
+      }
     },
 
     getChessboardSize : function() {
