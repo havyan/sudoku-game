@@ -323,7 +323,6 @@ body {
   position: absolute;
   top: 20%;
   left: -6%;
-  width: 24%;
   z-index: 100;
 }
 
@@ -380,7 +379,7 @@ body {
   font-weight: bold;
   text-align: center;
   font-size: 0.75rem;
-  line-height: 1rem;
+  line-height: 1.05rem;
   border-radius: inherit;
   z-index: 300;
 }
@@ -526,7 +525,7 @@ to {
   font-weight: bold;
   z-index: 10;
   font-size: 0.75rem;
-  line-height: 1rem;
+  line-height: 1.05rem;
 }
 
 .chess-cell-options-cell {
@@ -584,7 +583,7 @@ to {
   font-weight: bold;
   z-index: 10;
   font-size: 0.75rem;
-  line-height: 1rem;
+  line-height: 1.05rem;
 }
 
 .chess-cell-draft-cell {
