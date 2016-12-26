@@ -949,11 +949,6 @@ to {
   cursor: pointer;
 }
 
-.chessboard-container.big .game-timer-panel {
-  left: -18%;
-  top: 21%;
-}
-
 .chessboard-container.big .chessboard-actions {
   left: 0%;
   top: 26%;
