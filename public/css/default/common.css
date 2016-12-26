@@ -300,7 +300,18 @@ label {
   z-index: 9999;
   width: 120px;
   height: 120px;
-  background: url(../../imgs/default/player_tip_bg.svg);
+}
+
+.player-tip-triangle {
+  width: 0px;
+  height: 0px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid #F3F3F3;
+  position: relative;
+  margin: auto;
+  top: 1px;
+  z-index: 99999;
 }
 
 .player-tip-content {
@@ -308,8 +319,13 @@ label {
   position: absolute;
   width: 100%;
   height: 100%;
-  margin-top: 16px;
+  background-image: linear-gradient(to bottom, #F3F3F3, #D6D6D6);
+  border-radius: 5px;
+  border: 1px solid #E2E2E2;
   color: black;
+  box-shadow: 1px black;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 .player-tip-content * {

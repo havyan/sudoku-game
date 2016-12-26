@@ -44,7 +44,11 @@
           }
         }
       });
-      this.$draggables.draggable();
+      this.$draggables.draggable({
+        stop : function(e, ui) {
+          self.relocate($(e.target), false);
+        }
+      });
     },
 
     render : function() {
@@ -99,7 +103,7 @@
         this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
           model : this.options.model
         });
-        this.$draggables = this.element.find('.game-timer-panel, .game-zoom, .chessboard-actions, .props');
+        this.$draggables = this.element.find('.game-zoom, .chessboard-actions, .props');
         this.resetPropStatus();
         this.resize();
         this.layout();
@@ -169,11 +173,13 @@
       }.bind(this));
     },
     
-    relocate : function($e) {
-      $e.css({
-        top: '',
-        left: ''
-      });
+    relocate : function($e, reset) {
+      if (reset !== false) {
+        $e.css({
+          top: '',
+          left: ''
+        });
+      }
       var $body = $(document.body);
       var width = $e.width();
       var height = $e.height();
