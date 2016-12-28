@@ -103,7 +103,8 @@
         this.gameTimer = new GameTimer(this.element.find('.game-timer-panel'), {
           model : this.options.model
         });
-        this.$draggables = this.element.find('.game-zoom, .chessboard-actions, .props');
+        this.$draggables = this.element.find('.game-timer-panel, .chessboard-actions, .props');
+        this.$zoom = this.element.find('.game-zoom');
         this.resetPropStatus();
         this.resize();
         this.layout();
@@ -171,6 +172,7 @@
       this.$draggables.each(function(i, e) {
         this.relocate($(e));
       }.bind(this));
+      this.relocate(this.$zoom);
     },
     
     relocate : function($e, reset) {
