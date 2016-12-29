@@ -30,7 +30,7 @@ Recharge.create = function(params, cb) {
 };
 
 Recharge.count = function(account, cb) {
-  RechargeDAO.countByFrom(account, cb);
+  RechargeDAO.countByAccount(account, cb);
 };
 
 Recharge.findOneById = function(id, cb) {

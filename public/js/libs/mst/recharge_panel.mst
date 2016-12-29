@@ -151,7 +151,7 @@
             <td>{{target}}</td>
             <td>{{cost}}</td>
             <td>{{rechargeBank bank}}</td>
-            <td> {{#isUnfinished status}} <a class="continue-pay button" href="javascript:void(0)">继续支付</a> {{/isUnfinished}} </td>
+            <td> {{#isContinued this}} <a class="continue-pay button" href="javascript:void(0)">继续支付</a> {{/isContinued}} </td>
           </tr>
           {{/records}}
         </tbody>

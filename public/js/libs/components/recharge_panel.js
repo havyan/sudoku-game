@@ -163,9 +163,8 @@
           return BANK[bank()];
         },
 
-        isUnfinished : function(status, options) {
-          status = status();
-          if (status === '9') {
+        isContinued : function(record, options) {
+          if (record.status === '9' && model.attr('user.account') === record.from) {
             return options.fn(this);
           } else {
             return options.inverse(this);

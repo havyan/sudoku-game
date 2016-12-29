@@ -54,7 +54,7 @@
       } else if (newStatus === 'ongoing') {
         this.showOngoing();
       } else if (newStatus === 'destroyed') {
-        window.location.href = "/main";
+        this.destroy();
       }
     },
 
@@ -211,19 +211,48 @@
     '.game-quit-button click' : function() {
       var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
-        var message = this.options.model.isBanker() ? '棋局已开始，您的建桌费不会返还，确定要退出？' : '棋局已开始，确定要退出？';
+        var message = this.options.model.isBanker() ? '棋局已开始，您的建桌费不会返还，此桌游戏将取消，确定要退出？' : '棋局已开始，确定要退出？';
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });
         });
       } else {
-        var message = this.options.model.isBanker() ? '正在等待棋局，您的建桌费不会返还，确定要退出？' : '正在等待棋局，确定要退出？';
+        var message = this.options.model.isBanker() ? '正在等待棋局，您的建桌费不会返还，此桌游戏将取消，确定要退出？' : '正在等待棋局，确定要退出？';
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });
         });
+      }
+    },
+
+    destroy : function() {
+      var model = this.options.model;
+      var type = model.attr('destroyType');
+      if (!model.isBanker() && type === 'banker-quit') {
+        Dialog.show({
+          title : '确认',
+          content : '因为庄家退出，游戏将在<span class="close-countdown-number">10</span>秒后关闭',
+          autoClose : false,
+          actions : [{
+            name : '立即关闭',
+            userClass : 'btn-primary',
+            callback : function() {
+              window.location.href = "/main";
+            }
+          }]
+        });
+        var countdown = 10;
+        var timer = setInterval(function() {
+          $('.close-countdown-number').html(--countdown);
+          if (countdown === 0) {
+            clearInterval(timer);
+            window.location.href = "/main";
+          }
+        }, 1000);
+      } else {
+        window.location.href = "/main";
       }
     },
 

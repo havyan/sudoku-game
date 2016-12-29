@@ -615,7 +615,8 @@
         self.attr('awardResult', _.find(results, {account: self.attr('account')}).awardResult);
         self.attr('results', results);
       });
-      this.eventReceiver.on('game-destroyed', function() {
+      this.eventReceiver.on('game-destroyed', function(type) {
+        self.attr('destroyType', type);
         self.attr('status', 'destroyed');
         self.destroy();
       });

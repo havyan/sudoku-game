@@ -411,7 +411,16 @@ Game.prototype.playerQuit = function(account, status, cb) {
     this.stopPlayerTimer();
   }
   if (quitPlayer) {
-    if (this.isOngoing()) {
+    if (quitPlayer === this.players[0]) {
+      this.removePlayer(account);
+      this.emit('player-quit', {
+        account : account,
+        status : status
+      });
+      self.addMessage('庄家[' + quitPlayer.name + ']退出');
+      self.destroy('banker-quit');
+      cb();
+    } else if (this.isOngoing()) {
       quitPlayer.rounds = quitPlayer.rounds + 1;
       quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
       var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
@@ -973,11 +982,12 @@ Game.prototype.setOptionsAlways = function(account, cb) {
   }
 };
 
-Game.prototype.destroy = function() {
+Game.prototype.destroy = function(type) {
+  type = type || 'normal';
   this.stopTimer();
   this.status = DESTROYED;
   winston.info('Game [' + this.id + '] destoryed');
-  this.emit('game-destroyed');
+  this.emit('game-destroyed', type);
 };
 
 module.exports = Game;

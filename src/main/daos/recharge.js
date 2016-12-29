@@ -6,31 +6,31 @@ var common = require('./common');
 var uuid = require('uuid');
 
 var STATUS = {
-  INIT : '9',
-  PAYING : '0',
-  SUCCESS : '1',
-  WAITING : '2',
-  FAIL : '-1'
+  INIT: '9',
+  PAYING: '0',
+  SUCCESS: '1',
+  WAITING: '2',
+  FAIL: '-1'
 };
 
 var RechargeSchema = new Schema({
-  trans_code : String,
-  status : {
-    type : String,
-    default : STATUS.INIT
+  trans_code: String,
+  status: {
+    type: String,
+    default: STATUS.INIT
   },
-  from : String,
-  target : String,
-  payuid : {
-    type : String,
-    default : uuid.v10
+  from: String,
+  target: String,
+  payuid: {
+    type: String,
+    default: uuid.v10
   },
-  purchase : Number,
-  cost : Number,
-  bank : String,
-  used : {
-    type : Boolean,
-    default : false
+  purchase: Number,
+  cost: Number,
+  bank: String,
+  used: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -39,34 +39,38 @@ RechargeSchema.statics.createRecharge = function(params, cb) {
   this.create(params, cb);
 };
 
-RechargeSchema.statics.countByFrom = function(from, cb) {
-  this.count({
-    from : from
-  }, cb);
+RechargeSchema.statics.countByAccount = function(account, cb) {
+  this.count().or([{
+    from: account
+  }, {
+    target: account
+  }]).exec(cb);
 };
 
 RechargeSchema.statics.findOneByPayuid = function(payuid, cb) {
   this.findOne({
-    payuid : payuid
+    payuid: payuid
   }, cb);
 };
 
 RechargeSchema.statics.findOneById = function(id, cb) {
   this.findOne({
-    _id : ObjectId(id)
+    _id: ObjectId(id)
   }, cb);
 };
 
-RechargeSchema.statics.findByRange = function(from, start, size, cb) {
-  this.find({
-    from : from
-  }).skip(start).limit(size).sort('-createtime').exec(cb);
+RechargeSchema.statics.findByRange = function(account, start, size, cb) {
+  this.find().or([{
+    from: account
+  }, {
+    target: account
+  }]).skip(start).limit(size).sort('-createtime').exec(cb);
 };
 
 RechargeSchema.statics.findUnfinished = function(cb) {
   this.find({
-    status : {
-      $in : [STATUS.INIT, STATUS.PAYING, STATUS.WAITING]
+    status: {
+      $in: [STATUS.INIT, STATUS.PAYING, STATUS.WAITING]
     }
   }, cb);
 };
