@@ -18,7 +18,7 @@
     createModel : function() {
       this.model = new can.Model({
         stepTimes : this.options.rule.score.add,
-        levels : this.options.levels.slice(0, parseInt(this.options.user.grade) + 2),
+        levels : this.options.levels.slice(0, parseInt(this.options.user.grade) + 1),
         durations : [1, 2],
         capacities : [2, 3, 4],
         waitTimes : [1, 2, 5, 10]

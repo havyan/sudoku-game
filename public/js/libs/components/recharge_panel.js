@@ -124,6 +124,10 @@
       });
     },
 
+    isToSelf : function() {
+      return this.attr('order.target') === this.attr('user.account');
+    },
+
     createOrder : function(success, error) {
       var self = this;
       var data = {

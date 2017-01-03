@@ -421,8 +421,9 @@ Game.prototype.playerQuit = function(account, status, cb) {
       self.destroy('banker-quit');
       cb();
     } else if (this.isOngoing()) {
+      var gainPoints = 100 * (this.results.length + 1);
       quitPlayer.rounds = quitPlayer.rounds + 1;
-      quitPlayer.points = quitPlayer.points + 100 * (this.results.length + 1);
+      quitPlayer.points = quitPlayer.points + gainPoints;
       var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
         return e.floor > quitPlayer.points;
       });
@@ -443,7 +444,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
           cb(error);
         } else {
           self.quitPlayers.unshift(quitPlayer);
-          self.results.unshift(self.createResult(quitPlayer, status, awardResult));
+          self.results.unshift(self.createResult(quitPlayer, status, gainPoints, awardResult));
           self.removePlayer(account);
           self.emit('player-quit', {
             account : account,
@@ -477,11 +478,12 @@ Game.prototype.playersCount = function() {
   return _.compact(this.players).length;
 };
 
-Game.prototype.createResult = function(player, status, awardResult) {
+Game.prototype.createResult = function(player, status, gainPoints, awardResult) {
   return {
     account : player.account,
     playerName : player.name,
     score : status === 'quit' ? '退出' : status === 'offline' ? '离线' : this.scores[player.account] || 0,
+    gainPoints : gainPoints,
     status : status,
     points : player.points,
     money : player.money,
@@ -710,14 +712,15 @@ Game.prototype.over = function(cb) {
   function(cb) {
     var index = 0;
     async.eachSeries(players, function(player, cb) {
-      player.points = player.points + 100 * (self.results.length + 1);
+      var gainPoints = 100 * (self.results.length + 1);
+      player.points = player.points + gainPoints;
       var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
         return e.floor > player.points;
       });
       var oldGrade = player.grade;
       player.grade = self.rule.grade[ceilingIndex - 1].code;
       player.rounds = player.rounds + 1;
-      if (index === players - 1) {
+      if (index === players.length - 1) {
         player.wintimes = player.wintimes + 1;
       }
       async.waterfall([
@@ -734,7 +737,7 @@ Game.prototype.over = function(cb) {
         if (error) {
           cb(error);
         } else {
-          self.results.unshift(self.createResult(player, 'normal', awardResult));
+          self.results.unshift(self.createResult(player, 'normal', gainPoints, awardResult));
           index++;
           cb();
         }
