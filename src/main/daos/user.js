@@ -17,7 +17,10 @@ var STATUS = {
 };
 
 var UserSchema = new Schema({
-  account : String,
+  account : {
+    type : String,
+    unique : true
+  },
   name : String,
   password : String,
   status : {
