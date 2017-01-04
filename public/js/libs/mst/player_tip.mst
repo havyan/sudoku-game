@@ -30,7 +30,7 @@
         胜率
       </div>
       <div class="player-tip-value">
-        {{winrate}}
+        {{winrate}}%
       </div>
     </div>
   </div>

@@ -208,6 +208,10 @@ UserSchema.virtual('winrate').get(function() {
   return this.rounds > 0 ? Math.round(this.wintimes / this.rounds * 100) : 0;
 });
 
+UserSchema.virtual('losetimes').get(function() {
+  return this.rounds - this.wintimes;
+});
+
 UserSchema.virtual('grade_name').get(function() {
   return RuleDAO.GRADE_NAMES[this.grade];
 });

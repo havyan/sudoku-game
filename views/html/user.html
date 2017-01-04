@@ -56,10 +56,13 @@
           {{/isAdmin}}
         </div>
         <div class="info-row">
-          <span class="name">局数：</span><span class="value">{{user.rounds}}</span>
+          <span class="name">完成局数：</span><span class="value">{{user.rounds}}</span>
         </div>
         <div class="info-row">
-          <span class="name">胜率：</span><span class="value">{{user.winrate}}</span>
+          <span class="name">战绩：</span><span class="value">{{user.wintimes}}胜{{user.losetimes}}负</span>
+        </div>
+        <div class="info-row">
+          <span class="name">胜率：</span><span class="value">{{user.winrate}}%</span>
         </div>
         <div class="info-row">
           <span class="name">邮箱：</span><span class="value">{{user.email}}</span>
