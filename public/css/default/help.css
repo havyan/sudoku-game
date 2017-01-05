@@ -226,3 +226,29 @@
   font-size: 20px;
   margin: 10px;
 }
+
+.help-container .score-spec .title {
+  font-size: 25px;
+}
+
+.help-container .score-spec .sub-title {
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+.help-container .score-spec .inner-container {
+  margin: 10px 30px;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.help-container .score-spec .add-row,
+.help-container .score-spec .reduce-row {
+  background-color: #1e5973;
+  height: 30px;
+  line-height: 30px;
+  margin: 5px 0px;
+  padding-left: 10px;
+  border: 1px solid white;
+}
