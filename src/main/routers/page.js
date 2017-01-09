@@ -162,6 +162,7 @@ module.exports = function(router) {
           res.render('lobby', {
             account : user.account,
             userName : user.name,
+            isAdmin : user.account === 'SYSTEM',
             userIcon : user.icon,
             money : user.money,
             unreadMessagesCount : results[1]
@@ -277,8 +278,13 @@ module.exports = function(router) {
         res.render('help', {
           userName : user.name,
           userIcon : user.icon,
+          isAdmin : user.account === 'SYSTEM',
           money : user.money,
           grade : rule.grade,
+          score : {
+            add : _.find(rule.score.add, { selected : true }),
+            reduce : rule.score.reduce
+          },
           exchange: rule.exchange
         });
       }

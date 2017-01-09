@@ -30,6 +30,9 @@
         <div class="rich-button item grade-spec" data-target="grade-spec">
           积分段位和天才币
         </div>
+        <div class="rich-button item score-spec" data-target="score-spec">
+          数独棋局分规则
+        </div>
         <div class="rich-button item system-spec" data-target="system-spec">
           系统操作介绍
         </div>
@@ -129,6 +132,36 @@
             1人民币 = {{exchange.rate}}天才币
           </p>
         </div>
+        <div class="item score-spec">
+          {{#score}}
+          <div class="title">每步时间: <span>{{add.total}}</span>秒</div>
+          <div class="sub-title">* 加分设置: </div>
+          <div class="add-content inner-container">
+          {{#add.levels}}
+            <div class="add-row">
+              <span class="add-from">{{from}}秒</span>
+              <span class="add-connection">-</span>
+              <span class="add-to">{{to}}秒: </span>
+              <span class="add-score">{{score}}</span>
+            </div>
+          {{/add.levels}}
+          </div>
+          <div class="separator"></div>
+          <div class="sub-title">* 减分设置: </div>
+          <div class="reduce-content inner-container">
+            {{#reduce}}
+            <div class="reduce-row">
+              <label>答错或超时扣分分值: </label>
+              <span class="reduce-score">{{timeout}}</span>
+            </div>
+            <div class="reduce-row">
+              <label>Pass扣分分值: </label>
+              <span class="reduce-score">{{pass}}</span>
+            </div>
+            {{/reduce}}
+          </div>
+          {{/score}}
+        </div>
         <div class="item system-spec">
           <h2>功能介绍</h2>
           <ul>
@@ -137,9 +170,6 @@
             </li>
             <li>
               <span>【道具】：</span>可在此处购买道具及查看自己道具的数量
-            </li>
-            <li>
-              <span>【规则】：</span>查看游戏积分规则
             </li>
             <li>
               <span>【消息】：</span>查看系统发送的各类消息，包括每局游戏战报和活动通知等
@@ -154,7 +184,7 @@
               <span>【注销】：</span>退出登录，返回首页
             </li>
             <li>
-              <span>【桌子】：</span>点击空桌时，弹出建桌窗口，此时用户为庄家，需支付天才币作为建桌费；点击非空桌时，用户为普通身份，不用支付天才币
+              <span>【桌子】：</span>点击空桌时，弹出建桌窗口，此时用户为庄家，需支付天才币作为建桌费（入门题目除外）；点击非空桌时，用户为普通身份，不用支付天才币
             </li>
           </ul>
         </div>
@@ -192,7 +222,7 @@
                 超天才技术开发(北京)有限责任公司
               </p>
               <p>
-                邮箱：service@genius59.com
+                邮箱：service@supergenius.cn
               </p>
               <p>
                 电话：56296776
