@@ -2,7 +2,7 @@ var _ = require('lodash');
 var util = require("util");
 var EventEmitter = require('events').EventEmitter;
 var Game = require('./game');
-var PREFIX = "game";
+var PREFIX = "room";
 var CAPACITY = 12;
 
 var Room = function(id, name, virtual, capacity, order) {

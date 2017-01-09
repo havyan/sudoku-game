@@ -7,6 +7,7 @@ var EventEmitter = require('events').EventEmitter;
 var RuleDAO = require('../daos/rule');
 var UserDAO = require('../daos/user');
 var PropDAO = require('../daos/prop');
+var GameDAO = require('../daos/game');
 var PropTypeDAO = require('../daos/prop_type');
 var PuzzleDAO = require('../daos/puzzle');
 var GameMode = require('./game_mode');
@@ -46,6 +47,7 @@ var SCORE_TYPE = {
 var Game = function(room, index, mode) {
   EventEmitter.call(this);
   this.room = room;
+  this.index = index;
   this.id = room.id + '-' + index + '-' + Date.now();
   this.mode = mode || GameMode.MODE9;
   this.status = EMPTY;
@@ -55,12 +57,14 @@ util.inherits(Game, EventEmitter);
 
 Game.prototype.init = function(account, params, cb) {
   var self = this;
+  var creator;
   var level = params.level || DEFAULT_LEVEL;
   async.waterfall([
   function(cb) {
     UserDAO.findOneByAccount(account, cb);
   },
   function(user, cb) {
+    creator = user;
     var money = user.money;
     var cost = _.findIndex(PuzzleDAO.LEVELS, {
       code : level
@@ -96,6 +100,14 @@ Game.prototype.init = function(account, params, cb) {
     self.initParams(params);
     self.emit('init', self.toSimpleJSON());
     self.startWaitTimer();
+    GameDAO.createGame(self.room.id, creator.id, {
+      run_id: self.id,
+      level: level,
+      cost: self.cost
+    }, cb);
+  },
+  function(entity, cb) {
+    self.entity = entity;
     cb();
   }], cb);
 };
@@ -165,35 +177,46 @@ Game.prototype.isOver = function() {
 };
 
 Game.prototype.setStatus = function(status) {
+  var self = this;
   var oldStatus = this.status;
   this.status = status;
   this.emit('status-changed', status, oldStatus);
-  var self = this;
   if (oldStatus === WAITING && status === LOADING) {
-    PuzzleDAO.findRandomOneByLevel(this.level, function(error, puzzle) {
+    async.waterfall([
+    function(cb) {
+      self.entity.update({
+        wait_time: self.waitTime * 60 - self.waitCountdown
+      }, cb);
+    },
+    function(result, cb) {
+      PuzzleDAO.findRandomOneByLevel(self.level, cb);
+    },
+    function(puzzle, cb) {
+      puzzleJson = puzzle.toJSON();
+      self.initCellValues = puzzleJson.question;
+      self.answer = puzzleJson.answer;
+      self.emit('puzzle-init', self.initCellValues);
+      setTimeout(cb, 2000)
+    },
+    function(cb) {
+      var countdown = COUNTDOWN_TOTAL;
+      var countDownTimer = setInterval(function() {
+        if (countdown >= 0) {
+          self.emit('countdown-stage', countdown);
+          countdown--;
+        } else {
+          clearInterval(countDownTimer);
+          setTimeout(function() {
+            self.start();
+          }, 3000);
+          self.status = ONGOING;
+          self.emit('status-changed', self.status, status);
+        }
+      }, 1000);
+      cb();
+    }], function(error) {
       if (error) {
         winston.error(error);
-      } else {
-        puzzleJson = puzzle.toJSON();
-        self.initCellValues = puzzleJson.question;
-        self.answer = puzzleJson.answer;
-        self.emit('puzzle-init', self.initCellValues);
-        setTimeout(function() {
-          var countdown = COUNTDOWN_TOTAL;
-          var countDownTimer = setInterval(function() {
-            if (countdown >= 0) {
-              self.emit('countdown-stage', countdown);
-              countdown--;
-            } else {
-              clearInterval(countDownTimer);
-              setTimeout(function() {
-                self.start();
-              }, 3000);
-              self.status = ONGOING;
-              self.emit('status-changed', self.status, status);
-            }
-          }, 1000);
-        }, 2000);
       }
     });
   }
@@ -322,12 +345,12 @@ Game.prototype.startTimer = function() {
 
 Game.prototype.startWaitTimer = function() {
   var self = this;
-  var countdown = this.waitTime * 60;
+  this.waitCountdown = this.waitTime * 60;
   var countDownTimer = setInterval(function() {
     if (self.isWaiting()) {
-      if (countdown >= 0) {
-        self.emit('wait-countdown-stage', countdown);
-        countdown--;
+      if (self.waitCountdown >= 0) {
+        self.emit('wait-countdown-stage', self.waitCountdown);
+        self.waitCountdown--;
       } else {
         clearInterval(countDownTimer);
         self.abort();
@@ -680,7 +703,15 @@ Game.prototype.abort = function() {
   var self = this;
   var banker = this.players[0];
   banker.money = banker.money + this.cost;
-  banker.save(function(error) {
+  async.waterfall([
+  function(cb) {
+    banker.save(cb);
+  },
+  function(user, count, cb) {
+    self.entity.money_returned = true;
+    self.entity.return_time = Date.now();
+    self.entity.save(cb);
+  }], function(error) {
     if (error) {
       winston.error(error);
     } else {
