@@ -4,27 +4,24 @@ var ObjectId = mongoose.Types.ObjectId;
 var common = require('./common');
 
 var PurchaseRecordSchema = new Schema({
-  user : {
-    type : Schema.Types.ObjectId,
-    ref : 'User'
+  account: String,
+  prop_type: String,
+  count: {
+    type: Number,
+    default: 0
   },
-  prop_type : String,
-  count : {
-    type : Number,
-    default : 0
-  },
-  cost : {
-    type : Number,
-    default : 0
+  cost: {
+    type: Number,
+    default: 0
   }
 });
 
-PurchaseRecordSchema.statics.createRecord = function(user, prop_type, count, cost, cb) {
+PurchaseRecordSchema.statics.createRecord = function(account, prop_type, count, cost, cb) {
   this.create({
-    user : ObjectId(user),
-    prop_type : prop_type,
-    count : count,
-    cost : cost
+    account: account,
+    prop_type: prop_type,
+    count: count,
+    cost: cost
   }, cb);
 };
 

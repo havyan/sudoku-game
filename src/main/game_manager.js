@@ -203,10 +203,10 @@ GameManager.prototype.hasLiveGame = function() {
   });
 };
 
-GameManager.prototype.setGameStatus = function(account, id, status) {
+GameManager.prototype.switchGameStatus = function(account, id, status, cb) {
   var game = this.findGame(id);
   if (game) {
-    game.setStatus(status);
+    game.switchStatus(status, cb);
   }
 };
 

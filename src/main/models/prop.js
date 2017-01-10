@@ -93,7 +93,7 @@ Prop.buy = function(account, type, count, cb) {
             PropTypeDAO.addSales(type, count, cb);
           },
           function(cb) {
-            PurchaseRecordDAO.createRecord(user.id, type, count, cost, cb);
+            PurchaseRecordDAO.createRecord(user.account, type, count, cost, cb);
           }], function(error) {
             if (error) {
               cb(error);

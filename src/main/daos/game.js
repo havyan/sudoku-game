@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
+var Mixed = Schema.Types.Mixed;
 var common = require('./common');
 
 var GameSchema = new Schema({
@@ -12,8 +13,13 @@ var GameSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Room'
   },
-  run_id: String,
+  index: Number,
   level: String,
+  capacity: Number,
+  duration: Number,
+  start_mode: String,
+  mode: [Mixed],
+  rule: Mixed,
   cost: {
     type: Number,
     default: 0
@@ -23,11 +29,13 @@ var GameSchema = new Schema({
     default: false
   },
   return_time: Date,
-  wait_time: Number
+  wait_time: Number,
+  real_wait_time: Number
 });
 
-GameSchema.statics.createGame = function(userId, roomId, params, cb) {
+GameSchema.statics.createGame = function(userId, roomId, gameId, params, cb) {
   this.create(Object.assign({
+    _id: ObjectId(gameId),
     creator: ObjectId(userId),
     room: ObjectId(userId)
   }, params), cb);

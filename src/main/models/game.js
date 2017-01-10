@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var winston = require('winston');
+var mongoose = require('mongoose');
 var async = require('async');
 var dateFormat = require('dateformat');
 var util = require("util");
@@ -10,6 +11,8 @@ var PropDAO = require('../daos/prop');
 var GameDAO = require('../daos/game');
 var PropTypeDAO = require('../daos/prop_type');
 var PuzzleDAO = require('../daos/puzzle');
+var JoinRecordDAO = require('../daos/join_record');
+var PointsRecordDAO = require('../daos/points_record');
 var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
@@ -32,26 +35,27 @@ var DELAY_COUNTDOWN_TOTAL = 60;
 var DESTROY_COUNTDOWN_TOTAL = 120;
 var MAX_TIMEOUT_ROUNDS = 10;
 var START_MODE = {
-  MANUAL : 'manual',
-  AUTO : 'auto'
+  MANUAL: 'manual',
+  AUTO: 'auto'
 };
 
 var SCORE_TYPE = {
-  INCORRECT : "incorrect",
-  CORRECT : "correct",
-  TIMEOUT : "timeout",
-  PASS : "pass",
-  IMPUNITY : "impunity"
+  INCORRECT: "incorrect",
+  CORRECT: "correct",
+  TIMEOUT: "timeout",
+  PASS: "pass",
+  IMPUNITY: "impunity"
 };
 
 var Game = function(room, index, mode) {
   EventEmitter.call(this);
   this.room = room;
   this.index = index;
-  this.id = room.id + '-' + index + '-' + Date.now();
+  this.id = mongoose.Types.ObjectId().toString();
   this.mode = mode || GameMode.MODE9;
   this.status = EMPTY;
   this.players = new Array(CAPACITY);
+  this.joinRecords = [];
 };
 util.inherits(Game, EventEmitter);
 
@@ -60,56 +64,62 @@ Game.prototype.init = function(account, params, cb) {
   var creator;
   var level = params.level || DEFAULT_LEVEL;
   async.waterfall([
-  function(cb) {
-    UserDAO.findOneByAccount(account, cb);
-  },
-  function(user, cb) {
-    creator = user;
-    var money = user.money;
-    var cost = _.findIndex(PuzzleDAO.LEVELS, {
-      code : level
-    }) * 100;
-    if (money < cost) {
-      cb('You don not have enough money, please recharge');
-    } else {
-      self.cost = cost;
-      user.money = money - cost;
-      user.save(cb);
-    }
-  },
-  function(user, count, cb) {
-    PropTypeDAO.all(cb);
-  },
-  function(propTypes, cb) {
-    self.propTypes = propTypes.map(function(propType) {
-      return propType.toJSON();
-    });
-    RuleDAO.getRule(cb);
-  },
-  function(rule, cb) {
-    var add = rule.score.add;
-    rule.score.add = _.find(add, function(e) {
-      return e.total === params.stepTime;
-    });
-    if (!rule.score.add) {
-      rule.score.add = _.find(add, function(e) {
-        return e.selected;
+    function(cb) {
+      UserDAO.findOneByAccount(account, cb);
+    },
+    function(user, cb) {
+      creator = user;
+      var money = user.money;
+      var cost = _.findIndex(PuzzleDAO.LEVELS, {
+        code: level
+      }) * 100;
+      if (money < cost) {
+        cb('You don not have enough money, please recharge');
+      } else {
+        self.cost = cost;
+        user.money = money - cost;
+        user.save(cb);
+      }
+    },
+    function(user, count, cb) {
+      PropTypeDAO.all(cb);
+    },
+    function(propTypes, cb) {
+      self.propTypes = propTypes.map(function(propType) {
+        return propType.toJSON();
       });
+      RuleDAO.getRule(cb);
+    },
+    function(rule, cb) {
+      var add = rule.score.add;
+      rule.score.add = _.find(add, function(e) {
+        return e.total === params.stepTime;
+      });
+      if (!rule.score.add) {
+        rule.score.add = _.find(add, function(e) {
+          return e.selected;
+        });
+      }
+      self.rule = rule;
+      self.initParams(params);
+      self.emit('init', self.toSimpleJSON());
+      self.startWaitTimer();
+      GameDAO.createGame(self.room.id, creator.id, self.id, {
+        index: self.index,
+        mode: self.mode,
+        level: self.level,
+        rule: self.rule,
+        capacity: self.capacity,
+        duration: self.duration,
+        start_mode: self.startMode,
+        cost: self.cost
+      }, cb);
+    },
+    function(entity, cb) {
+      self.entity = entity;
+      cb();
     }
-    self.rule = rule;
-    self.initParams(params);
-    self.emit('init', self.toSimpleJSON());
-    self.startWaitTimer();
-    GameDAO.createGame(self.room.id, creator.id, {
-      run_id: self.id,
-      level: level,
-      cost: self.cost
-    }, cb);
-  },
-  function(entity, cb) {
-    self.entity = entity;
-    cb();
-  }], cb);
+  ], cb);
 };
 
 Game.prototype.initParams = function(params) {
@@ -136,7 +146,7 @@ Game.prototype.initParams = function(params) {
   this.optionsAlways = {};
   this.changedScores = {};
   this.playerTimer = {
-    ellapsedTime : 0
+    ellapsedTime: 0
   };
   this.buildPlayerIndex();
 };
@@ -176,16 +186,31 @@ Game.prototype.isOver = function() {
   return this.status === OVER || this.status === DESTROYED;
 };
 
+Game.prototype.switchStatus = function(status, cb) {
+  var oldStatus = this.status;
+  this.setStatus(status);
+  if (oldStatus === WAITING && status === LOADING) {
+    this.start(cb);
+  } else {
+    cb(null, {
+      status: 'ok',
+      gameId: this.id
+    });
+  }
+};
+
 Game.prototype.setStatus = function(status) {
-  var self = this;
   var oldStatus = this.status;
   this.status = status;
   this.emit('status-changed', status, oldStatus);
-  if (oldStatus === WAITING && status === LOADING) {
-    async.waterfall([
+};
+
+Game.prototype.prepare = function(cb) {
+  var self = this;
+  async.waterfall([
     function(cb) {
       self.entity.update({
-        wait_time: self.waitTime * 60 - self.waitCountdown
+        real_wait_time: self.waitTime * 60 - self.waitCountdown
       }, cb);
     },
     function(result, cb) {
@@ -196,7 +221,19 @@ Game.prototype.setStatus = function(status) {
       self.initCellValues = puzzleJson.question;
       self.answer = puzzleJson.answer;
       self.emit('puzzle-init', self.initCellValues);
-      setTimeout(cb, 2000)
+      cb();
+    }
+  ], cb);
+};
+
+Game.prototype.start = function(cb) {
+  var self = this;
+  async.waterfall([
+    function(cb) {
+      self.prepare(cb);
+    },
+    function(cb) {
+      setTimeout(cb, 2000);
     },
     function(cb) {
       var countdown = COUNTDOWN_TOTAL;
@@ -207,19 +244,18 @@ Game.prototype.setStatus = function(status) {
         } else {
           clearInterval(countDownTimer);
           setTimeout(function() {
-            self.start();
+            self.startTimer();
+            self.nextPlayer();
           }, 3000);
-          self.status = ONGOING;
-          self.emit('status-changed', self.status, status);
+          self.setStatus(ONGOING);
         }
       }, 1000);
-      cb();
-    }], function(error) {
-      if (error) {
-        winston.error(error);
-      }
-    });
-  }
+      cb(null, {
+        status: 'ok',
+        gameId: self.id
+      });
+    }
+  ], cb);
 };
 
 Game.prototype.goahead = function(account) {
@@ -227,11 +263,6 @@ Game.prototype.goahead = function(account) {
     clearInterval(this.timeoutTimer[account]);
     this.timeoutCounter[account] = 0;
   }
-};
-
-Game.prototype.start = function() {
-  this.startTimer();
-  this.nextPlayer();
 };
 
 Game.prototype.nextPlayer = function() {
@@ -254,7 +285,7 @@ Game.prototype.nextPlayer = function() {
   this.emit('switch-player', this.currentPlayer);
   setTimeout(function() {
     self.playerTimer = {
-      ellapsedTime : 0
+      ellapsedTime: 0
     };
     self.emit('player-ellapsed-time', self.playerTimer.ellapsedTime);
     self.playerTimer.timer = setInterval(function() {
@@ -295,7 +326,7 @@ Game.prototype.nextPlayer = function() {
 
 Game.prototype.updateScore = function(type, account, xy) {
   var rule = this.rule,
-      score = 0;
+    score = 0;
   if (!account) {
     account = this.currentPlayer;
   }
@@ -317,10 +348,10 @@ Game.prototype.updateScore = function(type, account, xy) {
     var oldScore = this.scores[account] || 0;
     this.scores[account] = oldScore + score;
     this.changedScores[account] = {
-      score : this.scores[account],
-      changed : score,
-      type : type,
-      xy : xy
+      score: this.scores[account],
+      changed: score,
+      type: type,
+      xy: xy
     };
     this.emit('score-changed', account, this.changedScores[account]);
   }
@@ -388,39 +419,44 @@ Game.prototype.stopDelayTimer = function() {
 
 Game.prototype.playerJoin = function(account, index, cb) {
   var self = this;
+  var player;
   if (this.isFull()) {
     cb('Game is full, please join another game.');
-  } else {
-    if (index < 0 || index > this.players.length - 1) {
-      cb('Index ' + index + ' is not valid');
-    } else {
-      UserDAO.findOneByAccount(account, function(error, user) {
-        if (error) {
-          cb(error);
-        } else {
-          self.players[index] = user;
-          self.addPlayerIndex(account);
-          self.knownCellValues[user.account] = {};
-          PropDAO.findOneByAccount(account, function(error, prop) {
-            if (error) {
-              cb(error);
-            } else {
-              self.props.push(prop);
-              self.emit('player-joined', index, user.toJSON());
-              self.addMessage('用户[' + user.name + ']加入');
-              if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
-                self.setStatus(LOADING);
-              }
-              cb(null, {
-                status : 'ok',
-                gameId : self.id
-              });
-            }
-          });
-        }
-      });
-    }
+    return;
   }
+  if (index < 0 || index > this.players.length - 1) {
+    cb('Index ' + index + ' is not valid');
+    return;
+  }
+  async.waterfall([
+    function(cb) {
+      UserDAO.findOneByAccount(account, cb)
+    },
+    function(user, cb) {
+      player = user;
+      self.players[index] = player;
+      self.addPlayerIndex(account);
+      self.knownCellValues[player.account] = {};
+      JoinRecordDAO.createRecord(account, self.id, cb);
+    },
+    function(joinRecord, cb) {
+      self.joinRecords.push(joinRecord);
+      PropDAO.findOneByAccount(account, cb);
+    },
+    function(prop, cb) {
+      self.props.push(prop);
+      self.emit('player-joined', index, player.toJSON());
+      self.addMessage('用户[' + player.name + ']加入');
+      if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
+        self.switchStatus(LOADING, cb);
+      } else {
+        cb(null, {
+          status: 'ok',
+          gameId: self.id
+        });
+      }
+    }
+  ], cb);
 };
 
 Game.prototype.playerQuit = function(account, status, cb) {
@@ -437,8 +473,8 @@ Game.prototype.playerQuit = function(account, status, cb) {
     if (quitPlayer === this.players[0]) {
       this.removePlayer(account);
       this.emit('player-quit', {
-        account : account,
-        status : status
+        account: account,
+        status: status
       });
       self.addMessage('庄家[' + quitPlayer.name + ']退出');
       self.destroy('banker-quit');
@@ -453,16 +489,17 @@ Game.prototype.playerQuit = function(account, status, cb) {
       var oldGrade = quitPlayer.grade;
       quitPlayer.grade = this.rule.grade[ceilingIndex - 1].code;
       async.waterfall([
-      function(cb) {
-        quitPlayer.save(cb);
-      },
-      function(quitPlayer, count, cb) {
-        if (parseInt(quitPlayer.grade) > parseInt(oldGrade)) {
-          Award.perform('upgrade-to-' + quitPlayer.grade, quitPlayer.account, cb);
-        } else {
-          cb(null);
+        function(cb) {
+          quitPlayer.save(cb);
+        },
+        function(quitPlayer, count, cb) {
+          if (parseInt(quitPlayer.grade) > parseInt(oldGrade)) {
+            Award.perform('upgrade-to-' + quitPlayer.grade, quitPlayer.account, cb);
+          } else {
+            cb(null);
+          }
         }
-      }], function(error, awardResult) {
+      ], function(error, awardResult) {
         if (error) {
           cb(error);
         } else {
@@ -470,8 +507,8 @@ Game.prototype.playerQuit = function(account, status, cb) {
           self.results.unshift(self.createResult(quitPlayer, status, gainPoints, awardResult));
           self.removePlayer(account);
           self.emit('player-quit', {
-            account : account,
-            status : status
+            account: account,
+            status: status
           });
           self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
           if (self.playersCount() <= 0) {
@@ -483,8 +520,8 @@ Game.prototype.playerQuit = function(account, status, cb) {
     } else {
       this.removePlayer(account);
       this.emit('player-quit', {
-        account : account,
-        status : status
+        account: account,
+        status: status
       });
       self.addMessage('用户[' + quitPlayer.name + ']退出');
       if (self.playersCount() <= 0) {
@@ -492,25 +529,46 @@ Game.prototype.playerQuit = function(account, status, cb) {
       }
       cb();
     }
+    this.recordQuit(account);
   } else {
     cb();
   }
 };
+
+Game.prototype.recordQuit = function(account) {
+  var joinRecord = _.find(this.joinRecords, {
+    account: account
+  });
+  if (joinRecord) {
+    joinRecord.update({
+      quit_time: Date.now()
+    }, function(error) {
+      if (error) {
+        winston.error("Write quite time to record error: " + error);
+      }
+    });
+  }
+}
 
 Game.prototype.playersCount = function() {
   return _.compact(this.players).length;
 };
 
 Game.prototype.createResult = function(player, status, gainPoints, awardResult) {
+  PointsRecordDAO.createRecord(player.account, this.id, gainPoints, player.points, function(error) {
+    if (error) {
+      winston.error("Create points error: " + error);
+    }
+  });
   return {
-    account : player.account,
-    playerName : player.name,
-    score : status === 'quit' ? '退出' : status === 'offline' ? '离线' : this.scores[player.account] || 0,
-    gainPoints : gainPoints,
-    status : status,
-    points : player.points,
-    money : player.money,
-    awardResult : awardResult
+    account: player.account,
+    playerName: player.name,
+    score: status === 'quit' ? '退出' : status === 'offline' ? '离线' : this.scores[player.account] || 0,
+    gainPoints: gainPoints,
+    status: status,
+    points: player.points,
+    money: player.money,
+    awardResult: awardResult
   };
 };
 
@@ -536,21 +594,21 @@ Game.prototype.addMessage = function(message, account) {
   if (account) {
     var player = this.findPlayer(account);
     from = {
-      account : player.account,
-      name : player.name,
-      index : this.playerIndex[player.account]
+      account: player.account,
+      name: player.name,
+      index: this.playerIndex[player.account]
     };
   } else {
     from = {
-      account : 'system',
-      name : '系统',
-      index : 'system'
+      account: 'system',
+      name: '系统',
+      index: 'system'
     };
   }
   message = {
-    from : from,
-    date : dateFormat(new Date(), 'yyyy/mm/dd hh:MM:ss'),
-    content : message
+    from: from,
+    date: dateFormat(new Date(), 'yyyy/mm/dd hh:MM:ss'),
+    content: message
   };
   this.messages.push(message);
   this.emit('message-added', message);
@@ -574,83 +632,83 @@ Game.prototype.isFull = function() {
 
 Game.prototype.toJSON = function(account) {
   return this.status === EMPTY ? {
-    roomId : this.room.id,
-    id : this.id,
-    mode : this.mode,
-    status : this.status,
-    players : this.players.map(function(player) {
+    roomId: this.room.id,
+    id: this.id,
+    mode: this.mode,
+    status: this.status,
+    players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
     })
   } : {
-    roomId : this.room.id,
-    id : this.id,
-    mode : this.mode,
-    waitTime : this.waitTime,
-    startMode : this.startMode,
-    duration : this.duration,
-    remainingTime : this.remainingTime,
-    capacity : this.capacity,
-    level : this.level,
-    rule : this.rule,
-    propTypes : this.propTypes,
-    initCellValues : this.initCellValues,
-    userCellValues : this.userCellValues,
-    players : this.players.map(function(player) {
+    roomId: this.room.id,
+    id: this.id,
+    mode: this.mode,
+    waitTime: this.waitTime,
+    startMode: this.startMode,
+    duration: this.duration,
+    remainingTime: this.remainingTime,
+    capacity: this.capacity,
+    level: this.level,
+    rule: this.rule,
+    propTypes: this.propTypes,
+    initCellValues: this.initCellValues,
+    userCellValues: this.userCellValues,
+    players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
     }),
-    quitPlayers : this.quitPlayers.map(function(player) {
+    quitPlayers: this.quitPlayers.map(function(player) {
       return player.toJSON();
     }),
-    currentPlayer : this.currentPlayer,
-    messages : this.messages,
-    scores : this.scores,
-    status : this.status,
-    delayed : this.delayed,
-    delayCountdownStage : this.delayCountdownStage,
-    account : account ? account : undefined,
-    prop : account ? _.find(this.props, {
-      account : account
+    currentPlayer: this.currentPlayer,
+    messages: this.messages,
+    scores: this.scores,
+    status: this.status,
+    delayed: this.delayed,
+    delayCountdownStage: this.delayCountdownStage,
+    account: account ? account : undefined,
+    prop: account ? _.find(this.props, {
+      account: account
     }) : this.props.map(function(prop) {
       return prop.toJSON();
     }),
-    knownCellValues : account ? this.knownCellValues[account] : this.knownCellValues,
-    changedScore : account ? this.changedScores[account] : this.changedScores,
-    playerRemainingTime : this.rule.score.add.total - this.playerTimer.ellapsedTime,
-    glassesUsed : account ? this.glassesUsed[account] ? true : false : this.glassesUsed,
-    optionsOnce : account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
-    optionsAlways : account ? this.optionsAlways[account] ? true : false : this.optionsAlways
+    knownCellValues: account ? this.knownCellValues[account] : this.knownCellValues,
+    changedScore: account ? this.changedScores[account] : this.changedScores,
+    playerRemainingTime: this.rule.score.add.total - this.playerTimer.ellapsedTime,
+    glassesUsed: account ? this.glassesUsed[account] ? true : false : this.glassesUsed,
+    optionsOnce: account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
+    optionsAlways: account ? this.optionsAlways[account] ? true : false : this.optionsAlways
   };
 };
 
 Game.prototype.toSimpleJSON = function() {
   var self = this;
   return this.status === EMPTY ? {
-    roomId : this.room.id,
-    id : this.id,
-    mode : _.findKey(GameMode, function(value) {
+    roomId: this.room.id,
+    id: this.id,
+    mode: _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
-    status : this.status,
-    players : this.players.map(function(player) {
+    status: this.status,
+    players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
     })
   } : {
-    roomId : this.room.id,
-    id : this.id,
-    stepTime : this.rule.score.add.total,
-    startMode : this.startMode,
-    duration : this.duration,
-    remainingTime : this.remainingTime,
-    capacity : this.capacity,
-    level : this.level,
-    mode : _.findKey(GameMode, function(value) {
+    roomId: this.room.id,
+    id: this.id,
+    stepTime: this.rule.score.add.total,
+    startMode: this.startMode,
+    duration: this.duration,
+    remainingTime: this.remainingTime,
+    capacity: this.capacity,
+    level: this.level,
+    mode: _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
-    players : this.players.map(function(player) {
+    players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
     }),
-    currentPlayer : this.currentPlayer,
-    status : this.status,
+    currentPlayer: this.currentPlayer,
+    status: this.status,
   };
 };
 
@@ -704,14 +762,15 @@ Game.prototype.abort = function() {
   var banker = this.players[0];
   banker.money = banker.money + this.cost;
   async.waterfall([
-  function(cb) {
-    banker.save(cb);
-  },
-  function(user, count, cb) {
-    self.entity.money_returned = true;
-    self.entity.return_time = Date.now();
-    self.entity.save(cb);
-  }], function(error) {
+    function(cb) {
+      banker.save(cb);
+    },
+    function(user, count, cb) {
+      self.entity.money_returned = true;
+      self.entity.return_time = Date.now();
+      self.entity.save(cb);
+    }
+  ], function(error) {
     if (error) {
       winston.error(error);
     } else {
@@ -740,52 +799,55 @@ Game.prototype.over = function(cb) {
     return sourceScore - destScore;
   });
   async.waterfall([
-  function(cb) {
-    var index = 0;
-    async.eachSeries(players, function(player, cb) {
-      var gainPoints = 100 * (self.results.length + 1);
-      player.points = player.points + gainPoints;
-      var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
-        return e.floor > player.points;
-      });
-      var oldGrade = player.grade;
-      player.grade = self.rule.grade[ceilingIndex - 1].code;
-      player.rounds = player.rounds + 1;
-      if (index === players.length - 1) {
-        player.wintimes = player.wintimes + 1;
-      }
-      async.waterfall([
-      function(cb) {
-        player.save(cb);
-      },
-      function(player, count, cb) {
-        if (parseInt(player.grade) > parseInt(oldGrade)) {
-          Award.perform('upgrade-to-' + player.grade, player.account, cb);
-        } else {
-          cb(null);
+    function(cb) {
+      var index = 0;
+      async.eachSeries(players, function(player, cb) {
+        var gainPoints = 100 * (self.results.length + 1);
+        player.points = player.points + gainPoints;
+        var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
+          return e.floor > player.points;
+        });
+        var oldGrade = player.grade;
+        player.grade = self.rule.grade[ceilingIndex - 1].code;
+        player.rounds = player.rounds + 1;
+        if (index === players.length - 1) {
+          player.wintimes = player.wintimes + 1;
         }
-      }], function(error, awardResult) {
-        if (error) {
-          cb(error);
-        } else {
-          self.results.unshift(self.createResult(player, 'normal', gainPoints, awardResult));
-          index++;
-          cb();
-        }
+        async.waterfall([
+          function(cb) {
+            player.save(cb);
+          },
+          function(player, count, cb) {
+            if (parseInt(player.grade) > parseInt(oldGrade)) {
+              Award.perform('upgrade-to-' + player.grade, player.account, cb);
+            } else {
+              cb(null);
+            }
+          }
+        ], function(error, awardResult) {
+          if (error) {
+            cb(error);
+          } else {
+            self.results.unshift(self.createResult(player, 'normal', gainPoints, awardResult));
+            index++;
+            cb();
+          }
+        });
+        self.recordQuit(player.account);
+      }, cb);
+    },
+    function(cb) {
+      self.results.forEach(function(result, index) {
+        result.rank = index + 1;
       });
-    }, cb);
-  },
-  function(cb) {
-    self.results.forEach(function(result, index) {
-      result.rank = index + 1;
-    });
-    Template.generate('game_results', {
-      results : self.results
-    }, cb);
-  },
-  function(content, cb) {
-    Message.sendFromSystem(_.map(players, 'id'), '最新战报', content, cb);
-  }], function(error) {
+      Template.generate('game_results', {
+        results: self.results
+      }, cb);
+    },
+    function(content, cb) {
+      Message.sendFromSystem(_.map(players, 'id'), '最新战报', content, cb);
+    }
+  ], function(error) {
     if (error) {
       cb(error);
     } else {
@@ -812,7 +874,7 @@ Game.prototype.autoSubmit = function(account, xy, cb) {
   var self = this;
   this.timeoutCounter[account] = 0;
   var prop = _.find(this.props, {
-    account : account
+    account: account
   });
   var magnifier = prop.magnifier;
   if (magnifier > 0) {
@@ -841,7 +903,7 @@ Game.prototype.autoSubmit = function(account, xy, cb) {
 Game.prototype.impunish = function(account, cb) {
   this.timeoutCounter[account] = 0;
   var prop = _.find(this.props, {
-    account : account
+    account: account
   });
   var impunity = prop.impunity;
   if (impunity > 0) {
@@ -864,7 +926,7 @@ Game.prototype.peep = function(account, xy, cb) {
   this.timeoutCounter[account] = 0;
   var self = this;
   var prop = _.find(this.props, {
-    account : account
+    account: account
   });
   var magnifier = prop.magnifier;
   if (magnifier > 0) {
@@ -890,8 +952,8 @@ Game.prototype.pass = function(account, cb) {
     var score = this.updateScore(SCORE_TYPE.PASS);
     this.nextPlayer();
     cb(null, {
-      success : true,
-      score : score
+      success: true,
+      score: score
     });
   } else {
     cb('You do not have permission now');
@@ -904,7 +966,7 @@ Game.prototype.delay = function(account, cb) {
   this.stopDelayTimer();
   if (account === this.currentPlayer) {
     var prop = _.find(this.props, {
-      account : account
+      account: account
     });
     var delay = prop.delay;
     if (delay > 0) {
@@ -942,7 +1004,7 @@ Game.prototype.useGlasses = function(account, cb) {
   var self = this;
   if (account !== this.currentPlayer) {
     var prop = _.find(this.props, {
-      account : account
+      account: account
     });
     var glasses = prop.glasses;
     if (glasses > 0) {
@@ -968,7 +1030,7 @@ Game.prototype.setOptionsOnce = function(account, cb) {
   var self = this;
   if (account === this.currentPlayer) {
     var prop = _.find(this.props, {
-      account : account
+      account: account
     });
     var options_once = prop.options_once;
     if (options_once > 0) {
@@ -996,7 +1058,7 @@ Game.prototype.setOptionsAlways = function(account, cb) {
     cb('You have already used this type of card, only one time is allowed during one game.');
   } else {
     var prop = _.find(this.props, {
-      account : account
+      account: account
     });
     var options_always = prop.options_always;
     if (options_always > 0) {
