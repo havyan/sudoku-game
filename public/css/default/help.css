@@ -210,7 +210,7 @@
 }
 
 .inner-container {
-  width: 90%;
+  width: 50%;
   margin: 30px auto;
   background-color: #282a5f;
   border: 2px solid white;
@@ -241,6 +241,11 @@
   margin: 10px 30px;
   padding: 20px;
   font-size: 16px;
+}
+
+.help-container .score-spec .add-content,
+.help-container .score-spec .reduce-content {
+  width: 90%;
 }
 
 .help-container .score-spec .add-item.selected {
