@@ -210,7 +210,7 @@
 }
 
 .inner-container {
-  width: 50%;
+  width: 90%;
   margin: 30px auto;
   background-color: #282a5f;
   border: 2px solid white;
@@ -243,12 +243,33 @@
   font-size: 16px;
 }
 
+.help-container .score-spec .add-item.selected {
+  background-color: #1e5973;
+  display: inline-block;
+  border-width: 2px;
+  border-color: #FFF000;
+  width: 220px;
+  margin-right: 20px;
+}
+
+.help-container .score-spec .reduce-item {
+  background-color: #1e5973;
+  border: 2px solid #FFF000;
+  width: 300px;
+}
+
+.help-container .score-spec .add-item {
+  background-color: gray;
+  display: inline-block;
+  border: 1px solid white;
+  width: 220px;
+  margin-right: 20px;
+}
+
 .help-container .score-spec .add-row,
 .help-container .score-spec .reduce-row {
-  background-color: #1e5973;
   height: 30px;
   line-height: 30px;
   margin: 5px 0px;
   padding-left: 10px;
-  border: 1px solid white;
 }

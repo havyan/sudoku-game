@@ -283,10 +283,7 @@ module.exports = function(router) {
           isAdmin : user.account === 'SYSTEM',
           money : user.money,
           grade : rule.grade,
-          score : {
-            add : _.find(rule.score.add, { selected : true }),
-            reduce : rule.score.reduce
-          },
+          score : rule.score,
           exchange: rule.exchange
         });
       }

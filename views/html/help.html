@@ -137,26 +137,32 @@
           <div class="title">每步时间: <span>{{add.total}}</span>秒</div>
           <div class="sub-title">* 加分设置: </div>
           <div class="add-content inner-container">
-          {{#add.levels}}
-            <div class="add-row">
-              <span class="add-from">{{from}}秒</span>
-              <span class="add-connection">-</span>
-              <span class="add-to">{{to}}秒: </span>
-              <span class="add-score">{{score}}</span>
+          {{#add}}
+            <div class="add-item {{#selected}}selected{{/selected}}">
+            {{#levels}}
+              <div class="add-row">
+                <span class="add-from">{{from}}秒</span>
+                <span class="add-connection">-</span>
+                <span class="add-to">{{to}}秒: </span>
+                <span class="add-score">{{score}}</span>
+              </div>
+            {{/levels}}
             </div>
-          {{/add.levels}}
+          {{/add}}
           </div>
           <div class="separator"></div>
           <div class="sub-title">* 减分设置: </div>
           <div class="reduce-content inner-container">
             {{#reduce}}
-            <div class="reduce-row">
-              <label>答错或超时扣分分值: </label>
-              <span class="reduce-score">{{timeout}}</span>
-            </div>
-            <div class="reduce-row">
-              <label>Pass扣分分值: </label>
-              <span class="reduce-score">{{pass}}</span>
+            <div class="reduce-item">
+              <div class="reduce-row">
+                <label>答错或超时扣分分值: </label>
+                <span class="reduce-score">{{timeout}}</span>
+              </div>
+              <div class="reduce-row">
+                <label>Pass扣分分值: </label>
+                <span class="reduce-score">{{pass}}</span>
+              </div>
             </div>
             {{/reduce}}
           </div>
