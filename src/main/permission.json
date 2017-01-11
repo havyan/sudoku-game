@@ -22,6 +22,8 @@
     "PUT /user/points",
     "POST /user/reset_money",
     "PUT /user/money",
-    "PUT /rule"
+    "PUT /rule",
+    "[RE]POST /system/seal/[^/\\s]+",
+    "[RE]POST /system/release/[^/\\s]+"
   ]
 }

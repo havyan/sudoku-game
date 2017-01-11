@@ -52,15 +52,14 @@ app.engine('html', hbs.__express);
 
 // Permission handler
 app.use(function(req, res, next) {
-  var account = req.session.account;
-  var action = req.method + " " + req.path;
-  winston.info("Start " + action);
-  Permission.check(account, action, function(error, proceed){
+  winston.info("Start " + req.method + " " + req.path);
+  Permission.check(req, function(error, proceed){
     if (error) {
       next(new HttpError(error, HttpError.UNAUTHORIZED));
     } else if (proceed) {
       next();
     } else {
+      req.session.account = undefined;
       req.params.error = true;
       res.redirect('/login');
     }

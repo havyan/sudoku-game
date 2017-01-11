@@ -14,6 +14,8 @@ var Message = require('../models/message');
 
 module.exports = function(router) {
   var login = function(req, account, password, cb) {
+    var ip = Utils.clientIp(req);
+    winston.info("User logged in from IP: " + ip);
     async.waterfall([
     function(cb) {
       UserDAO.findOne({
@@ -25,7 +27,7 @@ module.exports = function(router) {
     function(user, cb) {
       if (user) {
         user.logintime = new Date();
-        user.login_ip = Utils.clientIp(req);
+        user.login_ip = ip;
         user.save(cb);
       } else {
         cb(null, null, 0);
