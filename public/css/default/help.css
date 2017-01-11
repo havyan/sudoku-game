@@ -231,6 +231,13 @@
   font-size: 25px;
 }
 
+.help-container .score-spec .title span {
+  color: #FFF000;
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
 .help-container .score-spec .sub-title {
   margin-top: 10px;
   margin-left: 20px;
