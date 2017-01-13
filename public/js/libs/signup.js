@@ -198,6 +198,14 @@
 
       '.protocol-read input click' : function(e) {
         $('.signup-submit').attr('disabled', !e.is(':checked'));
+      },
+
+      '.protocol-read .protocol click' : function(e) {
+        Agreement.showProtocol();
+      },
+
+      '.protocol-read .law click' : function(e) {
+        Agreement.showLaw();
       }
     });
 

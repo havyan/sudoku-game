@@ -239,8 +239,7 @@
 }
 
 .help-container .score-spec .sub-title {
-  margin-top: 10px;
-  margin-left: 20px;
+  margin-bottom: 10px;
   font-size: 20px;
 }
 
@@ -256,7 +255,6 @@
 }
 
 .help-container .score-spec .add-item.selected {
-  background-color: #1e5973;
   display: inline-block;
   border-width: 2px;
   border-color: #FFF000;
@@ -271,11 +269,18 @@
 }
 
 .help-container .score-spec .add-item {
-  background-color: gray;
+  background-color: #1e5973;
   display: inline-block;
   border: 1px solid white;
   width: 220px;
   margin-right: 20px;
+}
+
+.help-container .score-spec .add-item .add-total {
+  padding: 10px;
+  font-size: 18px;
+  font-style: italic;
+  border-bottom: 1px solid gray;
 }
 
 .help-container .score-spec .add-row,
@@ -283,5 +288,5 @@
   height: 30px;
   line-height: 30px;
   margin: 5px 0px;
-  padding-left: 10px;
+  padding-left: 20px;
 }

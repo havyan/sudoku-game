@@ -33,7 +33,8 @@ input[type=text], input[type=password] {
   color: red;
 }
 
-.contact-btn {
+.contact-btn,
+.law-btn {
   display: inline-block;
   width: 90px;
   height: 32px;
@@ -122,6 +123,10 @@ input[type=text], input[type=password] {
 
 .login-more {
   margin-bottom: 20px;
+}
+
+.login-more input {
+  margin: 0px;
 }
 
 .login-more > * {

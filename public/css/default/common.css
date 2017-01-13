@@ -158,6 +158,7 @@ a:active {
 
 .header-action .messages-count {
   position: absolute;
+  display: none;
   width: 40px;
   height: 40px;
   line-height: 40px;
@@ -542,4 +543,70 @@ to {
 }
 .pagination-bar.editable .current {
   display: none;
+}
+
+.article {
+  font-size: 14px;
+}
+
+.article .title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  text-indent:0px;
+}
+
+.protocol-dialog .modal-dialog,
+.law-dialog .modal-dialog {
+  width: 800px;
+}
+
+.protocol-dialog .modal-dialog .modal-body,
+.law-dialog .modal-dialog .modal-body {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.article .section {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.article .english {
+  color: red;
+}
+
+.article .description {
+  margin-left: 10px;
+  text-indent: 20px;
+}
+
+.article .section-item-1 {
+  margin-left: 20px;
+}
+
+.article .section-item-2 {
+  margin-left: 30px;
+}
+
+.article .section-item-3 {
+  margin-left: 40px;
+}
+
+.article .paragraph-number {
+  font-weight: bold;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.article .signature {
+  margin-top: 20px;
+  text-align: right;
+  margin-right: 30px;
+}
+
+.article .date {
+  text-align: right;
+  margin-right: 30px;
 }
