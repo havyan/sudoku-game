@@ -13,7 +13,7 @@
 
     showLaw: function() {
       Dialog.show({
-        title: '法律申明',
+        title: '法律声明',
         template: '/js/libs/mst/law.html',
         userClass: 'law-dialog',
         autoClose: false,
