@@ -13,6 +13,7 @@ var PropTypeDAO = require('../daos/prop_type');
 var PuzzleDAO = require('../daos/puzzle');
 var JoinRecordDAO = require('../daos/join_record');
 var PointsRecordDAO = require('../daos/points_record');
+var ChatRecordDAO = require('../daos/chat_record');
 var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
@@ -1078,9 +1079,20 @@ Game.prototype.setOptionsAlways = function(account, cb) {
   }
 };
 
+Game.prototype.recordMessages = function() {
+  var messages = this.messages;
+  ChatRecordDAO.createRecord(this.id, messages, function(error) {
+    if (error) {
+      winston.error('Error when recording chat messages: ' + error);
+      winston.info('Chat messages are: ' + JSON.stringify(messages));
+    }
+  });
+};
+
 Game.prototype.destroy = function(type) {
   type = type || 'normal';
   this.stopTimer();
+  this.recordMessages();
   this.status = DESTROYED;
   winston.info('Game [' + this.id + '] destoryed');
   this.emit('game-destroyed', type);
