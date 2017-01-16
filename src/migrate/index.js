@@ -78,6 +78,7 @@ module.exports = function(cb) {
             cb(error);
           } else {
             if (!find) {
+              user.predefined = true;
               winston.info('Create user [' + user.name + '] from predefined');
               UserDAO.createUser(user, cb);
             } else {

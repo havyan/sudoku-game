@@ -21,8 +21,8 @@ PropSchema.statics.findOneByAccount = function(account, cb) {
   }, cb);
 };
 
-PropSchema.statics.createDefault = function(account, cb) {
-  var prop = _.cloneDeep(PROP);
+PropSchema.statics.createDefault = function(account, predefined, cb) {
+  var prop = _.cloneDeep(predefined ? PROP.predefined : PROP.normal);
   prop.account = account;
   this.create(prop, cb);
 };
