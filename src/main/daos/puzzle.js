@@ -143,44 +143,41 @@ PuzzleSchema.plugin(common);
 
 var Puzzle = mongoose.model('Puzzle', PuzzleSchema);
 Puzzle.LEVELS = [{
-  code: 'EEE',
+  code: 'DDD',
   name: '入门段'
 }, {
-  code: 'DDD',
+  code: 'CDD',
   name: '1段'
 }, {
-  code: 'CDD',
+  code: 'CCD',
   name: '2段'
 }, {
-  code: 'CCD',
+  code: 'CCC',
   name: '3段'
 }, {
-  code: 'CCC',
+  code: 'BCC',
   name: '4段'
 }, {
-  code: 'BCC',
+  code: 'BBC',
   name: '5段'
 }, {
-  code: 'BBC',
+  code: 'BBB',
   name: '6段'
 }, {
-  code: 'BBB',
+  code: 'ABB',
   name: '7段'
 }, {
-  code: 'ABB',
+  code: 'AAB',
   name: '8段'
 }, {
-  code: 'AAB',
+  code: 'AAA',
   name: '9段'
 }, {
-  code: 'AAA',
+  code: 'AAAA',
   name: '10段'
 }, {
-  code: 'AAAA',
-  name: '11段'
-}, {
   code: 'AAAAA',
-  name: '12段'
+  name: '11段'
 }];
 
 module.exports = Puzzle;

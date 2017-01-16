@@ -218,9 +218,8 @@ Game.prototype.prepare = function(cb) {
       PuzzleDAO.findRandomOneByLevel(self.level, cb);
     },
     function(puzzle, cb) {
-      puzzleJson = puzzle.toJSON();
-      self.initCellValues = puzzleJson.question;
-      self.answer = puzzleJson.answer;
+      self.initCellValues = puzzle.question;
+      self.answer = puzzle.answer;
       self.emit('puzzle-init', self.initCellValues);
       cb();
     }
