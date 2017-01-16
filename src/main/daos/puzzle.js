@@ -9,34 +9,40 @@ var Mixed = Schema.Types.Mixed;
 var GameMode = require('../models/game_mode');
 
 var PuzzleSchema = new Schema({
-  level : String,
-  mode : String,
-  source : String,
-  question : Mixed,
-  answer : Mixed
+  level: String,
+  mode: String,
+  source: String,
+  question: Mixed,
+  answer: Mixed
 });
 
 PuzzleSchema.statics.findOneBySource = function(source, cb) {
   this.findOne({
-    source : source
+    source: source
   }, cb);
 };
 
 PuzzleSchema.statics.findOneByLevel = function(level, cb) {
   this.findOne({
-    level : level
+    level: level
   }, cb);
 };
 
 PuzzleSchema.statics.findRandomOneByLevel = function(level, cb) {
-  this.find({
-    level : level
-  }, function(error, puzzles) {
+  this.aggregate([{
+    $match: {
+      level: level
+    }
+  }, {
+    $sample: {
+      size: 1
+    }
+  }], function(error, puzzles) {
     if (error) {
       cb(error);
     } else {
       if (puzzles.length > 0) {
-        cb(null, puzzles[Math.round((puzzles.length - 1) * Math.random())]);
+        cb(null, puzzles[0]);
       } else {
         cb('No puzzle found for level [' + level + ']');
       }
@@ -47,17 +53,17 @@ PuzzleSchema.statics.findRandomOneByLevel = function(level, cb) {
 PuzzleSchema.statics.importData = function(file, cb) {
   var self = this;
   var rl = readline.createInterface({
-    input : fs.createReadStream(file),
-    output : process.stdout,
-    terminal : false
+    input: fs.createReadStream(file),
+    output: process.stdout,
+    terminal: false
   });
 
   var source,
-      puzzle,
-      lineNumber = 0,
-      questionlineNumber = 0,
-      answerLineNumber = 0,
-      mode = GameMode.MODE9;
+    puzzle,
+    lineNumber = 0,
+    questionlineNumber = 0,
+    answerLineNumber = 0,
+    mode = GameMode.MODE9;
   rl.on('line', function(line) {
     line = line.trim();
     var sourceSymbol = line.match(/^[\w\d]+-([ABCDE]+)-[\w\d-\.]*$/);
@@ -76,8 +82,8 @@ PuzzleSchema.statics.importData = function(file, cb) {
         });
       }
       puzzle = {
-        question : {},
-        answer : {}
+        question: {},
+        answer: {}
       };
       puzzle.source = sourceSymbol[0];
       puzzle.level = sourceSymbol[1];
@@ -121,44 +127,44 @@ PuzzleSchema.plugin(common);
 
 var Puzzle = mongoose.model('Puzzle', PuzzleSchema);
 Puzzle.LEVELS = [{
-  code : 'EEE',
-  name : '入门段'
+  code: 'EEE',
+  name: '入门段'
 }, {
-  code : 'DDD',
-  name : '1段'
+  code: 'DDD',
+  name: '1段'
 }, {
-  code : 'CDD',
-  name : '2段'
+  code: 'CDD',
+  name: '2段'
 }, {
-  code : 'CCD',
-  name : '3段'
+  code: 'CCD',
+  name: '3段'
 }, {
-  code : 'CCC',
-  name : '4段'
+  code: 'CCC',
+  name: '4段'
 }, {
-  code : 'BCC',
-  name : '5段'
+  code: 'BCC',
+  name: '5段'
 }, {
-  code : 'BBC',
-  name : '6段'
+  code: 'BBC',
+  name: '6段'
 }, {
-  code : 'BBB',
-  name : '7段'
+  code: 'BBB',
+  name: '7段'
 }, {
-  code : 'ABB',
-  name : '8段'
+  code: 'ABB',
+  name: '8段'
 }, {
-  code : 'AAB',
-  name : '9段'
+  code: 'AAB',
+  name: '9段'
 }, {
-  code : 'AAA',
-  name : '10段'
+  code: 'AAA',
+  name: '10段'
 }, {
-  code : 'AAAA',
-  name : '11段'
+  code: 'AAAA',
+  name: '11段'
 }, {
-  code : 'AAAAA',
-  name : '12段'
+  code: 'AAAAA',
+  name: '12段'
 }];
 
 module.exports = Puzzle;
