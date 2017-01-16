@@ -11,7 +11,10 @@ var GameMode = require('../models/game_mode');
 var PuzzleSchema = new Schema({
   level: String,
   mode: String,
-  source: String,
+  source: {
+    type: String,
+    unique: true
+  },
   question: Mixed,
   answer: Mixed
 });
@@ -52,6 +55,8 @@ PuzzleSchema.statics.findRandomOneByLevel = function(level, cb) {
 
 PuzzleSchema.statics.importData = function(file, cb) {
   var self = this;
+  var creations = {};
+  var seed = 0;
   var rl = readline.createInterface({
     input: fs.createReadStream(file),
     output: process.stdout,
@@ -64,23 +69,28 @@ PuzzleSchema.statics.importData = function(file, cb) {
     questionlineNumber = 0,
     answerLineNumber = 0,
     mode = GameMode.MODE9;
+  var createPuzzle = function(puzzle) {
+    if (puzzle && !(_.isEmpty(puzzle.question)) && !(_.isEmpty(puzzle.answer))) {
+      self.findOneBySource(puzzle.source, function(error, find) {
+        if (!find) {
+          var key = 'puzzle' + seed++;
+          winston.info('Create new puzzle: ' + JSON.stringify(puzzle));
+          creations[key] = false;
+          self.create(puzzle, function(error) {
+            if (error) {
+              winston.error("initialize puzzle error: " + error);
+            }
+            creations[key] = true;
+          });
+        }
+      });
+    }
+  };
   rl.on('line', function(line) {
     line = line.trim();
     var sourceSymbol = line.match(/^[\w\d]+-([ABCDE]+)-[\w\d-\.]*$/);
     if (sourceSymbol) {
-      if (puzzle && !(_.isEmpty(puzzle.question)) && !(_.isEmpty(puzzle.answer))) {
-        var newPuzzle = _.cloneDeep(puzzle);
-        self.findOneBySource(newPuzzle.source, function(error, find) {
-          if (!find) {
-            winston.info('Create new puzzle: ' + JSON.stringify(newPuzzle));
-            self.create(newPuzzle, function(error) {
-              if (error) {
-                winston.error("initialize puzzle error: " + error);
-              }
-            });
-          }
-        });
-      }
+      createPuzzle(_.cloneDeep(puzzle));
       puzzle = {
         question: {},
         answer: {}
@@ -119,7 +129,13 @@ PuzzleSchema.statics.importData = function(file, cb) {
     }
   });
   rl.on('close', function() {
-    cb();
+    createPuzzle(puzzle);
+    var timer = setInterval(function() {
+      if (_.isEmpty(creations) || _.every(creations)) {
+        clearInterval(timer);
+        cb();
+      }
+    }, 1000);
   });
 };
 

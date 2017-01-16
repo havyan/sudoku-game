@@ -1,5 +1,6 @@
 require('../src/main/init');
 var winston = require('winston');
+var mongoose = require('mongoose');
 
 var PuzzleDAO = require('../src/main/daos/puzzle.js');
 
@@ -13,6 +14,7 @@ if (file) {
     } else {
       winston.info('Successfully imported puzzles from file: ' + file);
     }
+    mongoose.connection.close();
   });
 } else {
   winston.error('No file to be imported!');
