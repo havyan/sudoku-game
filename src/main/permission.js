@@ -1,8 +1,6 @@
 var _ = require('lodash');
 var async = require('async');
 var PERMISSION = require('./permission.json');
-var UserDAO = require('./daos/user');
-var SealedIpDAO = require('./daos/sealed_ip');
 
 var hasAction = function(actions, action) {
   return _.some(actions, function(e) {
@@ -16,27 +14,13 @@ var hasAction = function(actions, action) {
 
 var check = function(req, cb) {
   var account = req.session.account;
+  var ip = Utils.clientIp(req);
   var action = req.method + " " + req.path;
   if (account) {
     if (account !== 'SYSTEM' && hasAction(PERMISSION.admin, action)) {
       cb("No permission for action: " + action);
     } else {
-      async.parallel([
-        function(cb) {
-          UserDAO.findOneByAccount(account, cb);
-        },
-        function(cb) {
-          SealedIpDAO.findSealedOneByIp(Utils.clientIp(req), cb);
-        }
-      ], function(error, results) {
-        if (error) {
-          cb(error);
-        } else {
-          var user = results[0];
-          var sealedIp = results[1];
-          cb(null, !sealedIp && (user.status !== UserDAO.STATUS.FROZEN));
-        }
-      });
+      cb(null, !_.includes(global.sealedIps, ip));
     }
   } else {
     cb(null, hasAction(PERMISSION.nologin, action));

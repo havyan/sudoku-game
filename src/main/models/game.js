@@ -778,7 +778,10 @@ Game.prototype.abort = function() {
         if (player && player.account) {
           self.playerQuit(player.account, 'quit', cb);
         }
-      }, function() {
+      }, function(error) {
+        if (error) {
+          winston.error('Error when player quiting: ' + error);
+        }
         self.status = ABORTED;
         self.emit('game-abort');
         setTimeout(function() {

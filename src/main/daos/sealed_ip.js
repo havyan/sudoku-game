@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var winston = require('winston');
+var _ = require('lodash');
 var Schema = mongoose.Schema;
 var common = require('./common');
 
@@ -16,9 +18,22 @@ var SealedIpSchema = new Schema({
   release_time: Date
 });
 
+SealedIpSchema.statics.allIps = function(cb) {
+  this.find({
+    released: false
+  }, function(error, all) {
+    if (error) {
+      cb(error);
+    } else {
+      cb(null, _.map(all, 'ip'));
+    }
+  });
+};
+
 SealedIpSchema.statics.findSealedOneByIp = function(ip, cb) {
   this.findOne({
-    ip: ip
+    ip: ip,
+    released: false
   }, cb);
 };
 
