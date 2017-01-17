@@ -7,7 +7,7 @@ var SealedIpDAO = require('./daos/sealed_ip');
 
 var CLEAR_USER_INTERVAL = 30 * 60 * 1000;
 var CHECK_RECHARGE_INTERVAL = 10 * 60 * 1000;
-var UPDATE_SEALEDIPS_INTERVAL = 5 * 1000;
+var UPDATE_SEALEDIPS_INTERVAL = 3 * 60 * 1000;
 
 winston.info('Start worker');
 
