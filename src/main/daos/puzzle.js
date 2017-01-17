@@ -114,16 +114,10 @@ PuzzleSchema.statics.importData = function(file, cb) {
           }
         }
       };
-      if (lineNumber < 13) {
-        if (lineNumber !== 0 && lineNumber !== 2 && lineNumber !== 10 && lineNumber !== 12) {
-          parseLine(puzzle.question, questionlineNumber);
-          questionlineNumber++;
-        }
+      if (lineNumber < 9) {
+        parseLine(puzzle.question, lineNumber);
       } else {
-        if (lineNumber !== 13 && lineNumber !== 15 && lineNumber !== 23 && lineNumber !== 25) {
-          parseLine(puzzle.answer, answerLineNumber);
-          answerLineNumber++;
-        }
+        parseLine(puzzle.answer, lineNumber - 9);
       }
       lineNumber++;
     }
