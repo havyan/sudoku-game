@@ -470,41 +470,13 @@ Game.prototype.playerQuit = function(account, status, cb) {
     this.stopPlayerTimer();
   }
   if (quitPlayer) {
-    if (quitPlayer === this.players[0]) {
-      this.removePlayer(account);
-      this.emit('player-quit', {
-        account: account,
-        status: status
-      });
-      self.addMessage('庄家[' + quitPlayer.name + ']退出');
-      self.destroy('banker-quit');
-      cb();
-    } else if (this.isOngoing()) {
-      var gainPoints = 100 * (this.results.length + 1);
-      quitPlayer.rounds = quitPlayer.rounds + 1;
-      quitPlayer.points = quitPlayer.points + gainPoints;
-      var ceilingIndex = _.findIndex(this.rule.grade, function(e) {
-        return e.floor > quitPlayer.points;
-      });
-      var oldGrade = quitPlayer.grade;
-      quitPlayer.grade = this.rule.grade[ceilingIndex - 1].code;
+    if (this.isOngoing()) {
       async.waterfall([
         function(cb) {
-          quitPlayer.save(cb);
+          self.upgradePlayer(quitPlayer, status, 0, false, cb);
         },
-        function(quitPlayer, count, cb) {
-          if (parseInt(quitPlayer.grade) > parseInt(oldGrade)) {
-            Award.perform('upgrade-to-' + quitPlayer.grade, quitPlayer.account, cb);
-          } else {
-            cb(null);
-          }
-        }
-      ], function(error, awardResult) {
-        if (error) {
-          cb(error);
-        } else {
+        function(cb) {
           self.quitPlayers.unshift(quitPlayer);
-          self.results.unshift(self.createResult(quitPlayer, status, gainPoints, awardResult));
           self.removePlayer(account);
           self.emit('player-quit', {
             account: account,
@@ -516,7 +488,21 @@ Game.prototype.playerQuit = function(account, status, cb) {
           }
           cb();
         }
+      ], cb);
+    } else if (quitPlayer === this.players[0]) {
+      this.removePlayer(account);
+      this.emit('player-quit', {
+        account: account,
+        status: status
       });
+      self.addMessage('庄家[' + quitPlayer.name + ']退出');
+      this.players.forEach(function(player) {
+        if (player) {
+          self.recordQuit(player.account);
+        }
+      });
+      self.destroy('banker-quit');
+      cb();
     } else {
       this.removePlayer(account);
       this.emit('player-quit', {
@@ -801,42 +787,13 @@ Game.prototype.over = function(cb) {
     var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;
     return sourceScore - destScore;
   });
+  var gains = this.calculateGains(players);
   async.waterfall([
     function(cb) {
-      var index = 0;
       async.eachSeries(players, function(player, cb) {
-        var gainPoints = 100 * (self.results.length + 1);
-        player.points = player.points + gainPoints;
-        var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
-          return e.floor > player.points;
-        });
-        var oldGrade = player.grade;
-        player.grade = self.rule.grade[ceilingIndex - 1].code;
-        player.rounds = player.rounds + 1;
-        if (index === players.length - 1) {
-          player.wintimes = player.wintimes + 1;
-        }
-        async.waterfall([
-          function(cb) {
-            player.save(cb);
-          },
-          function(player, count, cb) {
-            if (parseInt(player.grade) > parseInt(oldGrade)) {
-              Award.perform('upgrade-to-' + player.grade, player.account, cb);
-            } else {
-              cb(null);
-            }
-          }
-        ], function(error, awardResult) {
-          if (error) {
-            cb(error);
-          } else {
-            self.results.unshift(self.createResult(player, 'normal', gainPoints, awardResult));
-            index++;
-            cb();
-          }
-        });
+        var win = (player === _.last(players));
         self.recordQuit(player.account);
+        self.upgradePlayer(player, 'normal', gains[player.account], win, cb);
       }, cb);
     },
     function(cb) {
@@ -871,6 +828,52 @@ Game.prototype.over = function(cb) {
       cb();
     }
   });
+};
+
+Game.prototype.calculateGains = function(players) {
+  var gains = {};
+  var score, points;
+  for(var i = players.length - 1; i > 0; i--) {
+    var account = players[i].account;
+    if (this.scores[account] === score) {
+      gains[account] = points;
+    } else {
+      gains[account] = 100 * (this.results.length + i + 1);
+      points = gains[account];
+      score = this.scores[account];
+    }
+  }
+  return gains;
+};
+
+Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
+  var self = this;
+  player.points = player.points + gainPoints;
+  var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
+    return e.floor > player.points;
+  });
+  var oldGrade = player.grade;
+  player.grade = self.rule.grade[ceilingIndex - 1].code;
+  player.rounds = player.rounds + 1;
+  if (win) {
+    player.wintimes = player.wintimes + 1;
+  }
+  async.waterfall([
+    function(cb) {
+      player.save(cb);
+    },
+    function(player, count, cb) {
+      if (parseInt(player.grade) > parseInt(oldGrade)) {
+        Award.perform('upgrade-to-' + player.grade, player.account, cb);
+      } else {
+        cb(null);
+      }
+    },
+    function(awardResult, cb) {
+      self.results.unshift(self.createResult(player, status, gainPoints, awardResult));
+      cb();
+    }
+  ], cb);
 };
 
 Game.prototype.autoSubmit = function(account, xy, cb) {

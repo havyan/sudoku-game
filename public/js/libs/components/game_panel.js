@@ -107,9 +107,9 @@
     '{model} waitCountdownStage' : function(model, e, newStage) {
       if (newStage === 0) {
         if (model.isBanker()) {
-          Dialog.message('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
+          Dialog.message('很遗憾，棋桌将要解散，您的建桌费会返到您的账户');
         } else {
-          Dialog.message('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
+          Dialog.message('很遗憾，棋桌将要解散，欢迎您继续游戏');
         }
       }
     },

@@ -61,7 +61,7 @@ var UserSchema = new Schema({
   },
   money : {
     type : Number,
-    default : 5000
+    default : 0
   }
 });
 
