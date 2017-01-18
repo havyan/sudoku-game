@@ -15,11 +15,11 @@ module.exports = function(router) {
     }
   });
 
-  router.get('/game/:id/status', function(req, res) {
+  router.get('/game/:id/status', function(req, res, next) {
     var game = global.gameManager.findGame(req.params.id);
     if (game) {
       res.send({
-        result : game.status
+        result: game.status
       });
     } else {
       winston.error('No game for id: ' + req.params.id);
@@ -27,10 +27,15 @@ module.exports = function(router) {
     }
   });
 
-  router.put('/game/:id/status', function(req, res) {
-    global.gameManager.setGameStatus(req.session.account, req.params.id, req.body.status);
-    res.send({
-      status : 'ok'
+  router.put('/game/:id/status', function(req, res, next) {
+    global.gameManager.switchGameStatus(req.session.account, req.params.id, req.body.status, function(error) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status: 'ok'
+        });
+      }
     });
   });
 
@@ -76,7 +81,7 @@ module.exports = function(router) {
         next(new HttpError(error, HttpError.UNAUTHORIZED));
       } else {
         res.send({
-          status : 'ok'
+          status: 'ok'
         });
       }
     });
@@ -88,8 +93,8 @@ module.exports = function(router) {
         next(new HttpError(error, HttpError.UNAUTHORIZED));
       } else {
         res.send({
-          status : 'ok',
-          result : result
+          status: 'ok',
+          result: result
         });
       }
     });
@@ -98,7 +103,7 @@ module.exports = function(router) {
   router.post('/game/:id/goahead', function(req, res, next) {
     global.gameManager.goahead(req.session.account, req.params.id);
     res.send({
-      status : 'ok'
+      status: 'ok'
     });
   });
 
@@ -109,7 +114,7 @@ module.exports = function(router) {
       } else {
         winston.info(req.session.account + ' quits from game!!');
         res.send({
-          status : 'ok'
+          status: 'ok'
         });
       }
     });
@@ -131,7 +136,7 @@ module.exports = function(router) {
         next(new HttpError(error, HttpError.UNAUTHORIZED));
       } else {
         res.send({
-          status : 'ok'
+          status: 'ok'
         });
       }
     });
@@ -143,7 +148,7 @@ module.exports = function(router) {
         next(new HttpError(error, HttpError.UNAUTHORIZED));
       } else {
         res.send({
-          status : 'ok'
+          status: 'ok'
         });
       }
     });
@@ -155,7 +160,7 @@ module.exports = function(router) {
         next(new HttpError(error, HttpError.UNAUTHORIZED));
       } else {
         res.send({
-          status : 'ok'
+          status: 'ok'
         });
       }
     });
@@ -167,10 +172,9 @@ module.exports = function(router) {
         next(new HttpError(error, HttpError.UNAUTHORIZED));
       } else {
         res.send({
-          status : 'ok'
+          status: 'ok'
         });
       }
     });
   });
 };
-

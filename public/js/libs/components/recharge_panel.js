@@ -12,7 +12,8 @@
     '3' : '中国农业银行',
     '4' : '中国建设银行',
     '11' : '支付宝',
-    '6' : '中国银联'
+    '6' : '中国银联',
+    '13' : '微信支付'
   };
   can.Model('Models.RechargeModel', {
   }, {
@@ -32,6 +33,9 @@
       }, {
         code : 'union',
         value : '6'
+      }, {
+        code : 'weixin',
+        value : '13'
       }, {
         code : 'icbc',
         value : '0'

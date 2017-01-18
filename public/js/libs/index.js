@@ -28,5 +28,8 @@
       $room.addClass('favarite');
       window.localStorage.setItem(itemName, $room.attr('id'));
     });
+    $('.law-btn').click(function(e) {
+      Agreement.showLaw();
+    });
   });
 })();

@@ -22,16 +22,16 @@
     <div class="main">
       <div class="navigator">
         <div class="rich-button item game-spec active" data-target="game-spec">
-          九联数独介绍
+          九联数独棋介绍
         </div>
         <div class="rich-button item how-to-play" data-target="how-to-play">
-          九联数独玩法
-        </div>
-        <div class="rich-button item grade-spec" data-target="grade-spec">
-          积分段位和天才币
+          天才数独棋玩法
         </div>
         <div class="rich-button item score-spec" data-target="score-spec">
           数独棋局分规则
+        </div>
+        <div class="rich-button item grade-spec" data-target="grade-spec">
+          积分段位和天才币
         </div>
         <div class="rich-button item system-spec" data-target="system-spec">
           系统操作介绍
@@ -103,6 +103,43 @@
             </li>
           </ul>
         </div>
+        <div class="item score-spec">
+          {{#score}}
+          <div class="title">* 加分设置: </div>
+          <div class="add-content inner-container">
+            <div class="sub-title">每步时间</div>
+            {{#add}}
+            <div class="add-item {{#selected}}selected{{/selected}}">
+              <div class="add-total">{{total}}秒</div>
+              {{#levels}}
+              <div class="add-row">
+                <span class="add-from">{{from}}秒</span>
+                <span class="add-connection">-</span>
+                <span class="add-to">{{to}}秒: </span>
+                <span class="add-score">{{score}}</span>
+              </div>
+              {{/levels}}
+            </div>
+            {{/add}}
+          </div>
+          <div class="separator"></div>
+          <div class="title">* 减分设置: </div>
+          <div class="reduce-content inner-container">
+            {{#reduce}}
+            <div class="reduce-item">
+              <div class="reduce-row">
+                <label>答错或超时扣分分值: </label>
+                <span class="reduce-score">{{timeout}}</span>
+              </div>
+              <div class="reduce-row">
+                <label>Pass扣分分值: </label>
+                <span class="reduce-score">{{pass}}</span>
+              </div>
+            </div>
+            {{/reduce}}
+          </div>
+          {{/score}}
+        </div>
         <div class="item grade-spec">
           <h2>积分段位：</h2>
           <div class="grade-container">
@@ -131,36 +168,6 @@
           <p class="exchange-rate">
             1人民币 = {{exchange.rate}}天才币
           </p>
-        </div>
-        <div class="item score-spec">
-          {{#score}}
-          <div class="title">每步时间: <span>{{add.total}}</span>秒</div>
-          <div class="sub-title">* 加分设置: </div>
-          <div class="add-content inner-container">
-          {{#add.levels}}
-            <div class="add-row">
-              <span class="add-from">{{from}}秒</span>
-              <span class="add-connection">-</span>
-              <span class="add-to">{{to}}秒: </span>
-              <span class="add-score">{{score}}</span>
-            </div>
-          {{/add.levels}}
-          </div>
-          <div class="separator"></div>
-          <div class="sub-title">* 减分设置: </div>
-          <div class="reduce-content inner-container">
-            {{#reduce}}
-            <div class="reduce-row">
-              <label>答错或超时扣分分值: </label>
-              <span class="reduce-score">{{timeout}}</span>
-            </div>
-            <div class="reduce-row">
-              <label>Pass扣分分值: </label>
-              <span class="reduce-score">{{pass}}</span>
-            </div>
-            {{/reduce}}
-          </div>
-          {{/score}}
         </div>
         <div class="item system-spec">
           <h2>功能介绍</h2>

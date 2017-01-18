@@ -14,45 +14,48 @@ var Message = require('../models/message');
 
 module.exports = function(router) {
   var login = function(req, account, password, cb) {
+    var ip = Utils.clientIp(req);
+    winston.info("User logged in from IP: " + ip);
     async.waterfall([
-    function(cb) {
-      UserDAO.findOne({
-        account : account,
-        password : password,
-        status : UserDAO.STATUS.ACTIVE
-      }, cb);
-    },
-    function(user, cb) {
-      if (user) {
-        user.logintime = new Date();
-        user.login_ip = Utils.clientIp(req);
-        user.save(cb);
-      } else {
-        cb(null, null, 0);
+      function(cb) {
+        UserDAO.findOne({
+          account: account,
+          password: password,
+          status: UserDAO.STATUS.ACTIVE
+        }, cb);
+      },
+      function(user, cb) {
+        if (user) {
+          user.logintime = new Date();
+          user.login_ip = ip;
+          user.save(cb);
+        } else {
+          cb(null, null, 0);
+        }
+      },
+      function(user, count, cb) {
+        if (user) {
+          LoginHistoryDAO.createHistory(user.id, Utils.clientIp(req), function(error) {
+            if (error) {
+              cb(error);
+            } else {
+              cb(null, user);
+            }
+          });
+        } else {
+          cb(null, null);
+        }
       }
-    },
-    function(user, count, cb) {
-      if (user) {
-        LoginHistoryDAO.createHistory(user.id, Utils.clientIp(req), function(error) {
-          if (error) {
-            cb(error);
-          } else {
-            cb(null, user);
-          }
-        });
-      } else {
-        cb(null, null);
-      }
-    }], cb);
+    ], cb);
   };
 
   var autoLogin = function(req, res, next) {
     RoomDAO.allVirtuals(function(error, rooms) {
       var render = function(user) {
         res.render('index', {
-          rooms : rooms,
-          user : user,
-          error : req.query.error === 'true'
+          rooms: rooms,
+          user: user,
+          error: req.query.error === 'true'
         });
       };
       if (req.session.account) {
@@ -91,10 +94,10 @@ module.exports = function(router) {
         next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
       } else {
         res.render(template, {
-          account : user.account,
-          userName : user.name,
-          userIcon : user.icon,
-          money : user.money
+          account: user.account,
+          userName: user.name,
+          userIcon: user.icon,
+          money: user.money
         });
       }
     });
@@ -119,10 +122,10 @@ module.exports = function(router) {
         if (user) {
           if (req.body.remember_me) {
             res.cookie('account', user.account, {
-              maxAge : 3600000 * 24 * 30
+              maxAge: 3600000 * 24 * 30
             });
             res.cookie('password', password, {
-              maxAge : 3600000 * 24 * 30
+              maxAge: 3600000 * 24 * 30
             });
           }
           req.session.account = user.account;
@@ -147,12 +150,13 @@ module.exports = function(router) {
       res.redirect('/table/' + game.id);
     } else {
       async.parallel([
-      function(cb) {
-        UserDAO.findOneByAccount(req.session.account, cb);
-      },
-      function(cb) {
-        Message.unreadCount(req.session.account, cb);
-      }], function(error, results) {
+        function(cb) {
+          UserDAO.findOneByAccount(req.session.account, cb);
+        },
+        function(cb) {
+          Message.unreadCount(req.session.account, cb);
+        }
+      ], function(error, results) {
         if (error) {
           next(new HttpError('Error when init main by account ' + req.session.account + ': ' + error));
           return;
@@ -160,12 +164,12 @@ module.exports = function(router) {
         var user = results[0];
         if (user) {
           res.render('lobby', {
-            account : user.account,
-            userName : user.name,
-            isAdmin : user.account === 'SYSTEM',
-            userIcon : user.icon,
-            money : user.money,
-            unreadMessagesCount : results[1]
+            account: user.account,
+            userName: user.name,
+            isAdmin: user.account === 'SYSTEM',
+            userIcon: user.icon,
+            money: user.money,
+            unreadMessagesCount: results[1]
           });
         } else {
           req.session.account = undefined;
@@ -207,9 +211,9 @@ module.exports = function(router) {
             next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
           } else {
             res.render('user', {
-              user : user,
-              isAdmin : user.account === 'SYSTEM',
-              defaultIcons : files.map(function(file) {
+              user: user,
+              isAdmin: user.account === 'SYSTEM',
+              defaultIcons: files.map(function(file) {
                 return '/imgs/default/user_icons/' + file;
               })
             });
@@ -222,26 +226,23 @@ module.exports = function(router) {
   });
 
   router.get('/signup', function(req, res, next) {
-    res.render('signup', {
-    });
+    res.render('signup', {});
   });
 
   router.get('/contact', function(req, res, next) {
-    res.render('contact', {
-    });
+    res.render('contact', {});
   });
 
   router.get('/retrieve_password', function(req, res, next) {
-    res.render('retrieve_password', {
-    });
+    res.render('retrieve_password', {});
   });
 
   router.get('/reset_password', function(req, res, next) {
     User.checkResetKey(req.query.key, function(error, available, source) {
       res.render('reset_password', {
-        available : available,
-        key : req.query.key,
-        account : source
+        available: available,
+        key: req.query.key,
+        account: source
       });
     });
   });
@@ -249,7 +250,7 @@ module.exports = function(router) {
   router.get('/active_user', function(req, res, next) {
     User.checkActiveKey(req.query.key, function(error, available, source) {
       res.render('active_user', {
-        available : available
+        available: available
       });
     });
   });
@@ -264,27 +265,29 @@ module.exports = function(router) {
 
   router.get('/help', function(req, res, next) {
     async.parallel([
-    function(cb) {
-      UserDAO.findOneByAccount(req.session.account, cb);
-    },
-    function(cb) {
-      RuleDAO.getRule(cb);
-    }], function(error, results) {
+      function(cb) {
+        UserDAO.findOneByAccount(req.session.account, cb);
+      },
+      function(cb) {
+        RuleDAO.getRule(cb);
+      }
+    ], function(error, results) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
       } else {
         var user = results[0],
-            rule = results[1];
+          rule = results[1];
         res.render('help', {
-          userName : user.name,
-          userIcon : user.icon,
-          isAdmin : user.account === 'SYSTEM',
-          money : user.money,
-          grade : rule.grade,
-          score : {
-            add : _.find(rule.score.add, { selected : true }),
-            reduce : rule.score.reduce
-          },
+          userName: user.name,
+          userIcon: user.icon,
+          isAdmin: user.account === 'SYSTEM',
+          money: user.money,
+          grade: rule.grade,
+          score: _.merge({
+            stepDuration: _.find(rule.score.add, {
+              selected: true
+            }).total
+          }, rule.score),
           exchange: rule.exchange
         });
       }
@@ -293,21 +296,22 @@ module.exports = function(router) {
 
   router.get('/view/recharge/pay/:id', function(req, res, next) {
     async.parallel([
-    function(cb) {
-      UserDAO.findOneByAccount(req.session.account, cb);
-    },
-    function(cb) {
-      RechargeDAO.findOneByPayuid(req.params.id, cb);
-    }], function(error, results) {
+      function(cb) {
+        UserDAO.findOneByAccount(req.session.account, cb);
+      },
+      function(cb) {
+        RechargeDAO.findOneByPayuid(req.params.id, cb);
+      }
+    ], function(error, results) {
       if (error) {
         next(new HttpError('Error when finding user or recharge: ' + error));
       } else {
         var user = results[0];
         var recharge = results[1];
         res.render('pay_result', {
-          userName : user.name,
-          userIcon : user.icon,
-          money : user.money
+          userName: user.name,
+          userIcon: user.icon,
+          money: user.money
         });
       }
     });

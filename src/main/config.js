@@ -1,5 +1,4 @@
 var path = require('path');
-var mongoose = require('mongoose');
 
 if (!global.config.server.port) {
   global.config.server.port = 80;
@@ -19,9 +18,6 @@ Config.prototype.initialize = function(app) {
   for (var name in config.app.locals) {
     app.locals[name] = config.app.locals[name];
   }
-
-  mongoose.Promise = global.Promise;
-  mongoose.connect(config.mongodb.url + '/' + config.mongodb.database);
 };
 
 module.exports = new Config();

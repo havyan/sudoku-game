@@ -1,8 +1,18 @@
 {
-  "magnifier": 99,
-  "impunity": 10,
-  "delay": 10,
-  "glasses": 99,
-  "options_once": 10,
-  "options_always": 2
+  "predefined": {
+    "magnifier": 99,
+    "impunity": 10,
+    "delay": 10,
+    "glasses": 99,
+    "options_once": 10,
+    "options_always": 2
+  },
+  "normal": {
+    "magnifier": 3,
+    "impunity": 3,
+    "delay": 3,
+    "glasses": 3,
+    "options_once": 3,
+    "options_always": 1
+  }
 }

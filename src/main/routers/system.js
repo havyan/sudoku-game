@@ -1,6 +1,7 @@
 var HttpError = require('../http_error');
 var winston = require('winston');
 var _ = require('lodash');
+var SealedIpDAO = require('../daos/sealed_ip')
 var GameManager = require('../game_manager');
 
 module.exports = function(router) {
@@ -14,7 +15,7 @@ module.exports = function(router) {
       } else {
         global.gameManager.reload(function(error) {
           if (error) {
-            next(new HttpError('Error when init  game manager: ' + error));
+            next(new HttpError('Error when init game manager: ' + error));
           } else {
             res.send({
               success : true
@@ -25,5 +26,29 @@ module.exports = function(router) {
     } else {
       next(new HttpError('Only administrator has the authorization.', HttpError.UNAUTHORIZED));
     }
+  });
+  router.post('/system/seal/:ip', function(req, res, next) {
+    var ip = req.params.ip;
+    SealedIpDAO.seal(ip, function(error) {
+      if (error) {
+        next(new HttpError('Error when sealing ip [' + ip + ']: ' + error));
+      } else {
+        res.send({
+          success : true
+        });
+      }
+    });
+  });
+  router.post('/system/release/:ip', function(req, res, next) {
+    var ip = req.params.ip;
+    SealedIpDAO.release(ip, function(error) {
+      if (error) {
+        next(new HttpError('Error when sealing ip [' + ip + ']: ' + error));
+      } else {
+        res.send({
+          success : true
+        });
+      }
+    });
   });
 };

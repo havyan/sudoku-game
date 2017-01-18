@@ -2,6 +2,7 @@ var _ = require('lodash');
 var async = require('async');
 var PropDAO = require('../daos/prop');
 var UserDAO = require('../daos/user');
+var PurchaseRecordDAO = require('../daos/purchase_record');
 var PropTypeDAO = require('../daos/prop_type');
 
 var Prop = {};
@@ -78,9 +79,10 @@ Prop.buy = function(account, type, count, cb) {
             reason : '天才币余额不足，请充值。'
           });
         } else {
+          var cost = propType.price * count;
           async.series([
           function(cb) {
-            user.money = user.money - propType.price * count;
+            user.money = user.money - cost;
             user.save(cb);
           },
           function(cb) {
@@ -89,6 +91,9 @@ Prop.buy = function(account, type, count, cb) {
           },
           function(cb) {
             PropTypeDAO.addSales(type, count, cb);
+          },
+          function(cb) {
+            PurchaseRecordDAO.createRecord(user.account, type, count, cost, cb);
           }], function(error) {
             if (error) {
               cb(error);

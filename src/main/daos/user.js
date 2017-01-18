@@ -17,12 +17,19 @@ var STATUS = {
 };
 
 var UserSchema = new Schema({
-  account : String,
+  account : {
+    type : String,
+    unique : true
+  },
   name : String,
   password : String,
   status : {
     type : String,
     default : STATUS.NEW
+  },
+  predefined : {
+    type : Boolean,
+    default : false
   },
   email : String,
   create_ip : String,
@@ -75,7 +82,7 @@ UserSchema.statics.createUser = function(params, cb) {
   function(find, cb) {
     if (!find) {
       winston.info('Create prop for account [' + params.account + '] from predefined');
-      PropDAO.createDefault(params.account, cb);
+      PropDAO.createDefault(params.account, params.predefined, cb);
     } else {
       cb(null, null);
     }

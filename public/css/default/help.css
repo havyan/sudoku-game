@@ -231,9 +231,15 @@
   font-size: 25px;
 }
 
+.help-container .score-spec .title span {
+  color: #FFF000;
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
 .help-container .score-spec .sub-title {
-  margin-top: 10px;
-  margin-left: 20px;
+  margin-bottom: 10px;
   font-size: 20px;
 }
 
@@ -243,12 +249,44 @@
   font-size: 16px;
 }
 
+.help-container .score-spec .add-content,
+.help-container .score-spec .reduce-content {
+  width: 90%;
+}
+
+.help-container .score-spec .add-item.selected {
+  display: inline-block;
+  border-width: 2px;
+  border-color: #FFF000;
+  width: 220px;
+  margin-right: 20px;
+}
+
+.help-container .score-spec .reduce-item {
+  background-color: #1e5973;
+  border: 2px solid #FFF000;
+  width: 300px;
+}
+
+.help-container .score-spec .add-item {
+  background-color: #1e5973;
+  display: inline-block;
+  border: 1px solid white;
+  width: 220px;
+  margin-right: 20px;
+}
+
+.help-container .score-spec .add-item .add-total {
+  padding: 10px;
+  font-size: 18px;
+  font-style: italic;
+  border-bottom: 1px solid gray;
+}
+
 .help-container .score-spec .add-row,
 .help-container .score-spec .reduce-row {
-  background-color: #1e5973;
   height: 30px;
   line-height: 30px;
   margin: 5px 0px;
-  padding-left: 10px;
-  border: 1px solid white;
+  padding-left: 20px;
 }

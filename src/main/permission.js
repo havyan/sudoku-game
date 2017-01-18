@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var async = require('async');
 var PERMISSION = require('./permission.json');
 
 var hasAction = function(actions, action) {
@@ -11,12 +12,15 @@ var hasAction = function(actions, action) {
   });
 };
 
-var check = function(account, action, cb) {
+var check = function(req, cb) {
+  var account = req.session.account;
+  var ip = Utils.clientIp(req);
+  var action = req.method + " " + req.path;
   if (account) {
     if (account !== 'SYSTEM' && hasAction(PERMISSION.admin, action)) {
       cb("No permission for action: " + action);
     } else {
-      cb(null, true);
+      cb(null, !_.includes(global.sealedIps, ip));
     }
   } else {
     cb(null, hasAction(PERMISSION.nologin, action));
