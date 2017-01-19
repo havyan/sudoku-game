@@ -145,40 +145,35 @@ module.exports = function(router) {
   });
 
   router.get('/main', function(req, res, next) {
-    var game = global.gameManager.findGameByUser(req.session.account);
-    if (game && (game.isOngoing() || game.isWaiting())) {
-      res.redirect('/table/' + game.id);
-    } else {
-      async.parallel([
-        function(cb) {
-          UserDAO.findOneByAccount(req.session.account, cb);
-        },
-        function(cb) {
-          Message.unreadCount(req.session.account, cb);
-        }
-      ], function(error, results) {
-        if (error) {
-          next(new HttpError('Error when init main by account ' + req.session.account + ': ' + error));
-          return;
-        }
-        var user = results[0];
-        if (user) {
-          res.render('lobby', {
-            account: user.account,
-            userName: user.name,
-            isAdmin: user.account === 'SYSTEM',
-            userIcon: user.icon,
-            money: user.money,
-            unreadMessagesCount: results[1]
-          });
-        } else {
-          req.session.account = undefined;
-          res.clearCookie('account');
-          res.clearCookie('password');
-          res.redirect('/');
-        }
-      });
-    }
+    async.parallel([
+      function(cb) {
+        UserDAO.findOneByAccount(req.session.account, cb);
+      },
+      function(cb) {
+        Message.unreadCount(req.session.account, cb);
+      }
+    ], function(error, results) {
+      if (error) {
+        next(new HttpError('Error when init main by account ' + req.session.account + ': ' + error));
+        return;
+      }
+      var user = results[0];
+      if (user) {
+        res.render('lobby', {
+          account: user.account,
+          userName: user.name,
+          isAdmin: user.account === 'SYSTEM',
+          userIcon: user.icon,
+          money: user.money,
+          unreadMessagesCount: results[1]
+        });
+      } else {
+        req.session.account = undefined;
+        res.clearCookie('account');
+        res.clearCookie('password');
+        res.redirect('/');
+      }
+    });
   });
 
   /* GET Setting page. */

@@ -137,6 +137,10 @@
   display: table;
 }
 
+.lobby-table.included {
+  cursor: pointer;
+}
+
 .lobby-table-content {
   display: table-cell;
   height: 133px;
@@ -146,6 +150,10 @@
 
 .lobby-player {
   position: absolute;
+}
+
+.lobby-player.self {
+  cursor: pointer !important;
 }
 
 .lobby-player.empty.available {

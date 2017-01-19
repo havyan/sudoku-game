@@ -51,6 +51,7 @@ body {
   width: 23%;
   display: inline-block;
   margin-top: 10px;
+  vertical-align: middle;
 }
 
 .game-player.active {
@@ -83,20 +84,18 @@ body {
   background: #C7D2D6;
   width: 40px;
   height: 40px;
-  border-radius: 20px;
+  border-radius: 100%;
 }
 
 .game-player.active .game-player-icon {
   border: 2px solid #FBED0C;
-  border-radius: 20px;
-  box-sizing: border-box;
 }
 
 .game-player-icon img {
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
-  margin-top: 4px;
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+  margin-top: 2px;
 }
 
 .game-state-separator {

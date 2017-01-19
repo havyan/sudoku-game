@@ -833,7 +833,7 @@ Game.prototype.over = function(cb) {
 Game.prototype.calculateGains = function(players) {
   var gains = {};
   var score, points;
-  for(var i = players.length - 1; i > 0; i--) {
+  for(var i = players.length - 1; i >= 0; i--) {
     var account = players[i].account;
     if (this.scores[account] === score) {
       gains[account] = points;
@@ -866,7 +866,7 @@ Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
       if (parseInt(player.grade) > parseInt(oldGrade)) {
         Award.perform('upgrade-to-' + player.grade, player.account, cb);
       } else {
-        cb(null);
+        cb(null, null);
       }
     },
     function(awardResult, cb) {
