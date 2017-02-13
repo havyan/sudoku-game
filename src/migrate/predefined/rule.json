@@ -79,31 +79,31 @@
       "floor": 0
     }, {
       "code": 1,
-      "floor": 5000
+      "floor": 1000
     }, {
       "code": 2,
-      "floor": 25000
+      "floor": 5000
     }, {
       "code": 3,
-      "floor": 85000
+      "floor": 25000
     }, {
       "code": 4,
-      "floor": 200000
+      "floor": 97000
     }, {
       "code": 5,
-      "floor": 400000
+      "floor": 257000
     }, {
       "code": 6,
-      "floor": 700000
+      "floor": 557000
     }, {
       "code": 7,
-      "floor": 1800000
+      "floor": 1277000
     }, {
       "code": 8,
-      "floor": 4200000
+      "floor": 2957000
     }, {
       "code": 9,
-      "floor": 7200000
+      "floor": 6957000
     }
   ],
 
