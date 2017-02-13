@@ -154,7 +154,7 @@
       this.paginationModel.setCount(model.getPageCount());
     },
 
-    '.select-one click' : function(element) {
+    '.select-one click' : function(element, event) {
       var id = element.closest('tr').data('id');
       if (element.is(':checked')) {
         this.options.model.select(id);
@@ -162,6 +162,7 @@
         this.options.model.deselect(id);
       }
       this.element.find('.select-all').attr('checked', this.options.model.isAllSelected());
+      event.stopPropagation();
     },
 
     '.select-all click' : function(element) {

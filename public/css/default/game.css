@@ -67,6 +67,13 @@ body {
   font-size: 15px;
 }
 
+.game-player .game-player-name {
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .game-player.quit img {
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);

@@ -285,7 +285,7 @@
     showOngoing : function() {
       $('.game-countdown-number').hide();
       setTimeout(function() {
-        $('.game-countdown-number').hide();
+        $('.game-countdown-number').remove();
       }, 2000);
       this.chessborad = new Chessboard($('.game-main-area'), {
         model : this.options.model

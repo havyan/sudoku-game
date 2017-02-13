@@ -47,12 +47,13 @@
     },
 
     '.container .store .count input blur' : function(element, event) {
+      var max = 999;
       var value = parseInt(element.val());
       var current = _.find(this.model.attr('props'), {
         type : element.closest('.store-item').data('type')
       }).count;
-      if (value > (999 - current)) {
-        element.val(999 - current);
+      if (value > max) {
+        element.val(max);
       }
       this.resetItem(element);
     },
