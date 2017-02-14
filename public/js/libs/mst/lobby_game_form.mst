@@ -45,7 +45,7 @@
         <div class="value capacity">
           <select>
             {{#each capacities}}
-            <option value="{{this}}">{{this}}人</option>
+            <option value="{{this}}">{{capacityText this}}</option>
             {{/each}}
           </select>
         </div>

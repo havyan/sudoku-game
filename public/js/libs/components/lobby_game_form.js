@@ -9,6 +9,9 @@
             return 'selected';
           }
           return '';
+        },
+        capacityText : function(capacity) {
+          return capacity === 99 ? '不限制人数' : capacity + '人';
         }
       }, function(frag) {
         this.element.append(frag);
@@ -30,7 +33,7 @@
         stepTimes : this.options.rule.score.add,
         levels : this.options.levels.slice(0, parseInt(this.options.user.grade) + 1),
         durations : [0.5, 1, 1.5, 2],
-        capacities : [2, 3, 4],
+        capacities : [2, 3, 4, 99],
         waitTimes : [1, 2, 5, 10]
       });
     },
@@ -64,6 +67,17 @@
         this.callback(this.getParams());
       }
       this.close();
+    },
+
+    '.value.capacity select change' : function(e) {
+      var $auto = this.element.find('.value.start-mode input[data-value=auto]');
+      var $manual = this.element.find('.value.start-mode input[data-value=manual]');
+      if (e.val() == 99) {
+        $manual.prop("checked", true);
+        $auto.attr('disabled', true);
+      } else {
+        $auto.removeAttr('disabled');
+      }
     }
   });
 })();
