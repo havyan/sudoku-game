@@ -22,19 +22,19 @@
 		<div class="game-state-separator"></div>
 		<table class="game-ranking-table">
 			<thead>
-	        	<th>即时排名</th>
-	        	<th>头像/用户</th>
-	        	<th>总分</th>
-	    	</thead>
-	    	<tbody>
-	    		{{#ranking}}
-	    		<tr class="{{type}}">
-	    			<td>{{position}}</td>
-	    			<td>{{name}}</td>
-	    			<td>{{score}}</td>
-	    		</tr>
-	    		{{/ranking}}
-	    	</tbody>
+      	<th class="game-ranking-number">即时排名</th>
+      	<th class="game-ranking-name">头像/用户</th>
+      	<th class="game-ranking-score">总分</th>
+    	</thead>
+    	<tbody>
+    		{{#ranking}}
+    		<tr class="{{type}}">
+    			<td>{{position}}</td>
+    			<td><div class="game-ranking-name-wrapper">{{name}}</div></td>
+    			<td>{{score}}</td>
+    		</tr>
+    		{{/ranking}}
+    	</tbody>
 		</table>
 		<div class="game-state-separator light"></div>
 		<div class="game-chat-messages">
