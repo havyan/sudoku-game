@@ -12,6 +12,9 @@
         },
         capacityText : function(capacity) {
           return capacity === 99 ? '不限制人数' : capacity + '人';
+        },
+        durationText : function(duration) {
+          return duration === 99 ? '不限制时间' : duration + '小时';
         }
       }, function(frag) {
         this.element.append(frag);
@@ -32,7 +35,7 @@
       this.model = new can.Model({
         stepTimes : this.options.rule.score.add,
         levels : this.options.levels.slice(0, parseInt(this.options.user.grade) + 1),
-        durations : [0.5, 1, 1.5, 2],
+        durations : [0.5, 1, 1.5, 2, 99],
         capacities : [2, 3, 4, 99],
         waitTimes : [1, 2, 5, 10]
       });

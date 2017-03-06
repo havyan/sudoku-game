@@ -10,6 +10,13 @@
           } else {
             return message.content;
           }
+        },
+        formatRemainingTime : function(remainingTime) {
+          if (options.model.attr('duration') === 99) {
+            return '不限制时间';
+          } else {
+            return Utils.formatSeconds(remainingTime());
+          }
         }
       }, function(frag) {
         element.html(frag);

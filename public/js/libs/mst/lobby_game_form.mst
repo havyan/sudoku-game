@@ -33,7 +33,7 @@
         <div class="value duration">
           <select>
             {{#each durations}}
-            <option value="{{this}}">{{this}}小时</option>
+            <option value="{{this}}">{{durationText this}}</option>
             {{/each}}
           </select>
         </div>
