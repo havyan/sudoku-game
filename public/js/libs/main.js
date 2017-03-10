@@ -30,8 +30,9 @@
         $messagesCount.html(result.count).attr('title', result.count);
         showMessagesCount();
       }, function() {
+        window.location.reload();
       });
-    }, 10000);
+    }, 15000);
     showMessagesCount();
   });
 })();
