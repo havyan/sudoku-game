@@ -298,22 +298,24 @@
     },
 
     setPlayer : function(index, player) {
-      this.attr('players').attr(index, player);
-      this.attr('players', this.attr('players').attr());
+      var players = this.attr('players').attr();
+      players[index] = player;
+      this.attr('players').replace(players);
       this.resetRanking();
     },
 
     playerQuit : function(account, status) {
-      var index = _.findIndex(this.attr('players'), function(player) {
+      var players = this.attr('players').attr();
+      var index = _.findIndex(players, function(player) {
         return player && player.account === account;
       });
       if (this.attr('status') === 'ongoing') {
-        var quitPlayer = this.attr('players.' + index).attr();
+        var quitPlayer = players[index];
         quitPlayer.status = status;
         this.attr('quitPlayers').unshift(quitPlayer);
       }
-      this.attr('players').attr(index, null);
-      this.attr('players', this.attr('players').attr());
+      players[index] = null;
+      this.attr('players').replace(players);
       this.resetRanking();
     },
 
