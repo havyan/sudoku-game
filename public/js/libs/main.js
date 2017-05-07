@@ -10,6 +10,14 @@
     }, function(e) {
     });
 
+    var bindSinglePlayer = function() {
+      var singlePlayerDialog = new SinglePlayerDialog($('body'));
+      $('a.single-player').click(function() {
+        singlePlayerDialog.show();
+      });
+    };
+    bindSinglePlayer();
+
     var $messagesCount = $('.header .messages-count');
 
     var showMessagesCount = function() {

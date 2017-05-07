@@ -31,7 +31,7 @@
         var selectedRoom = options.model.attr('selectedRoom');
         this.selectRoom(selectedRoom);
         this.toggleExpand(this.element.find('#' + selectedRoom).closest('.lobby-nav-item'));
-        this.gameForm = new LobbyGameForm(this.element, {
+        this.gameForm = new LobbyGameDialog(this.element, {
           user : this.options.model.attr('user').attr(),
           rule : this.options.model.attr('rule').attr(),
           levels : this.options.model.attr('levels').attr()
