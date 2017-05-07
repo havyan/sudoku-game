@@ -21,7 +21,7 @@
         });
       },
 
-      '.email blur' : function(e) {
+      '.email keyup' : _.debounce(function(e) {
         var self = this;
         var email = e.val();
         var $sign = e.siblings('.ok-sign');
@@ -30,7 +30,7 @@
           var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
           if (reg.test(email)) {
             Rest.User.checkEmail(email, function(result) {
-              if (!result.valid) {
+              if (result.exist) {
                 $send.addClass('available').removeAttr('disabled');
                 $sign.removeClass('wrong');
               } else {
@@ -49,7 +49,7 @@
           $sign.hide();
           $send.removeClass('available').attr('disabled', 'disabled');
         }
-      }
+      }, 500)
     });
 
     new RetrievePasswordPanel($('.common-container'));

@@ -2,10 +2,10 @@
   can.Control('Components.LobbyPanel', {}, {
     init : function(element, options) {
       window.localStorage.setItem('lobby_open', true);
-      $(window).unload(function() {
+      $(window).on('beforeunload', function() {
         window.localStorage.setItem('lobby_open', false);
       });
-      element.html(can.view('/js/libs/mst/lobby_panel.mst', options.model, {
+      can.view('/js/libs/mst/lobby_panel.mst', options.model, {
         playersCount : function(room) {
           var count = function(room) {
             var result = 0;
@@ -26,15 +26,17 @@
           };
           return count(room).toString();
         }
-      }));
-      var selectedRoom = options.model.attr('selectedRoom');
-      this.selectRoom(selectedRoom);
-      this.toggleExpand(this.element.find('#' + selectedRoom).closest('.lobby-nav-item'));
-      this.gameForm = new LobbyGameForm(this.element, {
-        user : this.options.model.attr('user').attr(),
-        rule : this.options.model.attr('rule').attr(),
-        levels : this.options.model.attr('levels').attr()
-      });
+      }, function(frag) {
+        element.html(frag);
+        var selectedRoom = options.model.attr('selectedRoom');
+        this.selectRoom(selectedRoom);
+        this.toggleExpand(this.element.find('#' + selectedRoom).closest('.lobby-nav-item'));
+        this.gameForm = new LobbyGameForm(this.element, {
+          user : this.options.model.attr('user').attr(),
+          rule : this.options.model.attr('rule').attr(),
+          levels : this.options.model.attr('levels').attr()
+        });
+      }.bind(this));
     },
 
     selectRoom : function(roomId) {
@@ -43,7 +45,7 @@
       var $room = this.element.find('.lobby-nav-real-room[data-id=' + roomId + ']');
       this.element.find('.lobby-nav-real-room, .lobby-nav-virtual-room').removeClass('active');
       $room.addClass('active').parents('.lobby-nav-item').find('.lobby-nav-virtual-room').addClass('active');
-      this.element.find('.lobby-content').html(can.view('/js/libs/mst/lobby_room.mst', room, {
+      can.view('/js/libs/mst/lobby_room.mst', room, {
         tableOrder : function(game) {
           return _.findIndex(room.attr('games'), {
             id : game.id
@@ -51,7 +53,7 @@
         },
         tableInfo : function(game) {
           if (game.status === 'empty') {
-            return '空桌';
+            return '建桌';
           } else if (game.status === 'waiting') {
             var level = _.find(model.attr('levels'), {
               code : game.level
@@ -72,8 +74,21 @@
           } else {
             return 'unavailable';
           }
+        },
+        playerIncluded : function(game) {
+          var players = _.compact(game.attr('players'));
+          if (game && _.find(players, { account: model.attr('user.account') })) {
+            return 'included';
+          }
+        },
+        playerSelf : function(player) {
+          if (player && (player.account === model.attr('user.account'))) {
+            return 'self';
+          }
         }
-      }));
+      }, function(frag) {
+        this.element.find('.lobby-content').html(frag);
+      }.bind(this));
     },
 
     '.lobby-nav-virtual-room click' : function(e) {
@@ -126,6 +141,10 @@
       this.selectRoom(selectedRoom);
     },
 
+    '{model} reload' : function() {
+      window.location.reload();
+    },
+
     '.free .lobby-game.empty .lobby-table click' : function(e) {
       var self = this;
       var model = self.options.model;
@@ -141,21 +160,32 @@
           if (cost > 0) {
             Dialog.confirm('您需要花费' + cost + '个天才币，是否继续？', function($e) {
               Rest.Game.playerJoin(gameId, 0, params, function(result) {
-                window.open('/table/' + result.gameId, '_blank');
                 $e.closest('.modal').modal('hide');
               }, function(error) {
-                Dialog.error('建桌失败, ' + error.responseJSON.message);
+                var message = '建桌失败, ' + error.responseJSON.message;
+                $e.closest('.modal').modal('hide');
+                Dialog.error(message);
               });
+              self.openGame(gameId);
             });
           } else {
             Rest.Game.playerJoin(gameId, 0, params, function(result) {
-              window.open('/table/' + result.gameId, '_blank');
             }, function(error) {
-              Dialog.error('建桌失败, ' + error.responseJSON.message);
+              var message = '建桌失败, ' + error.responseJSON.message;
+              Dialog.error(message);
             });
+            self.openGame(gameId);
           }
         }
       });
+    },
+
+    '.lobby-player.self, .lobby-table.included click' : function(e) {
+      this.openGame(e.closest('.lobby-game').data('id'));
+    },
+
+    openGame : function(gameId) {
+      window.open('/table/' + gameId, '_blank');
     },
 
     '.free .lobby-game.waiting .lobby-table click' : function(e) {
@@ -172,29 +202,32 @@
     },
 
     joinGame : function(game, index) {
+      var self = this;
       var model = this.options.model;
       var grade = model.attr('user.grade');
+      var gameId = game.attr('id');
       var levelIndex = _.findIndex(model.attr('levels'), {
         code : game.attr('level')
       });
-      if (parseInt(grade) < levelIndex) {
+      if (parseInt(grade) < levelIndex - 1) {
         Dialog.message('您不能加入题目等级比自己段数高的游戏');
       } else {
-        Rest.Game.playerJoin(game.attr('id'), index, {}, function(result) {
-          window.open('/table/' + result.gameId, '_blank');
-        });
+        Rest.Game.playerJoin(gameId, index, {}, function(result) {});
+        self.openGame(gameId);
       }
     },
 
     '.lobby-player.existent mouseenter' : function(e) {
       var player = this.options.model.findPlayer(e.data('id'));
       if (player) {
-        $('body').append(can.view('/js/libs/mst/player_tip.mst', player));
-        var playerTip = $('.player-tip');
-        playerTip.css({
-          top : e.offset().top + e.outerHeight() / 2,
-          left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
-        });
+        can.view('/js/libs/mst/player_tip.mst', player, function(frag) {
+          $('body').append(frag);
+          var playerTip = $('.player-tip');
+          playerTip.css({
+            top : e.offset().top + e.outerHeight() / 2,
+            left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
+          });
+        }.bind(this));
       }
     },
 

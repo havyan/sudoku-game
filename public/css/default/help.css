@@ -1,0 +1,292 @@
+.main {
+  position: relative;
+  top: 60px;
+  clear: both;
+  min-height: 350px;
+}
+
+.navigator {
+  float: left;
+  width: 13%;
+  margin-left: 5%;
+}
+
+.help-container {
+  width: 70%;
+  margin-left: 22%;
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid #296db6;
+  border-radius: 15px;
+  padding: 20px 30px;
+  box-sizing: border-box;
+}
+
+.help-container .game-spec h3 {
+  text-indent: 1em;
+}
+
+.help-container .game-spec p {
+  text-indent: 3em;
+  font-size: 16px;
+}
+
+.help-container .game-spec p.board9 {
+  text-align: center;
+}
+
+.help-container .game-spec .board9 img {
+  display: inline-block;
+  margin-left: 2%;
+  margin-right: 2%;
+  width: 25%;
+}
+
+.help-container .game-spec .board99 {
+  display: block;
+  width: 80%;
+  margin: auto;
+}
+
+.help-container .how-to-play h2 {
+  text-align: center;
+}
+
+.help-container .how-to-play img {
+  width: 100%;
+  margin: auto;
+  border-radius: 20px;
+}
+
+.help-container .how-to-play ul {
+  list-style: decimal;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.help-container .item {
+  display: none;
+}
+
+.help-container .item.active {
+  display: block;
+}
+
+.help-container .how-to-play ul li {
+  margin-bottom: 5px;
+}
+
+.help-container .how-to-play ul li span {
+  font-weight: bold;
+  color: green;
+}
+
+.help-container .grade-spec table {
+  margin-left: 2em;
+  font-size: 16px;
+  background-image: url(/imgs/default/help/grade_bg.png);
+}
+
+.help-container .grade-spec table tr {
+  height: 30px;
+  line-height: 30px;
+}
+
+.help-container .grade-spec table th {
+  width: 80px;
+}
+
+.help-container .grade-spec p {
+  font-size: 16px;
+  text-indent: 2em;
+}
+
+.grade-container {
+  width: 80%;
+  margin: auto;
+}
+
+.grade-row {
+  font-size: 0px;
+  margin-bottom: 10px;
+}
+
+.grade-row.grade-head .grade-connection {
+  height: 0px;
+  border-width: 0px;
+}
+
+.grade-row.grade-head > * {
+  font-weight: bold;
+  background-color: #27829e;
+}
+
+.grade-row > * {
+  display: inline-block;
+  position: relative;
+  font-size: 20px;
+  color: #FFF000;
+  vertical-align: middle;
+}
+
+.grade-name {
+  background-color: #1e5973;
+  width: 35%;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.grade-connection {
+  width: 30px;
+  height: 5px;
+  background-color: #1e5973;
+  border-color: white;
+  border-style: solid;
+  border-width: 2px 0px 2px 0px;
+  left: -2px;
+  z-index: 100;
+}
+
+.grade-value {
+  background-color: #1e5973;
+  width: 35%;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  border: 2px solid white;
+  text-align: center;
+  left: -4px;
+}
+
+.exchange-rate {
+  width: 30%;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  margin: 10px auto;
+  background-color: #282a5f;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #FFF000
+}
+
+.help-container .system-spec ul {
+  font-size: 16px;
+}
+
+.help-container .system-spec ul li {
+  margin-bottom: 8px;
+}
+
+.help-container .system-spec ul li span {
+  font-weight: bold;
+  color: green;
+}
+
+.help-container .constellation-spec ul {
+  font-size: 16px;
+}
+
+.help-container .constellation-spec ul li {
+  margin-bottom: 8px;
+}
+
+.help-container .constellation-spec ul li span {
+  font-weight: bold;
+  color: green;
+}
+
+.bottom-actions {
+  width: 80%;
+  margin: auto;
+  text-align: right;
+  position: relative;
+  top: 60px;
+  margin-top: 30px;
+}
+
+.inner-container {
+  width: 50%;
+  margin: 30px auto;
+  background-color: #282a5f;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+
+.help-container .constellation-spec h2 {
+  text-align: center;
+}
+
+.help-container .constellation-spec .none {
+  text-align: center;
+  font-size: 20px;
+  margin: 10px;
+}
+
+.help-container .score-spec .title {
+  font-size: 25px;
+}
+
+.help-container .score-spec .title span {
+  color: #FFF000;
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.help-container .score-spec .sub-title {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.help-container .score-spec .inner-container {
+  margin: 10px 30px;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.help-container .score-spec .add-content,
+.help-container .score-spec .reduce-content {
+  width: 90%;
+}
+
+.help-container .score-spec .add-item.selected {
+  display: inline-block;
+  border-width: 2px;
+  border-color: #FFF000;
+  width: 220px;
+  margin-right: 20px;
+}
+
+.help-container .score-spec .reduce-item {
+  background-color: #1e5973;
+  border: 2px solid #FFF000;
+  width: 300px;
+}
+
+.help-container .score-spec .add-item {
+  background-color: #1e5973;
+  display: inline-block;
+  border: 1px solid white;
+  width: 220px;
+  margin-right: 20px;
+}
+
+.help-container .score-spec .add-item .add-total {
+  padding: 10px;
+  font-size: 18px;
+  font-style: italic;
+  border-bottom: 1px solid gray;
+}
+
+.help-container .score-spec .add-row,
+.help-container .score-spec .reduce-row {
+  height: 30px;
+  line-height: 30px;
+  margin: 5px 0px;
+  padding-left: 20px;
+}

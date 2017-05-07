@@ -16,7 +16,12 @@ var config = require('./config');
 var route = require('./route');
 var migrate = require('../migrate');
 var GameManager = require('./game_manager');
-var NOLOGIN_ACTIONS = require('./nologin_actions.json');
+var Permission = require('./permission');
+
+process.on('uncaughtException', function(error) {
+  winston.error("UncaughtException Message: ", error.message || "Unknow error.");
+  winston.error("UncaughtException stack:", error.stack || "Unknow error.");
+});
 
 hbs.localsAsTemplateData(app);
 config.initialize(app);
@@ -39,22 +44,26 @@ app.use(express.static(app.get('conf.path.public')));
 app.set('views', app.get('conf.path.views'));
 
 //hbs.registerHelper('helper_name', function(...) { ... });
-hbs.registerPartials(app.get('conf.path.viewlibs'));
+hbs.registerPartials(app.get('conf.path.partials'));
 app.set('view engine', 'html');
 // 指定模板文件的后缀名为html
 app.engine('html', hbs.__express);
 // 运行hbs模块
 
-// authority handler
+// Permission handler
 app.use(function(req, res, next) {
-  var action = req.method + " " + req.path;
-  winston.info("Start " + action);
-  if (!_.contains(NOLOGIN_ACTIONS, action) && !req.session.account) {
-    req.params.error = true;
-    res.redirect('/login');
-  } else {
-    next();
-  }
+  winston.info("Start " + req.method + " " + req.path);
+  Permission.check(req, function(error, proceed){
+    if (error) {
+      next(new HttpError(error, HttpError.UNAUTHORIZED));
+    } else if (proceed) {
+      next();
+    } else {
+      req.session.account = undefined;
+      req.params.error = true;
+      res.redirect('/login');
+    }
+  });
 });
 
 route.initialize(app);
@@ -71,9 +80,13 @@ app.use(function(err, req, res, next) {
   if (err.responseType === 'json') {
     res.send(err.toJSON());
   } else {
+    var error = err.error || err;
+    if (error && error.stack) {
+      winston.error(error.stack);
+    }
     res.render('error', {
       message : err.message,
-      error : env === 'development' ? (err.error || err) : {}
+      error : error
     });
   }
 });

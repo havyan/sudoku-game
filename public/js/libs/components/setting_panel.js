@@ -10,10 +10,7 @@
       model.attr('rule').bind('change', function() {
         self.ruleChanged = true;
       });
-      model.attr('ui').bind('change', function() {
-        self.uiChanged = true;
-      });
-      element.html(can.view('/js/libs/mst/setting_panel.mst', model, {
+      can.view('/js/libs/mst/setting_panel.mst', model, {
         disableLastTo : function(ruleRow) {
           var isLast = false;
           self.model.attr('rule.score.add').forEach(function(addRule) {
@@ -25,8 +22,13 @@
           } else {
             return '';
           }
+        },
+        disableEdit : function() {
+          return self.model.attr('editable') ? '' : 'disabled="disabled"';
         }
-      }));
+      }, function(frag) {
+        element.html(frag);
+      }.bind(this));
     },
 
     getRule : function() {
@@ -36,19 +38,12 @@
 
     initModel : function(rule) {
       var account = $('body').data('account');
-      var ui = window.localStorage.getItem(account + '_ui');
       this.model = new can.Model({
         rule : rule,
         account : account,
-        ui : ui ? JSON.parse(ui) : {
-          zoom : 1.0
-        }
+        editable : account === 'SYSTEM'
       });
       return this.model;
-    },
-
-    saveUI : function() {
-      window.localStorage.setItem(this.model.attr('account') + '_ui', JSON.stringify(this.model.attr('ui').attr()));
     },
 
     '.navigator .item click' : function(e) {
@@ -148,10 +143,6 @@
       var self = this;
       if (this.validate()) {
         var rule = this.getRule();
-        if (this.uiChanged) {
-          self.saveUI();
-          this.uiChanged = false;
-        }
         if (this.ruleChanged) {
           Rest.Rule.updateRule(rule, function(res) {
             self.ruleChanged = false;
@@ -162,7 +153,7 @@
             }
           });
         } else {
-          Dialog.message('更新规则成功');
+          Dialog.message('没有修改任何规则');
         }
       } else {
         var $invalid = this.element.find('input.invalid:first');
@@ -174,7 +165,7 @@
     },
 
     '.setting-back-action click' : function() {
-      if (this.ruleChanged || this.uiChanged) {
+      if (this.ruleChanged) {
         Dialog.confirm('设置已被修改，是否放弃？', function() {
           window.location.href = "/main";
         });
@@ -232,7 +223,7 @@
     },
 
     'input[type=text] keydown' : function(e, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+      return Utils.isIntKey(event.keyCode);
     },
 
     '.add-rule-to blur' : function(e) {
@@ -335,6 +326,7 @@
     },
 
     '.grade-table .value span click' : function(e) {
+      if (!this.model.attr('editable')) return;
       var index = parseInt(e.closest('tr').data('index'));
       if (index > 0) {
         e.closest('.value').addClass('edit').find('input').val(this.model.attr('rule.grade.' + index + '.floor')).focus();
@@ -342,7 +334,7 @@
     },
 
     '.grade-table .value input keydown' : function(e, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+      return Utils.isIntKey(event.keyCode);
     },
 
     '.setting-grade input blur' : function(e) {
@@ -354,7 +346,7 @@
     '.ui-value-zoom input change' : function(e, event) {
       var value = parseFloat(e.val());
       if (isNaN(value)) {
-        value = this.model.attr('ui.zoom');
+        value = this.model.attr('rule.ui.zoom');
         e.val(value);
       } else {
         if (value < 1) {
@@ -365,7 +357,16 @@
           e.val(value);
         }
       }
-      this.model.attr('ui.zoom', value);
+      this.model.attr('rule.ui.zoom', value);
+    },
+
+    '.exchange-rate input change' : function(e, event) {
+      var value = parseFloat(e.val());
+      if (isNaN(value) || value < 0) {
+        value = this.model.attr('rule.exchange.rate');
+        e.val(value);
+      }
+      this.model.attr('rule.exchange.rate', value);
     },
 
     '.setting-main input blur' : function() {

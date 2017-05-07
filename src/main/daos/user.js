@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var common = require('./common');
 var _ = require('lodash');
 var crypto = require('crypto');
 var winston = require('winston');
@@ -9,34 +10,38 @@ var RuleDAO = require('./rule');
 var PropDAO = require('./prop');
 var ActiveKeyDAO = require('./active_key');
 var MONEY = 50000;
-var STATES = {
-  NEW : 'new',
-  ACTIVE : 'active'
+var STATUS = {
+  NEW : '10',
+  ACTIVE : '1',
+  FROZEN : '0'
 };
 
 var UserSchema = new Schema({
-  account : String,
+  account : {
+    type : String,
+    unique : true
+  },
   name : String,
   password : String,
-  state : {
+  status : {
     type : String,
-    default : STATES.NEW
+    default : STATUS.NEW
+  },
+  predefined : {
+    type : Boolean,
+    default : false
   },
   email : String,
-  create_at : {
-    type : Date,
-    default : Date.now
-  },
   create_ip : String,
-  login_at : Date,
+  logintime : Date,
   login_ip : String,
   icon : {
     type : String,
     default : '/imgs/default/user_icons/default.png'
   },
   grade : {
-    type : String,
-    default : '0'
+    type : Number,
+    default : 0
   },
   points : {
     type : Number,
@@ -50,9 +55,13 @@ var UserSchema = new Schema({
     type : Number,
     default : 0
   },
+  recharge : {
+    type : Boolean,
+    default : false
+  },
   money : {
     type : Number,
-    default : 5000
+    default : 0
   }
 });
 
@@ -73,25 +82,25 @@ UserSchema.statics.createUser = function(params, cb) {
   function(find, cb) {
     if (!find) {
       winston.info('Create prop for account [' + params.account + '] from predefined');
-      PropDAO.createDefault(params.account, cb);
+      PropDAO.createDefault(params.account, params.predefined, cb);
     } else {
       cb(null, null);
     }
   },
   function(prop, cb) {
-    if (params.state !== STATES.ACTIVE) {
+    if (params.status !== STATUS.ACTIVE) {
       ActiveKeyDAO.createKey(params.account, cb);
     } else {
       cb(null, null);
     }
   },
   function(key, cb) {
-    if (params.state !== STATES.ACTIVE) {
-      var link = global.config.server.domain + ':' + global.config.server.port + '/active_user?key=' + key.id;
+    if (params.status !== STATUS.ACTIVE) {
+      var link = global.domain + '/active_user?key=' + key.id;
       emailer.send({
         to : params.email,
-        subject : ' 激活超天才账户',
-        html : '<p>请点击激活来激活超天才账户: <a href="' + link + '">激活</a></p>'
+        subject : ' 激活天才数独棋账户',
+        html : '<p>请点击激活来激活天才数独棋账户: <a href="' + link + '">激活</a></p>'
       }, cb);
     } else {
       cb();
@@ -101,7 +110,7 @@ UserSchema.statics.createUser = function(params, cb) {
 
 UserSchema.statics.findInactive = function(cb) {
   this.find({
-    state : STATES.NEW
+    status : STATUS.NEW
   }, cb);
 };
 
@@ -117,8 +126,13 @@ UserSchema.statics.findOneByAccount = function(account, cb) {
   }, cb);
 };
 
+UserSchema.statics.findSystem = function(cb) {
+  this.findOneByAccount('SYSTEM', cb);
+};
+
 UserSchema.statics.updateByAccount = function(account, data, cb) {
   var self = this;
+  data.updatetime = new Date();
   if (data.points !== undefined) {
     RuleDAO.getRule(function(error, rule) {
       if (error) {
@@ -186,7 +200,8 @@ UserSchema.statics.activeUser = function(account, cb) {
   this.update({
     account : account
   }, {
-    state : STATES.ACTIVE
+    status : STATUS.ACTIVE,
+    updatetime : new Date()
   }, cb);
 };
 
@@ -200,6 +215,10 @@ UserSchema.virtual('winrate').get(function() {
   return this.rounds > 0 ? Math.round(this.wintimes / this.rounds * 100) : 0;
 });
 
+UserSchema.virtual('losetimes').get(function() {
+  return this.rounds - this.wintimes;
+});
+
 UserSchema.virtual('grade_name').get(function() {
   return RuleDAO.GRADE_NAMES[this.grade];
 });
@@ -209,4 +228,9 @@ UserSchema.set('toJSON', {
   virtuals : true
 });
 
-module.exports = mongoose.model('User', UserSchema);
+UserSchema.plugin(common);
+
+var User = mongoose.model('User', UserSchema);
+User.STATUS = STATUS;
+
+module.exports = User;

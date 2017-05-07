@@ -5,10 +5,12 @@
     <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
     <link href="{{@basecss}}/index.css" rel="stylesheet" type="text/css" />
-    <script src="{{@basejs}}/libs3/jquery-2.1.1.min.js"></script>
+    <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
     <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
     <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/components/utils.js"></script>
     <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/components/agreement.js"></script>
     <script src="{{@basejs}}/libs/index.js"></script>
   </head>
   <body>
@@ -19,6 +21,7 @@
         欢迎 <span>{{name}}</span>
       </div>
       {{/user}}
+      <a class="law-btn" href="javascript:void(0);">法律声明</a>
       <a class="contact-btn" href="/contact">联系我们</a>
     </div>
     <div class="login-area">
@@ -33,6 +36,9 @@
         <a class="enter" href="/main">进入游戏</a>
         {{else}}
         <form class="login-form" action="/login" method="post">
+          <div class="genius-title">
+            Genius
+          </div>
           <div class="login-title">
             Sudoku
           </div>
@@ -46,13 +52,13 @@
           </div>
           {{#error}}
           <div class="login-error">
-            用户名或者密码错误,或者用户未激活.
+            用户名或者密码错误,或者用户未激活或被冻结.
           </div>
           {{/error}}
           <div class="login-more">
             <input type="checkbox" name="remember_me"/>
             <label>下次自动登录</label>
-            <a href="/retrieve_password">忘记密码？</a>
+            <a href="/retrieve_password">忘记/更改密码？</a>
           </div>
           <div class="login-button">
             <input type="submit" value="登录" />

@@ -40,10 +40,12 @@ input:focus, textarea:focus {
   color: #FFF000;
 }
 
-input[disabled=disabled], input[disabled=true],
-button[disabled=disabled], button[disabled=true],
-textarea[disabled=disabled], textarea[disabled=true] {
+input[disabled=disabled], input[disabled=true], button[disabled=disabled], button[disabled=true], textarea[disabled=disabled], textarea[disabled=true] {
   color: gray !important;
+}
+
+input[type=radio] {
+  margin: 0px;
 }
 
 a {
@@ -54,16 +56,29 @@ a:hover {
   text-decoration: none;
 }
 
+a:visited {
+  text-decoration: none;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
+
 .header {
   margin-top: 40px;
   height: 130px;
+  display: flex;
 }
 
 .header-user {
-  float: left;
-  width: 20%;
+  flex: 1;
   text-align: center;
   margin-top: 5px;
+  min-width: 280px;
 }
 
 .header-user-icon {
@@ -93,14 +108,18 @@ a:hover {
 
 .header-user-info p {
   margin: 0px;
-  line-height: 40px;
+  line-height: 30px;
   font-size: 16px;
+  width: 130px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 
 .top-actions {
   text-align: right;
   float: right;
-  margin-right: 5%;
+  margin-right: 2%;
   margin-top: 10px;
 }
 
@@ -124,19 +143,43 @@ a:hover {
 
 .header-actions {
   background: url(/imgs/default/header_bg.png) no-repeat;
-  margin-left: 20%;
-  width: 80%;
+  flex: 4;
   height: 130px;
   min-width: 1264px;
 }
 
-.header-actions a {
+.header-action {
+  display: block;
   float: left;
+  position: relative;
+  margin-top: 16px;
+  margin-left: 61px;
+}
+
+.header-action .messages-count {
+  position: absolute;
+  display: none;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: red;
+  border-radius: 25px;
+  text-align: center;
+  right: -5px;
+  border: 1px solid white;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.header-actions a {
+  display: block;
   height: 97px;
   width: 93px;
   vertical-align: middle;
-  margin-top: 16px;
-  margin-left: 63px;
   line-height: 97px;
   color: white;
   font-size: 18px;
@@ -148,13 +191,13 @@ a:hover {
   color: #FFF000;
 }
 
-.header-actions a:first-of-type {
+.header-action:first-of-type {
   margin-left: 42px;
 }
 
 .welcome {
   width: 50%;
-  margin-left: 10%;
+  margin-left: 5%;
   position: relative;
   top: 20px;
 }
@@ -247,18 +290,29 @@ label {
 }
 
 .button.disabled, .button[disabled] {
-  background-image: url(/imgs/default/button_hover.png);
-  color: gray;
+  background-image: url(/imgs/default/button.png) !important;
+  color: #E2E2E2;
   cursor: default;
-  opacity: 0.65;
+  opacity: 0.8;
 }
 
 .player-tip {
   position: absolute;
-  z-index: 999;
+  z-index: 9999;
   width: 120px;
   height: 120px;
-  background: url(../../imgs/default/player_tip_bg.svg);
+}
+
+.player-tip-triangle {
+  width: 0px;
+  height: 0px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid #F3F3F3;
+  position: relative;
+  margin: auto;
+  top: 1px;
+  z-index: 99999;
 }
 
 .player-tip-content {
@@ -266,8 +320,13 @@ label {
   position: absolute;
   width: 100%;
   height: 100%;
-  margin-top: 16px;
+  background-image: linear-gradient(to bottom, #F3F3F3, #D6D6D6);
+  border-radius: 5px;
+  border: 1px solid #E2E2E2;
   color: black;
+  box-shadow: 1px black;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 .player-tip-content * {
@@ -418,4 +477,136 @@ fade {from {
 to {
   opacity: 0;
 }
+}
+
+.pagination-bar {
+  text-align: center;
+}
+
+.pagination-bar > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.pagination-bar .previous-arrow, .pagination-bar .next-arrow {
+  color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.pagination-bar .previous-arrow:hover, .pagination-bar .next-arrow:hover {
+  color: #FFF000;
+}
+
+.pagination-bar .page-item {
+  color: white;
+  min-width: 24px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.pagination-bar .page-item:hover {
+  background-color: #3781c4;
+}
+
+.pagination-bar .page-item.ellipsis {
+  cursor: default;
+  background-color: inherit !important;
+}
+
+.pagination-bar .page-item.selected {
+  background-color: #3781c4;
+  color: #FFF000;
+}
+
+.pagination-bar .edit-goto {
+  display: none;
+  background-color: rgba(0,61,232,0.3);
+  padding-right: 3px;
+  color: #FFF000;
+  height: 20px;
+  font-size: 12px;
+  border: 1px solid gray;
+  text-align: center;
+  width: 50px;
+}
+
+.pagination-bar.editable .edit-goto {
+  display: inline-block;
+}
+
+.pagination-bar .current {
+  min-width: 50px;
+  text-align: center;
+}
+.pagination-bar.editable .current {
+  display: none;
+}
+
+.article {
+  font-size: 14px;
+}
+
+.article .title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  text-indent:0px;
+}
+
+.protocol-dialog .modal-dialog,
+.law-dialog .modal-dialog {
+  width: 800px;
+}
+
+.protocol-dialog .modal-dialog .modal-body,
+.law-dialog .modal-dialog .modal-body {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.article .section {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.article .english {
+  color: red;
+}
+
+.article .description {
+  margin-left: 10px;
+  text-indent: 20px;
+}
+
+.article .section-item-1 {
+  margin-left: 20px;
+}
+
+.article .section-item-2 {
+  margin-left: 30px;
+}
+
+.article .section-item-3 {
+  margin-left: 40px;
+}
+
+.article .paragraph-number {
+  font-weight: bold;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.article .signature {
+  margin-top: 20px;
+  text-align: right;
+  margin-right: 30px;
+}
+
+.article .date {
+  text-align: right;
+  margin-right: 30px;
 }

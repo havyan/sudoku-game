@@ -26,13 +26,13 @@
           Dialog.message('邮件地址不对，请确认');
         }
       },
-      '.password .reset-value blur' : function(e) {
+      '.password .reset-value keyup' : _.debounce(function(e) {
         this.verify();
-      },
+      }, 500),
 
-      '.repeat-password .reset-value blur' : function(e) {
+      '.repeat-password .reset-value keyup' : _.debounce(function(e) {
         this.verify();
-      },
+      }, 500),
 
       verify : function() {
         var e = $('.password .reset-value');

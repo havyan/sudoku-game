@@ -1,7 +1,7 @@
 (function() {
   can.Control('Components.GamePanel', {}, {
     init : function(element, options) {
-      element.html(can.view('/js/libs/mst/game_panel.mst', options.model, {
+      can.view('/js/libs/mst/game_panel.mst', options.model, {
         formatMessage : function(message) {
           if (message.content) {
             return message.content.split('\n').reduce(function(previous, current) {
@@ -10,16 +10,25 @@
           } else {
             return message.content;
           }
+        },
+        formatRemainingTime : function(remainingTime) {
+          if (options.model.attr('duration') === 99) {
+            return '不限制时间';
+          } else {
+            return Utils.formatSeconds(remainingTime());
+          }
         }
-      }));
-      if (options.model.attr('status') === 'waiting') {
-        this.showWaiting();
-      } else if (options.model.attr('status') === 'ongoing') {
-        this.showOngoing();
-      }
-      this.initEvents();
-      this.messageToBottom();
-      this.activePlayer(options.model.attr('currentPlayer'));
+      }, function(frag) {
+        element.html(frag);
+        if (options.model.attr('status') === 'waiting') {
+          this.showWaiting();
+        } else if (options.model.attr('status') === 'ongoing') {
+          this.showOngoing();
+        }
+        this.initEvents();
+        this.messageToBottom();
+        this.activePlayer(options.model.attr('currentPlayer'));
+      }.bind(this));
     },
 
     initEvents : function() {
@@ -30,7 +39,7 @@
           }
         }
       });
-      $(window).bind('beforeunload', function() {
+      $(window).on('beforeunload', function() {
         return '确定离开游戏页面吗？';
       });
     },
@@ -52,7 +61,7 @@
       } else if (newStatus === 'ongoing') {
         this.showOngoing();
       } else if (newStatus === 'destroyed') {
-        window.location.href = "/main";
+        this.destroy();
       }
     },
 
@@ -105,9 +114,9 @@
     '{model} waitCountdownStage' : function(model, e, newStage) {
       if (newStage === 0) {
         if (model.isBanker()) {
-          Dialog.message('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
+          Dialog.message('很遗憾，棋桌将要解散，您的建桌费会返到您的账户');
         } else {
-          Dialog.message('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
+          Dialog.message('很遗憾，棋桌将要解散，欢迎您继续游戏');
         }
       }
     },
@@ -171,12 +180,14 @@
 
     '.game-player mouseenter' : function(e) {
       var player = this.getPlayer(e);
-      $('body').append(can.view('/js/libs/mst/player_tip.mst', player));
-      var playerTip = $('.player-tip');
-      playerTip.css({
-        top : e.offset().top + e.outerHeight(),
-        left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
-      });
+      can.view('/js/libs/mst/player_tip.mst', player, function(frag) {
+        $('body').append(frag);
+        var playerTip = $('.player-tip');
+        playerTip.css({
+          top : e.offset().top + e.outerHeight(),
+          left : e.offset().left + e.outerWidth() / 2 - playerTip.width() / 2
+        });
+      }.bind(this));
     },
 
     '.game-player mouseleave' : function(e) {
@@ -207,19 +218,48 @@
     '.game-quit-button click' : function() {
       var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
-        var message = this.options.model.isBanker() ? '棋局已开始，您的建桌费不会返还，确定要退出？' : '棋局已开始，确定要退出？';
+        var message = this.options.model.isBanker() ? '棋局已开始，您的建桌费不会返还，此桌游戏将取消，确定要退出？' : '棋局已开始，确定要退出？';
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });
         });
       } else {
-        var message = this.options.model.isBanker() ? '正在等待棋局，您的建桌费不会返还，确定要退出？' : '正在等待棋局，确定要退出？';
+        var message = this.options.model.isBanker() ? '正在等待棋局，您的建桌费不会返还，此桌游戏将取消，确定要退出？' : '正在等待棋局，确定要退出？';
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
           });
         });
+      }
+    },
+
+    destroy : function() {
+      var model = this.options.model;
+      var type = model.attr('destroyType');
+      if (!model.isBanker() && type === 'banker-quit') {
+        Dialog.show({
+          title : '确认',
+          content : '因为庄家退出，游戏将在<span class="close-countdown-number">10</span>秒后关闭',
+          autoClose : false,
+          actions : [{
+            name : '立即关闭',
+            userClass : 'btn-primary',
+            callback : function() {
+              window.location.href = "/main";
+            }
+          }]
+        });
+        var countdown = 10;
+        var timer = setInterval(function() {
+          $('.close-countdown-number').html(--countdown);
+          if (countdown === 0) {
+            clearInterval(timer);
+            window.location.href = "/main";
+          }
+        }, 1000);
+      } else {
+        window.location.href = "/main";
       }
     },
 
@@ -239,8 +279,10 @@
     },
 
     showWaiting : function() {
-      $('.game-main-area').empty().html(can.view('/js/libs/mst/game_waiting.mst', this.options.model));
-      this.resetStartButton();
+      can.view('/js/libs/mst/game_waiting.mst', this.options.model, function(frag) {
+        $('.game-main-area').empty().html(frag);
+        this.resetStartButton();
+      }.bind(this));
     },
 
     showLoading : function(countdown) {
@@ -249,6 +291,9 @@
 
     showOngoing : function() {
       $('.game-countdown-number').hide();
+      setTimeout(function() {
+        $('.game-countdown-number').remove();
+      }, 2000);
       this.chessborad = new Chessboard($('.game-main-area'), {
         model : this.options.model
       });

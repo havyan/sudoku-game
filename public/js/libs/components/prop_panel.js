@@ -2,7 +2,9 @@
   can.Control('Components.PropPanel', {}, {
     init : function(element, options) {
       this.model = new can.Model(options.data);
-      element.html(can.view('/js/libs/mst/prop_panel.mst', this.model));
+      can.view('/js/libs/mst/prop_panel.mst', this.model, function(frag) {
+        element.html(frag);
+      }.bind(this));
     },
 
     '.navigator .item click' : function(element) {
@@ -33,7 +35,7 @@
       var value = parseInt(valueElement.val());
       var current = _.find(this.model.attr('props'), {
         type : element.closest('.store-item').data('type')
-      }).value;
+      }).count;
       if (value < (999 - current)) {
         valueElement.val(value + 1);
         this.resetItem(element);
@@ -41,16 +43,17 @@
     },
 
     '.container .store .count input keydown' : function(element, event) {
-      return (event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 95 && event.keyCode < 106) || event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46;
+      return Utils.isIntKey(event.keyCode);
     },
 
     '.container .store .count input blur' : function(element, event) {
+      var max = 999;
       var value = parseInt(element.val());
       var current = _.find(this.model.attr('props'), {
         type : element.closest('.store-item').data('type')
-      }).value;
-      if (value > (999 - current)) {
-        element.val(999 - current);
+      }).count;
+      if (value > max) {
+        element.val(max);
       }
       this.resetItem(element);
     },
@@ -78,7 +81,7 @@
       var count = parseInt($value.val());
       var current = _.find(this.model.attr('props'), {
         type : element.closest('.store-item').data('type')
-      }).value;
+      }).count;
       if ((count + current) > 999) {
         Dialog.message('单个道具最多只能买999个。');
         $value.val(999 - current);
@@ -90,7 +93,9 @@
             self.model.attr('money', result.money);
             _.find(self.model.attr('props'), {
               type : type.attr('type')
-            }).attr('value', result.count);
+            }).attr('count', result.count);
+            type.attr('sales', type.attr('sales') + count);
+            type.attr('purchase', type.attr('purchase') + count);
             Dialog.message('购买成功');
           } else {
             Dialog.message('购买失败: ' + result.reason);

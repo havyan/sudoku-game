@@ -1,0 +1,107 @@
+.messages-panel {
+  width: 70%;
+  margin: auto;
+  margin-top: 80px;
+}
+
+.messages-header {
+  margin-bottom: 10px;
+}
+
+.messages-header > * {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.messages-header input.select-all {
+  margin: 0px;
+  vertical-align: middle;
+  margin-left: 35px;
+  margin-right: 3px;
+}
+
+.messages-content {
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid white;
+  border-radius: 15px;
+  padding: 15px 25px;
+  box-sizing: border-box;
+}
+
+.messages-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.messages-table thead tr {
+  border-bottom: 1px solid white;
+  height: 40px;
+}
+
+.messages-table tbody tr {
+  height: 40px;
+  cursor: pointer;
+}
+
+.messages-table tbody tr:hover {
+  background-color: #3781c4;
+}
+
+.messages-table .select-one {
+  margin-left: 10px;
+}
+
+.messages-table tbody tr[data-read=false] {
+  color: #e60012;
+  font-weight: bold;
+}
+
+.messages-table tbody tr[data-from=SYSTEM] {
+  color: #FFF000;
+}
+
+.messages-table thead .select {
+  width: 5%;
+}
+
+.messages-table thead .from {
+  width: 15%;
+}
+
+.messages-table thead .title {
+  width: 45%;
+}
+
+.messages-table thead .date {
+  width: 25%;
+}
+
+.messages-table thead .notes {
+  width: 15%;
+}
+
+.messages-actions {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.message-row {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #E2E2E2;
+}
+
+.message-row:last-of-type {
+  border-bottom: none;
+}
+
+.message-row.content {
+  padding: 10px 20px;
+}
+
+.message-label {
+  font-weight: bold;
+  display: inline-block;
+}

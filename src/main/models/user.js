@@ -2,14 +2,12 @@ var _ = require('lodash');
 var fs = require('fs');
 var gm = require('gm');
 var async = require('async');
-var formidable = require('formidable');
 var winston = require('winston');
 var vcode = require('verify-code');
 var emailer = require('../emailer');
 var UserDAO = require('../daos/user');
 var ResetKeyDAO = require('../daos/reset_key');
 var ActiveKeyDAO = require('../daos/active_key');
-var TMP_ICON_DIR = '/imgs/web/tmp';
 var ICON_DIR = '/imgs/web/user_icons';
 var RESET_PASSWORD_EXPIRED = 30;
 
@@ -33,68 +31,54 @@ User.updateByAccount = function(account, json, cb) {
 
 User.updateIconByAccount = function(account, icon, library, bound, cb) {
   if (library) {
-    UserDAO.findOneByAccount(account, function(error, user) {
-      if (error) {
-        cb(error);
-      } else {
-        var oldIcon = user.icon;
-        UserDAO.updateByAccount(account, {
-          icon : icon
-        }, function(error, result) {
-          if (error) {
-            cb(error);
-          } else {
-            cb(null, icon);
-          }
-        });
-        if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
-          removeFile('public' + oldIcon);
-        }
+    async.waterfall([
+    function(cb) {
+      UserDAO.findOneByAccount(account, cb);
+    },
+    function(user, cb) {
+      var oldIcon = user.icon;
+      UserDAO.updateByAccount(account, {
+        icon : icon
+      }, cb);
+      if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
+        removeFile('public' + oldIcon);
       }
-    });
+    },
+    function(result, cb) {
+      cb(null, icon);
+    }], cb);
   } else {
     var fileName = icon.substring(icon.lastIndexOf('/') + 1, icon.length);
     var iconPath = ICON_DIR + '/' + fileName;
-    var source = 'public' + icon;
+    var source = icon;
     var dest = 'public' + iconPath;
-    gm(source).size(function(error, size) {
-      if (error) {
-        cb(error);
-      } else {
-        var width = size.width * bound.width;
-        var height = size.height * bound.height;
-        var x = size.width * bound.x;
-        var y = size.height * bound.y;
-        gm(source).crop(width, height, x, y).write(dest, function(error) {
-          if (error) {
-            cb(error);
-          } else {
-            UserDAO.findOneByAccount(account, function(error, user) {
-              if (error) {
-                cb(error);
-              } else {
-                var oldIcon = user.icon;
-                UserDAO.updateByAccount(account, {
-                  icon : iconPath
-                }, function(error, result) {
-                  if (error) {
-                    cb(error);
-                  } else {
-                    cb(null, iconPath);
-                  }
-                });
-                if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
-                  removeFile('public' + oldIcon);
-                }
-              }
-            });
-          }
-          setTimeout(function() {
-            removeFile(source);
-          }, 1000);
-        });
+    async.waterfall([
+    function(cb) {
+      gm(source).size(cb);
+    },
+    function(size, cb) {
+      var width = size.width * bound.width;
+      var height = size.height * bound.height;
+      var x = size.width * bound.x;
+      var y = size.height * bound.y;
+      gm(source).crop(width, height, x, y).write(dest, cb);
+    },
+    function() {
+      removeFile(source);
+      UserDAO.findOneByAccount(account, _.last(arguments));
+    },
+    function(user, cb) {
+      var oldIcon = user.icon;
+      UserDAO.updateByAccount(account, {
+        icon : iconPath
+      }, cb);
+      if (oldIcon.indexOf('/imgs/default/user_icons') < 0) {
+        removeFile('public' + oldIcon);
       }
-    });
+    },
+    function(result, cb) {
+      cb(null, iconPath);
+    }], cb);
   }
 };
 
@@ -122,14 +106,12 @@ User.checkAccount = function(account, cb) {
         cb(error);
       } else {
         cb(null, {
-          valid : user == null
+          exist : user != null
         });
       }
     });
   } else {
-    cb(null, {
-      valid : false
-    });
+    cb('account can not be null.');
   }
 };
 
@@ -142,48 +124,45 @@ User.checkEmail = function(email, cb) {
         cb(error);
       } else {
         cb(null, {
-          valid : user == null
+          exist : user != null
         });
       }
     });
   } else {
-    cb(null, {
-      valid : false
-    });
+    cb('email can not be null');
   }
 };
 
 User.createUser = function(params, cb) {
   var self = this;
-  this.checkAccount(params.account, function(error, result) {
-    if (error) {
-      cb(error);
+  async.waterfall([
+  function(cb) {
+    self.checkAccount(params.account, cb);
+  },
+  function(result, cb) {
+    if (result.exist) {
+      cb('账号不合法');
     } else {
-      if (result.valid) {
-        self.checkEmail(params.email, function(error, result) {
-          if (result.valid) {
-            UserDAO.createUser(params, function(error) {
-              if (error) {
-                cb(error);
-              } else {
-                cb(null, {
-                  success : true
-                });
-              }
-            });
-          } else {
-            cb(null, {
-              success : false,
-              reason : '邮箱不合法'
-            });
-          }
-        });
-      } else {
-        cb(null, {
-          success : false,
-          reason : '账号不合法'
-        });
-      }
+      self.checkEmail(params.email, cb);
+    }
+  },
+  function(result, cb) {
+    if (result.exist) {
+      cb('邮箱不合法');
+    } else {
+      UserDAO.createUser(params, cb);
+    }
+  }], function(error) {
+    if (error) {
+      winston.error('Error happened when create new user: ' + error);
+      cb(null, {
+        success : false,
+        reason : error
+      });
+    } else {
+      cb(null, {
+        success : true
+      });
     }
   });
 };
@@ -226,10 +205,10 @@ User.sendResetMail = function(email, cb) {
     }
   },
   function(key, cb) {
-    var link = global.config.server.domain + ':' + global.config.server.port + '/reset_password?key=' + key.id;
+    var link = global.domain + '/reset_password?key=' + key.id;
     emailer.send({
       to : email,
-      subject : '重置超天才数独游戏登录密码',
+      subject : '重置天才数独游戏登录密码',
       html : '<p>请点击重置链接来重置密码: <a href="' + link + '">重置</a></p>'
     }, cb);
   }], cb);
@@ -267,6 +246,34 @@ User.checkActiveKey = function(key, cb) {
       }
     }
   });
+};
+
+User.clearInactiveUsers = function(cb) {
+  winston.debug('Start to clear inactive users');
+  async.waterfall([
+  function(cb) {
+    UserDAO.findInactive(cb);
+  },
+  function(users, cb) {
+    if (users && users.length > 0) {
+      async.eachSeries(users, function(user, cb) {
+        ActiveKeyDAO.findOneBySource(user.account, function(error, key) {
+          if (error) {
+            cb(error);
+          } else {
+            if (!key) {
+              winston.info('Remove inactive user [' + user.account + '].');
+              user.remove(cb);
+            } else {
+              cb();
+            }
+          }
+        });
+      }, cb);
+    } else {
+      cb();
+    }
+  }], cb);
 };
 
 module.exports = User;

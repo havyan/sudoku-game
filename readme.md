@@ -55,3 +55,14 @@ node-inspector
 ```
 node --debug bin/startup.js
 ```
+
+# Deploy on CentOS 7.0
+1. Update `/etc/mongod.conf`: `dbPath` and `pidFilePath`
+2. `cp /data/web/sudoku-game/centos/mongodb.service /usr/lib/systemd/system`
+3. `cp /data/web/sudoku-game/centos/sudoku-game.service /usr/lib/systemd/system`
+4. `systemctl enable mongodb`
+5. `systemctl enable sudoku-game`
+
+# TODO List
+* Build prop class hierarchy, separate prop's code from game model
+* Change prop data structure to array, it's good for extension

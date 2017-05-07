@@ -2,39 +2,39 @@
 	<div class="game-main-area"></div>
 	<div class="game-countdown-number" style="display:none;"></div>
 	<div class="game-state-area">
-	  <div class="game-remaining-time">{{formatSeconds remainingTime}}</div>
+	  <div class="game-remaining-time">{{formatRemainingTime remainingTime}}</div>
 		<div class="player-area">
 			{{#each players}}
 			{{#if this}}
 			<div class="game-player" data-index="{{@index}}" account="{{account}}">
 				<div class="game-player-icon"><img src="{{icon}}"></div>
-				<div class="game-player-name">{{name}}</div>
+				<div class="game-player-name" title="{{name}}">{{name}}</div>
 			</div>
 			{{/if}}
 			{{/each}}
 			{{#each quitPlayers}}
 			<div class="game-player quit" data-index="{{@index}}" account="{{account}}">
 				<div class="game-player-icon"><img src="{{icon}}"></div>
-				<div class="game-player-name">{{name}}</div>
+				<div class="game-player-name" title="{{name}}">{{name}}</div>
 			</div>
 			{{/each}}
 		</div>
 		<div class="game-state-separator"></div>
 		<table class="game-ranking-table">
 			<thead>
-	        	<th>即时排名</th>
-	        	<th>头像/用户</th>
-	        	<th>总分</th>
-	    	</thead>
-	    	<tbody>
-	    		{{#ranking}}
-	    		<tr class="{{type}}">
-	    			<td>{{position}}</td>
-	    			<td>{{name}}</td>
-	    			<td>{{score}}</td>
-	    		</tr>
-	    		{{/ranking}}
-	    	</tbody>
+      	<th class="game-ranking-number">即时排名</th>
+      	<th class="game-ranking-name">头像/用户</th>
+      	<th class="game-ranking-score">总分</th>
+    	</thead>
+    	<tbody>
+    		{{#ranking}}
+    		<tr class="{{type}}">
+    			<td>{{position}}</td>
+    			<td><div class="game-ranking-name-wrapper">{{name}}</div></td>
+    			<td>{{score}}</td>
+    		</tr>
+    		{{/ranking}}
+    	</tbody>
 		</table>
 		<div class="game-state-separator light"></div>
 		<div class="game-chat-messages">
@@ -50,8 +50,8 @@
 		<div class="game-state-separator light"></div>
 		<textarea class="game-message-input"></textarea>
 		<div class="game-state-actions">
-			<input class="rich-button game-quit-button" type="button" value="退出" />
-			<input class="rich-button game-send-message-button" type="button" value="发送" />
+			<div class="rich-button game-quit-button">退出</div>
+			<div class="rich-button game-send-message-button">发送</div>
 		</div>
 		<a class="game-state-hide-button" href="javascript:void(0);"></a>
 	</div>

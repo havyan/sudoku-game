@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/pay_result.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/lodash.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/components/utils.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs/components/pagination_bar.js"></script>
+  </head>
+  <body>
+    {{> top_actions }}
+    <div class="welcome">
+      欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
+    </div>
+
+    <div id="pay_result">
+      <div class="container">
+        <p>
+          充值天才币成功！
+        </p>
+        <p>
+          您的当前天才币为：<span class="money">{{money}}</span>天才币。
+        </p>
+      </div>
+      <div class="pay-result-actions">
+        <a class="rich-button pay-result-back" href="/main">返回</a>
+      </div>
+    </div>
+  </body>
+</html>

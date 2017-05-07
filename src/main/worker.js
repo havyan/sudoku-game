@@ -1,42 +1,43 @@
 var _ = require('lodash');
 var async = require('async');
 var winston = require('winston');
-var UserDAO = require('./daos/user');
-var ActiveKeyDAO = require('./daos/active_key');
+var User = require('./models/user');
+var Recharge = require('./models/recharge');
+var SealedIpDAO = require('./daos/sealed_ip');
 
-var INTERVAL = 30 * 60 * 1000;
+var CLEAR_USER_INTERVAL = 30 * 60 * 1000;
+var CHECK_RECHARGE_INTERVAL = 10 * 60 * 1000;
+var UPDATE_SEALEDIPS_INTERVAL = 3 * 60 * 1000;
+
+winston.info('Start worker');
 
 setInterval(function() {
-  winston.info('Start worker');
-  winston.info('Start to clear inactive users');
-  async.waterfall([
-  function(cb) {
-    UserDAO.findInactive(cb);
-  },
-  function(users, cb) {
-    if (users && users.length > 0) {
-      async.eachSeries(users, function(user, cb) {
-        ActiveKeyDAO.findOneBySource(user.account, function(error, key) {
-          if (error) {
-            cb(error);
-          } else {
-            if (!key) {
-              winston.info('Remove inactive user [' + user.account + '].');
-              user.remove(cb);
-            } else {
-              cb();
-            }
-          }
-        });
-      }, cb);
-    } else {
-      cb();
-    }
-  }], function(error) {
+  User.clearInactiveUsers(function(error) {
     if (error) {
       winston.error('Error when clearing inactive users: ' + error);
     } else {
-      winston.info('Finished clearing inactive users');
+      winston.debug('Finished clearing inactive users');
     }
   });
-}, INTERVAL);
+}, CLEAR_USER_INTERVAL);
+
+setInterval(function() {
+  Recharge.checkAll(function(error) {
+    if (error) {
+      winston.error('Error when checking recharge status: ' + error);
+    } else {
+      winston.debug('Finished checking recharge status');
+    }
+  });
+}, CHECK_RECHARGE_INTERVAL);
+
+setInterval(function() {
+  SealedIpDAO.allIps(function(error, sealedIps) {
+    if (error) {
+      winston.error('Error when updating sealed ips: ' + error);
+    } else {
+      winston.info('Sealed ips are: ' + JSON.stringify(sealedIps));
+      global.sealedIps = sealedIps;
+    }
+  });
+}, UPDATE_SEALEDIPS_INTERVAL);

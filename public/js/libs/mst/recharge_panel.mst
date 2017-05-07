@@ -1,0 +1,167 @@
+<div class="recharge-panel">
+  <div class="navigator">
+    <div class="rich-button item balance active" data-target="recharge-balance">
+      账户余额
+    </div>
+    <div class="rich-button item recharge" data-target="recharge-recharge">
+      我要充值
+    </div>
+    <div class="rich-button item record" data-target="recharge-records">
+      充值记录
+    </div>
+  </div>
+  <div class="recharge-container">
+    <div class="recharge-balance item active">
+      <div class="balance-content">
+        {{#user}}
+        <p class="hello">
+          您好，<span>{{name}}</span>
+        </p>
+        <p class="amount">
+          您的当前账号余额为<span>{{money}}</span>金币。
+        </p>
+        {{/user}}
+      </div>
+    </div>
+    <div class="recharge-recharge item">
+      <div class="recharge-steps">
+        <div class="recharge-step order active">
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">提交充值订单</span>
+        </div>
+        <div class="recharge-step pay-method">
+          <span  class="recharge-step-icon"></span><span  class="recharge-step-label">选择充值方式</span>
+        </div>
+        <div class="recharge-step pay">
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">用户付款</span>
+        </div>
+        <div class="recharge-step result">
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">充值结果</span>
+        </div>
+      </div>
+      <div class="recharge-step-component order active">
+        <div class="purchase-label">
+          请选择您要充值的金额:
+        </div>
+        <div class="purchase-container">
+          <div class="purchase-row" data-value="100">
+            <input type="radio" checked="checked" name="purchase"/>
+            <span class="purchase-value">100</span><span>天才币</span>
+          </div>
+          <div class="purchase-row" data-value="500">
+            <input type="radio" name="purchase"/>
+            <span class="purchase-value">500</span><span>天才币</span>
+          </div>
+          <div class="purchase-row" data-value="1000">
+            <input type="radio" name="purchase"/>
+            <span class="purchase-value">1000</span><span>天才币</span>
+          </div>
+          <div class="purchase-row custom">
+            <input type="radio" name="purchase"/>
+            <span>我需要购买</span>
+            <input type="text" disabled="disabled" />
+            <span>天才币</span>
+            <span class="error">天才币不能为空</span>
+          </div>
+        </div>
+        <div class="recharge-separator"></div>
+        <div class="recharge-money">
+          <span class="recharge-money-label">所需人民币金额:</span><span class="recharge-money-value">{{cost}}</span> 元
+        </div>
+        <div class="recharge-target-label">
+          充值对象:
+        </div>
+        <div class="recharge-target">
+          <div class="recharge-target-row me">
+            <input type="radio" name="target"  checked="checked"/>
+            <span>给自己</span>
+          </div>
+          <div class="recharge-target-row other">
+            <input type="radio" name="target"/>
+            <span>给他人</span>
+            <input type="text"  disabled="disabled" />
+            <span class="error">账号不存在</span>
+          </div>
+        </div>
+        <div class="recharge-steps-actions">
+          <a class="rich-button order-next" href="javascript:void(0);">下一步</a>
+        </div>
+      </div>
+      <div class="recharge-step-component pay-method">
+        <form class="recharge-form" action="/recharge/{{order._id}}/pay" method="post" target="_blank">
+          <div class="pay-method-header">
+            订单已提交，请尽快付款
+          </div>
+          {{#order}}
+          <div class="pay-method-row">
+            <span class="name">充值到账号：</span><span class="value">{{target}}</span>
+          </div>
+          <div class="pay-method-row">
+            <span class="name">充值天才币数量：</span><span class="value">{{purchase}}</span>
+          </div>
+          <div class="pay-method-row">
+            <span class="name">您的订单号：</span><span class="value">{{trans_code}}</span>
+          </div>
+          <div class="pay-method-row money">
+            <span class="name">应付金额：</span><span class="value">{{cost}}</span>元
+          </div>
+          {{/order}}
+          <div class="pay-method-row method">
+            <span class="name">选择支付方式：</span>
+            {{#banks}}
+            <div class="pay-method-bank {{code}} {{#disabled}}hidden{{/disabled}}">
+              <input type="radio" name="banktype" data-bank="{{code}}" value="{{value}}" {{#isBankChecked value}}checked="checked"{{/isBankChecked}}/>
+              <img src="/imgs/default/banks/{{code}}.png" />
+            </div>
+            {{/banks}}
+          </div>
+          <div class="recharge-steps-actions">
+            <input class="rich-button pay-method-submit" name="submit" type="submit" value="立即充值">
+          </div>
+        </form>
+      </div>
+      <div class="recharge-step-component pay"></div>
+      <div class="recharge-step-component result">
+        <p>
+          {{rechargeResult order.status}}
+        </p>
+        {{#isToSelf}}
+        <p>
+          <span class="target">{{order.target}}</span>的当前天才币为：<span class="money">{{user.money}}</span>天才币。
+        </p>
+        {{/isToSelf}}
+      </div>
+    </div>
+    <div class="recharge-records item">
+      <table class="records-table">
+        <thead>
+          <th class="trans-code">交易号</th>
+          <th class="status">状态</th>
+          <th class="date">充值时间</th>
+          <th class="from">充值账号</th>
+          <th class="target">被充值账号</th>
+          <th class="cost">充值金额</th>
+          <th class="bank">充值渠道</th>
+          <th class="actions"></th>
+        </thead>
+        <tbody>
+          {{#records}}
+          <tr data-record="{{_id}}">
+            <td>{{trans_code}}</td>
+            <td>{{rechargeStatus status}}</td>
+            <td>{{date}}</td>
+            <td>{{from}}</td>
+            <td>{{target}}</td>
+            <td>{{cost}}</td>
+            <td>{{rechargeBank bank}}</td>
+            <td> {{#isContinued this}} <a class="continue-pay button" href="javascript:void(0)">继续支付</a> {{/isContinued}} </td>
+          </tr>
+          {{/records}}
+        </tbody>
+      </table>
+      <div class="records-pagination-bar"></div>
+    </div>
+  </div>
+  <div class="recharge-actions">
+    <a class="rich-button recharge-back" href="/main">返回</a>
+  </div>
+</div>

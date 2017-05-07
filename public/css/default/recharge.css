@@ -1,0 +1,386 @@
+#recharge {
+  margin-top: 80px;
+}
+
+.recharge-panel .navigator {
+  float: left;
+  width: 12%;
+  margin-left: 10%;
+}
+
+.recharge-panel .recharge-container {
+  margin-left: 27%;
+  width: 60%;
+  min-width: 600px;
+}
+
+.recharge-panel .recharge-back {
+  margin-top: 30px;
+  margin-left: 80%;
+}
+
+.recharge-container {
+  background-color: rgba(0,61,232,0.3);
+  border: 1px solid #296db6;
+  border-radius: 15px;
+  padding: 20px 30px;
+  box-sizing: border-box;
+}
+
+.recharge-container .item {
+  display: none;
+}
+
+.recharge-container .item.active {
+  display: block;
+}
+
+.recharge-balance {
+  height: 300px;
+}
+
+.balance-content {
+  margin-top: 120px;
+  font-size: 25px;
+  padding-left: 50px;
+}
+
+.balance-content .hello span {
+  color: #f8b62b;
+}
+
+.balance-content .amount span {
+  color: #FFF000;
+  margin: 0px 5px;
+}
+
+.balance-content .amount {
+  text-indent: 2em;
+}
+
+.recharge-steps {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #042d82;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.recharge-step {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.recharge-step span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.recharge-step-icon {
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background-color: #004a7e;
+  border: 2px solid #4f577d;
+  margin-right: 10px;
+}
+
+.recharge-step.active .recharge-step-icon {
+  border-color: white;
+  background-color: #00a0e9;
+}
+
+.recharge-step-label {
+  margin-right: 20px;
+  color: #51597f;
+}
+
+.recharge-step.active .recharge-step-label {
+  color: white;
+}
+
+.recharge-step-component {
+  font-size: 16px;
+  display: none;
+}
+
+.recharge-step-component.active {
+  display: block;
+}
+
+.purchase-label {
+  width: 180px;
+  text-align: right;
+}
+
+.purchase-container {
+  margin-left: 190px;
+}
+
+.recharge-separator {
+  height: 1px;
+  background-color: #042d82;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.purchase-row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.purchase-row * {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 0px !important;
+}
+
+.purchase-row input[type=radio] {
+  margin-right: 10px;
+}
+
+.purchase-value {
+  margin-right: 10px;
+  color: #FFF000;
+}
+
+.purchase-row.custom input[type=text] {
+  width: 80px;
+  text-align: center;
+  height: 25px;
+  line-height: 25px;
+  vertical-align: middle;
+  background-color: rgba(0,61,232,0.3);
+  color: #FFF000;
+  border: 1px solid gray;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.purchase-row.custom .error {
+  margin-left: 10px;
+  color: red;
+  display: none;
+}
+
+.recharge-money-label {
+  display: inline-block;
+  width: 180px;
+  text-align: right;
+}
+
+.recharge-money-value {
+  display: inline-block;
+  margin-left: 10px;
+  color: #FFF000;
+}
+
+.recharge-target-label {
+  margin-top: 10px;
+  width: 180px;
+  text-align: right;
+}
+
+.recharge-target {
+  margin-left: 190px;
+}
+
+.recharge-target-row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.recharge-target-row > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.recharge-target-row input[type=radio] {
+  margin-right: 10px;
+  margin-top: 0px;
+}
+
+.recharge-target-row.other input[type=text] {
+  width: 100px;
+  text-align: center;
+  height: 25px;
+  line-height: 25px;
+  vertical-align: middle;
+  background-color: rgba(0,61,232,0.3);
+  color: #FFF000;
+  border: 1px solid gray;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.recharge-steps-actions {
+  text-align: right;
+  margin-top: 30px;
+}
+
+.pay-method-header {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.pay-method-row {
+  padding-left: 50px;
+  margin-bottom: 20px;
+}
+
+.pay-method-row > * {
+  vertical-align: middle;
+}
+
+.pay-method-row .name {
+  margin-right: 10px;
+}
+
+.pay-method-row.money .value {
+  margin-right: 10px;
+  color: #FFF000;
+}
+
+.pay-method-row.method img {
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.pay-method-row.method .name {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.pay-method-bank {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 25px;
+  margin-bottom: 20px;
+}
+
+.pay-method-bank.weixin img {
+  width: 110px;
+  height: 35px;
+}
+
+.pay-method-bank img {
+  border-radius: 10px;
+}
+
+.pay-method-bank.icbc, .pay-method-bank.bcm {
+  margin-left: 110px;
+}
+
+.pay-method-bank > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.pay-method-bank input[type=radio] {
+  margin-top: 0px;
+  margin-right: 5px;
+}
+
+.recharge-form-hide {
+  display: none;
+}
+
+.pay-confirm-dialog .modal-title {
+  text-align: center;
+}
+
+.pay-confirm-dialog .modal-body {
+  text-align: center;
+}
+
+.pay-confirm-dialog .close {
+  display: none;
+}
+
+.pay-confirm-dialog .modal-footer {
+  text-align: center;
+}
+
+.recharge-target-row.other .error {
+  margin-left: 10px;
+  color: red;
+  display: none;
+}
+
+.recharge-step-component.pay {
+  height: 300px;
+}
+
+.recharge-step-component.result {
+  height: 300px;
+}
+
+.recharge-step-component.result p {
+  text-align: center;
+  font-size: 25px;
+}
+
+.recharge-step-component.result p:first-of-type {
+  margin-top: 120px;
+}
+
+.recharge-step-component.result .target {
+  color: #FFF000;
+  font-weight: bold;
+  margin: 0px 5px;
+}
+
+.recharge-step-component.result .money {
+  color: #FFF000;
+  font-weight: bold;
+  margin: 0px 5px;
+}
+
+.records-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.records-table thead tr {
+  height: 40px;
+  border-bottom: 1px solid #296db6;
+}
+
+.records-table th.trans-code {
+  width: 20%
+}
+
+.records-table th.status {
+  width: 10%
+}
+
+.records-table th.date {
+  width: 15%
+}
+
+.records-table th.from {
+  width: 10%
+}
+
+.records-table th.target {
+  width: 10%
+}
+
+.records-table th.cost {
+  width: 10%
+}
+
+.records-table th.bank {
+  width: 10%
+}
+
+.records-table th.actions {
+  width: 10%
+}
+
+.records-table .continue-pay {
+  padding: 3px 6px;
+}

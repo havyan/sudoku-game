@@ -1,5 +1,6 @@
 var _ = require('lodash');
-var Observable = require('./base/observable');
+var util = require("util");
+var EventEmitter = require('events').EventEmitter;
 var RoomDAO = require('./daos/room');
 var RuleDAO = require('./daos/rule');
 var UserDAO = require('./daos/user');
@@ -9,8 +10,23 @@ var PLAYING = 'playing';
 var FREE = 'free';
 
 var GameManager = function() {
-  this.$ = new Observable();
+  EventEmitter.call(this);
   this.rooms = [];
+};
+util.inherits(GameManager, EventEmitter);
+
+GameManager.prototype.reload = function(cb) {
+  var self = this;
+  this.destroy();
+  this.rooms = [];
+  this.init(function(error) {
+    if (error) {
+      cb(error);
+    } else {
+      self.emit('game-manager-reload');
+      cb();
+    }
+  });
 };
 
 GameManager.prototype.init = function(cb) {
@@ -21,7 +37,7 @@ GameManager.prototype.init = function(cb) {
     } else {
       if (rooms) {
         var build = function(room) {
-          var room = new Room(room.id, room.name, room.virtual);
+          var room = new Room(room.id, room.name, room.virtual, room.capacity, room.order);
           if (room.virtual) {
             _.filter(rooms, {
               parent : room.id
@@ -31,13 +47,13 @@ GameManager.prototype.init = function(cb) {
           }
           return room;
         };
-        _.filter(rooms, {
-          parent : undefined
+        _.filter(rooms, function(room) {
+          return room.virtual && _.isEmpty(room.parent);
         }).forEach(function(room) {
           self.rooms.push(build(room));
         });
       }
-      self.trigger('game-manager-init');
+      self.emit('game-manager-init');
       cb();
     }
   });
@@ -187,10 +203,10 @@ GameManager.prototype.hasLiveGame = function() {
   });
 };
 
-GameManager.prototype.setGameStatus = function(account, id, status) {
+GameManager.prototype.switchGameStatus = function(account, id, status, cb) {
   var game = this.findGame(id);
   if (game) {
-    game.setStatus(status);
+    game.switchStatus(status, cb);
   }
 };
 
@@ -205,6 +221,11 @@ GameManager.prototype.findGameByUser = function(account) {
   return game;
 };
 
-_.merge(GameManager.prototype, Observable.general);
+GameManager.prototype.destroy = function() {
+  this.rooms.forEach(function(room) {
+    room.destroy();
+  });
+  this.emit('game-manager-destroyed');
+};
 
 module.exports = GameManager;

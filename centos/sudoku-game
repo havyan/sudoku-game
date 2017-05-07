@@ -1,0 +1,20 @@
+#!/bin/sh
+
+echo "Sudoku game script"
+
+start() {
+  echo "Start sudoku game service"
+  cd /data/web/sudoku-game
+  node ./bin/startup.js env=production
+}
+
+stop() {
+  echo "Stop sudoku game service"
+  pkill node
+}
+
+case $1 in
+  start|stop)
+    "$1"
+    ;;
+esac

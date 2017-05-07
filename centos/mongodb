@@ -1,0 +1,19 @@
+#!/bin/sh
+
+echo "MongoDB service script"
+
+start() {
+  echo "Start MongoDB service"
+  mongod -dbpath "/var/lib/mongo"
+}
+
+stop() {
+  echo "Stop MongoDB service"
+  pkill mongod
+}
+
+case $1 in
+  start|stop)
+    "$1"
+    ;;
+esac

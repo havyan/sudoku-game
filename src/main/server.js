@@ -1,10 +1,7 @@
-// Read system config from json
-global.config = require('../../config.json');
-// Initialize log
-require('./log')();
+require('./init');
 var winston = require('winston');
-winston.info("Starting sudoku game service");
 
+winston.info("Starting sudoku game service");
 var app = require('./app');
 module.exports = function(cb) {
   app.init(function() {
@@ -12,4 +9,4 @@ module.exports = function(cb) {
     require('./event_center')(server);
     cb(server);
   });
-}; 
+};

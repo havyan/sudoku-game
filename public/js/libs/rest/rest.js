@@ -34,6 +34,16 @@
       });
     },
 
+    getGameStatus : function(id, success, error) {
+      return $.ajax({
+        type : 'GET',
+        url : '/game/' + id + '/status',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     playerJoin : function(id, index, params, success, error) {
       return $.ajax({
         type : 'post',
@@ -272,17 +282,19 @@
     },
 
     setIcon : function(icon, library, bound, success, error) {
+      var formData = new FormData();
+      formData.append('icon', icon);
+      formData.append('library', library);
+      formData.append('bound', JSON.stringify(bound));
       return $.ajax({
         type : 'put',
         url : '/user/icon',
         dataType : 'json',
-        data : {
-          icon : icon,
-          library : library,
-          bound : JSON.stringify(bound)
-        },
+        data : formData,
         success : success,
-        error : error
+        error : error,
+        processData : false,
+        contentType : false
       });
     },
 
@@ -376,11 +388,139 @@
     }
   }, {});
 
-  can.Model('Rest.Mail', {
-    getMails : function(success, error) {
+  can.Model('Rest.Message', {
+    getMessages : function(start, size, success, error) {
       return $.ajax({
         type : 'get',
-        url : '/mails',
+        url : '/messages',
+        dataType : 'json',
+        data : {
+          start : start,
+          size : size
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    getTotal : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/messages/total',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    getUnreadCount : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/messages/unread/count',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    removeInbox : function(ids, success, error) {
+      return $.ajax({
+        type : 'delete',
+        url : '/messages/inbox',
+        dataType : 'json',
+        data : {
+          ids : JSON.stringify(ids)
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    read : function(id, success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/message/' + id,
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
+
+  can.Model('Rest.Recharge', {
+    getData : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/recharge/data',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    create : function(data, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/recharge',
+        data : {
+          data : JSON.stringify(data)
+        },
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    getTotal : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/recharge/records/total',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    getRecords : function(start, size, success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/recharge/records',
+        dataType : 'json',
+        data : {
+          start : start,
+          size : size
+        },
+        success : success,
+        error : error
+      });
+    },
+
+    getPayStatus : function(payuid, success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/recharge/pay/' + payuid + '/status',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
+
+  can.Model('Rest.Events', {
+    getSystem : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/events/system',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    getGame : function(success, error) {
+      return $.ajax({
+        type : 'get',
+        url : '/events/game',
         dataType : 'json',
         success : success,
         error : error

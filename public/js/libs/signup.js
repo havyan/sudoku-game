@@ -24,20 +24,46 @@
         var account = e.val();
         var $sign = e.siblings('.ok-sign');
         if (!_.isEmpty(account)) {
-          Rest.User.checkAccount(account, function(result) {
-            if (result.valid) {
-              $sign.removeClass('wrong');
-              self.validation.account = true;
-            } else {
-              $sign.addClass('wrong');
-              self.validation.account = false;
-            }
+          var reg = /^\w{1,30}$/g;
+          if (reg.test(account)) {
+            Rest.User.checkAccount(account, function(result) {
+              if (result.exist) {
+                $sign.addClass('wrong');
+                self.validation.account = false;
+              } else {
+                $sign.removeClass('wrong');
+                self.validation.account = true;
+              }
+              $sign.css('display', 'inline-block');
+            }, function() {
+            });
+          } else {
+            $sign.addClass('wrong');
+            self.validation.account = false;
             $sign.css('display', 'inline-block');
-          }, function() {
-          });
+          }
         } else {
           $sign.hide();
           self.validation.account = false;
+        }
+      },
+
+      '.name .signup-value blur' : function(e) {
+        var name = e.val();
+        var $sign = e.siblings('.ok-sign');
+        if (!_.isEmpty(name)) {
+          var reg = /^\S{1,30}$/g;
+          if (reg.test(name)) {
+            $sign.removeClass('wrong');
+            this.validation.name = true;
+          } else {
+            $sign.addClass('wrong');
+            this.validation.name = false;
+          }
+          $sign.css('display', 'inline-block');
+        } else {
+          $sign.hide();
+          this.validation.name = false;
         }
       },
 
@@ -95,12 +121,12 @@
           var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
           if (reg.test(email)) {
             Rest.User.checkEmail(email, function(result) {
-              if (result.valid) {
-                self.validation.email = true;
-                $sign.removeClass('wrong');
-              } else {
+              if (result.exist) {
                 $sign.addClass('wrong');
                 self.validation.email = false;
+              } else {
+                self.validation.email = true;
+                $sign.removeClass('wrong');
               }
               $sign.css('display', 'inline-block');
             }, function() {
@@ -145,7 +171,7 @@
       '.signup-submit click' : function() {
         var self = this;
         var validation = self.validation;
-        if (validation.account && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
+        if (validation.account && validation.name && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
           $('.signup-form').ajaxSubmit({
             success : function(result) {
               if (result.success) {
@@ -172,6 +198,14 @@
 
       '.protocol-read input click' : function(e) {
         $('.signup-submit').attr('disabled', !e.is(':checked'));
+      },
+
+      '.protocol-read .protocol click' : function(e) {
+        Agreement.showProtocol();
+      },
+
+      '.protocol-read .law click' : function(e) {
+        Agreement.showLaw();
       }
     });
 

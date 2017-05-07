@@ -1,12 +1,19 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var common = require('./common');
 
 var RoomSchema = new Schema({
   name : String,
   code : String,
   icon : String,
+  description : String,
+  capacity : Number,
   virtual : Boolean,
-  parent : String
+  parent : String,
+  seat : Number,
+  help : String,
+  order : Number,
+  status : String
 });
 
 RoomSchema.statics.findOneByName = function(name, cb) {
@@ -24,5 +31,7 @@ RoomSchema.statics.allVirtuals = function(cb) {
     virtual : true
   }, cb);
 };
+
+RoomSchema.plugin(common);
 
 module.exports = mongoose.model('Room', RoomSchema);

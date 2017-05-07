@@ -1,0 +1,99 @@
+<style>
+  .award {
+    border: 1px solid RED;
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin-bottom: 10px;
+  }
+
+  .award .title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    color: RED;
+  }
+
+  .award .award-label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .award .award-label span {
+    display: inline-block;
+    margin-left: 3px;
+    margin-right: 3px;
+    color: RED;
+  }
+
+  .award .award-props {
+    margin-bottom: 10px;
+  }
+
+  .award .award-prop {
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 15px;
+  }
+
+  .award .award-prop .icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .award .award-prop > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .award .award-prop .text span {
+    color: RED;
+    font-weight: bold;
+  }
+
+  .award .current-prop {
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  .award .current-prop .icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .award .current-prop > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+</style>
+<div class="award">
+  {{#award}}
+  <div class="title">
+    {{title}}
+  </div>
+  <div class="award-label">
+    您获得了<span>{{money}}</span>个天才币和以下的道具作为奖励:
+  </div>
+  <div class="award-props">
+    {{#props}}
+    <div class="award-prop">
+      <img class="icon" src="{{icon}}"></img>
+      <span class="text">{{name}} <span>+ {{count}}</span></span>
+    </div>
+    {{/props}}
+  </div>
+  {{/award}}
+  <div class="award-label">
+    您当前拥有<span>{{currentMoney}}</span>天才币和如下道具：
+  </div>
+  <div class="current-props">
+    {{#currentProps}}
+    <div class="current-prop">
+      <img class="icon" src="{{icon}}"></img>
+      <span class="text">{{name}} * {{count}}</span>
+    </div>
+    {{/currentProps}}
+  </div>
+</div>

@@ -55,9 +55,25 @@ input:focus {
   font-size: 10px;
 }
 
+.protocol-read > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.protocol-read .protocol,
+.protocol-read .law {
+  color: #fff100;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
 .protocol-read input {
   margin-left: 60px;
   margin-right: 5px;
+  margin-top: 0px;
 }
 
 .common-actions {
@@ -65,7 +81,7 @@ input:focus {
 }
 
 .common-actions button {
-  margin-right: 50px; 
+  margin-right: 50px;
 }
 
 .mandatory-sign {

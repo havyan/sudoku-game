@@ -1,4 +1,5 @@
 <div class="player-tip">
+  <div class="player-tip-triangle"></div>
   <div class="player-tip-content">
     <div class="player-tip-row">
       <div class="player-tip-name">
@@ -29,7 +30,7 @@
         胜率
       </div>
       <div class="player-tip-value">
-        {{winrate}}
+        {{winrate}}%
       </div>
     </div>
   </div>

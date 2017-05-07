@@ -1,6 +1,7 @@
 var winston = require('winston');
 var _ = require('lodash');
-var SYSTEM_GAME_TOPICS = ['init', 'player-joined', 'player-quit', 'status-changed'];
+var EVENTS = require('./events.json');
+;
 
 var EventCenter = function(io) {
   this.io = io;
@@ -11,34 +12,50 @@ var EventCenter = function(io) {
 
 EventCenter.prototype.initEvents = function() {
   var self = this;
+  this.initGameEvents();
+  global.gameManager.on('game-manager-reload', function() {
+    self.initGameEvents();
+    self.systemEmitter.emit('system-reload');
+  });
+};
+
+EventCenter.prototype.initGameEvents = function() {
+  var self = this;
   global.gameManager.getRealRooms().forEach(function(room) {
     room.games.forEach(function(game) {
       self.bindGame(game);
     });
 
-    room.on('game-reset', function(newGame, oldGame) {
+    room.on('game-replace', function(newGame, oldGame) {
       self.bindGame(newGame);
-      self.systemEmitter.emit('game-reset', JSON.stringify([oldGame.id, newGame.toSimpleJSON()]));
+      self.systemEmitter.emit('game-replace', JSON.stringify([oldGame.id, newGame.toSimpleJSON()]));
     });
   });
 };
 
 EventCenter.prototype.bindGame = function(game) {
   var self = this;
-  this.gameEmitters[game.id] = this.io.of('/events/game/' + game.id);
-  game.any(function() {
-    var topic = arguments[0];
-    var topicArgs = [];
-    if (arguments.length >= 2) {
-      for (var i = 1; i < arguments.length; i++) {
-        topicArgs.push(arguments[i]);
+  var ns = '/events/game/' + game.id;
+  this.gameEmitters[game.id] = this.io.of(ns);
+  EVENTS.game.forEach(function(topic) {
+    game.on(topic, function() {
+      var gameEmitter = self.gameEmitters[game.id];
+      if (gameEmitter) {
+        gameEmitter.emit(topic, JSON.stringify(_.values(arguments)));
       }
-    }
-    self.gameEmitters[game.id].emit(topic, JSON.stringify(topicArgs));
-    if (_.contains(SYSTEM_GAME_TOPICS, topic)) {
-      topicArgs.unshift(game.id);
-      self.systemEmitter.emit('game-' + topic, JSON.stringify(topicArgs));
-    }
+      if (topic === 'game-destroyed') {
+        delete self.gameEmitters[game.id];
+        self.io.removeOf(ns);
+      }
+    });
+  });
+
+  EVENTS.system_game.forEach(function(topic) {
+    game.on(topic, function() {
+      var args = _.values(arguments);
+      args.unshift(game.id);
+      self.systemEmitter.emit('game-' + topic, JSON.stringify(args));
+    });
   });
 };
 

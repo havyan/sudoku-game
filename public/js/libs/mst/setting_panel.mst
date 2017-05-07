@@ -1,10 +1,13 @@
-<div class="setting-panel">
+<div class="setting-panel {{#unless editable}}view{{/unless}}">
   <div class="navigator">
     <div class="rich-button item main active" data-target="setting-main">
       游戏设置
     </div>
     <div class="rich-button item grade" data-target="setting-grade">
       段位积分
+    </div>
+    <div class="rich-button item exchange" data-target="setting-exchange">
+      天才币汇率
     </div>
     <div class="rich-button item game-ui" data-target="setting-game-ui">
       游戏界面
@@ -14,21 +17,25 @@
     {{#rule}}
     {{#score}}
     <div class="setting-main item active" data-nav="main">
+      {{#editable}}
       <div class="setting-top-actions">
         <input class="rich-button reset-prop-action" type="button" value="重置道具" />
         <input class="rich-button reset-money-action" type="button" value="重置天才币" />
       </div>
+      {{/editable}}
       <div class="setting-score">
         <label class="setting-title">每步时间</label>
+        {{#editable}}
         <a class="add-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /><span>增加</span> </a>
         <a class="delete-button" href="javascript:void(0);"> <img src="imgs/default/delete.png" /><span>删除</span> </a>
+        {{/editable}}
         <div class="add-rule">
           {{#each add}}
           <div class="add-rule-separator"></div>
           <div class="add-rule-item{{#if @index}} collapsed{{/if}}" index="{{@index}}">
             <a class="add-rule-collapsed-button" href="javascript:void(0);">{{#if @index}}展开{{else}}收起{{/if}}</a>
             <div class="add-rule-item-header">
-              <input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} />
+              <input type="radio" name="addRule"{{#selected}} checked="checked"{{/selected}} {{disableEdit}} />
               <label><span>{{total}}</span>
                 <input type="text" value="{{total}}" />
                 <span>秒</span></label>
@@ -42,15 +49,17 @@
                 <div class="add-rule-item-row" rowIndex="{{@index}}">
                   <input type="text" class="add-rule-from" disabled="disabled" value="{{from}}" />
                   -
-                  <input type="text" class="add-rule-to" value="{{to}}" {{disableLastTo this}} />
-                  <input type="text" class="add-rule-score" value="{{score}}" />
+                  <input type="text" class="add-rule-to" value="{{to}}" {{disableLastTo this}} {{disableEdit}} />
+                  <input type="text" class="add-rule-score" value="{{score}}" {{disableEdit}} />
                 </div>
                 {{/each}}
               </div>
+              {{#editable}}
               <div class="add-rule-row-actions">
                 <a class="add-row-button" href="javascript:void(0);"> <img src="imgs/default/add.png" /></a>
                 <a class="delete-row-button" href="javascript:void(0);"> <img src="imgs/default/delete.png" /></a>
               </div>
+              {{/editable}}
             </div>
           </div>
           {{/each}}
@@ -61,11 +70,11 @@
           {{#reduce}}
           <div class="reduce-rule-row">
             <label>答错或超时扣分分值</label>
-            <input type="text" class="reduce-rule-timeout-score" value="{{timeout}}" />
+            <input type="text" class="reduce-rule-timeout-score" value="{{timeout}}" {{disableEdit}} />
           </div>
           <div class="reduce-rule-row">
             <label>Pass扣分分值</label>
-            <input type="text" class="reduce-rule-pass-score" value="{{pass}}" />
+            <input type="text" class="reduce-rule-pass-score" value="{{pass}}" {{disableEdit}} />
           </div>
           {{/reduce}}
         </div>
@@ -90,7 +99,17 @@
         </tbody>
       </table>
     </div>
-    {{/rule}}
+    {{#exchange}}
+    <div class="setting-exchange item" data-nav="exchange">
+      <div class="exchange-form">
+        <div class="exchange-rate">
+          1人民币 =
+          <input type="number" value="{{rate}}" {{disableEdit}} />
+          天才币
+        </div>
+      </div>
+    </div>
+    {{/exchange}}
     {{#ui}}
     <div class="setting-game-ui item" data-nav="game-ui">
       <div class="ui-form">
@@ -99,15 +118,18 @@
             缩放
           </div>
           <div class="ui-value ui-value-zoom">
-            <input type="number" min="1.0" max="1.5" step="0.1" value="{{zoom}}" />
+            <input type="number" min="1.0" max="1.5" step="0.1" value="{{zoom}}" {{disableEdit}} />
           </div>
         </div>
       </div>
     </div>
     {{/ui}}
+    {{/rule}}
   </div>
   <div class="setting-actions">
     <input class="rich-button setting-back-action" type="button" value="返回" />
+    {{#editable}}
     <input class="rich-button setting-save-action" type="button" value="保存" />
+    {{/editable}}
   </div>
 </div>

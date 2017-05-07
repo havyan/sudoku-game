@@ -1,9 +1,30 @@
+{{#awardResult}}
+<div class="award">
+  {{#award}}
+  <div class="title">
+    {{title}}
+  </div>
+  <div class="award-label">
+    您获得了<span>{{money}}</span>个天才币和以下的道具作为奖励:
+  </div>
+  <div class="award-props">
+    {{#props}}
+    <div class="award-prop">
+      <img class="icon" src="{{icon}}"></img>
+      <span class="text">{{name}} <span>+ {{count}}</span></span>
+    </div>
+    {{/props}}
+  </div>
+  {{/award}}
+</div>
+{{/awardResult}}
 <table class="table game-results-table">
   <thead>
     <th>排名</th>
     <th>用户名</th>
     <th>局分</th>
-    <th>积分</th>
+    <th>积分变化</th>
+    <th>现积分</th>
     <th>天才币</th>
   </thead>
   <tbody>
@@ -12,6 +33,7 @@
       <td>{{rank}}</td>
       <td>{{playerName}}</td>
       <td>{{score}}</td>
+      <td>+{{gainPoints}}</td>
       <td>{{points}}</td>
       <td>{{money}}</td>
     </tr>

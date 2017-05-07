@@ -4,11 +4,13 @@ var _ = require('lodash');
 var async = require('async');
 var winston = require('winston');
 var RuleDAO = require('../main/daos/rule');
+var PropTypeDAO = require('../main/daos/prop_type');
 var UserDAO = require('../main/daos/user');
 var PuzzleDAO = require('../main/daos/puzzle');
 var PropDAO = require('../main/daos/prop');
 var RoomDAO = require('../main/daos/room');
-var GameMode = require('../main/models/game_mode');
+var TemplateDAO = require('../main/daos/template');
+var AwardDAO = require('../main/daos/award');
 
 module.exports = function(cb) {
   winston.info('Start to do db migration');
@@ -27,6 +29,19 @@ module.exports = function(cb) {
         }
       }
     });
+  },
+  function(cb) {
+    var propTypes = require('./predefined/prop_types.json');
+    async.eachSeries(propTypes, function(propType, cb) {
+      PropTypeDAO.findOneByType(propType.type, function(error, find) {
+        if (!find) {
+          winston.info('Create prop type [' + propType.name + '] from predefined');
+          PropTypeDAO.create(propType, cb);
+        } else {
+          cb();
+        }
+      });
+    }, cb);
   },
   function(cb) {
     var rooms = require('./predefined/rooms.json');
@@ -63,6 +78,7 @@ module.exports = function(cb) {
             cb(error);
           } else {
             if (!find) {
+              user.predefined = true;
               winston.info('Create user [' + user.name + '] from predefined');
               UserDAO.createUser(user, cb);
             } else {
@@ -76,69 +92,52 @@ module.exports = function(cb) {
     }, cb);
   },
   function(cb) {
-    var rl = readline.createInterface({
-      input : fs.createReadStream('src/migrate/predefined/puzzles.txt'),
-      output : process.stdout,
-      terminal : false
-    });
-
-    var source, puzzle, lineNumber = 0, questionlineNumber = 0, answerLineNumber = 0, mode = GameMode.MODE9;
-    rl.on('line', function(line) {
-      line = line.trim();
-      var sourceSymbol = line.match(/^[\w\d]+-([ABCDE]+)-[\w\d-\.]*$/);
-      if (sourceSymbol) {
-        if (puzzle && !(_.isEmpty(puzzle.question)) && !(_.isEmpty(puzzle.answer))) {
-          var newPuzzle = _.cloneDeep(puzzle);
-          PuzzleDAO.findOneBySource(newPuzzle.source, function(error, find) {
-            if (!find) {
-              winston.info('Create new puzzle: ' + JSON.stringify(newPuzzle));
-              PuzzleDAO.create(newPuzzle, function(error) {
-                if (error) {
-                  winston.error("initialize puzzle error: " + error);
-                }
-              });
-            }
-          });
-        }
-        puzzle = {
-          question : {},
-          answer : {}
-        };
-        puzzle.source = sourceSymbol[0];
-        puzzle.level = sourceSymbol[1];
-        puzzle.mode = "MODE9";
-        lineNumber = 0;
-        questionlineNumber = 0;
-        answerLineNumber = 0;
-      } else {
-        var parseLine = function(data, modeIndex) {
-          var grid = mode[modeIndex];
-          if (grid) {
-            for (var i = 0; i < line.length; i++) {
-              var x = (i - Math.floor(i / 9) * 9) + grid.x;
-              var y = Math.floor(i / 9) + grid.y;
-              if (line[i] !== '.') {
-                data[x + ',' + y] = parseInt(line[i]);
-              }
-            }
-          }
-        };
-        if (lineNumber < 13) {
-          if (lineNumber !== 0 && lineNumber !== 2 && lineNumber !== 10 && lineNumber !== 12) {
-            parseLine(puzzle.question, questionlineNumber);
-            questionlineNumber++;
-          }
+    var templateDir = 'src/migrate/predefined/templates';
+    var files = fs.readdirSync(templateDir);
+    async.eachSeries(files, function(file, cb) {
+      var code = file.substr(0, file.lastIndexOf('.'));
+      TemplateDAO.findOneByCode(code, function(error, find) {
+        if (error) {
+          cb(error);
         } else {
-          if (lineNumber !== 13 && lineNumber !== 15 && lineNumber !== 23 && lineNumber !== 25) {
-            parseLine(puzzle.answer, answerLineNumber);
-            answerLineNumber++;
+          if (find) {
+            cb();
+          } else {
+            var content = fs.readFileSync(templateDir + '/' + file, "utf-8");
+            winston.info('Create template [' + code + '] from predefined.');
+            TemplateDAO.create({
+              code : code,
+              content : content
+            }, cb);
           }
         }
-        lineNumber++;
-      }
-    });
-    rl.on('close', function() {
-      cb();
-    });
+      });
+    }, cb);
+  },
+  function(cb) {
+    var awards = require('./predefined/awards.json');
+    async.eachSeries(awards, function(award, cb) {
+      async.series([
+      function(cb) {
+        AwardDAO.findOneByCode(award.code, function(error, find) {
+          if (error) {
+            winston.error('Error happens when getting award from db: ' + error);
+            cb(error);
+          } else {
+            if (!find) {
+              winston.info('Create Award [' + award.code + '] from predefined');
+              AwardDAO.create(award, cb);
+            } else {
+              cb();
+            }
+          }
+        });
+      }], function(error) {
+        cb(error);
+      });
+    }, cb);
+  },
+  function(cb) {
+    PuzzleDAO.importData('src/migrate/predefined/puzzles.txt', cb);
   }], cb);
 };

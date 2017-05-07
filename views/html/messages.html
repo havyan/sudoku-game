@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/messages.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/lodash.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/components/utils.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs/components/pagination_bar.js"></script>
+    <script src="{{@basejs}}/libs/components/messages_panel.js"></script>
+    <script src="{{@basejs}}/libs/messages.js"></script>
+  </head>
+  <body>
+    {{> top_actions }}
+    <div class="welcome">
+      欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
+    </div>
+
+    <div id="messages"></div>
+  </body>
+</html>

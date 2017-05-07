@@ -45,7 +45,7 @@ input:focus {
 }
 
 .default-icons {
-  width: 200px;
+  width: 150px;
   border: 1px solid gray;
   font-size: 0px;
   margin-top: 10px;
@@ -58,8 +58,9 @@ input:focus {
 
 .default-icons img {
   display: inline-block;
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
   margin: 0px;
   cursor: pointer;
 }
@@ -174,6 +175,16 @@ input:focus {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
+}
+
+.select-icon {
+  vertical-align: middle;
+}
+
+.select-icon .btn {
+  font-size: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .upload-icon-cutter {

@@ -8,6 +8,7 @@
       this.initRanking();
       this.initMessages();
       this.initCellDatas();
+      this.initProp();
       this.initOptions();
       this.initActive();
       this.initUI();
@@ -54,6 +55,16 @@
       this.attr('viewStatus', 'plain');
     },
 
+    initProp : function() {
+      var propTypes = this.attr('propTypes').attr();
+      var prop = this.attr('prop').attr();
+      this.attr('props', propTypes.map(function(propType) {
+        propType.count = prop[propType.type];
+        return propType;
+      }));
+      this.removeAttr('prop');
+    },
+
     initOptions : function() {
       var self = this;
       this.resetOptions();
@@ -67,9 +78,16 @@
 
     initUI : function() {
       var ui = window.localStorage.getItem(this.attr('account') + '_ui');
-      this.attr('ui', ui ? JSON.parse(ui) : {
-        zoom : 1
-      });
+      if (ui) {
+        ui = JSON.parse(ui);
+      } else if (this.attr('rule.ui')) {
+        ui = this.attr('rule.ui').attr();
+      } else {
+        ui = {
+          zoom : 1
+        };
+      }
+      this.attr('ui', ui);
     },
 
     resetOptions : function() {
@@ -81,8 +99,10 @@
     },
 
     initActive : function() {
-      var self = this;
-      self.attr('active', self.attr('currentPlayer') === self.attr('account'));
+      this.attr('active', this.attr('currentPlayer') === this.attr('account'));
+      this.bind('active', function() {
+        this.deselectCell();
+      }.bind(this));
     },
 
     initRanking : function() {
@@ -219,7 +239,7 @@
 
     findCellData : function(xy) {
       var cellDatas = this.attr('cellDatas');
-      if (cellDatas) {
+      if (xy && cellDatas) {
         var splits = xy.split(','),
             index = parseInt(splits[1]) * this.dimension.width + parseInt(splits[0]),
             start = 0,
@@ -278,22 +298,24 @@
     },
 
     setPlayer : function(index, player) {
-      this.attr('players').attr(index, player);
-      this.attr('players', this.attr('players').attr());
+      var players = this.attr('players').attr();
+      players[index] = player;
+      this.attr('players').replace(players);
       this.resetRanking();
     },
 
     playerQuit : function(account, status) {
-      var index = _.findIndex(this.attr('players'), function(player) {
+      var players = this.attr('players').attr();
+      var index = _.findIndex(players, function(player) {
         return player && player.account === account;
       });
       if (this.attr('status') === 'ongoing') {
-        var quitPlayer = this.attr('players.' + index).attr();
+        var quitPlayer = players[index];
         quitPlayer.status = status;
         this.attr('quitPlayers').unshift(quitPlayer);
       }
-      this.attr('players').attr(index, null);
-      this.attr('players', this.attr('players').attr());
+      players[index] = null;
+      this.attr('players').replace(players);
       this.resetRanking();
     },
 
@@ -342,16 +364,50 @@
       }
     },
 
+    deselectCell : function() {
+      var cellDatas = this.attr('cellDatas');
+      _.filter(cellDatas, {
+        selected : true
+      }).forEach(function(cellData) {
+        cellData.attr('selected', false);
+      });
+      this.removeAttr('selectedCell');
+    },
+
+    selectCell : function(xy) {
+      this.deselectCell();
+      var cellData = this.findCellData(xy);
+      if (cellData) {
+        cellData.attr('selected', true);
+        this.attr('selectedCell', xy);
+      }
+    },
+
     submit : function(xy, value) {
       Rest.Game.submit(this.attr('id'), xy, value, function(result) {
       }, function() {
       });
     },
 
+    findProp : function(type) {
+      return _.find(this.attr('props'), {
+        type : type
+      });
+    },
+
+    reduceProp : function(type) {
+      var prop = this.findProp(type);
+      prop.attr('count', prop.attr('count') - 1);
+    },
+
+    hasProp : function(type) {
+      return this.findProp(type).attr('count') > 0;
+    },
+
     autoSubmit : function(xy) {
       var self = this;
       Rest.Game.autoSubmit(this.attr('id'), xy, function(result) {
-        self.attr('prop.magnifier', self.attr('prop.magnifier') - 1);
+        self.reduceProp('magnifier');
       }, function() {
       });
     },
@@ -359,7 +415,7 @@
     peep : function(xy) {
       var self = this;
       Rest.Game.peep(this.attr('id'), xy, function(result) {
-        self.attr('prop.magnifier', self.attr('prop.magnifier') - 1);
+        self.reduceProp('magnifier');
         self.attr('knownCellValues').attr(xy, result.result);
       }, function() {
       });
@@ -392,7 +448,7 @@
     delay : function(success) {
       var self = this;
       Rest.Game.delay(this.attr('id'), function(result) {
-        self.attr('prop.delay', self.attr('prop.delay') - 1);
+        self.reduceProp('delay');
         if (success) {
           success(result);
         }
@@ -404,7 +460,7 @@
       var self = this;
       Rest.Game.useGlasses(this.attr('id'), function(result) {
         self.attr('glassesUsed', true);
-        self.attr('prop.glasses', self.attr('prop.glasses') - 1);
+        self.reduceProp('glasses');
         if (success) {
           success(result);
         }
@@ -416,7 +472,7 @@
       var self = this;
       Rest.Game.setOptionsOnce(this.attr('id'), function(result) {
         self.attr('optionsOnce', true);
-        self.attr('prop.options_once', self.attr('prop.options_once') - 1);
+        self.reduceProp('options_once');
         if (success) {
           success(result);
         }
@@ -428,7 +484,7 @@
       var self = this;
       Rest.Game.setOptionsAlways(this.attr('id'), function(result) {
         self.attr('optionsAlways', true);
-        self.attr('prop.options_always', self.attr('prop.options_always') - 1);
+        self.reduceProp('options_always');
         if (success) {
           success(result);
         }
@@ -439,7 +495,7 @@
     impunish : function(success) {
       var self = this;
       Rest.Game.impunish(this.attr('id'), this.attr('account'), function(result) {
-        self.attr('prop.impunity', self.attr('prop.impunity') - 1);
+        self.reduceProp('impunity');
         if (success) {
           success(result);
         }
@@ -558,9 +614,11 @@
       });
       this.eventReceiver.on('game-over', function(results) {
         self.attr('status', 'over');
+        self.attr('awardResult', _.find(results, {account: self.attr('account')}).awardResult);
         self.attr('results', results);
       });
-      this.eventReceiver.on('game-destroyed', function() {
+      this.eventReceiver.on('game-destroyed', function(type) {
+        self.attr('destroyType', type);
         self.attr('status', 'destroyed');
         self.destroy();
       });
