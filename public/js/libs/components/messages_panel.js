@@ -154,7 +154,7 @@
       this.paginationModel.setCount(model.getPageCount());
     },
 
-    '.select-one click' : function(element) {
+    '.select-one click' : function(element, event) {
       var id = element.closest('tr').data('id');
       if (element.is(':checked')) {
         this.options.model.select(id);
@@ -162,6 +162,7 @@
         this.options.model.deselect(id);
       }
       this.element.find('.select-all').attr('checked', this.options.model.isAllSelected());
+      event.stopPropagation();
     },
 
     '.select-all click' : function(element) {
@@ -172,7 +173,7 @@
       }
     },
 
-    '.messages-table tbody tr click' : function(element) {
+    '.messages-table tbody tr click' : _.debounce(function(element) {
       this.options.model.read(element.data('message'), function(message) {
         Dialog.show({
           title : '邮件',
@@ -182,7 +183,7 @@
         });
       }, function() {
       });
-    },
+    }, 2000, { leading: true, trailing: false }),
 
     '.messages-remove click' : function() {
       this.options.model.removeIndex(function() {

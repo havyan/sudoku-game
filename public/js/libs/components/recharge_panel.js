@@ -38,16 +38,20 @@
         value : '13'
       }, {
         code : 'icbc',
-        value : '0'
+        value : '0',
+        disabled : true
       }, {
         code : 'cmb',
-        value : '1'
+        value : '1',
+        disabled : true
       }, {
         code : 'bcm',
-        value : '4'
+        value : '4',
+        disabled : true
       }, {
         code : 'abc',
-        value : '3'
+        value : '3',
+        disabled : true
       }]);
     },
 

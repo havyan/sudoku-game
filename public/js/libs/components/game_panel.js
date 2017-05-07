@@ -10,6 +10,13 @@
           } else {
             return message.content;
           }
+        },
+        formatRemainingTime : function(remainingTime) {
+          if (options.model.attr('duration') === 99) {
+            return '不限制时间';
+          } else {
+            return Utils.formatSeconds(remainingTime());
+          }
         }
       }, function(frag) {
         element.html(frag);
@@ -107,9 +114,9 @@
     '{model} waitCountdownStage' : function(model, e, newStage) {
       if (newStage === 0) {
         if (model.isBanker()) {
-          Dialog.message('很遗憾，由于没有凑齐人数，棋桌将要解散，您的建桌费会返到您的账户');
+          Dialog.message('很遗憾，棋桌将要解散，您的建桌费会返到您的账户');
         } else {
-          Dialog.message('很遗憾，由于没有凑齐人数，棋局将要解散，欢迎您继续游戏');
+          Dialog.message('很遗憾，棋桌将要解散，欢迎您继续游戏');
         }
       }
     },
@@ -285,7 +292,7 @@
     showOngoing : function() {
       $('.game-countdown-number').hide();
       setTimeout(function() {
-        $('.game-countdown-number').hide();
+        $('.game-countdown-number').remove();
       }, 2000);
       this.chessborad = new Chessboard($('.game-main-area'), {
         model : this.options.model

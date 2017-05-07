@@ -10,6 +10,14 @@
     }, function(e) {
     });
 
+    var bindSinglePlayer = function() {
+      var singlePlayerDialog = new SinglePlayerDialog($('body'));
+      $('a.single-player').click(function() {
+        singlePlayerDialog.show();
+      });
+    };
+    bindSinglePlayer();
+
     var $messagesCount = $('.header .messages-count');
 
     var showMessagesCount = function() {
@@ -30,8 +38,9 @@
         $messagesCount.html(result.count).attr('title', result.count);
         showMessagesCount();
       }, function() {
+        window.location.reload();
       });
-    }, 10000);
+    }, 15000);
     showMessagesCount();
   });
 })();

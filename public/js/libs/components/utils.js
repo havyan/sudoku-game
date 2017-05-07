@@ -17,7 +17,7 @@
     return fmt;
   };
 
-  Utils = {
+  window.Utils = {
     formatSeconds : function(value) {
       var seconds = Math.round(value % 60);
       seconds = seconds >= 10 ? seconds : '0' + seconds;

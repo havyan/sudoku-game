@@ -1,6 +1,6 @@
 <style>
   .award {
-    border: 1px solid #FFD700;
+    border: 1px solid RED;
     border-radius: 20px;
     padding: 8px 16px;
     margin-bottom: 10px;
@@ -11,7 +11,7 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
-    color: #FFD700;
+    color: RED;
   }
 
   .award .award-label {
@@ -24,7 +24,7 @@
     display: inline-block;
     margin-left: 3px;
     margin-right: 3px;
-    color: #FFD700;
+    color: RED;
   }
 
   .award .award-props {
@@ -48,7 +48,7 @@
   }
 
   .award .award-prop .text span {
-    color: #FFD700;
+    color: RED;
     font-weight: bold;
   }
 

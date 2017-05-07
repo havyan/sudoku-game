@@ -47,12 +47,13 @@
     },
 
     '.container .store .count input blur' : function(element, event) {
+      var max = 999;
       var value = parseInt(element.val());
       var current = _.find(this.model.attr('props'), {
         type : element.closest('.store-item').data('type')
       }).count;
-      if (value > (999 - current)) {
-        element.val(999 - current);
+      if (value > max) {
+        element.val(max);
       }
       this.resetItem(element);
     },
@@ -94,6 +95,7 @@
               type : type.attr('type')
             }).attr('count', result.count);
             type.attr('sales', type.attr('sales') + count);
+            type.attr('purchase', type.attr('purchase') + count);
             Dialog.message('购买成功');
           } else {
             Dialog.message('购买失败: ' + result.reason);

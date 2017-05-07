@@ -31,7 +31,7 @@
         var selectedRoom = options.model.attr('selectedRoom');
         this.selectRoom(selectedRoom);
         this.toggleExpand(this.element.find('#' + selectedRoom).closest('.lobby-nav-item'));
-        this.gameForm = new LobbyGameForm(this.element, {
+        this.gameForm = new LobbyGameDialog(this.element, {
           user : this.options.model.attr('user').attr(),
           rule : this.options.model.attr('rule').attr(),
           levels : this.options.model.attr('levels').attr()
@@ -73,6 +73,17 @@
             return 'available';
           } else {
             return 'unavailable';
+          }
+        },
+        playerIncluded : function(game) {
+          var players = _.compact(game.attr('players'));
+          if (game && _.find(players, { account: model.attr('user.account') })) {
+            return 'included';
+          }
+        },
+        playerSelf : function(player) {
+          if (player && (player.account === model.attr('user.account'))) {
+            return 'self';
           }
         }
       }, function(frag) {
@@ -155,7 +166,7 @@
                 $e.closest('.modal').modal('hide');
                 Dialog.error(message);
               });
-              window.open('/table/' + gameId, '_blank');
+              self.openGame(gameId);
             });
           } else {
             Rest.Game.playerJoin(gameId, 0, params, function(result) {
@@ -163,10 +174,18 @@
               var message = '建桌失败, ' + error.responseJSON.message;
               Dialog.error(message);
             });
-            window.open('/table/' + gameId, '_blank');
+            self.openGame(gameId);
           }
         }
       });
+    },
+
+    '.lobby-player.self, .lobby-table.included click' : function(e) {
+      this.openGame(e.closest('.lobby-game').data('id'));
+    },
+
+    openGame : function(gameId) {
+      window.open('/table/' + gameId, '_blank');
     },
 
     '.free .lobby-game.waiting .lobby-table click' : function(e) {
@@ -183,6 +202,7 @@
     },
 
     joinGame : function(game, index) {
+      var self = this;
       var model = this.options.model;
       var grade = model.attr('user.grade');
       var gameId = game.attr('id');
@@ -193,7 +213,7 @@
         Dialog.message('您不能加入题目等级比自己段数高的游戏');
       } else {
         Rest.Game.playerJoin(gameId, index, {}, function(result) {});
-        window.open('/table/' + gameId, '_blank');
+        self.openGame(gameId);
       }
     },
 

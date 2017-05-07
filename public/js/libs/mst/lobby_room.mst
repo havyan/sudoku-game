@@ -4,14 +4,14 @@
     <div class="room-number">
       {{tableOrder this}}
     </div>
-    <div class="lobby-table">
+    <div class="lobby-table {{playerIncluded this}}">
       <div class="lobby-table-content">
         {{{tableInfo this}}}
       </div>
     </div>
     {{#each players}}
     {{#if this}}
-    <div class="lobby-player existent player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}} {{seatAvailable @index}}" data-index="{{@index}}" data-id="{{id}}">
+    <div class="lobby-player existent player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}} {{seatAvailable @index}} {{playerSelf this}}" data-index="{{@index}}" data-id="{{id}}">
       {{#unless @index}}
       <div class="banker-label">
         庄家

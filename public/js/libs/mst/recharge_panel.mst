@@ -108,7 +108,7 @@
           <div class="pay-method-row method">
             <span class="name">选择支付方式：</span>
             {{#banks}}
-            <div class="pay-method-bank {{code}}">
+            <div class="pay-method-bank {{code}} {{#disabled}}hidden{{/disabled}}">
               <input type="radio" name="banktype" data-bank="{{code}}" value="{{value}}" {{#isBankChecked value}}checked="checked"{{/isBankChecked}}/>
               <img src="/imgs/default/banks/{{code}}.png" />
             </div>

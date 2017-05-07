@@ -14,7 +14,7 @@
     showLaw: function() {
       Dialog.show({
         title: '法律声明',
-        template: '/js/libs/mst/law.html',
+        template: '/js/libs/mst/law.mst',
         userClass: 'law-dialog',
         autoClose: false,
         actions: [Dialog.CLOSE_ACTION]

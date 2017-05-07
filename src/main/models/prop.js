@@ -28,7 +28,9 @@ Prop.getPropData = function(account, cb) {
         userName : user.name,
         money : user.money,
         types : propTypes.map(function(type) {
-          return type.toJSON();
+          type = type.toJSON();
+          type.purchase = prop.purchases[type.type];
+          return type;
         }),
         props : propTypes.map(function(type) {
           return {
@@ -87,6 +89,7 @@ Prop.buy = function(account, type, count, cb) {
           },
           function(cb) {
             prop.set(type, prop[type] + count);
+            prop.set('purchases.' + type, prop.purchases[type] + count);
             prop.save(cb);
           },
           function(cb) {

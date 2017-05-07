@@ -7,39 +7,39 @@
     "icon": "/imgs/default/prop_magnifier.png",
     "price": 150
   }, {
-    "type": "impunity",
-    "name": "免罚卡",
-    "order": 1,
-    "func": "补回答错或不答所扣的分数",
-    "icon": "/imgs/default/prop_impunity.png",
-    "price": 200
-  }, {
     "type": "delay",
     "name": "延时卡",
-    "order": 2,
+    "order": 1,
     "func": "延时60s，一轮中自己只能用一次",
     "icon": "/imgs/default/prop_delay.png",
     "price": 30
   }, {
-    "type": "glasses",
-    "name": "智能眼镜",
-    "order": 3,
-    "func": "显示气泡，一轮中自己只能用一次",
-    "icon": "/imgs/default/prop_glasses.png",
-    "price": 30
-  }, {
     "type": "options_once",
     "name": "候选卡",
-    "order": 4,
+    "order": 2,
     "func": "显示候选数，一轮中自己只能用一次",
     "icon": "/imgs/default/prop_options_once.png",
     "price": 30
   }, {
     "type": "options_always",
     "name": "全盘候选卡",
-    "order": 5,
+    "order": 3,
     "func": "游戏中全盘显示候选数",
     "icon": "/imgs/default/prop_options_always.png",
     "price": 3000
+  }, {
+    "type": "impunity",
+    "name": "免罚卡",
+    "order": 4,
+    "func": "补回答错或不答所扣的分数",
+    "icon": "/imgs/default/prop_impunity.png",
+    "price": 200
+  }, {
+    "type": "glasses",
+    "name": "智能眼镜",
+    "order": 5,
+    "func": "显示气泡，一轮中自己只能用一次",
+    "icon": "/imgs/default/prop_glasses.png",
+    "price": 30
   }
 ]

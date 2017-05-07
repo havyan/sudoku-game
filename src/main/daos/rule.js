@@ -4,6 +4,10 @@ var common = require('./common');
 var Mixed = Schema.Types.Mixed;
 
 var RuleSchema = new Schema({
+  status : {
+    type : String,
+    default : '1'
+  },
   score : {
     add : [Mixed],
     reduce : Mixed
