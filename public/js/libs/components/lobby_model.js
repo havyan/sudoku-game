@@ -71,14 +71,16 @@
         if (index >= 0) {
           game.attr('players').attr(index, null);
         }
+        this.replaceGame(gameId, game.attr());
       }
-      this.replaceGame(gameId, game.attr());
     },
 
     setGameStatus : function(gameId, status) {
       var game = this.findGame(gameId);
-      game.attr('status', status);
-      this.replaceGame(gameId, game.attr());
+      if (game) {
+        game.attr('status', status);
+        this.replaceGame(gameId, game.attr());
+      }
     },
 
     setPlayer : function(gameId, index, player) {
@@ -86,8 +88,10 @@
         this.attr('userStatus', 'playing');
       }
       var game = this.findGame(gameId);
-      game.attr('players').attr(index, player);
-      this.replaceGame(gameId, game.attr());
+      if (game) {
+        game.attr('players').attr(index, player);
+        this.replaceGame(gameId, game.attr());
+      }
     },
 
     findRoom : function(roomId) {

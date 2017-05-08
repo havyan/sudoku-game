@@ -349,12 +349,16 @@
       if (model.isActive() && model.isPlain() && model.isSubmit()) {
         if (model.getKnownCellValue(xy) !== undefined) {
           model.submit(xy, model.getKnownCellValue(xy));
-          model.attr('active', false);
+          if (!model.attr('singleMode')) {
+            model.attr('active', false);
+          }
         } else if (model.getCellValue(xy) === undefined) {
           var cellOptions = model.calcCellOptions(xy);
           this.showNumberPicker(element, cellOptions, function(value) {
             model.submit(xy, value);
-            model.attr('active', false);
+            if (!model.attr('singleMode')) {
+              model.attr('active', false);
+            }
           });
         }
       } else if (!model.isActive() && model.isSubmit() && model.attr('glassesUsed')) {

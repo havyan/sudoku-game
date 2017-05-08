@@ -42,7 +42,7 @@ var START_MODE = {
 
 var PLAY_MODE = {
   MULTI: 'multi',
-  SELF: 'self',
+  SINGLE: 'single',
   ROBOT: 'robot'
 };
 
@@ -196,6 +196,10 @@ Game.prototype.isOver = function() {
   return this.status === OVER || this.status === DESTROYED;
 };
 
+Game.prototype.isSingle = function() {
+  return this.playMode === PLAY_MODE.SINGLE;
+};
+
 Game.prototype.switchStatus = function(status, cb) {
   var oldStatus = this.status;
   this.setStatus(status);
@@ -276,6 +280,13 @@ Game.prototype.goahead = function(account) {
 
 Game.prototype.nextPlayer = function() {
   var self = this;
+  if (this.isSingle()) {
+    if (!this.currentPlayer) {
+      this.currentPlayer = this.players[0].account;
+      this.emit('switch-player', this.currentPlayer);
+    }
+    return;
+  }
   this.stopPlayerTimer();
   if (this.currentPlayer) {
     var currentIndex = _.findIndex(this.players, function(player) {

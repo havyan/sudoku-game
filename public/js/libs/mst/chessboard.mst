@@ -1,7 +1,9 @@
 <div class="chessboard-container {{editStatus}} {{viewStatus}}">
   <div class="game-zoom always-above"></div>
+  {{#unless singleMode}}
   <div class="game-timer-panel always-above"></div>
   <div class="active-status" active="{{active}}"></div>
+  {{/unless}}
   <div class="chessboard-actions always-above">
     <div class="chessboard-edit-mode">
       <a class="button chessboard-submit-mode-action action-active">提交</a><a class="button chessboard-draft-mode-action">草稿</a>
@@ -12,6 +14,7 @@
   </div>
   <ul class="props always-above">
     {{#props}}
+    {{#visible}}
     <li class="{{type}} prop-item {{#unless count}}empty{{/unless}}">
       <div class="prop-item-content"><img src="{{icon}}"> x {{count}}
       </div>
@@ -19,6 +22,7 @@
         {{count}}
       </div>
     </li>
+    {{/visible}}
     {{/props}}
   </ul>
   <div class="chessboard-panel {{#if active}}active{{else}}inactive{{/if}}">
@@ -63,8 +67,11 @@
     {{/cellDatas}}
   </div>
   {{#if active}}
+  {{#unless singleMode}}
   <a class="pass-action" href="javascript:void(0)">Pass</a>
-  {{/if}} <div class="score-message correct-message"></div>
+  {{/unless}}
+  {{/if}}
+  <div class="score-message correct-message"></div>
   <div class="score-message incorrect-message"></div>
   <div class="score-message timeout-message"></div>
   <div class="score-message pass-message"></div>

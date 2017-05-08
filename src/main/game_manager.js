@@ -121,25 +121,35 @@ GameManager.prototype.playerJoin = function(gameId, account, index, params, cb) 
 };
 
 GameManager.prototype.createSingleGame = function(account, playMode, cb) {
-  var game = new Game(null, this.singleGames.length, null, playMode || 'self', account);
-  this.singleGames.push(game);
-  game.on('game-destroyed', function() {
-    _.remove(this.singleGames, function(e) {
-      return e === game;
-    })
-  }.bind(this));
-  this.emit('single-game-created', game);
-  async.series([
-    function(cb) {
-      game.init(account, {}, cb);
-    },
-    function(cb) {
-      game.playerJoin(account, 0, cb);
-    },
-    function(cb) {
-      game.switchStatus('loading', cb);
-    }
-  ], cb);
+  var game = this.findGameByUser(account);
+  if (game) {
+    cb(null, {
+      status: 'error',
+      reason: 'There has been an game ongoing'
+    });
+  } else {
+    game = new Game(null, this.singleGames.length, null, playMode || 'single', account);
+    this.singleGames.push(game);
+    game.on('game-destroyed', function() {
+      _.remove(this.singleGames, function(e) {
+        return e === game;
+      })
+    }.bind(this));
+    this.emit('single-game-created', game);
+    async.series([
+      function(cb) {
+        game.init(account, {
+          duration: 99
+        }, cb);
+      },
+      function(cb) {
+        game.playerJoin(account, 0, cb);
+      },
+      function(cb) {
+        game.switchStatus('loading', cb);
+      }
+    ], cb);
+  }
 };
 
 GameManager.prototype.getRealRooms = function() {
