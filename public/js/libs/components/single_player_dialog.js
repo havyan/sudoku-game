@@ -22,7 +22,7 @@
 
     getParams : function() {
       return {
-        playerMode : this.element.find('.play-mode input:checked').data('value')
+        playMode : this.element.find('.play-mode input:checked').data('value')
       };
     },
 

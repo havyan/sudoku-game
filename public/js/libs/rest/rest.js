@@ -58,6 +58,19 @@
       });
     },
 
+    createSingleGame: function(params, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : 'single_game',
+        data : {
+          params : JSON.stringify(params || {})
+        },
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     sendMessage : function(gameId, message, success, error) {
       return $.ajax({
         type : 'post',

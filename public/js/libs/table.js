@@ -11,7 +11,7 @@
         if (!stopped && _.contains(['waiting', 'loading', 'ongoing'], result.result)) {
           stop();
           Rest.Game.getGame(gameId, function(game) {
-            EventReceiver.createGameEventReceiver(gameId, function(eventReceiver) {
+            EventReceiver.createGameEventReceiver(game.id, function(eventReceiver) {
               var gameModel = new Models.GameModel(game, eventReceiver);
               new Components.GamePanel($('#game'), {
                 model : gameModel

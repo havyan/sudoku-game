@@ -55,6 +55,17 @@ module.exports = function(router) {
     });
   });
 
+  router.post('/single_game', function(req, res, next) {
+    var params = JSON.parse(req.body.params);
+    global.gameManager.createSingleGame(req.session.account, params.playMode, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(result);
+      }
+    });
+  });
+
   router.post('/game/:id/submit', function(req, res, next) {
     global.gameManager.submit(req.params.id, req.session.account, req.body.xy, req.body.value, function(error, result) {
       if (error) {

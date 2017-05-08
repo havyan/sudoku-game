@@ -1,10 +1,12 @@
 var _ = require('lodash');
+var async = require('async');
 var util = require("util");
 var EventEmitter = require('events').EventEmitter;
 var RoomDAO = require('./daos/room');
 var RuleDAO = require('./daos/rule');
 var UserDAO = require('./daos/user');
 var PuzzleDAO = require('./daos/puzzle');
+var Game = require('./models/game');
 var Room = require('./models/room');
 var PLAYING = 'playing';
 var FREE = 'free';
@@ -12,6 +14,7 @@ var FREE = 'free';
 var GameManager = function() {
   EventEmitter.call(this);
   this.rooms = [];
+  this.singleGames = [];
 };
 util.inherits(GameManager, EventEmitter);
 
@@ -19,6 +22,7 @@ GameManager.prototype.reload = function(cb) {
   var self = this;
   this.destroy();
   this.rooms = [];
+  this.singleGames = [];
   this.init(function(error) {
     if (error) {
       cb(error);
@@ -40,7 +44,7 @@ GameManager.prototype.init = function(cb) {
           var room = new Room(room.id, room.name, room.virtual, room.capacity, room.order);
           if (room.virtual) {
             _.filter(rooms, {
-              parent : room.id
+              parent: room.id
             }).forEach(function(child) {
               room.addRoom(build(child));
             });
@@ -61,11 +65,11 @@ GameManager.prototype.init = function(cb) {
 
 GameManager.prototype.getLobbyData = function(account, cb) {
   var result = {
-    rooms : this.rooms.map(function(room) {
+    rooms: this.rooms.map(function(room) {
       return room.toJSON();
     }),
-    levels : PuzzleDAO.LEVELS,
-    userStatus : this.findGameByUser(account) ? PLAYING : FREE
+    levels: PuzzleDAO.LEVELS,
+    userStatus: this.findGameByUser(account) ? PLAYING : FREE
   };
   UserDAO.findOneByAccount(account, function(error, user) {
     if (error) {
@@ -89,8 +93,8 @@ GameManager.prototype.playerJoin = function(gameId, account, index, params, cb) 
   var game = this.findGameByUser(account);
   if (game) {
     cb(null, {
-      status : 'playing',
-      gameId : game.id
+      status: 'playing',
+      gameId: game.id
     });
   } else {
     game = this.findGame(gameId);
@@ -116,6 +120,28 @@ GameManager.prototype.playerJoin = function(gameId, account, index, params, cb) 
   }
 };
 
+GameManager.prototype.createSingleGame = function(account, playMode, cb) {
+  var game = new Game(null, this.singleGames.length, null, playMode || 'self', account);
+  this.singleGames.push(game);
+  game.on('game-destroyed', function() {
+    _.remove(this.singleGames, function(e) {
+      return e === game;
+    })
+  }.bind(this));
+  this.emit('single-game-created', game);
+  async.series([
+    function(cb) {
+      game.init(account, {}, cb);
+    },
+    function(cb) {
+      game.playerJoin(account, 0, cb);
+    },
+    function(cb) {
+      game.switchStatus('loading', cb);
+    }
+  ], cb);
+};
+
 GameManager.prototype.getRealRooms = function() {
   var rooms = [];
   this.rooms.forEach(function(room) {
@@ -139,7 +165,16 @@ GameManager.prototype.findGame = function(gameId) {
       return false;
     }
   });
+  if (!game) {
+    game = this.findSingleGame(gameId);
+  }
   return game;
+};
+
+GameManager.prototype.findSingleGame = function(gameId) {
+  return _.find(this.singleGames, function(game) {
+    return game.creator === gameId || game.id === gameId;
+  });
 };
 
 GameManager.prototype.submit = function(gameId, account, xy, value, cb) {
@@ -198,9 +233,13 @@ GameManager.prototype.addMessage = function(gameId, account, message) {
 };
 
 GameManager.prototype.hasLiveGame = function() {
-  return !_.every(this.rooms, function(room) {
-    return !room.hasLiveGame();
+  var hasRoomGame = _.some(this.rooms, function(room) {
+    return room.hasLiveGame();
   });
+  var hasSingleGame = !_.every(this.singleGames, function(game) {
+    return game.isOver() || game.isEmpty();
+  });
+  return hasRoomGame || hasSingleGame;
 };
 
 GameManager.prototype.switchGameStatus = function(account, id, status, cb) {
@@ -218,12 +257,18 @@ GameManager.prototype.findGameByUser = function(account) {
       return false;
     }
   });
+  if (!game) {
+    game = this.findSingleGame(account);
+  }
   return game;
 };
 
 GameManager.prototype.destroy = function() {
   this.rooms.forEach(function(room) {
     room.destroy();
+  });
+  this.singleGames.forEach(function(game) {
+    game.destroy();
   });
   this.emit('game-manager-destroyed');
 };

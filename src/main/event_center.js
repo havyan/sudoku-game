@@ -1,7 +1,6 @@
 var winston = require('winston');
 var _ = require('lodash');
 var EVENTS = require('./events.json');
-;
 
 var EventCenter = function(io) {
   this.io = io;
@@ -30,6 +29,10 @@ EventCenter.prototype.initGameEvents = function() {
       self.bindGame(newGame);
       self.systemEmitter.emit('game-replace', JSON.stringify([oldGame.id, newGame.toSimpleJSON()]));
     });
+  });
+  global.gameManager.on('single-game-created', function(game) {
+    self.bindGame(game);
+    self.systemEmitter.emit('single-game-created', JSON.stringify([game.toSimpleJSON()]));
   });
 };
 

@@ -40,6 +40,12 @@ var START_MODE = {
   AUTO: 'auto'
 };
 
+var PLAY_MODE = {
+  MULTI: 'multi',
+  SELF: 'self',
+  ROBOT: 'robot'
+};
+
 var SCORE_TYPE = {
   INCORRECT: "incorrect",
   CORRECT: "correct",
@@ -48,12 +54,14 @@ var SCORE_TYPE = {
   IMPUNITY: "impunity"
 };
 
-var Game = function(room, index, mode) {
+var Game = function(room, index, mode, playMode, creator) {
   EventEmitter.call(this);
-  this.room = room;
+  this.room = room || {};
   this.index = index;
   this.id = mongoose.Types.ObjectId().toString();
   this.mode = mode || GameMode.MODE9;
+  this.playMode = playMode || PLAY_MODE.MULTI;
+  this.creator = creator || 'SYSTEM';
   this.status = EMPTY;
   this.players = new Array(CAPACITY);
   this.joinRecords = [];
@@ -108,6 +116,7 @@ Game.prototype.init = function(account, params, cb) {
       GameDAO.createGame(self.room.id, creator.id, self.id, {
         index: self.index,
         mode: self.mode,
+        playMode: self.playMode,
         level: self.level,
         rule: self.rule,
         capacity: self.capacity,
@@ -621,6 +630,8 @@ Game.prototype.toJSON = function(account) {
     roomId: this.room.id,
     id: this.id,
     mode: this.mode,
+    playMode: this.playMode,
+    creator: this.creator,
     status: this.status,
     players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
@@ -629,6 +640,8 @@ Game.prototype.toJSON = function(account) {
     roomId: this.room.id,
     id: this.id,
     mode: this.mode,
+    playMode: this.playMode,
+    creator: this.creator,
     waitTime: this.waitTime,
     startMode: this.startMode,
     duration: this.duration,
@@ -674,6 +687,8 @@ Game.prototype.toSimpleJSON = function() {
     mode: _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
+    playMode: self.playMode,
+    creator: self.creator,
     status: this.status,
     players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
@@ -690,6 +705,8 @@ Game.prototype.toSimpleJSON = function() {
     mode: _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
+    playMode: self.playMode,
+    creator: self.creator,
     players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
     }),
