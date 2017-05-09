@@ -4,23 +4,24 @@ var common = require('./common');
 var Mixed = Schema.Types.Mixed;
 
 var RuleSchema = new Schema({
-  status : {
-    type : String,
-    default : '1'
+  status: {
+    type: String,
+    default: '1'
   },
-  score : {
-    add : [Mixed],
-    reduce : Mixed
+  score: {
+    add: [Mixed],
+    reduce: Mixed,
+    single: Mixed
   },
-  grade : [{
-    code : String,
-    floor : Number
+  grade: [{
+    code: String,
+    floor: Number
   }],
-  exchange : {
-    rate : Number
+  exchange: {
+    rate: Number
   },
-  ui : {
-    zoom : Number
+  ui: {
+    zoom: Number
   }
 });
 
@@ -45,7 +46,7 @@ RuleSchema.statics.updateRule = function(rule, cb) {
   delete rule._id;
   rule.updatetime = new Date();
   this.update({
-    '_id' : id
+    '_id': id
   }, rule, cb);
 };
 
@@ -54,16 +55,16 @@ RuleSchema.plugin(common);
 var Rule = mongoose.model('Rule', RuleSchema);
 
 Rule.GRADE_NAMES = {
-  0 : "新手",
-  1 : "一段",
-  2 : "二段",
-  3 : "三段",
-  4 : "四段",
-  5 : "五段",
-  6 : "六段",
-  7 : "七段",
-  8 : "八段",
-  9 : "九段"
+  0: "新手",
+  1: "一段",
+  2: "二段",
+  3: "三段",
+  4: "四段",
+  5: "五段",
+  6: "六段",
+  7: "七段",
+  8: "八段",
+  9: "九段"
 };
 
 module.exports = Rule;

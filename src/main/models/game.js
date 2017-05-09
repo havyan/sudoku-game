@@ -346,17 +346,22 @@ Game.prototype.nextPlayer = function() {
 
 Game.prototype.updateScore = function(type, account, xy) {
   var rule = this.rule,
+    single = this.isSingle(),
     score = 0;
   if (!account) {
     account = this.currentPlayer;
   }
   if (type === SCORE_TYPE.CORRECT) {
-    var time = this.playerTimer.ellapsedTime;
-    score = _.find(rule.score.add.levels, function(level) {
-      return time >= level.from && time < level.to;
-    }).score;
+    if (single) {
+      score = rule.score.single.correct;
+    } else {
+      var time = this.playerTimer.ellapsedTime;
+      score = _.find(rule.score.add.levels, function(level) {
+        return time >= level.from && time < level.to;
+      }).score;
+    }
   } else if (type === SCORE_TYPE.INCORRECT || type === SCORE_TYPE.TIMEOUT) {
-    score = -(rule.score.reduce.timeout);
+    score = -(single ? rule.score.single.incorrect : rule.score.reduce.timeout);
   } else if (type === SCORE_TYPE.PASS) {
     score = -(rule.score.reduce.pass);
   } else if (type === SCORE_TYPE.IMPUNITY) {

@@ -215,6 +215,14 @@
       this.model.attr('rule.score.reduce').attr('pass', this.getValue(e));
     },
 
+    '.single-rule-correct-score blur' : function(e) {
+      this.model.attr('rule.score.single').attr('correct', this.getValue(e));
+    },
+
+    '.single-rule-incorrect-score blur' : function(e) {
+      this.model.attr('rule.score.single').attr('incorrect', this.getValue(e));
+    },
+
     'input[name=addRule] click' : function(e) {
       var index = this.getAddRuleIndex(e);
       $.each(this.model.attr('rule.score.add'), function(i, addRule) {
