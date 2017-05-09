@@ -236,6 +236,7 @@
 .lobby-modal.single-player-modal .lobby-modal-content .play-mode input {
   width: 25px;
   height: 25px;
+  cursor: pointer;
 }
 
 .lobby-modal .close {
