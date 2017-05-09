@@ -865,6 +865,7 @@ Game.prototype.over = function(cb) {
 
 Game.prototype.calculateGains = function(players) {
   var gains = {};
+  var single = this.isSingle();
   var score, points;
   for(var i = players.length - 1; i >= 0; i--) {
     var account = players[i].account;
@@ -872,6 +873,9 @@ Game.prototype.calculateGains = function(players) {
       gains[account] = points;
     } else {
       gains[account] = 100 * (this.results.length + i + 1);
+      if (single && this.scores[account] <= 0) {
+        gains[account] = 0;
+      }
       points = gains[account];
       score = this.scores[account];
     }
