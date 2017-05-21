@@ -139,13 +139,17 @@ GameManager.prototype.createSingleGame = function(account, playMode, cb) {
     async.series([
       function(cb) {
         game.init(account, {
-          duration: 99
+          duration: 99,
+          stepTime: 60
         }, cb);
       },
       function(cb) {
         game.playerJoin(account, 0, cb);
       },
       function(cb) {
+        if (playMode === 'robot') {
+          game.addRobot();
+        }
         game.switchStatus('loading', cb);
       }
     ], cb);

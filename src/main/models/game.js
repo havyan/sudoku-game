@@ -18,6 +18,7 @@ var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
 var Award = require('./award');
+var Robot = require('./robot');
 var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
@@ -200,6 +201,10 @@ Game.prototype.isSingle = function() {
   return this.playMode === PLAY_MODE.SINGLE;
 };
 
+Game.prototype.isRobot = function() {
+  return this.playMode === PLAY_MODE.ROBOT;
+};
+
 Game.prototype.switchStatus = function(status, cb) {
   var oldStatus = this.status;
   this.setStatus(status);
@@ -303,6 +308,18 @@ Game.prototype.nextPlayer = function() {
     this.currentPlayer = this.players[0].account;
   }
   this.emit('switch-player', this.currentPlayer);
+  this.startPlayerTimer();
+
+  var player = this.findPlayer(this.currentPlayer);
+  if (player && player.isRobot) {
+    setTimeout(function() {
+      player.submit();
+    }, 2000);
+  }
+};
+
+Game.prototype.startPlayerTimer = function() {
+  var self = this;
   setTimeout(function() {
     self.playerTimer = {
       ellapsedTime: 0
@@ -482,6 +499,18 @@ Game.prototype.playerJoin = function(account, index, cb) {
       }
     }
   ], cb);
+};
+
+Game.prototype.addRobot = function() {
+  var player = new Robot(this);
+  var index = _.findIndex(this.players, function(p) {
+    return !p;
+  });
+  this.players[index] = player;
+  this.addPlayerIndex(player.account);
+  this.knownCellValues[player.account] = {};
+  this.emit('player-joined', index, player.toJSON());
+  this.addMessage('用户[' + player.name + ']加入');
 };
 
 Game.prototype.playerQuit = function(account, status, cb) {
@@ -813,7 +842,9 @@ Game.prototype.abort = function() {
 
 Game.prototype.over = function(cb) {
   var self = this;
-  var players = _.compact(this.players);
+  var players = _.filter(this.players, function(player) {
+    return player && !player.isRobot;
+  });
   this.stopTimer();
   players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
@@ -866,6 +897,7 @@ Game.prototype.over = function(cb) {
 Game.prototype.calculateGains = function(players) {
   var gains = {};
   var single = this.isSingle();
+  var robot = this.isRobot();
   var score, points;
   for(var i = players.length - 1; i >= 0; i--) {
     var account = players[i].account;
@@ -876,6 +908,17 @@ Game.prototype.calculateGains = function(players) {
       if (single && this.scores[account] <= 0) {
         gains[account] = 0;
       }
+      if (robot) {
+        if (this.scores[account] > 0) {
+          var robots = _.filter(this.players, { isRobot: true });
+          var win = _.every(robots, function(r) {
+            return this.scores[r.account] < this.scores[account];
+          }.bind(this));
+          gains[account] = win ? 100 : 50;
+        } else {
+          gains[account] = 0;
+        }
+      }
       points = gains[account];
       score = this.scores[account];
     }
@@ -884,6 +927,11 @@ Game.prototype.calculateGains = function(players) {
 };
 
 Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
+  if (player.isRobot) {
+    cb();
+    return;
+  }
+
   var self = this;
   player.points = player.points + gainPoints;
   var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
