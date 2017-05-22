@@ -515,16 +515,31 @@ Game.prototype.addRobot = function() {
 
 Game.prototype.playerQuit = function(account, status, cb) {
   var self = this;
+  var robotLeft = false;
   var quitPlayer = this.findPlayer(account);
   if (this.playersCount() > 1) {
-    if (this.currentPlayer === account && this.isOngoing()) {
+    robotLeft = _.every(this.players, function(player) {
+      return player == null || player === quitPlayer || player.isRobot;
+    });
+    if (robotLeft) {
+      this.stopPlayerTimer();
+    } else if (this.currentPlayer === account && this.isOngoing()) {
       this.nextPlayer();
     }
   } else {
     this.stopPlayerTimer();
   }
   if (quitPlayer) {
-    if (this.isOngoing()) {
+    if (robotLeft) {
+      this.removePlayer(account);
+      this.emit('player-quit', {
+        account: account,
+        status: status
+      });
+      self.addMessage('人机游戏结束');
+      self.destroy();
+      cb();
+    } else if (this.isOngoing()) {
       async.waterfall([
         function(cb) {
           self.upgradePlayer(quitPlayer, status, 0, false, cb);
