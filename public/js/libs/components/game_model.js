@@ -204,10 +204,12 @@
         self.attr('initCellValues').each(function(value, xy) {
           var cellData = self.findCellData(xy);
           if (cellData) {
-            cellData.attr('type', 'init');
-            cellData.attr('value', value);
-            cellData.attr('cellOptions', null);
-            cellData.attr('draft', null);
+            cellData.attr({
+              type: 'init',
+              value: value,
+              cellOptions: null,
+              draft: null
+            });
           }
           self.attr('knownCellValues').removeAttr(xy);
         });
