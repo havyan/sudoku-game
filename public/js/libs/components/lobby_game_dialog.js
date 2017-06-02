@@ -1,9 +1,9 @@
 (function() {
-  can.Control('LobbyGameForm', {
+  can.Control('LobbyGameDialog', {
   }, {
     init : function(element, options) {
       this.createModel();
-      can.view('/js/libs/mst/lobby_game_form.mst', this.model, {
+      can.view('/js/libs/mst/lobby_game_dialog.mst', this.model, {
         isSelected : function(index) {
           if (index() === 0) {
             return 'selected';
@@ -42,16 +42,16 @@
     },
 
     close : function() {
-      this.element.find('.lobby-game-form').modal('hide');
+      this.element.find('.lobby-game-modal').modal('hide');
     },
 
-    '.lobby-game-form .close click' : function(element) {
+    '.lobby-modal .close click' : function(element) {
       this.close();
     },
 
     show : function(callback) {
       this.callback = callback;
-      this.element.find('.lobby-game-form').modal();
+      this.element.find('.lobby-game-modal').modal();
     },
 
     getParams : function() {
@@ -65,7 +65,7 @@
       };
     },
 
-    '.lobby-game-form .confirm click' : function(element) {
+    '.lobby-modal .confirm click' : function(element) {
       if (this.callback) {
         this.callback(this.getParams());
       }

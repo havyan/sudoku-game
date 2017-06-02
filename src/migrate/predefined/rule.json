@@ -70,6 +70,10 @@
     "reduce": {
       "timeout": 200,
       "pass": 100
+    },
+    "single": {
+      "correct": 100,
+      "incorrect": 2000
     }
   },
 

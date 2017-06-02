@@ -19,6 +19,10 @@ var GameSchema = new Schema({
   duration: Number,
   start_mode: String,
   mode: [Mixed],
+  playMode: {
+    type: String,
+    default: 'multi'
+  },
   rule: Mixed,
   cost: {
     type: Number,

@@ -5,6 +5,7 @@
       this.initDimension();
       this.initEvents();
       this.initStatus();
+      this.initPlayMode();
       this.initRanking();
       this.initMessages();
       this.initCellDatas();
@@ -39,6 +40,13 @@
       this.attr('remainingTime', this.attr('remainingTime'));
     },
 
+    initPlayMode: function() {
+      var playMode = this.attr('playMode');
+      this.attr('multiMode', playMode === 'multi');
+      this.attr('singleMode', playMode === 'single');
+      this.attr('robotMode', playMode === 'robot');
+    },
+
     initManualStart : function() {
       var self = this;
       var index = _.findIndex(this.attr('players'), function(player) {
@@ -56,10 +64,12 @@
     },
 
     initProp : function() {
+      var singleMode = this.attr('singleMode');
       var propTypes = this.attr('propTypes').attr();
       var prop = this.attr('prop').attr();
       this.attr('props', propTypes.map(function(propType) {
         propType.count = prop[propType.type];
+        propType.visible = !(singleMode && _.include(['delay', 'glasses'], propType.type));
         return propType;
       }));
       this.removeAttr('prop');

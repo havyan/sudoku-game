@@ -78,6 +78,19 @@
           </div>
           {{/reduce}}
         </div>
+        <label class="setting-title">单人规则</label>
+        <div class="single-rule">
+          {{#single}}
+          <div class="single-rule-row">
+            <label>答对时加分分值</label>
+            <input type="text" class="single-rule-correct-score" value="{{correct}}" {{disableEdit}} />
+          </div>
+          <div class="single-rule-row">
+            <label>答错时扣分分值</label>
+            <input type="text" class="single-rule-incorrect-score" value="{{incorrect}}" {{disableEdit}} />
+          </div>
+          {{/single}}
+        </div>
       </div>
     </div>
     {{/score}}

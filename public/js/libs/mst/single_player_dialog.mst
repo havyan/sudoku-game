@@ -1,0 +1,20 @@
+<div class="modal fade lobby-modal single-player-modal" tabindex="-1" aria-hidden="false" data-backdrop="static" data-backdrop=static data-keyboard=false>
+  <div class="modal-dialog">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+    <div class="lobby-modal-content">
+      <div class="play-mode self-play">
+        <input type="radio" name="play_mode" data-value="single" checked="checked" />
+        <span>单人</span>
+      </div>
+      <div class="play-mode robot-play">
+        <input type="radio" name="play_mode" data-value="robot" />
+        <span>人机</span>
+      </div>
+    </div>
+    <div class="lobby-modal-bottom">
+      <button type="button" class="confirm">
+        确认
+      </button>
+    </div>
+  </div>
+</div>

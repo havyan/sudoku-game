@@ -217,17 +217,20 @@ input.invalid, input:focus.invalid {
   width: 55%;
 }
 
-.setting-panel .reduce-rule-row {
+.setting-panel .reduce-rule-row,
+.setting-panel .single-rule-row {
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
+.setting-panel .single-rule-row label,
 .setting-panel .reduce-rule-row label {
   display: inline-block;
   text-align: right;
   width: 25%;
 }
 
+.setting-panel .single-rule-row input,
 .setting-panel .reduce-rule-row input {
   display: inline-block;
   margin-left: 3%;

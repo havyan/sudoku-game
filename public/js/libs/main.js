@@ -1,6 +1,18 @@
 (function() {
   $(document).ready(function() {
     Rest.Lobby.getData(function(data) {
+      var bindSinglePlayer = function() {
+        var singlePlayerDialog = new SinglePlayerDialog($('body'));
+        $('a.single-player').click(function() {
+          singlePlayerDialog.show(function(params) {
+            Rest.Game.createSingleGame(params, function() {
+              
+            }, function() {});
+            window.open('/table/' + data.user.account, '_blank');
+          });
+        });
+      };
+      bindSinglePlayer();
       EventReceiver.createSystemEventReceiver(function(eventReceiver) {
         var lobbyModel = new Models.LobbyModel(data, eventReceiver);
         new Components.LobbyPanel($('#lobby'), {

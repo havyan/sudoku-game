@@ -197,7 +197,7 @@
   left: 25px;
 }
 
-.lobby-game-form .modal-dialog {
+.lobby-modal .modal-dialog {
   width: 700px;
   height: 500px;
   background: url(../../imgs/default/lobby_game_form_bg.png) no-repeat;
@@ -207,7 +207,39 @@
   font-size: 16px;
 }
 
-.lobby-game-form .close {
+.lobby-modal.single-player-modal .modal-dialog {
+  width: 500px;
+  height: 250px;
+  background-size: 500px 250px;
+}
+
+.lobby-modal.single-player-modal .lobby-modal-content {
+  margin-top: 90px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.lobby-modal.single-player-modal .lobby-modal-content .play-mode {
+  display: inline-block;
+  margin-left: 30px;
+  margin-right: 30px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.lobby-modal.single-player-modal .lobby-modal-content .play-mode > * {
+  display: inline-block;
+  margin: 0px;
+  vertical-align: middle;
+}
+
+.lobby-modal.single-player-modal .lobby-modal-content .play-mode input {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.lobby-modal .close {
   width: 30px;
   height: 30px;
   margin-top: 28px;
@@ -216,27 +248,27 @@
   background-size: 30px 30px;
 }
 
-.lobby-game-form .content {
+.lobby-modal .content {
   width: 400px;
   height: 350px;
   margin: auto;
   margin-top: 70px;
 }
 
-.lobby-game-form .name {
+.lobby-modal .name {
   width: 30%;
   text-align: left;
 }
 
-.lobby-game-form .value {
+.lobby-modal .value {
   width: 65%;
 }
 
-.lobby-game-form .value > * {
+.lobby-modal .value > * {
   vertical-align: middle;
 }
 
-.lobby-game-form .value select {
+.lobby-modal .value select {
   width: 100%;
   border-radius: 5px;
   color: blue;
@@ -244,20 +276,20 @@
   line-height: 25px;
 }
 
-.lobby-game-form .value input[type=radio]:last-of-type {
+.lobby-modal .value input[type=radio]:last-of-type {
   margin-left: 10px;
 }
 
-.lobby-game-form .lobby-game-form-row > * {
+.lobby-modal .lobby-modal-row > * {
   display: inline-block;
   vertical-align: middle;
 }
 
-.lobby-game-form .lobby-game-form-row {
+.lobby-modal .lobby-modal-row {
   margin-bottom: 30px;
 }
 
-.lobby-game-form  .confirm {
+.lobby-modal  .confirm {
   width: 131px;
   height: 51px;
   line-height: 51px;
@@ -269,7 +301,7 @@
   padding: 0px;
 }
 
-.lobby-game-form  .confirm:hover {
+.lobby-modal  .confirm:hover {
   color: #FFF000
 }
 

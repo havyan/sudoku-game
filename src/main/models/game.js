@@ -18,6 +18,7 @@ var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
 var Award = require('./award');
+var Robot = require('./robot');
 var EMPTY = "empty";
 var WAITING = "waiting";
 var LOADING = "loading";
@@ -40,6 +41,12 @@ var START_MODE = {
   AUTO: 'auto'
 };
 
+var PLAY_MODE = {
+  MULTI: 'multi',
+  SINGLE: 'single',
+  ROBOT: 'robot'
+};
+
 var SCORE_TYPE = {
   INCORRECT: "incorrect",
   CORRECT: "correct",
@@ -48,12 +55,14 @@ var SCORE_TYPE = {
   IMPUNITY: "impunity"
 };
 
-var Game = function(room, index, mode) {
+var Game = function(room, index, mode, playMode, creator) {
   EventEmitter.call(this);
-  this.room = room;
+  this.room = room || {};
   this.index = index;
   this.id = mongoose.Types.ObjectId().toString();
   this.mode = mode || GameMode.MODE9;
+  this.playMode = playMode || PLAY_MODE.MULTI;
+  this.creator = creator || 'SYSTEM';
   this.status = EMPTY;
   this.players = new Array(CAPACITY);
   this.joinRecords = [];
@@ -108,6 +117,7 @@ Game.prototype.init = function(account, params, cb) {
       GameDAO.createGame(self.room.id, creator.id, self.id, {
         index: self.index,
         mode: self.mode,
+        playMode: self.playMode,
         level: self.level,
         rule: self.rule,
         capacity: self.capacity,
@@ -185,6 +195,14 @@ Game.prototype.isOngoing = function() {
 
 Game.prototype.isOver = function() {
   return this.status === OVER || this.status === DESTROYED;
+};
+
+Game.prototype.isSingle = function() {
+  return this.playMode === PLAY_MODE.SINGLE;
+};
+
+Game.prototype.isRobot = function() {
+  return this.playMode === PLAY_MODE.ROBOT;
 };
 
 Game.prototype.switchStatus = function(status, cb) {
@@ -267,6 +285,13 @@ Game.prototype.goahead = function(account) {
 
 Game.prototype.nextPlayer = function() {
   var self = this;
+  if (this.isSingle()) {
+    if (!this.currentPlayer) {
+      this.currentPlayer = this.players[0].account;
+      this.emit('switch-player', this.currentPlayer);
+    }
+    return;
+  }
   this.stopPlayerTimer();
   if (this.currentPlayer) {
     var currentIndex = _.findIndex(this.players, function(player) {
@@ -283,6 +308,18 @@ Game.prototype.nextPlayer = function() {
     this.currentPlayer = this.players[0].account;
   }
   this.emit('switch-player', this.currentPlayer);
+  this.startPlayerTimer();
+
+  var player = this.findPlayer(this.currentPlayer);
+  if (player && player.isRobot) {
+    setTimeout(function() {
+      player.submit();
+    }, 2000);
+  }
+};
+
+Game.prototype.startPlayerTimer = function() {
+  var self = this;
   setTimeout(function() {
     self.playerTimer = {
       ellapsedTime: 0
@@ -326,17 +363,22 @@ Game.prototype.nextPlayer = function() {
 
 Game.prototype.updateScore = function(type, account, xy) {
   var rule = this.rule,
+    single = this.isSingle(),
     score = 0;
   if (!account) {
     account = this.currentPlayer;
   }
   if (type === SCORE_TYPE.CORRECT) {
-    var time = this.playerTimer.ellapsedTime;
-    score = _.find(rule.score.add.levels, function(level) {
-      return time >= level.from && time < level.to;
-    }).score;
+    if (single) {
+      score = rule.score.single.correct;
+    } else {
+      var time = this.playerTimer.ellapsedTime;
+      score = _.find(rule.score.add.levels, function(level) {
+        return time >= level.from && time < level.to;
+      }).score;
+    }
   } else if (type === SCORE_TYPE.INCORRECT || type === SCORE_TYPE.TIMEOUT) {
-    score = -(rule.score.reduce.timeout);
+    score = -(single ? rule.score.single.incorrect : rule.score.reduce.timeout);
   } else if (type === SCORE_TYPE.PASS) {
     score = -(rule.score.reduce.pass);
   } else if (type === SCORE_TYPE.IMPUNITY) {
@@ -459,18 +501,45 @@ Game.prototype.playerJoin = function(account, index, cb) {
   ], cb);
 };
 
+Game.prototype.addRobot = function() {
+  var player = new Robot(this);
+  var index = _.findIndex(this.players, function(p) {
+    return !p;
+  });
+  this.players[index] = player;
+  this.addPlayerIndex(player.account);
+  this.knownCellValues[player.account] = {};
+  this.emit('player-joined', index, player.toJSON());
+  this.addMessage('用户[' + player.name + ']加入');
+};
+
 Game.prototype.playerQuit = function(account, status, cb) {
   var self = this;
+  var robotLeft = false;
   var quitPlayer = this.findPlayer(account);
   if (this.playersCount() > 1) {
-    if (this.currentPlayer === account && this.isOngoing()) {
+    robotLeft = _.every(this.players, function(player) {
+      return player == null || player === quitPlayer || player.isRobot;
+    });
+    if (robotLeft) {
+      this.stopPlayerTimer();
+    } else if (this.currentPlayer === account && this.isOngoing()) {
       this.nextPlayer();
     }
   } else {
     this.stopPlayerTimer();
   }
   if (quitPlayer) {
-    if (this.isOngoing()) {
+    if (robotLeft) {
+      this.removePlayer(account);
+      this.emit('player-quit', {
+        account: account,
+        status: status
+      });
+      self.addMessage('人机游戏结束');
+      self.destroy();
+      cb();
+    } else if (this.isOngoing()) {
       async.waterfall([
         function(cb) {
           self.upgradePlayer(quitPlayer, status, 0, false, cb);
@@ -621,6 +690,8 @@ Game.prototype.toJSON = function(account) {
     roomId: this.room.id,
     id: this.id,
     mode: this.mode,
+    playMode: this.playMode,
+    creator: this.creator,
     status: this.status,
     players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
@@ -629,6 +700,8 @@ Game.prototype.toJSON = function(account) {
     roomId: this.room.id,
     id: this.id,
     mode: this.mode,
+    playMode: this.playMode,
+    creator: this.creator,
     waitTime: this.waitTime,
     startMode: this.startMode,
     duration: this.duration,
@@ -674,6 +747,8 @@ Game.prototype.toSimpleJSON = function() {
     mode: _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
+    playMode: self.playMode,
+    creator: self.creator,
     status: this.status,
     players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
@@ -690,6 +765,8 @@ Game.prototype.toSimpleJSON = function() {
     mode: _.findKey(GameMode, function(value) {
       return value === self.mode;
     }),
+    playMode: self.playMode,
+    creator: self.creator,
     players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
     }),
@@ -780,7 +857,9 @@ Game.prototype.abort = function() {
 
 Game.prototype.over = function(cb) {
   var self = this;
-  var players = _.compact(this.players);
+  var players = _.filter(this.players, function(player) {
+    return player && !player.isRobot;
+  });
   this.stopTimer();
   players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
@@ -832,6 +911,8 @@ Game.prototype.over = function(cb) {
 
 Game.prototype.calculateGains = function(players) {
   var gains = {};
+  var single = this.isSingle();
+  var robot = this.isRobot();
   var score, points;
   for(var i = players.length - 1; i >= 0; i--) {
     var account = players[i].account;
@@ -839,6 +920,20 @@ Game.prototype.calculateGains = function(players) {
       gains[account] = points;
     } else {
       gains[account] = 100 * (this.results.length + i + 1);
+      if (single && this.scores[account] <= 0) {
+        gains[account] = 0;
+      }
+      if (robot) {
+        if (this.scores[account] > 0) {
+          var robots = _.filter(this.players, { isRobot: true });
+          var win = _.every(robots, function(r) {
+            return this.scores[r.account] < this.scores[account];
+          }.bind(this));
+          gains[account] = win ? 100 : 50;
+        } else {
+          gains[account] = 0;
+        }
+      }
       points = gains[account];
       score = this.scores[account];
     }
@@ -847,6 +942,11 @@ Game.prototype.calculateGains = function(players) {
 };
 
 Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
+  if (player.isRobot) {
+    cb();
+    return;
+  }
+
   var self = this;
   player.points = player.points + gainPoints;
   var ceilingIndex = _.findIndex(self.rule.grade, function(e) {
