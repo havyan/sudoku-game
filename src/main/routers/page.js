@@ -212,6 +212,9 @@ module.exports = function(router) {
           if (error) {
             next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
           } else {
+            files = files.filter(function(file) {
+              return file !== 'robot.png';
+            });
             res.render('user', {
               user: user,
               isAdmin: user.account === 'SYSTEM',
