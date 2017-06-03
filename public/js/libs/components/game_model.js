@@ -249,6 +249,18 @@
       });
     },
 
+    retrieveInitCellValues: function() {
+      var initCellValues = this.attr('initCellValues').attr();
+      if (_.isEmpty(initCellValues)) {
+        Rest.Game.getInitCellValues(this.attr('id'), function(result) {
+          var initCellValues = this.attr('initCellValues').attr();
+          if (_.isEmpty(initCellValues)) {
+            this.attr('initCellValues', result);
+          }
+        }.bind(this));
+      }
+    },
+
     findCellData : function(xy) {
       var cellDatas = this.attr('cellDatas');
       if (xy && cellDatas) {

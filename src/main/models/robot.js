@@ -25,15 +25,42 @@ Robot.prototype.toJSON = function() {
 };
 
 Robot.prototype.submit = function() {
-  var xy = _.sample(this.getUnknownCells());
-  var options = new OptionsCalculator(this.game).calcCellOptions(xy);
-  var value = _.sample(options);
-  this.game.submit(this.account, xy, value, function(error) {
+  var sample = this.advancedSampleCellOptions();
+  var value = _.sample(sample.cellOptions);
+  this.game.submit(this.account, sample.xy, value, function(error) {
     if (error) {
       winston.error('Robot submit error: ' + error);
     }
   });
 }
+
+Robot.prototype.basicSampleCellOptions = function() {
+  var xy = _.sample(this.getUnknownCells());
+  var cellOptions = new OptionsCalculator(this.game).calcCellOptions(xy);
+  return {
+    xy: xy,
+    cellOptions: cellOptions
+  };
+};
+
+Robot.prototype.advancedSampleCellOptions = function() {
+  var allCellOptions = new OptionsCalculator(this.game).calcAllCellOptions();
+  var candidates = [];
+  for (var i = 1; i <= 9; i++) {
+    for (xy in allCellOptions) {
+      var cellOptions = allCellOptions[xy];
+      if (cellOptions.length === i) {
+        candidates.push({
+          xy: xy,
+          cellOptions: cellOptions
+        });
+      }
+    }
+    if (candidates.length > 1) {
+      return _.sample(candidates);
+    }
+  }
+};
 
 Robot.prototype.getUnknownCells = function() {
   var cells = [];

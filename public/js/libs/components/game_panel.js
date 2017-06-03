@@ -290,6 +290,7 @@
     },
 
     showOngoing : function() {
+      this.options.model.retrieveInitCellValues();
       $('.game-countdown-number').hide();
       setTimeout(function() {
         $('.game-countdown-number').remove();
