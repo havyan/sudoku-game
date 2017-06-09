@@ -364,13 +364,17 @@ Game.prototype.startPlayerTimer = function() {
 Game.prototype.updateScore = function(type, account, xy) {
   var rule = this.rule,
     single = this.isSingle(),
-    score = 0;
+    score = 0,
+    player;
   if (!account) {
     account = this.currentPlayer;
   }
+  player = this.findPlayer(account);
   if (type === SCORE_TYPE.CORRECT) {
     if (single) {
       score = rule.score.single.correct;
+    } else if (player && player.isRobot) {
+      score = 150; //TODO
     } else {
       var time = this.playerTimer.ellapsedTime;
       score = _.find(rule.score.add.levels, function(level) {
