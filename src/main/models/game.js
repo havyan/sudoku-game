@@ -14,6 +14,13 @@ var PuzzleDAO = require('../daos/puzzle');
 var JoinRecordDAO = require('../daos/join_record');
 var PointsRecordDAO = require('../daos/points_record');
 var ChatRecordDAO = require('../daos/chat_record');
+
+var Timer = require('./timer');
+var GameWaitTask = require('./tasks/game_wait');
+var GameCountdownTask = require('./tasks/game_countdown');
+var GameTotalTask = require('./tasks/game_total');
+var GameDestroyTask = require('./tasks/game_destroy');
+
 var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
@@ -31,10 +38,8 @@ var CAPACITY = 4;
 var DEFAULT_LEVEL = 'DDD';
 var DEFAULT_WAIT_TIME = 5;
 var GAME_TIMEOUT = 10;
-var COUNTDOWN_TOTAL = 5;
 var QUIT_COUNTDOWN_TOTAL = 20;
 var DELAY_COUNTDOWN_TOTAL = 60;
-var DESTROY_COUNTDOWN_TOTAL = 120;
 var MAX_TIMEOUT_ROUNDS = 10;
 var START_MODE = {
   MANUAL: 'manual',
@@ -73,6 +78,7 @@ Game.prototype.init = function(account, params, cb) {
   var self = this;
   var creator;
   var level = params.level || DEFAULT_LEVEL;
+  this.initTimer();
   async.waterfall([
     function(cb) {
       UserDAO.findOneByAccount(account, cb);
@@ -113,7 +119,8 @@ Game.prototype.init = function(account, params, cb) {
       self.rule = rule;
       self.initParams(params);
       self.emit('init', self.toSimpleJSON());
-      self.startWaitTimer();
+      self.waitCountdown = self.waitTime * 60;
+      self.timer.schedule(self.waitTask);
       GameDAO.createGame(self.room.id, creator.id, self.id, {
         index: self.index,
         mode: self.mode,
@@ -131,6 +138,15 @@ Game.prototype.init = function(account, params, cb) {
       cb();
     }
   ], cb);
+};
+
+Game.prototype.initTimer = function() {
+  this.timer = new Timer();
+  this.timer.start();
+  this.waitTask = new GameWaitTask(this);
+  this.countdownTask = new GameCountdownTask(this);
+  this.totalTask = new GameTotalTask(this);
+  this.destroyTask = new GameDestroyTask(this);
 };
 
 Game.prototype.initParams = function(params) {
@@ -205,6 +221,8 @@ Game.prototype.isRobot = function() {
   return this.playMode === PLAY_MODE.ROBOT;
 };
 
+
+
 Game.prototype.switchStatus = function(status, cb) {
   var oldStatus = this.status;
   this.setStatus(status);
@@ -216,6 +234,10 @@ Game.prototype.switchStatus = function(status, cb) {
       gameId: this.id
     });
   }
+};
+
+Game.prototype.setOngoingStatus = function(status) {
+  this.setStatus(ONGOING);
 };
 
 Game.prototype.setStatus = function(status) {
@@ -254,20 +276,7 @@ Game.prototype.start = function(cb) {
       setTimeout(cb, 2000);
     },
     function(cb) {
-      var countdown = COUNTDOWN_TOTAL;
-      var countDownTimer = setInterval(function() {
-        if (countdown >= 0) {
-          self.emit('countdown-stage', countdown);
-          countdown--;
-        } else {
-          clearInterval(countDownTimer);
-          setTimeout(function() {
-            self.startTimer();
-            self.nextPlayer();
-          }, 3000);
-          self.setStatus(ONGOING);
-        }
-      }, 1000);
+      self.timer.schedule(self.countdownTask);
       cb(null, {
         status: 'ok',
         gameId: self.id
@@ -404,43 +413,9 @@ Game.prototype.updateScore = function(type, account, xy) {
   return score;
 };
 
-Game.prototype.startTimer = function() {
-  var self = this;
-  this.timer = setInterval(function() {
-    self.remainingTime--;
-    self.emit('total-countdown-stage', self.remainingTime);
-    if (self.remainingTime <= 0) {
-      self.stopTimer();
-      self.over(function(error) {
-        if (error) {
-          winston.error(error);
-        }
-      });
-    }
-  }, 1000);
-};
-
-Game.prototype.startWaitTimer = function() {
-  var self = this;
-  this.waitCountdown = this.waitTime * 60;
-  var countDownTimer = setInterval(function() {
-    if (self.isWaiting()) {
-      if (self.waitCountdown >= 0) {
-        self.emit('wait-countdown-stage', self.waitCountdown);
-        self.waitCountdown--;
-      } else {
-        clearInterval(countDownTimer);
-        self.abort();
-      }
-    } else {
-      clearInterval(countDownTimer);
-    }
-  }, 1000);
-};
-
 Game.prototype.stopTimer = function() {
   if (this.timer) {
-    clearInterval(this.timer);
+    this.timer.stop();
   }
   this.stopPlayerTimer();
 };
@@ -898,16 +873,7 @@ Game.prototype.over = function(cb) {
       self.status = OVER;
       self.emit('status-changed', self.status, oldStatus);
       self.emit('game-over', self.results);
-      var countdown = DESTROY_COUNTDOWN_TOTAL;
-      self.emit('destroy-countdown-stage', countdown);
-      var destroyTimer = setInterval(function() {
-        countdown--;
-        self.emit('destroy-countdown-stage', countdown);
-        if (countdown === 0) {
-          clearInterval(destroyTimer);
-          self.destroy();
-        }
-      }, 1000);
+      self.timer.schedule(self.destroyTask);
       cb();
     }
   });
