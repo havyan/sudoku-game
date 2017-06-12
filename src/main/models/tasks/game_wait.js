@@ -10,8 +10,8 @@ class GameWaitTask extends AbstractTask {
   process() {
     if (this.game.isWaiting()) {
       if (this.game.waitCountdown >= 0) {
-        this.game.emit('wait-countdown-stage', this.game.waitCountdown);
         this.game.waitCountdown--;
+        this.game.emit('wait-countdown-stage', this.game.waitCountdown);
       } else {
         this.finish();
         this.game.abort();

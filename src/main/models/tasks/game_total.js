@@ -10,9 +10,10 @@ class GameTotalTask extends AbstractTask {
   }
 
   process() {
-    this.game.remainingTime--;
-    this.game.emit('total-countdown-stage', this.game.remainingTime);
-    if (this.game.remainingTime <= 0) {
+    if (this.game.remainingTime > 0) {
+      this.game.remainingTime--;
+      this.game.emit('total-countdown-stage', this.game.remainingTime);
+    } else {
       this.finish();
       // TODO stop player timer
       this.game.over(function(error) {

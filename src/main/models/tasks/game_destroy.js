@@ -7,16 +7,19 @@ class GameDestroyTask extends AbstractTask {
   constructor(game) {
     super();
     this.game = game;
-    this.remaining = COUNTDOWN;
   }
 
   process() {
-    this.game.emit('destroy-countdown-stage', this.remaining);
-    if (this.remaining === 0) {
+    if (this.remaining == null) {
+      this.remaining = COUNTDOWN;
+      this.game.emit('destroy-countdown-stage', this.remaining);
+    } else if (this.remaining > 0) {
+      this.remaining--;
+      this.game.emit('destroy-countdown-stage', this.remaining);
+    } else {
       this.finish();
       this.game.destroy();
     }
-    this.remaining--;
   }
 
 }

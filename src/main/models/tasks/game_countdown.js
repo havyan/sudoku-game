@@ -7,13 +7,15 @@ class GameCountdownTask extends AbstractTask {
   constructor(game) {
     super();
     this.game = game;
-    this.remaining = COUNTDOWN;
   }
 
   process() {
-    if (this.remaining >= 0) {
+    if (this.remaining == null) {
+      this.remaining = COUNTDOWN;
       this.game.emit('countdown-stage', this.remaining);
+    } else if (this.remaining > 0) {
       this.remaining--;
+      this.game.emit('countdown-stage', this.remaining);
     } else {
       this.finish();
       setTimeout(() => {

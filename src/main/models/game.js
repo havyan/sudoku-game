@@ -20,6 +20,9 @@ var GameWaitTask = require('./tasks/game_wait');
 var GameCountdownTask = require('./tasks/game_countdown');
 var GameTotalTask = require('./tasks/game_total');
 var GameDestroyTask = require('./tasks/game_destroy');
+var GamePlayerTask = require('./tasks/game_player');
+var GameDelayTask = require('./tasks/game_delay');
+var PlayerQuitTask = require('./tasks/player_quit');
 
 var GameMode = require('./game_mode');
 var Message = require('./message');
@@ -38,8 +41,6 @@ var CAPACITY = 4;
 var DEFAULT_LEVEL = 'DDD';
 var DEFAULT_WAIT_TIME = 5;
 var GAME_TIMEOUT = 10;
-var QUIT_COUNTDOWN_TOTAL = 20;
-var DELAY_COUNTDOWN_TOTAL = 60;
 var MAX_TIMEOUT_ROUNDS = 10;
 var START_MODE = {
   MANUAL: 'manual',
@@ -147,6 +148,13 @@ Game.prototype.initTimer = function() {
   this.countdownTask = new GameCountdownTask(this);
   this.totalTask = new GameTotalTask(this);
   this.destroyTask = new GameDestroyTask(this);
+  this.playerTask = new GamePlayerTask(this);
+  this.playerTask.stop();
+  this.timer.schedule(this.playerTask);
+  this.delayTask = new GameDelayTask(this);
+  this.delayTask.stop();
+  this.timer.schedule(this.delayTask);
+  this.quitTasks = {};
 };
 
 Game.prototype.initParams = function(params) {
@@ -165,16 +173,12 @@ Game.prototype.initParams = function(params) {
   this.knownCellValues = {};
   this.scores = {};
   this.timeoutCounter = {};
-  this.timeoutTimer = {};
   this.props = [];
   this.optionsOnce = {};
   this.glassesUsed = {};
   this.results = [];
   this.optionsAlways = {};
   this.changedScores = {};
-  this.playerTimer = {
-    ellapsedTime: 0
-  };
   this.buildPlayerIndex();
 };
 
@@ -286,8 +290,8 @@ Game.prototype.start = function(cb) {
 };
 
 Game.prototype.goahead = function(account) {
-  if (this.timeoutTimer[account]) {
-    clearInterval(this.timeoutTimer[account]);
+  if (this.quitTasks[account]) {
+    this.quitTasks[account].stop();
     this.timeoutCounter[account] = 0;
   }
 };
@@ -301,7 +305,7 @@ Game.prototype.nextPlayer = function() {
     }
     return;
   }
-  this.stopPlayerTimer();
+  this.stopPlayerTask();
   if (this.currentPlayer) {
     var currentIndex = _.findIndex(this.players, function(player) {
       return player && player.account === self.currentPlayer;
@@ -328,46 +332,17 @@ Game.prototype.nextPlayer = function() {
 };
 
 Game.prototype.startPlayerTimer = function() {
-  var self = this;
-  setTimeout(function() {
-    self.playerTimer = {
-      ellapsedTime: 0
-    };
-    self.emit('player-ellapsed-time', self.playerTimer.ellapsedTime);
-    self.playerTimer.timer = setInterval(function() {
-      if (!self.playerTimer.stopped && !self.delayed) {
-        self.playerTimer.ellapsedTime++;
-        self.emit('player-ellapsed-time', self.playerTimer.ellapsedTime);
-        if (self.playerTimer.ellapsedTime === self.rule.score.add.total) {
-          var currentPlayer = self.currentPlayer;
-          self.stopPlayerTimer();
-          self.updateScore(SCORE_TYPE.TIMEOUT);
-          if (self.timeoutCounter[currentPlayer] === undefined) {
-            self.timeoutCounter[currentPlayer] = 0;
-          }
-          self.timeoutCounter[currentPlayer]++;
-          if (self.timeoutCounter[currentPlayer] >= MAX_TIMEOUT_ROUNDS) {
-            self.emit('max-timeout-reached', currentPlayer);
-            var countdown = QUIT_COUNTDOWN_TOTAL;
-            self.timeoutTimer[currentPlayer] = setInterval(function() {
-              countdown--;
-              if (countdown > 0) {
-                self.emit('quit-countdown-stage', currentPlayer, countdown);
-              } else {
-                clearInterval(self.timeoutTimer[currentPlayer]);
-                self.playerQuit(currentPlayer, 'offline', function(error) {
-                  if (error) {
-                    winston.error('Error happen when player quit for timeout: ' + error);
-                  }
-                });
-              }
-            }, 1000);
-          }
-          self.nextPlayer();
-        }
-      }
-    }, 1000);
-  }, 1000);
+  this.playerTask.restart();
+};
+
+Game.prototype.startPlayerQuitTask = function(player) {
+  var task = this.quitTasks[player];
+  if (task == null) {
+    task = new PlayerQuitTask(this, player);
+    this.quitTasks[player] = task;
+    this.timer.schedule(task);
+  }
+  task.restart();
 };
 
 Game.prototype.updateScore = function(type, account, xy) {
@@ -385,7 +360,7 @@ Game.prototype.updateScore = function(type, account, xy) {
     } else if (player && player.isRobot) {
       score = 150; //TODO
     } else {
-      var time = this.playerTimer.ellapsedTime;
+      var time = this.playerTask.ellapsed;
       score = _.find(rule.score.add.levels, function(level) {
         return time >= level.from && time < level.to;
       }).score;
@@ -417,24 +392,17 @@ Game.prototype.stopTimer = function() {
   if (this.timer) {
     this.timer.stop();
   }
-  this.stopPlayerTimer();
+  this.stopPlayerTask();
 };
 
-Game.prototype.stopPlayerTimer = function() {
-  if (this.playerTimer) {
-    this.stopDelayTimer();
-    this.playerTimer.stopped = true;
-    if (this.playerTimer.timer) {
-      clearInterval(this.playerTimer.timer);
-    }
-  }
+Game.prototype.stopPlayerTask = function() {
+  this.playerTask.stop();
+  this.stopDelayTask();
 };
 
-Game.prototype.stopDelayTimer = function() {
+Game.prototype.stopDelayTask = function() {
   this.delayed = false;
-  if (this.delayTimer) {
-    clearInterval(this.delayTimer);
-  }
+  this.delayTask.stop();
   this.emit('game-delay-cancelled');
 };
 
@@ -501,12 +469,12 @@ Game.prototype.playerQuit = function(account, status, cb) {
       return player == null || player === quitPlayer || player.isRobot;
     });
     if (robotLeft) {
-      this.stopPlayerTimer();
+      this.stopPlayerTask();
     } else if (this.currentPlayer === account && this.isOngoing()) {
       this.nextPlayer();
     }
   } else {
-    this.stopPlayerTimer();
+    this.stopPlayerTask();
   }
   if (quitPlayer) {
     if (robotLeft) {
@@ -618,8 +586,9 @@ Game.prototype.removePlayer = function(account) {
   });
   delete this.knownCellValues[account];
   delete this.timeoutCounter[account];
-  clearInterval(this.timeoutTimer[account]);
-  delete this.timeoutTimer[account];
+  if (this.quitTasks[account]) {
+    this.quitTasks[account].stop();
+  }
   delete this.changedScores[account];
 };
 
@@ -711,7 +680,7 @@ Game.prototype.toJSON = function(account) {
     }),
     knownCellValues: account ? this.knownCellValues[account] : this.knownCellValues,
     changedScore: account ? this.changedScores[account] : this.changedScores,
-    playerRemainingTime: this.rule.score.add.total - this.playerTimer.ellapsedTime,
+    playerRemainingTime: this.rule.score.add.total - this.playerTask.ellapsed,
     glassesUsed: account ? this.glassesUsed[account] ? true : false : this.glassesUsed,
     optionsOnce: account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
     optionsAlways: account ? this.optionsAlways[account] ? true : false : this.optionsAlways
@@ -764,7 +733,7 @@ Game.prototype.submit = function(account, xy, value, cb) {
   this.timeoutCounter[account] = 0;
   if (account === this.currentPlayer) {
     value = parseInt(value);
-    this.stopPlayerTimer();
+    this.stopPlayerTask();
     var result = {};
     var over = false;
     if (this.answer[xy] === value) {
@@ -1024,7 +993,7 @@ Game.prototype.peep = function(account, xy, cb) {
 Game.prototype.pass = function(account, cb) {
   this.timeoutCounter[account] = 0;
   if (account === this.currentPlayer) {
-    this.stopPlayerTimer();
+    this.stopPlayerTask();
     var score = this.updateScore(SCORE_TYPE.PASS);
     this.nextPlayer();
     cb(null, {
@@ -1039,7 +1008,7 @@ Game.prototype.pass = function(account, cb) {
 Game.prototype.delay = function(account, cb) {
   var self = this;
   this.timeoutCounter[account] = 0;
-  this.stopDelayTimer();
+  this.stopDelayTask();
   if (account === this.currentPlayer) {
     var prop = _.find(this.props, {
       account: account
@@ -1048,18 +1017,7 @@ Game.prototype.delay = function(account, cb) {
     if (delay > 0) {
       this.delayed = true;
       prop.delay = delay - 1;
-      var countdown = DELAY_COUNTDOWN_TOTAL;
-      self.delayCountdownStage = countdown;
-      self.emit('delay-countdown-stage', countdown);
-      self.emit('game-delayed', countdown);
-      self.delayTimer = setInterval(function() {
-        countdown--;
-        self.delayCountdownStage = countdown;
-        self.emit('delay-countdown-stage', countdown);
-        if (countdown === 0) {
-          self.stopDelayTimer();
-        }
-      }, 1000);
+      self.delayTask.restart();
       prop.save(function(error) {
         if (error) {
           winston.error('Error when updating prop: ' + error);
