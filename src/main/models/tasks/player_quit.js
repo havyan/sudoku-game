@@ -15,10 +15,10 @@ class PlayerQuitTask extends AbstractTask {
   process() {
     if (this.remaining == null) {
       this.remaining = COUNTDOWN;
-      this.game.emit('quit-countdown-stage', this.remaining);
+      this.game.emit('quit-countdown-stage', this.player, this.remaining);
     } else if (this.remaining > 0) {
       this.remaining--;
-      this.game.emit('quit-countdown-stage', this.remaining);
+      this.game.emit('quit-countdown-stage', this.player, this.remaining);
     } else {
       this.finish();
       this.game.playerQuit(this.player, 'offline', function(error) {

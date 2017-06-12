@@ -13,12 +13,13 @@ class GameDelayTask extends AbstractTask {
   process() {
     if (this.game.delayCountdownStage == null) {
       this.game.delayCountdownStage = COUNTDOWN;
-      this.game.emit('delay-countdown-stage', countdown);
+      this.game.emit('delay-countdown-stage', this.game.delayCountdownStage);
     } else if (this.game.delayCountdownStage > 0) {
       this.game.delayCountdownStage--;
       this.game.emit('delay-countdown-stage', this.game.delayCountdownStage);
     } else {
       this.finish();
+      this.game.stopDelayTask();
     }
   }
 
