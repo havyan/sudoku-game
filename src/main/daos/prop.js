@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var common = require('./common');
 var _ = require('lodash');
-var async = require('async');
+var Async = require('async');
 var Schema = mongoose.Schema;
 var Mixed = Schema.Types.Mixed;
 var PROP = require('./prop.json');
@@ -45,7 +45,7 @@ PropSchema.statics.reset = function(cb) {
     if (error) {
       cb(error);
     } else {
-      async.eachSeries(props, function(prop, cb) {
+      Async.eachSeries(props, function(prop, cb) {
         prop.update(PROP, cb);
       }, cb);
     }

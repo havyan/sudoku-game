@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var async = require('async');
+var Async = require('async');
 var util = require("util");
 var EventEmitter = require('events').EventEmitter;
 var RoomDAO = require('./daos/room');
@@ -136,7 +136,7 @@ GameManager.prototype.createSingleGame = function(account, playMode, cb) {
       })
     }.bind(this));
     this.emit('single-game-created', game);
-    async.series([
+    Async.series([
       function(cb) {
         game.init(account, {
           duration: 99,

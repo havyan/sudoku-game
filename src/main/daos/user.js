@@ -3,7 +3,7 @@ var common = require('./common');
 var _ = require('lodash');
 var crypto = require('crypto');
 var winston = require('winston');
-var async = require('async');
+var Async = require('async');
 var emailer = require('../emailer');
 var Schema = mongoose.Schema;
 var RuleDAO = require('./rule');
@@ -72,7 +72,7 @@ UserSchema.statics.createUser = function(params, cb) {
     email : params.account + '@supergenius.cn'
   }, params);
   params.password = this.encryptPassword(params.password);
-  async.waterfall([
+  Async.waterfall([
   function(cb) {
     self.create(params, cb);
   },
@@ -171,7 +171,7 @@ UserSchema.statics.updateAllGrades = function(cb) {
       cb(error);
     } else {
       self.find({}, function(error, users) {
-        async.each(users, function(user, cb) {
+        Async.each(users, function(user, cb) {
           var ceilingIndex = _.findIndex(rule.grade, function(e) {
             return e.floor > user.points;
           });
@@ -188,7 +188,7 @@ UserSchema.statics.resetMoney = function(cb) {
     if (error) {
       cb(error);
     } else {
-      async.eachSeries(users, function(user, cb) {
+      Async.eachSeries(users, function(user, cb) {
         user.money = MONEY;
         user.save(cb);
       }, cb);

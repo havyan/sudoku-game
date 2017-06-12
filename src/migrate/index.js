@@ -1,7 +1,7 @@
 var readline = require('readline');
 var fs = require('fs');
 var _ = require('lodash');
-var async = require('async');
+var Async = require('async');
 var winston = require('winston');
 var RuleDAO = require('../main/daos/rule');
 var PropTypeDAO = require('../main/daos/prop_type');
@@ -14,7 +14,7 @@ var AwardDAO = require('../main/daos/award');
 
 module.exports = function(cb) {
   winston.info('Start to do db migration');
-  async.series([
+  Async.series([
   function(cb) {
     RuleDAO.getRule(function(error, rule) {
       if (error) {
@@ -32,7 +32,7 @@ module.exports = function(cb) {
   },
   function(cb) {
     var propTypes = require('./predefined/prop_types.json');
-    async.eachSeries(propTypes, function(propType, cb) {
+    Async.eachSeries(propTypes, function(propType, cb) {
       PropTypeDAO.findOneByType(propType.type, function(error, find) {
         if (!find) {
           winston.info('Create prop type [' + propType.name + '] from predefined');
@@ -45,7 +45,7 @@ module.exports = function(cb) {
   },
   function(cb) {
     var rooms = require('./predefined/rooms.json');
-    async.eachSeries(rooms.parents, function(room, cb) {
+    Async.eachSeries(rooms.parents, function(room, cb) {
       RoomDAO.findOneByName(room.name, function(error, find) {
         if (!find) {
           winston.info('Create room [' + room.name + '] from predefined');
@@ -69,8 +69,8 @@ module.exports = function(cb) {
   },
   function(cb) {
     var users = require('./predefined/users.json');
-    async.eachSeries(users, function(user, cb) {
-      async.series([
+    Async.eachSeries(users, function(user, cb) {
+      Async.series([
       function(cb) {
         UserDAO.findOneByAccount(user.account, function(error, find) {
           if (error) {
@@ -94,7 +94,7 @@ module.exports = function(cb) {
   function(cb) {
     var templateDir = 'src/migrate/predefined/templates';
     var files = fs.readdirSync(templateDir);
-    async.eachSeries(files, function(file, cb) {
+    Async.eachSeries(files, function(file, cb) {
       var code = file.substr(0, file.lastIndexOf('.'));
       TemplateDAO.findOneByCode(code, function(error, find) {
         if (error) {
@@ -116,8 +116,8 @@ module.exports = function(cb) {
   },
   function(cb) {
     var awards = require('./predefined/awards.json');
-    async.eachSeries(awards, function(award, cb) {
-      async.series([
+    Async.eachSeries(awards, function(award, cb) {
+      Async.series([
       function(cb) {
         AwardDAO.findOneByCode(award.code, function(error, find) {
           if (error) {

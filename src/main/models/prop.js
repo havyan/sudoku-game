@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var async = require('async');
+var Async = require('async');
 var PropDAO = require('../daos/prop');
 var UserDAO = require('../daos/user');
 var PurchaseRecordDAO = require('../daos/purchase_record');
@@ -8,7 +8,7 @@ var PropTypeDAO = require('../daos/prop_type');
 var Prop = {};
 
 Prop.getPropData = function(account, cb) {
-  async.parallel([
+  Async.parallel([
   function(cb) {
     PropTypeDAO.all(cb);
   },
@@ -56,7 +56,7 @@ Prop.buy = function(account, type, count, cb) {
       gameId : game.id
     });
   } else {
-    async.parallel([
+    Async.parallel([
     function(cb) {
       PropTypeDAO.all(cb);
     },
@@ -82,7 +82,7 @@ Prop.buy = function(account, type, count, cb) {
           });
         } else {
           var cost = propType.price * count;
-          async.series([
+          Async.series([
           function(cb) {
             user.money = user.money - cost;
             user.save(cb);

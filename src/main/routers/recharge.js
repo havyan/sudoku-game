@@ -6,12 +6,12 @@ var winston = require('winston');
 var formatDate = require('dateformat');
 var uuid = require('uuid');
 var _ = require('lodash');
-var async = require('async');
+var Async = require('async');
 var request = require('request');
 
 module.exports = function(router) {
   router.get('/recharge/data', function(req, res, next) {
-    async.parallel([
+    Async.parallel([
     function(cb) {
       UserDAO.findOneByAccount(req.session.account, cb);
     },
@@ -69,7 +69,7 @@ module.exports = function(router) {
   });
 
   router.post('/recharge/:id/pay', function(req, res, next) {
-    async.parallel([
+    Async.parallel([
     function(cb) {
       UserDAO.findOneByAccount(req.session.account, cb);
     },
@@ -127,7 +127,7 @@ module.exports = function(router) {
   router.get('/recharge/records', function(req, res, next) {
     var start = parseInt(req.query.start || 0);
     var size = parseInt(req.query.size || 10);
-    async.waterfall([
+    Async.waterfall([
     function(cb) {
       Recharge.checkAll(cb);
     },

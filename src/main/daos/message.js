@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var common = require('./common');
 var _ = require('lodash');
 var ObjectId = mongoose.Types.ObjectId;
-var async = require('async');
+var Async = require('async');
 var Schema = mongoose.Schema;
 
 var MessageSchema = new Schema({
@@ -56,7 +56,7 @@ MessageSchema.statics.send = function(from, to, title, content, cb) {
   to = _.isArray(to) ? to.map(function(e) {
     return ObjectId(e);
   }) : [ObjectId(to)];
-  async.waterfall([
+  Async.waterfall([
   function(cb) {
     self.create({
       from : ObjectId(from),
@@ -67,7 +67,7 @@ MessageSchema.statics.send = function(from, to, title, content, cb) {
     }, cb);
   },
   function(message, cb) {
-    async.eachSeries(to, function(to, cb) {
+    Async.eachSeries(to, function(to, cb) {
       Inbox.create({
         from : ObjectId(from),
         to : to,
@@ -123,8 +123,8 @@ MessageSchema.statics.unreadCount = function(to, cb) {
 
 MessageSchema.statics.removeInbox = function(ids, cb) {
   var self = this;
-  async.each(ids, function(id, cb) {
-    async.waterfall([
+  Async.each(ids, function(id, cb) {
+    Async.waterfall([
     function(cb) {
       Inbox.findOneAndRemove({
         _id : ObjectId(id)

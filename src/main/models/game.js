@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var winston = require('winston');
 var mongoose = require('mongoose');
-var async = require('async');
+var Async = require('async');
 var dateFormat = require('dateformat');
 var util = require("util");
 var EventEmitter = require('events').EventEmitter;
@@ -80,7 +80,7 @@ Game.prototype.init = function(account, params, cb) {
   var creator;
   var level = params.level || DEFAULT_LEVEL;
   this.initTimer();
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       UserDAO.findOneByAccount(account, cb);
     },
@@ -252,7 +252,7 @@ Game.prototype.setStatus = function(status) {
 
 Game.prototype.prepare = function(cb) {
   var self = this;
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       self.entity.update({
         real_wait_time: self.waitTime * 60 - self.waitCountdown
@@ -272,7 +272,7 @@ Game.prototype.prepare = function(cb) {
 
 Game.prototype.start = function(cb) {
   var self = this;
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       self.prepare(cb);
     },
@@ -417,7 +417,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
     cb('Index ' + index + ' is not valid');
     return;
   }
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       UserDAO.findOneByAccount(account, cb)
     },
@@ -487,7 +487,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
       self.destroy();
       cb();
     } else if (this.isOngoing()) {
-      async.waterfall([
+      Async.waterfall([
         function(cb) {
           self.upgradePlayer(quitPlayer, status, 0, false, cb);
         },
@@ -772,7 +772,7 @@ Game.prototype.abort = function() {
   var self = this;
   var banker = this.players[0];
   banker.money = banker.money + this.cost;
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       banker.save(cb);
     },
@@ -785,7 +785,7 @@ Game.prototype.abort = function() {
     if (error) {
       winston.error(error);
     } else {
-      async.eachSeries(self.players, function(player, cb) {
+      Async.eachSeries(self.players, function(player, cb) {
         if (player && player.account) {
           self.playerQuit(player.account, 'quit', cb);
         }
@@ -815,9 +815,9 @@ Game.prototype.over = function(cb) {
     return sourceScore - destScore;
   });
   var gains = this.calculateGains(players);
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
-      async.eachSeries(players, function(player, cb) {
+      Async.eachSeries(players, function(player, cb) {
         var win = (player === _.last(players));
         self.recordQuit(player.account);
         self.upgradePlayer(player, 'normal', gains[player.account], win, cb);
@@ -897,7 +897,7 @@ Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
   if (win) {
     player.wintimes = player.wintimes + 1;
   }
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       player.save(cb);
     },

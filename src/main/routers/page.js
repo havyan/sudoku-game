@@ -1,5 +1,5 @@
 var fs = require('fs');
-var async = require('async');
+var Async = require('async');
 var _ = require('lodash');
 var HttpError = require('../http_error');
 var Prop = require('../models/prop');
@@ -16,7 +16,7 @@ module.exports = function(router) {
   var login = function(req, account, password, cb) {
     var ip = Utils.clientIp(req);
     winston.info("User logged in from IP: " + ip);
-    async.waterfall([
+    Async.waterfall([
       function(cb) {
         UserDAO.findOne({
           account: account,
@@ -152,7 +152,7 @@ module.exports = function(router) {
   });
 
   router.get('/main', function(req, res, next) {
-    async.parallel([
+    Async.parallel([
       function(cb) {
         UserDAO.findOneByAccount(req.session.account, cb);
       },
@@ -269,7 +269,7 @@ module.exports = function(router) {
   });
 
   router.get('/help', function(req, res, next) {
-    async.parallel([
+    Async.parallel([
       function(cb) {
         UserDAO.findOneByAccount(req.session.account, cb);
       },
@@ -300,7 +300,7 @@ module.exports = function(router) {
   });
 
   router.get('/view/recharge/pay/:id', function(req, res, next) {
-    async.parallel([
+    Async.parallel([
       function(cb) {
         UserDAO.findOneByAccount(req.session.account, cb);
       },
