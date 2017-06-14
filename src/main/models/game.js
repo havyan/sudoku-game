@@ -24,6 +24,8 @@ var GamePlayerTask = require('./tasks/game_player');
 var GameDelayTask = require('./tasks/game_delay');
 var PlayerQuitTask = require('./tasks/player_quit');
 
+var PropFactory = require('./props/prop_factory');
+
 var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
@@ -80,6 +82,7 @@ Game.prototype.init = function(account, params, cb) {
   var creator;
   var level = params.level || DEFAULT_LEVEL;
   this.initTimer();
+  this.propFactory = PropFactory.create(this);
   Async.waterfall([
     function(cb) {
       UserDAO.findOneByAccount(account, cb);
@@ -321,7 +324,7 @@ Game.prototype.nextPlayer = function() {
     this.currentPlayer = this.players[0].account;
   }
   this.emit('switch-player', this.currentPlayer);
-  this.startPlayerTimer();
+  this.restartPlayerTask();
 
   var player = this.findPlayer(this.currentPlayer);
   if (player && player.isRobot) {
@@ -331,7 +334,7 @@ Game.prototype.nextPlayer = function() {
   }
 };
 
-Game.prototype.startPlayerTimer = function() {
+Game.prototype.restartPlayerTask = function() {
   this.playerTask.restart();
 };
 
@@ -915,6 +918,10 @@ Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
   ], cb);
 };
 
+Game.prototype.resetTimeout = function(account) {
+  this.timeoutCounter[account] = 0;
+};
+
 Game.prototype.autoSubmit = function(account, xy, cb) {
   var self = this;
   this.timeoutCounter[account] = 0;
@@ -1006,32 +1013,11 @@ Game.prototype.pass = function(account, cb) {
 };
 
 Game.prototype.delay = function(account, cb) {
-  var self = this;
-  this.timeoutCounter[account] = 0;
-  this.stopDelayTask();
-  if (account === this.currentPlayer) {
-    var prop = _.find(this.props, {
-      account: account
-    });
-    var delay = prop.delay;
-    if (delay > 0) {
-      this.delayed = true;
-      prop.delay = delay - 1;
-      self.delayTask.restart();
-      prop.save(function(error) {
-        if (error) {
-          winston.error('Error when updating prop: ' + error);
-          cb(error);
-        } else {
-          cb();
-        }
-      });
-    } else {
-      cb('You do not have enough delay cards');
-    }
-  } else {
-    cb('You do not have permission now');
-  }
+  this.propFactory.use('delay', account).then(function() {
+    cb();
+  }).catch(function(error) {
+    cb(error);
+  });
 };
 
 Game.prototype.useGlasses = function(account, cb) {

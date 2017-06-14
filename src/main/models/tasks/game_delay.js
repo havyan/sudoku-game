@@ -18,7 +18,6 @@ class GameDelayTask extends AbstractTask {
       this.game.delayCountdownStage--;
       this.game.emit('delay-countdown-stage', this.game.delayCountdownStage);
     } else {
-      this.finish();
       this.game.stopDelayTask();
     }
   }

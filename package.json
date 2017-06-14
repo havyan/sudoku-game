@@ -16,7 +16,7 @@
     "gm": "^1.23.0",
     "hbs": "^4.0.1",
     "lodash": "^4.17.2",
-    "mongoose": "^4.7.0",
+    "mongoose": "^4.10.6",
     "nodemailer": "^2.6.4",
     "nodemailer-direct-transport": "^3.3.2",
     "nodemailer-smtp-pool": "^2.8.2",
