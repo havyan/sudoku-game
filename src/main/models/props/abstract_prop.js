@@ -7,29 +7,29 @@ class AbstractProp {
     this.type = type;
   }
 
-  async use(player, ...params) {
+  async use(player, params={}) {
     this.game.resetTimeout(player);
-    await this.beforeUse(player, ...params);
+    await this.beforeUse(player, params);
     const prop = this.findProp(player);
     const amount = prop[this.type];
     if(amount <= 0) {
       throw 'Not enough props.';
     }
-    await this.check(player, prop, ...params);
-    const result = await this.process(player, prop, ...params);
+    await this.check(player, prop, params);
+    const result = await this.process(player, prop, params);
     prop[this.type] = amount - 1;
     await prop.save();
-    await this.afterUse(player, ...params);
+    await this.afterUse(player, params);
     return result;
   }
 
-  async beforeUse(player, ...params) {}
+  async beforeUse(player, params) {}
 
-  async afterUse(player, ...params) {}
+  async afterUse(player, params) {}
 
-  async check(player, prop, ...params) {}
+  async check(player, prop, params) {}
 
-  async process(player, prop, ...params) {
+  async process(player, prop, params) {
 
   }
 

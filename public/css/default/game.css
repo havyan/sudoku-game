@@ -374,6 +374,10 @@ body {
   cursor: default;
 }
 
+.chess-cell.has-value.known-value {
+  cursor: pointer;
+}
+
 .chessboard-container.draft .chessboard-panel.inactive .chess-cell {
   background: #79b693;
 }

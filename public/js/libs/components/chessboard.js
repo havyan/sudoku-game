@@ -342,7 +342,7 @@
       }, 1000);
     },
 
-    '.chess-cell.no-value click' : function(element, event) {
+    '.chess-cell.no-value,.chess-cell.has-value.known-value click' : function(element, event) {
       var model = this.options.model;
       var xy = element.data('xy');
       model.selectCell(xy);

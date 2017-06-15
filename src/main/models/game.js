@@ -923,78 +923,15 @@ Game.prototype.resetTimeout = function(account) {
 };
 
 Game.prototype.autoSubmit = function(account, xy, cb) {
-  var self = this;
-  this.timeoutCounter[account] = 0;
-  var prop = _.find(this.props, {
-    account: account
-  });
-  var magnifier = prop.magnifier;
-  if (magnifier > 0) {
-    var value = this.answer[xy];
-    this.submit(account, xy, value, function(error, result) {
-      if (error) {
-        cb(error);
-      } else {
-        prop.magnifier = magnifier - 1;
-        prop.save(function(error) {
-          if (error) {
-            winston.error('Error when updating prop: ' + error);
-            cb(error);
-          } else {
-            self.emit('magnifier-changed', prop.magnifier);
-            cb(null, result);
-          }
-        });
-      }
-    });
-  } else {
-    cb('You do not have enough magnifiers');
-  }
+  this.useProp('magnifier', account, {xy: xy}, cb);
 };
 
 Game.prototype.impunish = function(account, cb) {
-  this.timeoutCounter[account] = 0;
-  var prop = _.find(this.props, {
-    account: account
-  });
-  var impunity = prop.impunity;
-  if (impunity > 0) {
-    prop.impunity = impunity - 1;
-    this.updateScore(SCORE_TYPE.IMPUNITY, account);
-    prop.save(function(error) {
-      if (error) {
-        winston.error('Error when updating prop: ' + error);
-        cb(error);
-      } else {
-        cb(null);
-      }
-    });
-  } else {
-    cb('You do not have enough impunities');
-  }
+  this.useProp('impunity', account, {}, cb);
 };
 
 Game.prototype.peep = function(account, xy, cb) {
-  this.timeoutCounter[account] = 0;
-  var self = this;
-  var prop = _.find(this.props, {
-    account: account
-  });
-  var magnifier = prop.magnifier;
-  if (magnifier > 0) {
-    this.knownCellValues[account][xy] = this.answer[xy];
-    prop.magnifier == magnifier - 1;
-    prop.save(function(error) {
-      if (error) {
-        winston.error('Error when updating prop: ' + error);
-        cb(error);
-      } else {
-        cb(null, self.knownCellValues[account][xy]);
-      }
-    });
-  } else {
-    cb('You do not have enough magnifiers');
-  }
+  this.useProp('magnifier', account, {xy: xy, peep: true}, cb);
 };
 
 Game.prototype.pass = function(account, cb) {
@@ -1013,89 +950,25 @@ Game.prototype.pass = function(account, cb) {
 };
 
 Game.prototype.delay = function(account, cb) {
-  this.propFactory.use('delay', account).then(function() {
-    cb();
-  }).catch(function(error) {
-    cb(error);
-  });
+  this.useProp('delay', account, {}, cb);
 };
 
 Game.prototype.useGlasses = function(account, cb) {
-  var self = this;
-  if (account !== this.currentPlayer) {
-    var prop = _.find(this.props, {
-      account: account
-    });
-    var glasses = prop.glasses;
-    if (glasses > 0) {
-      prop.glasses = glasses - 1;
-      prop.save(function(error) {
-        if (error) {
-          winston.error('Error when updating prop: ' + error);
-          cb(error);
-        } else {
-          self.glassesUsed[account] = true;
-          cb();
-        }
-      });
-    } else {
-      cb('You do not have enough cards');
-    }
-  } else {
-    cb('You do not have permission now');
-  }
+  this.useProp('glasses', account, {}, cb);
 };
 
 Game.prototype.setOptionsOnce = function(account, cb) {
-  var self = this;
-  if (account === this.currentPlayer) {
-    var prop = _.find(this.props, {
-      account: account
-    });
-    var options_once = prop.options_once;
-    if (options_once > 0) {
-      prop.options_once = options_once - 1;
-      prop.save(function(error) {
-        if (error) {
-          winston.error('Error when updating prop: ' + error);
-          cb(error);
-        } else {
-          self.optionsOnce[account] = true;
-          cb();
-        }
-      });
-    } else {
-      cb('You do not have enough cards');
-    }
-  } else {
-    cb('You do not have permission now');
-  }
+  this.useProp('options_once', account, {}, cb);
 };
 
 Game.prototype.setOptionsAlways = function(account, cb) {
-  var self = this;
-  if (self.optionsAlways[account]) {
-    cb('You have already used this type of card, only one time is allowed during one game.');
-  } else {
-    var prop = _.find(this.props, {
-      account: account
-    });
-    var options_always = prop.options_always;
-    if (options_always > 0) {
-      prop.options_always = options_always - 1;
-      prop.save(function(error) {
-        if (error) {
-          winston.error('Error when updating prop: ' + error);
-          cb(error);
-        } else {
-          self.optionsAlways[account] = true;
-          cb();
-        }
-      });
-    } else {
-      cb('You do not have enough cards');
-    }
-  }
+  this.useProp('options_always', account, {}, cb);
+};
+
+Game.prototype.useProp = function(type, account, params, cb) {
+  return this.propFactory.use(type, account, params).then(function(result) {
+    cb(null, result);
+  }).catch(cb);
 };
 
 Game.prototype.recordMessages = function() {
