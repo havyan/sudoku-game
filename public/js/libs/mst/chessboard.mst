@@ -15,7 +15,7 @@
   <ul class="props always-above">
     {{#props}}
     {{#visible}}
-    <li class="{{type}} prop-item {{#unless count}}empty{{/unless}}">
+    <li class="{{type}} prop-item {{#unless count}}empty{{/unless}}" data-type="{{type}}">
       <div class="prop-item-content"><img src="{{icon}}"> x {{count}}
       </div>
       <div class="prop-item-tip">

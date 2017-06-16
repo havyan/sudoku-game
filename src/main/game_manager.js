@@ -197,45 +197,14 @@ GameManager.prototype.submit = function(gameId, account, xy, value, cb) {
   var result = game.submit(account, xy, value, cb);
 };
 
-GameManager.prototype.autoSubmit = function(gameId, account, xy, cb) {
-  var self = this;
-  var game = this.findGame(gameId);
-  var result = game.autoSubmit(account, xy, cb);
-};
-
-GameManager.prototype.peep = function(gameId, account, xy, cb) {
-  var game = this.findGame(gameId);
-  var result = game.peep(account, xy, cb);
-};
-
-GameManager.prototype.impunish = function(gameId, account, cb) {
-  var game = this.findGame(gameId);
-  var result = game.impunish(account, cb);
-};
-
 GameManager.prototype.pass = function(gameId, account, cb) {
   var game = this.findGame(gameId);
   game.pass(account, cb);
 };
 
-GameManager.prototype.delay = function(gameId, account, cb) {
+GameManager.prototype.useProp = function(gameId, type, account, params, cb) {
   var game = this.findGame(gameId);
-  game.delay(account, cb);
-};
-
-GameManager.prototype.useGlasses = function(gameId, account, cb) {
-  var game = this.findGame(gameId);
-  game.useGlasses(account, cb);
-};
-
-GameManager.prototype.setOptionsOnce = function(gameId, account, cb) {
-  var game = this.findGame(gameId);
-  game.setOptionsOnce(account, cb);
-};
-
-GameManager.prototype.setOptionsAlways = function(gameId, account, cb) {
-  var game = this.findGame(gameId);
-  game.setOptionsAlways(account, cb);
+  return game.useProp(type, account, params, cb);
 };
 
 GameManager.prototype.goahead = function(account, gameId) {

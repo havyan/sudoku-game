@@ -922,18 +922,6 @@ Game.prototype.resetTimeout = function(account) {
   this.timeoutCounter[account] = 0;
 };
 
-Game.prototype.autoSubmit = function(account, xy, cb) {
-  this.useProp('magnifier', account, {xy: xy}, cb);
-};
-
-Game.prototype.impunish = function(account, cb) {
-  this.useProp('impunity', account, {}, cb);
-};
-
-Game.prototype.peep = function(account, xy, cb) {
-  this.useProp('magnifier', account, {xy: xy, peep: true}, cb);
-};
-
 Game.prototype.pass = function(account, cb) {
   this.timeoutCounter[account] = 0;
   if (account === this.currentPlayer) {
@@ -947,22 +935,6 @@ Game.prototype.pass = function(account, cb) {
   } else {
     cb('You do not have permission now');
   }
-};
-
-Game.prototype.delay = function(account, cb) {
-  this.useProp('delay', account, {}, cb);
-};
-
-Game.prototype.useGlasses = function(account, cb) {
-  this.useProp('glasses', account, {}, cb);
-};
-
-Game.prototype.setOptionsOnce = function(account, cb) {
-  this.useProp('options_once', account, {}, cb);
-};
-
-Game.prototype.setOptionsAlways = function(account, cb) {
-  this.useProp('options_always', account, {}, cb);
 };
 
 Game.prototype.useProp = function(type, account, params, cb) {
