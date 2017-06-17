@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/welcome.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/components/utils.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/components/agreement.js"></script>
+    <script src="{{@basejs}}/libs/welcome.js"></script>
+  </head>
+  <body class="welcome-body">
+    <div class="welcome-area">
+      <div class="content">
+        <div class="video-area">
+          <video src="/videos/sudoku.mp4" controls="controls" autoplay>
+          </video>
+        </div>
+        <div class="author-area">
+          <img class="logo" src="imgs/default/welcome/logo.png"/>
+          <img class="author" src="imgs/default/welcome/author.png"/>
+        </div>
+      </div>
+      <div class="welcome-bottom">
+        <a class="rich-button start" href="/login"></a>
+      </div>
+    </div>
+  </body>
+</html>

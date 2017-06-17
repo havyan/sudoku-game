@@ -1,0 +1,67 @@
+body.welcome-body {
+  background: url(../../imgs/default/welcome/bg.gif) no-repeat top left;
+  background-size: 100% 100%;
+}
+
+.welcome-area {
+  width: 90%;
+  max-width: 1200px;
+  height: 500px;
+  margin: auto;
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.content {
+  font-size: 0px;
+}
+
+.video-area {
+  display: inline-block;
+  vertical-align: middle;
+  width: 55%;
+  padding: 17px 29px 21px 36px;
+  box-sizing: border-box;
+  background: url(../../imgs/default/welcome/video_bg.png) no-repeat top left;
+  background-size: 100% 100%;
+}
+
+.video-area video {
+  width: 100%;
+}
+
+.author-area {
+  display: inline-block;
+  vertical-align: middle;
+  width: 45%;
+  box-sizing: border-box;
+}
+
+.author-area img {
+  display: block;
+  margin: auto;
+}
+
+.author-area .logo {
+  width: 50%;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+.author-area .author {
+  width: 95%;
+}
+
+.welcome-bottom {
+  text-align: center;
+}
+
+.welcome-bottom .start {
+  background-image: url(../../imgs/default/welcome/start.gif);
+  width: 150px;
+  height: 50px;
+  margin-top: 50px;
+}

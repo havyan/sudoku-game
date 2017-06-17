@@ -105,7 +105,7 @@ module.exports = function(router) {
 
   /* GET home page. */
   router.get('/', function(req, res, next) {
-    autoLogin(req, res, next);
+    res.render('welcome');
   });
 
   /* GET login page. */
