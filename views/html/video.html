@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/video.css" rel="stylesheet" type="text/css" />
     <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
     <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
     <script src="{{@basejs}}/libs3/can.jquery.js"></script>
@@ -12,7 +13,10 @@
     <script src="{{@basejs}}/libs/components/agreement.js"></script>
   </head>
   <body>
-    <video src="/videos/sudoku.mp4" controls="controls" autoplay>
-    </video>
+    {{> top_actions }}
+    <div class="video-area">
+      <video src="/videos/sudoku.mp4" controls="controls" autoplay>
+      </video>
+    </div>
   </body>
 </html>

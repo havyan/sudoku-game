@@ -1,0 +1,13 @@
+body {
+  overflow: hidden;
+}
+
+.video-area {
+  margin-top: 100px;
+}
+
+.video-area video {
+  width: 90%;
+  display: block;
+  margin: auto;
+}
