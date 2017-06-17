@@ -148,7 +148,7 @@ module.exports = function(router) {
     req.session.account = undefined;
     res.clearCookie('account');
     res.clearCookie('password');
-    res.redirect('/');
+    res.redirect('/login');
   });
 
   router.get('/main', function(req, res, next) {
@@ -297,6 +297,10 @@ module.exports = function(router) {
         });
       }
     });
+  });
+
+  router.get('/video', function(req, res, next) {
+    res.render('video', {});
   });
 
   router.get('/view/recharge/pay/:id', function(req, res, next) {

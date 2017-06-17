@@ -61,8 +61,13 @@
           </div>
           <a class="messages-button" href="/view/messages">消息</a>
         </div>
+        {{#unless isAdmin}}
         <div class="header-action">
           <a class="recharge-button" href="/view/recharge">充值</a>
+        </div>
+        {{/unless}}
+        <div class="header-action">
+          <a class="video-button" href="/video">教学视频</a>
         </div>
         <div class="header-action">
           <a class="help-button" href="/help">帮助</a>
