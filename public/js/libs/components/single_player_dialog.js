@@ -11,7 +11,7 @@
       this.element.find('.single-player-modal').modal('hide');
     },
 
-    '.lobby-modal .close click' : function(element) {
+    '.single-player-modal .close click' : function(element) {
       this.close();
     },
 
@@ -22,11 +22,11 @@
 
     getParams : function() {
       return {
-        playMode : this.element.find('.play-mode input:checked').data('value')
+        playMode : this.element.find('.single-player-modal .play-mode input:checked').data('value')
       };
     },
 
-    '.lobby-modal .confirm click' : function(element) {
+    '.single-player-modal .confirm click' : function(element) {
       if (this.callback) {
         this.callback(this.getParams());
       }

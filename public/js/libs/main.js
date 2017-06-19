@@ -6,7 +6,7 @@
         $('a.single-player').click(function() {
           singlePlayerDialog.show(function(params) {
             Rest.Game.createSingleGame(params, function() {
-              
+
             }, function() {});
             window.open('/table/' + data.user.account, '_blank');
           });
