@@ -56,7 +56,7 @@ Robot.prototype.advancedSampleCellOptions = function() {
         });
       }
     }
-    if (candidates.length > 1) {
+    if (candidates.length > 0) {
       return _.sample(candidates);
     }
   }

@@ -811,7 +811,6 @@ Game.prototype.over = function(cb) {
   var players = _.filter(this.players, function(player) {
     return player && !player.isRobot;
   });
-  this.stopTimer();
   players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
     var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;
