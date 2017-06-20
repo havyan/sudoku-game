@@ -44,19 +44,22 @@ body {
   box-sizing: border-box;
 }
 
-.author-area img {
-  display: block;
-  margin: auto;
-}
-
 .author-area .logo {
   width: 50%;
+  display: block;
+  margin: auto;
   margin-bottom: 20px;
   margin-top: 30px;
 }
 
+.author-area .logo img {
+  width: 100%;
+}
+
 .author-area .author {
   width: 95%;
+  display: block;
+  margin: auto;
 }
 
 .welcome-bottom {
