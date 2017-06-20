@@ -86,41 +86,6 @@ module.exports = function(router) {
     });
   });
 
-  router.post('/game/:id/auto_submit', function(req, res, next) {
-    global.gameManager.autoSubmit(req.params.id, req.session.account, req.body.xy, function(error, result) {
-      if (error) {
-        next(new HttpError(error, HttpError.UNAUTHORIZED));
-      } else {
-        res.send(result);
-      }
-    });
-  });
-
-  router.post('/game/:id/impunity', function(req, res, next) {
-    global.gameManager.impunish(req.params.id, req.body.account, function(error) {
-      if (error) {
-        next(new HttpError(error, HttpError.UNAUTHORIZED));
-      } else {
-        res.send({
-          status: 'ok'
-        });
-      }
-    });
-  });
-
-  router.post('/game/:id/peep', function(req, res, next) {
-    global.gameManager.peep(req.params.id, req.session.account, req.body.xy, function(error, result) {
-      if (error) {
-        next(new HttpError(error, HttpError.UNAUTHORIZED));
-      } else {
-        res.send({
-          status: 'ok',
-          result: result
-        });
-      }
-    });
-  });
-
   router.post('/game/:id/goahead', function(req, res, next) {
     global.gameManager.goahead(req.session.account, req.params.id);
     res.send({
@@ -151,49 +116,15 @@ module.exports = function(router) {
     });
   });
 
-  router.post('/game/:id/delay', function(req, res, next) {
-    global.gameManager.delay(req.params.id, req.session.account, function(error) {
+  router.post('/game/:id/prop/:type', function(req, res, next) {
+    var params = JSON.parse(req.body.params);
+    global.gameManager.useProp(req.params.id, req.params.type, req.session.account, params, function(error, result) {
       if (error) {
         next(new HttpError(error, HttpError.UNAUTHORIZED));
       } else {
         res.send({
-          status: 'ok'
-        });
-      }
-    });
-  });
-
-  router.post('/game/:id/glasses', function(req, res, next) {
-    global.gameManager.useGlasses(req.params.id, req.session.account, function(error) {
-      if (error) {
-        next(new HttpError(error, HttpError.UNAUTHORIZED));
-      } else {
-        res.send({
-          status: 'ok'
-        });
-      }
-    });
-  });
-
-  router.post('/game/:id/options_once', function(req, res, next) {
-    global.gameManager.setOptionsOnce(req.params.id, req.session.account, function(error) {
-      if (error) {
-        next(new HttpError(error, HttpError.UNAUTHORIZED));
-      } else {
-        res.send({
-          status: 'ok'
-        });
-      }
-    });
-  });
-
-  router.post('/game/:id/options_always', function(req, res, next) {
-    global.gameManager.setOptionsAlways(req.params.id, req.session.account, function(error) {
-      if (error) {
-        next(new HttpError(error, HttpError.UNAUTHORIZED));
-      } else {
-        res.send({
-          status: 'ok'
+          status: 'ok',
+          result: result
         });
       }
     });

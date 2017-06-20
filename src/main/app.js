@@ -2,7 +2,7 @@ require('./common');
 var _ = require('lodash');
 var winston = require('winston');
 var express = require('express');
-var async = require('async');
+var Async = require('async');
 var app = express();
 var path = require('path');
 var hbs = require('hbs');
@@ -92,7 +92,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.init = function(cb) {
-  async.series([
+  Async.series([
   function(cb) {
     // Initialize db
     migrate(cb);

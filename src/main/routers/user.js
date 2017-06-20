@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var formidable = require('formidable');
-var async = require('async');
+var Async = require('async');
 var HttpError = require('../http_error');
 var winston = require('winston');
 var User = require('../models/user');
@@ -60,7 +60,7 @@ module.exports = function(router) {
   });
 
   router.put('/user/icon', function(req, res, next) {
-    async.waterfall([
+    Async.waterfall([
     function(cb) {
       var form = new formidable.IncomingForm();
       form.uploadDir = 'public' + TMP_ICON_DIR;

@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var winston = require('winston');
 var mongoose = require('mongoose');
-var async = require('async');
+var Async = require('async');
 var dateFormat = require('dateformat');
 var util = require("util");
 var EventEmitter = require('events').EventEmitter;
@@ -14,6 +14,18 @@ var PuzzleDAO = require('../daos/puzzle');
 var JoinRecordDAO = require('../daos/join_record');
 var PointsRecordDAO = require('../daos/points_record');
 var ChatRecordDAO = require('../daos/chat_record');
+
+var Timer = require('./timer');
+var GameWaitTask = require('./tasks/game_wait');
+var GameCountdownTask = require('./tasks/game_countdown');
+var GameTotalTask = require('./tasks/game_total');
+var GameDestroyTask = require('./tasks/game_destroy');
+var GamePlayerTask = require('./tasks/game_player');
+var GameDelayTask = require('./tasks/game_delay');
+var PlayerQuitTask = require('./tasks/player_quit');
+
+var PropFactory = require('./props/prop_factory');
+
 var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
@@ -31,10 +43,6 @@ var CAPACITY = 4;
 var DEFAULT_LEVEL = 'DDD';
 var DEFAULT_WAIT_TIME = 5;
 var GAME_TIMEOUT = 10;
-var COUNTDOWN_TOTAL = 5;
-var QUIT_COUNTDOWN_TOTAL = 20;
-var DELAY_COUNTDOWN_TOTAL = 60;
-var DESTROY_COUNTDOWN_TOTAL = 120;
 var MAX_TIMEOUT_ROUNDS = 10;
 var START_MODE = {
   MANUAL: 'manual',
@@ -73,7 +81,9 @@ Game.prototype.init = function(account, params, cb) {
   var self = this;
   var creator;
   var level = params.level || DEFAULT_LEVEL;
-  async.waterfall([
+  this.initTimer();
+  this.propFactory = PropFactory.create(this);
+  Async.waterfall([
     function(cb) {
       UserDAO.findOneByAccount(account, cb);
     },
@@ -113,7 +123,8 @@ Game.prototype.init = function(account, params, cb) {
       self.rule = rule;
       self.initParams(params);
       self.emit('init', self.toSimpleJSON());
-      self.startWaitTimer();
+      self.waitCountdown = self.waitTime * 60;
+      self.timer.schedule(self.waitTask);
       GameDAO.createGame(self.room.id, creator.id, self.id, {
         index: self.index,
         mode: self.mode,
@@ -133,6 +144,22 @@ Game.prototype.init = function(account, params, cb) {
   ], cb);
 };
 
+Game.prototype.initTimer = function() {
+  this.timer = new Timer();
+  this.timer.start();
+  this.waitTask = new GameWaitTask(this);
+  this.countdownTask = new GameCountdownTask(this);
+  this.totalTask = new GameTotalTask(this);
+  this.destroyTask = new GameDestroyTask(this);
+  this.playerTask = new GamePlayerTask(this);
+  this.playerTask.stop();
+  this.timer.schedule(this.playerTask);
+  this.delayTask = new GameDelayTask(this);
+  this.delayTask.stop();
+  this.timer.schedule(this.delayTask);
+  this.quitTasks = {};
+};
+
 Game.prototype.initParams = function(params) {
   this.capacity = params.capacity || CAPACITY;
   this.duration = params.duration || GAME_TIMEOUT;
@@ -149,16 +176,12 @@ Game.prototype.initParams = function(params) {
   this.knownCellValues = {};
   this.scores = {};
   this.timeoutCounter = {};
-  this.timeoutTimer = {};
   this.props = [];
   this.optionsOnce = {};
   this.glassesUsed = {};
   this.results = [];
   this.optionsAlways = {};
   this.changedScores = {};
-  this.playerTimer = {
-    ellapsedTime: 0
-  };
   this.buildPlayerIndex();
 };
 
@@ -205,6 +228,8 @@ Game.prototype.isRobot = function() {
   return this.playMode === PLAY_MODE.ROBOT;
 };
 
+
+
 Game.prototype.switchStatus = function(status, cb) {
   var oldStatus = this.status;
   this.setStatus(status);
@@ -218,6 +243,10 @@ Game.prototype.switchStatus = function(status, cb) {
   }
 };
 
+Game.prototype.setOngoingStatus = function(status) {
+  this.setStatus(ONGOING);
+};
+
 Game.prototype.setStatus = function(status) {
   var oldStatus = this.status;
   this.status = status;
@@ -226,7 +255,7 @@ Game.prototype.setStatus = function(status) {
 
 Game.prototype.prepare = function(cb) {
   var self = this;
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       self.entity.update({
         real_wait_time: self.waitTime * 60 - self.waitCountdown
@@ -246,7 +275,7 @@ Game.prototype.prepare = function(cb) {
 
 Game.prototype.start = function(cb) {
   var self = this;
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       self.prepare(cb);
     },
@@ -254,20 +283,7 @@ Game.prototype.start = function(cb) {
       setTimeout(cb, 2000);
     },
     function(cb) {
-      var countdown = COUNTDOWN_TOTAL;
-      var countDownTimer = setInterval(function() {
-        if (countdown >= 0) {
-          self.emit('countdown-stage', countdown);
-          countdown--;
-        } else {
-          clearInterval(countDownTimer);
-          setTimeout(function() {
-            self.startTimer();
-            self.nextPlayer();
-          }, 3000);
-          self.setStatus(ONGOING);
-        }
-      }, 1000);
+      self.timer.schedule(self.countdownTask);
       cb(null, {
         status: 'ok',
         gameId: self.id
@@ -277,8 +293,8 @@ Game.prototype.start = function(cb) {
 };
 
 Game.prototype.goahead = function(account) {
-  if (this.timeoutTimer[account]) {
-    clearInterval(this.timeoutTimer[account]);
+  if (this.quitTasks[account]) {
+    this.quitTasks[account].stop();
     this.timeoutCounter[account] = 0;
   }
 };
@@ -292,7 +308,7 @@ Game.prototype.nextPlayer = function() {
     }
     return;
   }
-  this.stopPlayerTimer();
+  this.stopPlayerTask();
   if (this.currentPlayer) {
     var currentIndex = _.findIndex(this.players, function(player) {
       return player && player.account === self.currentPlayer;
@@ -308,7 +324,7 @@ Game.prototype.nextPlayer = function() {
     this.currentPlayer = this.players[0].account;
   }
   this.emit('switch-player', this.currentPlayer);
-  this.startPlayerTimer();
+  this.restartPlayerTask();
 
   var player = this.findPlayer(this.currentPlayer);
   if (player && player.isRobot) {
@@ -318,47 +334,18 @@ Game.prototype.nextPlayer = function() {
   }
 };
 
-Game.prototype.startPlayerTimer = function() {
-  var self = this;
-  setTimeout(function() {
-    self.playerTimer = {
-      ellapsedTime: 0
-    };
-    self.emit('player-ellapsed-time', self.playerTimer.ellapsedTime);
-    self.playerTimer.timer = setInterval(function() {
-      if (!self.playerTimer.stopped && !self.delayed) {
-        self.playerTimer.ellapsedTime++;
-        self.emit('player-ellapsed-time', self.playerTimer.ellapsedTime);
-        if (self.playerTimer.ellapsedTime === self.rule.score.add.total) {
-          var currentPlayer = self.currentPlayer;
-          self.stopPlayerTimer();
-          self.updateScore(SCORE_TYPE.TIMEOUT);
-          if (self.timeoutCounter[currentPlayer] === undefined) {
-            self.timeoutCounter[currentPlayer] = 0;
-          }
-          self.timeoutCounter[currentPlayer]++;
-          if (self.timeoutCounter[currentPlayer] >= MAX_TIMEOUT_ROUNDS) {
-            self.emit('max-timeout-reached', currentPlayer);
-            var countdown = QUIT_COUNTDOWN_TOTAL;
-            self.timeoutTimer[currentPlayer] = setInterval(function() {
-              countdown--;
-              if (countdown > 0) {
-                self.emit('quit-countdown-stage', currentPlayer, countdown);
-              } else {
-                clearInterval(self.timeoutTimer[currentPlayer]);
-                self.playerQuit(currentPlayer, 'offline', function(error) {
-                  if (error) {
-                    winston.error('Error happen when player quit for timeout: ' + error);
-                  }
-                });
-              }
-            }, 1000);
-          }
-          self.nextPlayer();
-        }
-      }
-    }, 1000);
-  }, 1000);
+Game.prototype.restartPlayerTask = function() {
+  this.playerTask.restart();
+};
+
+Game.prototype.startPlayerQuitTask = function(player) {
+  var task = this.quitTasks[player];
+  if (task == null) {
+    task = new PlayerQuitTask(this, player);
+    this.quitTasks[player] = task;
+    this.timer.schedule(task);
+  }
+  task.restart();
 };
 
 Game.prototype.updateScore = function(type, account, xy) {
@@ -376,7 +363,7 @@ Game.prototype.updateScore = function(type, account, xy) {
     } else if (player && player.isRobot) {
       score = 150; //TODO
     } else {
-      var time = this.playerTimer.ellapsedTime;
+      var time = this.playerTask.ellapsed;
       score = _.find(rule.score.add.levels, function(level) {
         return time >= level.from && time < level.to;
       }).score;
@@ -404,62 +391,21 @@ Game.prototype.updateScore = function(type, account, xy) {
   return score;
 };
 
-Game.prototype.startTimer = function() {
-  var self = this;
-  this.timer = setInterval(function() {
-    self.remainingTime--;
-    self.emit('total-countdown-stage', self.remainingTime);
-    if (self.remainingTime <= 0) {
-      self.stopTimer();
-      self.over(function(error) {
-        if (error) {
-          winston.error(error);
-        }
-      });
-    }
-  }, 1000);
-};
-
-Game.prototype.startWaitTimer = function() {
-  var self = this;
-  this.waitCountdown = this.waitTime * 60;
-  var countDownTimer = setInterval(function() {
-    if (self.isWaiting()) {
-      if (self.waitCountdown >= 0) {
-        self.emit('wait-countdown-stage', self.waitCountdown);
-        self.waitCountdown--;
-      } else {
-        clearInterval(countDownTimer);
-        self.abort();
-      }
-    } else {
-      clearInterval(countDownTimer);
-    }
-  }, 1000);
-};
-
 Game.prototype.stopTimer = function() {
   if (this.timer) {
-    clearInterval(this.timer);
+    this.timer.stop();
   }
-  this.stopPlayerTimer();
+  this.stopPlayerTask();
 };
 
-Game.prototype.stopPlayerTimer = function() {
-  if (this.playerTimer) {
-    this.stopDelayTimer();
-    this.playerTimer.stopped = true;
-    if (this.playerTimer.timer) {
-      clearInterval(this.playerTimer.timer);
-    }
-  }
+Game.prototype.stopPlayerTask = function() {
+  this.playerTask.stop();
+  this.stopDelayTask();
 };
 
-Game.prototype.stopDelayTimer = function() {
+Game.prototype.stopDelayTask = function() {
   this.delayed = false;
-  if (this.delayTimer) {
-    clearInterval(this.delayTimer);
-  }
+  this.delayTask.stop();
   this.emit('game-delay-cancelled');
 };
 
@@ -474,7 +420,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
     cb('Index ' + index + ' is not valid');
     return;
   }
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       UserDAO.findOneByAccount(account, cb)
     },
@@ -526,12 +472,12 @@ Game.prototype.playerQuit = function(account, status, cb) {
       return player == null || player === quitPlayer || player.isRobot;
     });
     if (robotLeft) {
-      this.stopPlayerTimer();
+      this.stopPlayerTask();
     } else if (this.currentPlayer === account && this.isOngoing()) {
       this.nextPlayer();
     }
   } else {
-    this.stopPlayerTimer();
+    this.stopPlayerTask();
   }
   if (quitPlayer) {
     if (robotLeft) {
@@ -544,7 +490,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
       self.destroy();
       cb();
     } else if (this.isOngoing()) {
-      async.waterfall([
+      Async.waterfall([
         function(cb) {
           self.upgradePlayer(quitPlayer, status, 0, false, cb);
         },
@@ -643,8 +589,9 @@ Game.prototype.removePlayer = function(account) {
   });
   delete this.knownCellValues[account];
   delete this.timeoutCounter[account];
-  clearInterval(this.timeoutTimer[account]);
-  delete this.timeoutTimer[account];
+  if (this.quitTasks[account]) {
+    this.quitTasks[account].stop();
+  }
   delete this.changedScores[account];
 };
 
@@ -736,7 +683,7 @@ Game.prototype.toJSON = function(account) {
     }),
     knownCellValues: account ? this.knownCellValues[account] : this.knownCellValues,
     changedScore: account ? this.changedScores[account] : this.changedScores,
-    playerRemainingTime: this.rule.score.add.total - this.playerTimer.ellapsedTime,
+    playerRemainingTime: this.rule.score.add.total - this.playerTask.ellapsed,
     glassesUsed: account ? this.glassesUsed[account] ? true : false : this.glassesUsed,
     optionsOnce: account ? this.optionsOnce[account] ? true : false : this.optionsOnce,
     optionsAlways: account ? this.optionsAlways[account] ? true : false : this.optionsAlways
@@ -789,7 +736,7 @@ Game.prototype.submit = function(account, xy, value, cb) {
   this.timeoutCounter[account] = 0;
   if (account === this.currentPlayer) {
     value = parseInt(value);
-    this.stopPlayerTimer();
+    this.stopPlayerTask();
     var result = {};
     var over = false;
     if (this.answer[xy] === value) {
@@ -828,7 +775,7 @@ Game.prototype.abort = function() {
   var self = this;
   var banker = this.players[0];
   banker.money = banker.money + this.cost;
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       banker.save(cb);
     },
@@ -841,7 +788,7 @@ Game.prototype.abort = function() {
     if (error) {
       winston.error(error);
     } else {
-      async.eachSeries(self.players, function(player, cb) {
+      Async.eachSeries(self.players, function(player, cb) {
         if (player && player.account) {
           self.playerQuit(player.account, 'quit', cb);
         }
@@ -864,16 +811,15 @@ Game.prototype.over = function(cb) {
   var players = _.filter(this.players, function(player) {
     return player && !player.isRobot;
   });
-  this.stopTimer();
   players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
     var destScore = self.scores[dest.account] ? self.scores[dest.account] : 0;
     return sourceScore - destScore;
   });
   var gains = this.calculateGains(players);
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
-      async.eachSeries(players, function(player, cb) {
+      Async.eachSeries(players, function(player, cb) {
         var win = (player === _.last(players));
         self.recordQuit(player.account);
         self.upgradePlayer(player, 'normal', gains[player.account], win, cb);
@@ -898,16 +844,7 @@ Game.prototype.over = function(cb) {
       self.status = OVER;
       self.emit('status-changed', self.status, oldStatus);
       self.emit('game-over', self.results);
-      var countdown = DESTROY_COUNTDOWN_TOTAL;
-      self.emit('destroy-countdown-stage', countdown);
-      var destroyTimer = setInterval(function() {
-        countdown--;
-        self.emit('destroy-countdown-stage', countdown);
-        if (countdown === 0) {
-          clearInterval(destroyTimer);
-          self.destroy();
-        }
-      }, 1000);
+      self.timer.schedule(self.destroyTask);
       cb();
     }
   });
@@ -962,7 +899,7 @@ Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
   if (win) {
     player.wintimes = player.wintimes + 1;
   }
-  async.waterfall([
+  Async.waterfall([
     function(cb) {
       player.save(cb);
     },
@@ -980,85 +917,14 @@ Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
   ], cb);
 };
 
-Game.prototype.autoSubmit = function(account, xy, cb) {
-  var self = this;
+Game.prototype.resetTimeout = function(account) {
   this.timeoutCounter[account] = 0;
-  var prop = _.find(this.props, {
-    account: account
-  });
-  var magnifier = prop.magnifier;
-  if (magnifier > 0) {
-    var value = this.answer[xy];
-    this.submit(account, xy, value, function(error, result) {
-      if (error) {
-        cb(error);
-      } else {
-        prop.magnifier = magnifier - 1;
-        prop.save(function(error) {
-          if (error) {
-            winston.error('Error when updating prop: ' + error);
-            cb(error);
-          } else {
-            self.emit('magnifier-changed', prop.magnifier);
-            cb(null, result);
-          }
-        });
-      }
-    });
-  } else {
-    cb('You do not have enough magnifiers');
-  }
-};
-
-Game.prototype.impunish = function(account, cb) {
-  this.timeoutCounter[account] = 0;
-  var prop = _.find(this.props, {
-    account: account
-  });
-  var impunity = prop.impunity;
-  if (impunity > 0) {
-    prop.impunity = impunity - 1;
-    this.updateScore(SCORE_TYPE.IMPUNITY, account);
-    prop.save(function(error) {
-      if (error) {
-        winston.error('Error when updating prop: ' + error);
-        cb(error);
-      } else {
-        cb(null);
-      }
-    });
-  } else {
-    cb('You do not have enough impunities');
-  }
-};
-
-Game.prototype.peep = function(account, xy, cb) {
-  this.timeoutCounter[account] = 0;
-  var self = this;
-  var prop = _.find(this.props, {
-    account: account
-  });
-  var magnifier = prop.magnifier;
-  if (magnifier > 0) {
-    this.knownCellValues[account][xy] = this.answer[xy];
-    prop.magnifier == magnifier - 1;
-    prop.save(function(error) {
-      if (error) {
-        winston.error('Error when updating prop: ' + error);
-        cb(error);
-      } else {
-        cb(null, self.knownCellValues[account][xy]);
-      }
-    });
-  } else {
-    cb('You do not have enough magnifiers');
-  }
 };
 
 Game.prototype.pass = function(account, cb) {
   this.timeoutCounter[account] = 0;
   if (account === this.currentPlayer) {
-    this.stopPlayerTimer();
+    this.stopPlayerTask();
     var score = this.updateScore(SCORE_TYPE.PASS);
     this.nextPlayer();
     cb(null, {
@@ -1070,122 +936,10 @@ Game.prototype.pass = function(account, cb) {
   }
 };
 
-Game.prototype.delay = function(account, cb) {
-  var self = this;
-  this.timeoutCounter[account] = 0;
-  this.stopDelayTimer();
-  if (account === this.currentPlayer) {
-    var prop = _.find(this.props, {
-      account: account
-    });
-    var delay = prop.delay;
-    if (delay > 0) {
-      this.delayed = true;
-      prop.delay = delay - 1;
-      var countdown = DELAY_COUNTDOWN_TOTAL;
-      self.delayCountdownStage = countdown;
-      self.emit('delay-countdown-stage', countdown);
-      self.emit('game-delayed', countdown);
-      self.delayTimer = setInterval(function() {
-        countdown--;
-        self.delayCountdownStage = countdown;
-        self.emit('delay-countdown-stage', countdown);
-        if (countdown === 0) {
-          self.stopDelayTimer();
-        }
-      }, 1000);
-      prop.save(function(error) {
-        if (error) {
-          winston.error('Error when updating prop: ' + error);
-          cb(error);
-        } else {
-          cb();
-        }
-      });
-    } else {
-      cb('You do not have enough delay cards');
-    }
-  } else {
-    cb('You do not have permission now');
-  }
-};
-
-Game.prototype.useGlasses = function(account, cb) {
-  var self = this;
-  if (account !== this.currentPlayer) {
-    var prop = _.find(this.props, {
-      account: account
-    });
-    var glasses = prop.glasses;
-    if (glasses > 0) {
-      prop.glasses = glasses - 1;
-      prop.save(function(error) {
-        if (error) {
-          winston.error('Error when updating prop: ' + error);
-          cb(error);
-        } else {
-          self.glassesUsed[account] = true;
-          cb();
-        }
-      });
-    } else {
-      cb('You do not have enough cards');
-    }
-  } else {
-    cb('You do not have permission now');
-  }
-};
-
-Game.prototype.setOptionsOnce = function(account, cb) {
-  var self = this;
-  if (account === this.currentPlayer) {
-    var prop = _.find(this.props, {
-      account: account
-    });
-    var options_once = prop.options_once;
-    if (options_once > 0) {
-      prop.options_once = options_once - 1;
-      prop.save(function(error) {
-        if (error) {
-          winston.error('Error when updating prop: ' + error);
-          cb(error);
-        } else {
-          self.optionsOnce[account] = true;
-          cb();
-        }
-      });
-    } else {
-      cb('You do not have enough cards');
-    }
-  } else {
-    cb('You do not have permission now');
-  }
-};
-
-Game.prototype.setOptionsAlways = function(account, cb) {
-  var self = this;
-  if (self.optionsAlways[account]) {
-    cb('You have already used this type of card, only one time is allowed during one game.');
-  } else {
-    var prop = _.find(this.props, {
-      account: account
-    });
-    var options_always = prop.options_always;
-    if (options_always > 0) {
-      prop.options_always = options_always - 1;
-      prop.save(function(error) {
-        if (error) {
-          winston.error('Error when updating prop: ' + error);
-          cb(error);
-        } else {
-          self.optionsAlways[account] = true;
-          cb();
-        }
-      });
-    } else {
-      cb('You do not have enough cards');
-    }
-  }
+Game.prototype.useProp = function(type, account, params, cb) {
+  return this.propFactory.use(type, account, params).then(function(result) {
+    cb(null, result);
+  }).catch(cb);
 };
 
 Game.prototype.recordMessages = function() {

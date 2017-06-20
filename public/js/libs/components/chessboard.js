@@ -342,7 +342,7 @@
       }, 1000);
     },
 
-    '.chess-cell.no-value click' : function(element, event) {
+    '.chess-cell.no-value,.chess-cell.has-value.known-value click' : function(element, event) {
       var model = this.options.model;
       var xy = element.data('xy');
       model.selectCell(xy);
@@ -483,42 +483,43 @@
     },
 
     '.delay click' : function(element, event) {
-      var self = this;
-      if (element.hasClass('active')) {
-        this.options.model.delay(function() {
-        });
-      }
+      this.useProp(element, {});
     },
 
     '.impunity click' : function(element, event) {
-      var self = this;
-      if (element.hasClass('active')) {
-        this.options.model.impunish(function() {
-        });
-      }
+      this.useProp(element, {});
     },
 
     '.glasses click' : function(element, event) {
       var self = this;
-      if (element.hasClass('active') && !this.options.model.attr('glassesUsed')) {
-        this.options.model.useGlasses(function() {
+      if (!this.options.model.attr('glassesUsed')) {
+        this.useProp(element, {}, function() {
+          self.options.model.attr('glassesUsed', true);
         });
       }
     },
 
     '.options_once click' : function(element, event) {
       var self = this;
-      if (element.hasClass('active') && !this.options.model.attr('optionsOnce')) {
-        this.options.model.setOptionsOnce(function() {
+      if (!this.options.model.attr('optionsOnce')) {
+        this.useProp(element, {}, function() {
+          self.options.model.attr('optionsOnce', true);
         });
       }
     },
 
     '.options_always click' : function(element, event) {
       var self = this;
-      if (element.hasClass('active') && !this.options.model.attr('optionsAlways')) {
-        this.options.model.setOptionsAlways(function() {
+      if (!this.options.model.attr('optionsAlways')) {
+        this.useProp(element, {}, function() {
+          self.options.model.attr('optionsAlways', true);
         });
+      }
+    },
+
+    useProp: function(element, params, success) {
+      if (element.hasClass('active')) {
+        return this.options.model.useProp(element.data('type'), params, success);
       }
     },
 

@@ -121,45 +121,6 @@
       });
     },
 
-    autoSubmit : function(gameId, xy, success, error) {
-      return $.ajax({
-        type : 'post',
-        url : '/game/' + gameId + '/auto_submit',
-        data : {
-          xy : xy
-        },
-        dataType : 'json',
-        success : success,
-        error : error
-      });
-    },
-
-    peep : function(gameId, xy, success, error) {
-      return $.ajax({
-        type : 'post',
-        url : '/game/' + gameId + '/peep',
-        data : {
-          xy : xy
-        },
-        dataType : 'json',
-        success : success,
-        error : error
-      });
-    },
-
-    impunish : function(gameId, account, success, error) {
-      return $.ajax({
-        type : 'post',
-        url : '/game/' + gameId + '/impunity',
-        dataType : 'json',
-        data : {
-          account : account
-        },
-        success : success,
-        error : error
-      });
-    },
-
     goahead : function(gameId, success, error) {
       return $.ajax({
         type : 'post',
@@ -190,41 +151,14 @@
       });
     },
 
-    delay : function(gameId, success, error) {
+    useProp: function(gameId, type, params, success, error) {
       return $.ajax({
         type : 'post',
-        url : '/game/' + gameId + '/delay',
+        url : '/game/' + gameId + '/prop/' + type,
         dataType : 'json',
-        success : success,
-        error : error
-      });
-    },
-
-    useGlasses : function(gameId, success, error) {
-      return $.ajax({
-        type : 'post',
-        url : '/game/' + gameId + '/glasses',
-        dataType : 'json',
-        success : success,
-        error : error
-      });
-    },
-
-    setOptionsOnce : function(gameId, success, error) {
-      return $.ajax({
-        type : 'post',
-        url : '/game/' + gameId + '/options_once',
-        dataType : 'json',
-        success : success,
-        error : error
-      });
-    },
-
-    setOptionsAlways : function(gameId, success, error) {
-      return $.ajax({
-        type : 'post',
-        url : '/game/' + gameId + '/options_always',
-        dataType : 'json',
+        data : {
+          params : JSON.stringify(params || {})
+        },
         success : success,
         error : error
       });

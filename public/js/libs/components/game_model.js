@@ -429,19 +429,13 @@
     },
 
     autoSubmit : function(xy) {
-      var self = this;
-      Rest.Game.autoSubmit(this.attr('id'), xy, function(result) {
-        self.reduceProp('magnifier');
-      }, function() {
-      });
+      return this.useProp('magnifier', { xy: xy, peep: false });
     },
 
     peep : function(xy) {
       var self = this;
-      Rest.Game.peep(this.attr('id'), xy, function(result) {
-        self.reduceProp('magnifier');
+      return this.useProp('magnifier', { xy: xy, peep: true }, function(result) {
         self.attr('knownCellValues').attr(xy, result.result);
-      }, function() {
       });
     },
 
@@ -469,62 +463,14 @@
       });
     },
 
-    delay : function(success) {
+    useProp: function(type, params, success, error) {
       var self = this;
-      Rest.Game.delay(this.attr('id'), function(result) {
-        self.reduceProp('delay');
+      Rest.Game.useProp(this.attr('id'), type, params, function(result) {
+        self.reduceProp(type);
         if (success) {
           success(result);
         }
-      }, function() {
-      });
-    },
-
-    useGlasses : function(success) {
-      var self = this;
-      Rest.Game.useGlasses(this.attr('id'), function(result) {
-        self.attr('glassesUsed', true);
-        self.reduceProp('glasses');
-        if (success) {
-          success(result);
-        }
-      }, function() {
-      });
-    },
-
-    setOptionsOnce : function(success) {
-      var self = this;
-      Rest.Game.setOptionsOnce(this.attr('id'), function(result) {
-        self.attr('optionsOnce', true);
-        self.reduceProp('options_once');
-        if (success) {
-          success(result);
-        }
-      }, function() {
-      });
-    },
-
-    setOptionsAlways : function(success) {
-      var self = this;
-      Rest.Game.setOptionsAlways(this.attr('id'), function(result) {
-        self.attr('optionsAlways', true);
-        self.reduceProp('options_always');
-        if (success) {
-          success(result);
-        }
-      }, function() {
-      });
-    },
-
-    impunish : function(success) {
-      var self = this;
-      Rest.Game.impunish(this.attr('id'), this.attr('account'), function(result) {
-        self.reduceProp('impunity');
-        if (success) {
-          success(result);
-        }
-      }, function() {
-      });
+      }, error);
     },
 
     isSubmit : function() {

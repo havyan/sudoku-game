@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var winston = require('winston');
-var async = require('async');
+var Async = require('async');
 var AwardDAO = require('../daos/award');
 var UserDAO = require('../daos/user');
 var PropTypeDAO = require('../daos/prop_type');
@@ -11,7 +11,7 @@ var Template = require('./template');
 var Award = {};
 
 Award.perform = function(code, to, cb) {
-  async.parallel([
+  Async.parallel([
   function(cb) {
     AwardDAO.findOneByCode(code, cb);
   },
@@ -40,7 +40,7 @@ Award.perform = function(code, to, cb) {
         e.icon = propType.icon;
         e.name = propType.name;
       });
-      async.parallel([
+      Async.parallel([
       function(cb) {
         user.money = user.money + award.money;
         user.save(cb);
@@ -64,7 +64,7 @@ Award.perform = function(code, to, cb) {
           }),
           award : awardJson
         };
-        async.waterfall([
+        Async.waterfall([
         function(cb) {
           Template.generate('award', awardResult, cb);
         },

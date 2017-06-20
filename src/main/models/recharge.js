@@ -1,4 +1,4 @@
-var async = require('async');
+var Async = require('async');
 var _ = require('lodash');
 var request = require('request');
 var winston = require('winston');
@@ -43,7 +43,7 @@ Recharge.findByAccount = function(account, start, size, cb) {
 
 Recharge.checkByPayuid = function(payuid, cb) {
   var self = this;
-  async.waterfall([
+  Async.waterfall([
   function(cb) {
     RechargeDAO.findOneByPayuid(payuid, cb);
   },
@@ -54,7 +54,7 @@ Recharge.checkByPayuid = function(payuid, cb) {
 
 Recharge.check = function(recharge, cb) {
   if (recharge.used) {
-    async.waterfall([
+    Async.waterfall([
     function(cb) {
       UserDAO.findOneByAccount(recharge.target, cb);
     },
@@ -68,7 +68,7 @@ Recharge.check = function(recharge, cb) {
     return;
   }
 
-  async.waterfall([
+  Async.waterfall([
   function(cb) {
     var url = global.config.app.pay.apiquery.replace('{payuid}', recharge.payuid);
     winston.debug('Call pay query api to get pay status of ' + recharge.payuid);
@@ -86,7 +86,7 @@ Recharge.check = function(recharge, cb) {
       var status = result.result.toString();
       if (_.includes(RechargeDAO.STATUS, status)) {
         recharge.status = status;
-        async.waterfall([
+        Async.waterfall([
         function(cb) {
           recharge.save(cb);
         },
@@ -141,12 +141,12 @@ Recharge.check = function(recharge, cb) {
 Recharge.checkAll = function(cb) {
   winston.debug('Start to check recharge status');
   var self = this;
-  async.waterfall([
+  Async.waterfall([
   function(cb) {
     RechargeDAO.findUnfinished(cb);
   },
   function(recharges, cb) {
-    async.each(recharges, function(recharge, cb) {
+    Async.each(recharges, function(recharge, cb) {
       self.check(recharge, cb);
     }, cb);
   }], cb);

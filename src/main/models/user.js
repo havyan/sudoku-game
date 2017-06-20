@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var fs = require('fs');
 var gm = require('gm');
-var async = require('async');
+var Async = require('async');
 var winston = require('winston');
 var vcode = require('verify-code');
 var emailer = require('../emailer');
@@ -31,7 +31,7 @@ User.updateByAccount = function(account, json, cb) {
 
 User.updateIconByAccount = function(account, icon, library, bound, cb) {
   if (library) {
-    async.waterfall([
+    Async.waterfall([
     function(cb) {
       UserDAO.findOneByAccount(account, cb);
     },
@@ -52,7 +52,7 @@ User.updateIconByAccount = function(account, icon, library, bound, cb) {
     var iconPath = ICON_DIR + '/' + fileName;
     var source = icon;
     var dest = 'public' + iconPath;
-    async.waterfall([
+    Async.waterfall([
     function(cb) {
       gm(source).size(cb);
     },
@@ -135,7 +135,7 @@ User.checkEmail = function(email, cb) {
 
 User.createUser = function(params, cb) {
   var self = this;
-  async.waterfall([
+  Async.waterfall([
   function(cb) {
     self.checkAccount(params.account, cb);
   },
@@ -185,7 +185,7 @@ User.resetPassword = function(account, password, key, cb) {
 };
 
 User.sendResetMail = function(email, cb) {
-  async.waterfall([
+  Async.waterfall([
   function(cb) {
     UserDAO.findOne({
       email : email
@@ -250,13 +250,13 @@ User.checkActiveKey = function(key, cb) {
 
 User.clearInactiveUsers = function(cb) {
   winston.debug('Start to clear inactive users');
-  async.waterfall([
+  Async.waterfall([
   function(cb) {
     UserDAO.findInactive(cb);
   },
   function(users, cb) {
     if (users && users.length > 0) {
-      async.eachSeries(users, function(user, cb) {
+      Async.eachSeries(users, function(user, cb) {
         ActiveKeyDAO.findOneBySource(user.account, function(error, key) {
           if (error) {
             cb(error);

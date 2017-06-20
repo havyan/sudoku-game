@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var async = require('async');
+var Async = require('async');
 var winston = require('winston');
 var User = require('./models/user');
 var Recharge = require('./models/recharge');

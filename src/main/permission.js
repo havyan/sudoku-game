@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var async = require('async');
+var Async = require('async');
 var PERMISSION = require('./permission.json');
 
 var hasAction = function(actions, action) {
