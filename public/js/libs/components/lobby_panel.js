@@ -57,8 +57,9 @@
           } else if (game.status === 'waiting') {
             var level = _.find(model.attr('levels'), {
               code : game.level
-            }).name;
-            return '等待开始<br>题目等级' + level + '<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
+            });
+            var levelName = level ? level.name : 'Unknown';
+            return '等待开始<br>题目等级' + levelName + '<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
           } else if (game.status === 'loading') {
             return '游戏加载中...<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
           } else if (game.status === 'ongoing') {
