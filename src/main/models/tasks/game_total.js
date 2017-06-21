@@ -15,7 +15,7 @@ class GameTotalTask extends AbstractTask {
       this.game.emit('total-countdown-stage', this.game.remainingTime);
     } else {
       this.finish();
-      // TODO stop player timer
+      this.game.playerTask.finish();
       this.game.over(function(error) {
         if (error) {
           winston.error(error);
