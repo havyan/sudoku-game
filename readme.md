@@ -1,16 +1,16 @@
 # Get Started
 ## Install Node.js by source code
-* Download nodejs v0.12.7
+* Download nodejs 8
 ```
-wget https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz
+wget https://nodejs.org/dist/v8.1.2/node-v8.1.2.tar.gz
 ```
 * Decompress tar
 ```
-tar xvf node-v0.12.7.tar.gz
+tar xvf node-v8.1.2.tar.gz
 ```
 * Compile and install
 ```
-cd node-v0.12.7
+cd node-v8.1.2
 ./configure
 make
 make install
