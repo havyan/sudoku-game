@@ -47,16 +47,29 @@ html, body {
   box-sizing: border-box;
 }
 
-.author-area .logo {
-  width: 50%;
+.welcome-area .super-genius {
+  width: 60%;
   display: block;
   margin: auto;
   margin-bottom: 20px;
   margin-top: 30px;
+  font-size: 0px;
 }
 
-.author-area .logo img {
+.author-area .super-genius .logo {
+  width: 80%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.author-area .super-genius .logo img {
   width: 100%;
+}
+
+.author-area .super-genius .arrow {
+  width: 20%;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .author-area .author {
