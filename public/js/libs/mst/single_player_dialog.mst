@@ -4,7 +4,7 @@
     <div class="lobby-modal-content">
       <div class="play-mode self-play">
         <input type="radio" name="play_mode" data-value="single" checked="checked" />
-        <span>单人</span>
+        <span>单机</span>
       </div>
       <div class="play-mode robot-play">
         <input type="radio" name="play_mode" data-value="robot" />

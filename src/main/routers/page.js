@@ -9,6 +9,7 @@ var RoomDAO = require('../daos/room');
 var UserDAO = require('../daos/user');
 var RuleDAO = require('../daos/rule');
 var RechargeDAO = require('../daos/recharge');
+var ReferrerDAO = require('../daos/referrer');
 var LoginHistoryDAO = require('../daos/login_history');
 var Message = require('../models/message');
 
@@ -105,6 +106,15 @@ module.exports = function(router) {
 
   /* GET home page. */
   router.get('/', function(req, res, next) {
+    var referrer = req.header('Referrer');
+    if (referrer) {
+      winston.info('Access sudoku game from ' + referrer);
+      ReferrerDAO.createReferrer(req.header('Referrer'), function(error) {
+        if (error) {
+          winston.error('Saving referrer with url ' + referrer + ' error: ' + error);
+        }
+      });
+    }
     res.render('welcome');
   });
 
