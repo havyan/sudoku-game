@@ -506,7 +506,7 @@ to {
 }
 
 .chess-cell-value.user.robot {
-  color: red;
+  color: #BB3D00;
 }
 
 .chessboard-container.draft .chess-cell-value.user {

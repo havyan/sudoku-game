@@ -108,12 +108,14 @@ module.exports = function(router) {
   router.get('/', function(req, res, next) {
     var referrer = req.header('Referrer');
     if (referrer) {
-      winston.info('Access sudoku game from ' + referrer);
-      ReferrerDAO.createReferrer(req.header('Referrer'), function(error) {
-        if (error) {
-          winston.error('Saving referrer with url ' + referrer + ' error: ' + error);
-        }
-      });
+      if (!referrer.trim().startsWith(global.config.server.domain)) {
+        winston.info('Access sudoku game from ' + referrer);
+        ReferrerDAO.createReferrer(req.header('Referrer'), function(error) {
+          if (error) {
+            winston.error('Saving referrer with url ' + referrer + ' error: ' + error);
+          }
+        });
+      }
     }
     res.render('welcome');
   });
