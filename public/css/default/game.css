@@ -505,6 +505,10 @@ to {
   color: #05B522;
 }
 
+.chess-cell-value.user.robot {
+  color: red;
+}
+
 .chessboard-container.draft .chess-cell-value.user {
   color: #0a2a16;
 }

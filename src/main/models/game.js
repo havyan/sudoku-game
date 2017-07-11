@@ -173,6 +173,7 @@ Game.prototype.initParams = function(params) {
   this.delayed = false;
   this.initCellValues = {};
   this.userCellValues = {};
+  this.cellValueOwners = {};
   this.knownCellValues = {};
   this.scores = {};
   this.timeoutCounter = {};
@@ -663,6 +664,7 @@ Game.prototype.toJSON = function(account) {
     propTypes: this.propTypes,
     initCellValues: this.initCellValues,
     userCellValues: this.userCellValues,
+    cellValueOwners: this.cellValueOwners,
     players: this.players.map(function(player) {
       return player ? player.toJSON() : null;
     }),
@@ -741,10 +743,14 @@ Game.prototype.submit = function(account, xy, value, cb) {
     var over = false;
     if (this.answer[xy] === value) {
       this.userCellValues[xy] = value;
+      this.cellValueOwners[xy] = account;
       for (key in this.knownCellValues) {
         delete this.knownCellValues[key][xy];
       }
-      this.emit('cell-correct', xy, value);
+      this.emit('cell-correct', xy, {
+        player: account,
+        value: value,
+      });
       result.score = this.updateScore(SCORE_TYPE.CORRECT, this.currentPlayer, xy);
       over = this.checkOver();
       result.success = true;

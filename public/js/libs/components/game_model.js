@@ -1,4 +1,6 @@
 (function() {
+  var ROBOT_RE = /^robot-\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/g;
+
   can.Model('Models.GameModel', {}, {
     init : function(game, eventReceiver) {
       this.eventReceiver = eventReceiver;
@@ -190,7 +192,8 @@
                 index : index,
                 type : initCellValues.attr(xy) ? 'init' : userCellValues.attr(xy) ? 'user' : knownCellValues.attr(xy) ? 'known' : '',
                 value : value,
-                draft : value ? null : drafts[xy]
+                draft : value ? null : drafts[xy],
+                robot : self.ownByRobot(xy)
               });
             }
             j++;
@@ -227,6 +230,7 @@
           cellData.attr('value', value);
           cellData.attr('cellOptions', null);
           cellData.attr('draft', null);
+          cellData.attr('robot', self.ownByRobot(xy));
         }
         self.attr('knownCellValues').removeAttr(xy);
         if (self.isOptions()) {
@@ -247,6 +251,11 @@
           }
         }
       });
+    },
+
+    ownByRobot: function(xy) {
+      var owner = this.attr('cellValueOwners').attr(xy);
+      return !!(owner && owner.match(ROBOT_RE));
     },
 
     retrieveInitCellValues: function() {
@@ -546,8 +555,9 @@
       this.eventReceiver.on('countdown-stage', function(stage) {
         self.attr('countdownStage', stage);
       });
-      this.eventReceiver.on('cell-correct', function(xy, value) {
-        self.attr('userCellValues').attr(xy, parseInt(value));
+      this.eventReceiver.on('cell-correct', function(xy, data) {
+        self.attr('cellValueOwners').attr(xy, data.player);
+        self.attr('userCellValues').attr(xy, parseInt(data.value));
       });
       this.eventReceiver.on('cell-incorrect', function(xy) {
         self.attr('incorrect', {

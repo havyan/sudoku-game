@@ -28,7 +28,7 @@
   <div class="chessboard-panel {{#if active}}active{{else}}inactive{{/if}}">
     {{#cellDatas}}
     <div class="chess-cell {{type}}-value {{#if value}}has-value{{else}}no-value{{/if}} {{#selected}}selected{{/selected}}" data-xy="{{xy}}" style="{{cellLayout this}}" {{#unless value}}tabindex="-1"{{/unless}}>
-      <div class="chess-cell-value {{type}}">
+      <div class="chess-cell-value {{type}} {{#robot}}robot{{/robot}}">
         {{value}}
       </div>
       {{#if cellOptions}}
