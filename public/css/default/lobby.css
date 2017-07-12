@@ -96,13 +96,13 @@
 }
 
 .lobby-content {
-  width: 80%;
+  width: 75%;
   min-width: 1264px;
-  margin-left: 20%;
+  margin-left: 25%;
 }
 
 .lobby-room {
-  text-align: center;
+  text-align: left;
 }
 
 .lobby-game {
@@ -115,6 +115,7 @@
 
 .room-number {
   position: absolute;
+  text-align: center;
   top: 95px;
   left: 87px;
   width: 59px;
