@@ -212,6 +212,19 @@
       });
     },
 
+    setName : function(name, success, error) {
+      return $.ajax({
+        type : 'put',
+        url : '/user/name',
+        dataType : 'json',
+        data : {
+          name : name
+        },
+        success : success,
+        error : error
+      });
+    },
+
     setMoney : function(money, success, error) {
       return $.ajax({
         type : 'put',

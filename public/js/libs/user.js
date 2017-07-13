@@ -11,7 +11,9 @@
       },
 
       '.value-field keydown' : function(element, event) {
-        return Utils.isIntKey(event.keyCode);
+        if (!element.closest('.info-row').hasClass('name-row')) {
+          return Utils.isIntKey(event.keyCode);
+        }
       },
 
       '.info-row .cancel click' : function(element) {
@@ -32,6 +34,22 @@
           }, function() {
           });
         });
+      },
+
+      '.name-row .confirm click' : function(element) {
+        var value = element.siblings('.value-field').val();
+        if (!_.isEmpty(value)) {
+          Dialog.confirm('您确定要修改您的昵称为[' + value + ']吗？', function() {
+            this.hide();
+            Rest.User.setName(value, function(result) {
+              Dialog.message('修改昵称成功!!!');
+              element.siblings('.value').html(value);
+              element.closest('.info-row').removeClass('edit');
+              $('.welcome .user-name').html(value);
+            }, function() {
+            });
+          });
+        }
       },
 
       '.money-row .confirm click' : function(element) {
