@@ -16,6 +16,7 @@
     "PUT /user/password",
     "GET /active_user",
     "POST /system/reload",
+    "GET /help",
     "[RE]GET /recharge/pay/\\w{32}/result"
   ],
   "admin": [

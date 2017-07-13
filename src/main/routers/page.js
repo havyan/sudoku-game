@@ -283,7 +283,11 @@ module.exports = function(router) {
   router.get('/help', function(req, res, next) {
     Async.parallel([
       function(cb) {
-        UserDAO.findOneByAccount(req.session.account, cb);
+        if (req.session.account) {
+          UserDAO.findOneByAccount(req.session.account, cb);
+        } else {
+          cb(null, {});
+        }
       },
       function(cb) {
         RuleDAO.getRule(cb);
@@ -295,6 +299,7 @@ module.exports = function(router) {
         var user = results[0],
           rule = results[1];
         res.render('help', {
+          loggedin: req.session.account != null,
           userName: user.name,
           userIcon: user.icon,
           isAdmin: user.account === 'SYSTEM',
