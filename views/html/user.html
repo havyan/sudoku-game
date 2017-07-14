@@ -17,7 +17,7 @@
     <script src="{{@basejs}}/libs/components/upload_icon.js"></script>
     <script src="{{@basejs}}/libs/rest/rest.js"></script>
     <script src="{{@basejs}}/libs/user.js"></script>
-    <script src="{{@basejs}}/libs/stats.js"></script>
+    {{{statsScript}}}
   </head>
   <body>
     {{> top_actions }}
@@ -29,8 +29,12 @@
         <div class="info-row">
           <span class="name">用户名：</span><span class="value">{{user.account}}</span>
         </div>
-        <div class="info-row">
+        <div class="info-row name-row">
           <span class="name">昵称：</span><span class="value">{{user.name}}</span>
+          <input class="button modify-button" type="button" value="更改" />
+          <input class="value-field" type="text" value="{{user.name}}" />
+          <input class="button confirm" type="button" value="确认" />
+          <input class="button cancel" type="button" value="取消" />
         </div>
         <div class="info-row">
           <span class="name">状态：</span><span class="value">正常</span>

@@ -3,6 +3,7 @@ var hbs = require('hbs');
 var _ = require('lodash');
 var Socketio = require('socket.io');
 var uuid = require('uuid');
+var args = require('./args');
 
 global.Utils = require('./utils');
 
@@ -16,4 +17,10 @@ Socketio.prototype.removeOf = function(name) {
 
 hbs.registerHelper('formatDate', function(date) {
   return formatDate(date, 'yyyy年mm月dd日 hh:MM:ss');
+});
+
+hbs.registerHelper('statsScript', function() {
+  if (args.env === 'production') {
+    return '<script src="' + global.config.app.locals.basejs + '/libs/stats.js"></script>'
+  }
 });
