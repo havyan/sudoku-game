@@ -34,7 +34,8 @@
     initEvents : function() {
       $(document.body).keydown(function(e) {
         if (e.keyCode === 8) {
-          if (!$(e.target).hasClass('game-message-input')) {
+          var $target = $(e.target);
+          if (!$target.hasClass('game-message-input') && !$target.hasClass('game-feedback-input')) {
             return false;
           }
         }
@@ -196,6 +197,19 @@
 
     '.game-start-button click' : function() {
       this.options.model.start();
+    },
+
+    '.game-feedback-submit click' : function() {
+      var $input = this.element.find('.game-feedback-input');
+      var content = $input.val();
+      if (!_.isEmpty(content)) {
+        Rest.Feedback.createFeedback(content, function() {
+          Dialog.message('反馈成功, 非常感谢!');
+          $input.val('');
+        }, function() {
+
+        })
+      }
     },
 
     '.game-send-message-button click' : function() {

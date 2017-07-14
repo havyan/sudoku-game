@@ -497,4 +497,19 @@
       });
     }
   }, {});
+
+  can.Model('Rest.Feedback', {
+    createFeedback : function(content, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/feedback',
+        data : {
+          content : content
+        },
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    }
+  }, {});
 })();
