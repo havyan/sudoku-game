@@ -12,13 +12,5 @@
         })
       }
     });
-    $(document.body).keydown(function(e) {
-      if (e.keyCode === 8) {
-        var $target = $(e.target);
-        if (!$target.hasClass('feedback-input')) {
-          return false;
-        }
-      }
-    });
   });
 })();
