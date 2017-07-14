@@ -12,8 +12,9 @@ var FeedbackSchema = new Schema({
 });
 
 FeedbackSchema.statics.createFeedback = function(user, content, cb) {
+  user = user ? ObjectId(user) : null;
   return this.create({
-    user : ObjectId(user),
+    user: user,
     content: content
   }, cb);
 };

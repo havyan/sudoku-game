@@ -55,21 +55,4 @@
 		</div>
 		<a class="game-state-hide-button" href="javascript:void(0);"></a>
 	</div>
-	<div class="game-communicate-area">
-		<div class="game-feedback">
-			<div class="game-feedback-label">
-				意<br>见<br>反<br>馈
-			</div>
-			<span class="game-feedback-arrow">&gt;</span>
-			<div class="game-feedback-popup">
-				<textarea class="game-feedback-input"></textarea>
-				<div class="game-feedback-separator"></div>
-				<div class="rich-button game-feedback-submit">提交</div>
-			</div>
-		</div>
-		<a class="game-group-chat" target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=f1729c5a2597577df175e525a9b0853b8abaff729e7b2875930674286791e910">
-			<img class="game-group-chat-icon" src="/imgs/default/group.png" />
-			<br>加<br>入<br>群<br>聊
-		</a>
-	</div>
 </div>

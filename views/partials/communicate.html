@@ -1,0 +1,23 @@
+<div class="communicate-area {{#left}}left{{/left}}">
+  <div class="feedback">
+    {{#unless left}}
+    <span class="feedback-arrow">&lt;</span>
+    {{/unless}}
+    <div class="feedback-label">
+      意<br>见<br>反<br>馈
+    </div>
+    {{#left}}
+    <span class="feedback-arrow">&gt;</span>
+    {{/left}}
+    <div class="feedback-popup">
+      <textarea class="feedback-input"></textarea>
+      <div class="feedback-separator"></div>
+      <div class="rich-button feedback-submit">提交</div>
+    </div>
+  </div>
+  <a class="group-chat" target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=f1729c5a2597577df175e525a9b0853b8abaff729e7b2875930674286791e910">
+    <img class="group-chat-icon" src="/imgs/default/group.png" />
+    <br>加<br>入<br>群<br>聊
+  </a>
+</div>
+<script src="{{@basejs}}/libs/communicate.js"></script>

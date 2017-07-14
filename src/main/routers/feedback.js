@@ -9,7 +9,11 @@ module.exports = function(router) {
   router.post('/feedback', function(req, res, next) {
     Async.waterfall([
       function(cb) {
-        UserDAO.findOneByAccount(req.session.account, cb);
+        if (req.session.account) {
+          UserDAO.findOneByAccount(req.session.account, cb);
+        } else {
+          cb(null, {});
+        }
       },
       function(user, cb) {
         FeedbackDAO.createFeedback(user.id, req.body.content, cb);
