@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    {{> common_head }}
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/index.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/about.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs/components/utils.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/components/agreement.js"></script>
+    <script src="{{@basejs}}/libs/index.js"></script>
+    <script src="{{@basejs}}/libs/stats.js"></script>
+  </head>
+  <body>
+    <a class="logo" href="/"><img src="/imgs/default/logo.png" /></a>
+    <div class="top-right-area">
+      <a class="about-btn" href="/login">登录</a>
+      <a class="about-btn" href="/about">关于天才数独棋</a>
+      <a class="contact-btn" href="/operation">操作指引</a>
+      <a class="contact-btn" href="/guide">对战指南</a>
+      <a class="law-btn" href="javascript:void(0);">法律声明</a>
+      <a class="contact-btn" href="/contact">联系我们</a>
+    </div>
+    <div class="contain-area">
+      <div class="common-contain">
+        <h3>天才数独棋是一款有着九联数独专利认证的游戏，其游戏指南如下：</h3>
+        <div class="step">
+          <h4>1、建桌</h4>
+          <p>玩家可在大厅加入正在等待的游戏桌，也可作为庄家自己建桌，建桌时可选择题目等级、每步时间、每局时间、每局人数等选项后点击确认进入游戏。</p>
+          <img src="/imgs/default/operate1.png" alt="" />
+        </div>
+        <div class="step">
+          <h4>2、答题模式</h4>
+          <p>天才数独棋有提交/草稿模式和普通/候选模式。</p>
+          <p>在提交/草稿模式下，可以在草稿的空格内标记最多4个数字或字母，作答时需切换至提交模式作答。在普通/候选模式下，候选可显示所有空白格子的候选数（1-4个），作答时需切换至普通模式进行提交，但候选模式只有在使用候选卡道具或全局候选卡道具时才能使用。</p>
+          <img src="/imgs/default/operate2.png" alt="" />
+          <img src="/imgs/default/operate3.png" alt="" />
+        </div>
+        <div class="step">
+          <h4>3、界面</h4>
+          <p>界面设有缩放条，道具条可以拖动。当作答时间截止，尚未找到正确答案时，玩家可点击Pass按钮，这样可以减少扣分。</p>
+          <img src="/imgs/default/operate4.png" alt="" />
+          <img src="/imgs/default/operate5.png" alt="" />
+        </div>
+        <div class="step">
+          <h4>4、规则</h4>
+          <p>正确加分，错误扣分。根据答题所花的时间长短计分，所花时间在越短得分时间段得分越多，计时器可用不同的颜色区分不同的得分时间间隔，以游戏结束时分数最高者为胜出。</p>
+          <img src="/imgs/default/operate6.png" alt="" />
+          <img src="/imgs/default/operate7.png" alt="" />
+        </div>
+        <div class="step">
+          <h4>4、道具</h4>
+          <p>天才数独棋开发了6款道具：</p>
+          <p>放大镜：当答不出时，可使用放大镜道具可直接自动填入正确数字。</p>
+          <p>延时卡：计时器将停止一段时间，以用于延长玩家思考时间。</p>
+          <p>候选卡：本轮候选卡：仅在此轮显示棋盘上任意空白格子的候选数。</p>
+          <p>全盘候选卡：可显示棋盘上全部空白格子的候选数并持续到游戏结束。</p>
+          <p>免罚卡：可以补回上轮所扣除的分数。</p>
+          <p>智能眼镜：在其他玩家作答时，查看任意空白格子里面的候选数，但不能提交。</p>
+          <img src="/imgs/default/operate8.png" alt="" />
+        </div>
+        <p>开拓您的智商上限，娱乐您的业余生活，快来挑战史上最难数独吧！</p>
+      </div>
+    </div>
+  </body>
+</html>

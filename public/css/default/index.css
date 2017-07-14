@@ -34,8 +34,9 @@ input[type=text], input[type=password] {
 }
 
 .contact-btn,
-.help-btn,
-.law-btn {
+.law-btn,
+.about-btn, 
+.help-btn {
   display: inline-block;
   width: 90px;
   height: 32px;
@@ -47,6 +48,10 @@ input[type=text], input[type=password] {
   border: none;
   font-size: 14px;
   color: white;
+}
+.about-btn {
+  width: auto;
+  padding: 0 16px;
 }
 
 .login-area {

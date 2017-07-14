@@ -342,4 +342,16 @@ module.exports = function(router) {
       }
     });
   });
+
+  router.get('/about', function(req, res, next) {
+    res.render('about', {});
+  });
+
+  router.get('/operation', function(req, res, next) {
+    res.render('operation', {});
+  });
+
+  router.get('/guide', function(req, res, next) {
+    res.render('guide', {});
+  });
 };
