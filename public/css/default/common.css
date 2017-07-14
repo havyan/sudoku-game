@@ -716,14 +716,6 @@ to {
   left: 100%;
 }
 
-.communicate-area .feedback:hover .feedback-popup {
-  display: block;
-}
-
-.communicate-area .feedback:hover .feedback-arrow {
-  display: inline-block;
-}
-
 .communicate-area .feedback-separator {
   height: 1px;
   background: #005f96;

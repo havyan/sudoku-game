@@ -1,5 +1,28 @@
 (function() {
   $(document).ready(function() {
+    var $feedback = $('.communicate-area .feedback');
+    var $arrow = $feedback.find('.feedback-arrow');
+    var $popup = $feedback.find('.feedback-popup');
+
+    $feedback.hover(function() {
+      $arrow.show().css('display', 'inline-block');
+      $popup.show();
+    });
+
+    $feedback.click(function(event) {
+      event = event || window.event;
+      if (event.stopPropagation) {
+        event.stopPropagation();
+      } else if (window.event) {
+        window.event.cancelBubble = true;
+      }
+    });
+
+    $(document).click(function() {
+      $arrow.hide();
+      $popup.hide();
+    });
+
     $('.feedback-submit').click( function(e) {
       var $input = $(e.target).siblings('.feedback-input');
       var content = $input.val();
