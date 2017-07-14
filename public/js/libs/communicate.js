@@ -3,10 +3,12 @@
     var $feedback = $('.communicate-area .feedback');
     var $arrow = $feedback.find('.feedback-arrow');
     var $popup = $feedback.find('.feedback-popup');
+    var $input = $feedback.find('.feedback-input');
 
-    $feedback.hover(function() {
+    $feedback.mouseenter(function() {
       $arrow.show().css('display', 'inline-block');
       $popup.show();
+      $input.focus();
     });
 
     $feedback.click(function(event) {
@@ -24,7 +26,6 @@
     });
 
     $('.feedback-submit').click( function(e) {
-      var $input = $(e.target).siblings('.feedback-input');
       var content = $input.val();
       if (!_.isEmpty(content)) {
         Rest.Feedback.createFeedback(content, function() {
