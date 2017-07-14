@@ -67,9 +67,9 @@
 				<div class="rich-button game-feedback-submit">提交</div>
 			</div>
 		</div>
-		<div class="game-group-chat">
+		<a class="game-group-chat" target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=f1729c5a2597577df175e525a9b0853b8abaff729e7b2875930674286791e910">
 			<img class="game-group-chat-icon" src="/imgs/default/group.png" />
 			<br>加<br>入<br>群<br>聊
-		</div>
+		</a>
 	</div>
 </div>

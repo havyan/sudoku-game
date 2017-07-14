@@ -212,6 +212,10 @@
       }
     },
 
+    '.game-group-chat click' : function(e) {
+      e.find('.game-group-chat-link').click();
+    },
+
     '.game-send-message-button click' : function() {
       this.sendMessage();
     },
