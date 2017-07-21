@@ -149,6 +149,12 @@ module.exports = function(router) {
     });
   });
 
+  router.get('/guest_pass', function(req, res, next) {
+    if (req.session.account) {
+      res.redirect('/main');
+    }
+  });
+
   router.get('/logout', function(req, res) {
     var account = req.session.account;
     winston.info('Try to quit ongoing game before logout');
