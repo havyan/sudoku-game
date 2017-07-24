@@ -16,6 +16,7 @@ class Guest {
 
   static createProp(account) {
     return {
+      isGuest: true,
       account: account,
       magnifier: 1,
       impunity: 1,
