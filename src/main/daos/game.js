@@ -40,7 +40,7 @@ var GameSchema = new Schema({
 GameSchema.statics.createGame = function(userId, roomId, gameId, params, cb) {
   this.create(Object.assign({
     _id: ObjectId(gameId),
-    creator: ObjectId(userId),
+    creator: userId && ObjectId(userId),
     room: ObjectId(userId)
   }, params), cb);
 };

@@ -30,9 +30,11 @@
           <img src="{{userIcon}}"></img>
         </div>
         <div class="header-user-info">
+          {{#unless isGuest}}
           <p title="{{account}}">
             用户名：{{account}}
           </p>
+          {{/unless}}
           <p title="{{userName}}">
             昵称：{{userName}}
           </p>

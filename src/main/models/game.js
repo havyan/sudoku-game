@@ -14,6 +14,8 @@ var PuzzleDAO = require('../daos/puzzle');
 var JoinRecordDAO = require('../daos/join_record');
 var PointsRecordDAO = require('../daos/points_record');
 var ChatRecordDAO = require('../daos/chat_record');
+var User = require('./user');
+var Prop = require('./prop');
 
 var Timer = require('./timer');
 var GameWaitTask = require('./tasks/game_wait');
@@ -85,20 +87,24 @@ Game.prototype.init = function(account, params, cb) {
   this.propFactory = PropFactory.create(this);
   Async.waterfall([
     function(cb) {
-      UserDAO.findOneByAccount(account, cb);
+      User.findOneByAccount(account, cb);
     },
     function(user, cb) {
       creator = user;
-      var money = user.money;
-      var cost = _.findIndex(PuzzleDAO.LEVELS, {
-        code: level
-      }) * 100;
-      if (money < cost) {
-        cb('You don not have enough money, please recharge');
+      if (user.isGuest) {
+        cb(null, user, 0);
       } else {
-        self.cost = cost;
-        user.money = money - cost;
-        user.save(cb);
+        var money = user.money;
+        var cost = _.findIndex(PuzzleDAO.LEVELS, {
+          code: level
+        }) * 100;
+        if (money < cost) {
+          cb('You don not have enough money, please recharge');
+        } else {
+          self.cost = cost;
+          user.money = money - cost;
+          user.save(cb);
+        }
       }
     },
     function(user, count, cb) {
@@ -125,7 +131,7 @@ Game.prototype.init = function(account, params, cb) {
       self.emit('init', self.toSimpleJSON());
       self.waitCountdown = self.waitTime * 60;
       self.timer.schedule(self.waitTask);
-      GameDAO.createGame(self.room.id, creator.id, self.id, {
+      GameDAO.createGame(creator.isGuest ? null : creator.id, self.room.id, self.id, {
         index: self.index,
         mode: self.mode,
         playMode: self.playMode,
@@ -423,7 +429,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
   }
   Async.waterfall([
     function(cb) {
-      UserDAO.findOneByAccount(account, cb)
+      User.findOneByAccount(account, cb)
     },
     function(user, cb) {
       player = user;
@@ -434,7 +440,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
     },
     function(joinRecord, cb) {
       self.joinRecords.push(joinRecord);
-      PropDAO.findOneByAccount(account, cb);
+      Prop.findOneByAccount(account, cb);
     },
     function(prop, cb) {
       self.props.push(prop);
@@ -780,10 +786,14 @@ Game.prototype.submit = function(account, xy, value, cb) {
 Game.prototype.abort = function() {
   var self = this;
   var banker = this.players[0];
-  banker.money = banker.money + this.cost;
   Async.waterfall([
     function(cb) {
-      banker.save(cb);
+      if (banker.isGuest) {
+        cb(null, banker, 0);
+      } else {
+        banker.money = banker.money + this.cost;
+        banker.save(cb);
+      }
     },
     function(user, count, cb) {
       self.entity.money_returned = true;
@@ -889,7 +899,7 @@ Game.prototype.calculateGains = function(players) {
 };
 
 Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
-  if (player.isRobot) {
+  if (player.isRobot || player.isGuest) {
     cb();
     return;
   }

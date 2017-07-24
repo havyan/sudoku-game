@@ -4,6 +4,7 @@
     "GET /login",
     "POST /login",
     "GET /signup",
+    "GET /guest_pass",
     "POST /user",
     "POST /user/check_account",
     "POST /user/check_email",
@@ -22,6 +23,15 @@
     "GET /help",
     "POST /feedback",
     "[RE]GET /recharge/pay/\\w{32}/result"
+  ],
+  "guest": [
+    "GET /main",
+    "GET /lobby/data",
+    "GET /events/system",
+    "GET /events/game",
+    "POST /single_game",
+    "[RE]GET /table/[^/\\s]+",
+    "[RE](GET|POST|PUT|DELETE) /game/.+"
   ],
   "admin": [
     "PUT /user/points",

@@ -6,6 +6,7 @@ var RoomDAO = require('./daos/room');
 var RuleDAO = require('./daos/rule');
 var UserDAO = require('./daos/user');
 var PuzzleDAO = require('./daos/puzzle');
+var User = require('./models/user');
 var Game = require('./models/game');
 var Room = require('./models/room');
 var PLAYING = 'playing';
@@ -71,7 +72,7 @@ GameManager.prototype.getLobbyData = function(account, cb) {
     levels: PuzzleDAO.LEVELS,
     userStatus: this.findGameByUser(account) ? PLAYING : FREE
   };
-  UserDAO.findOneByAccount(account, function(error, user) {
+  User.findOneByAccount(account, function(error, user) {
     if (error) {
       cb(error);
     } else {

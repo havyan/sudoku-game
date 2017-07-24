@@ -35,7 +35,7 @@ input[type=text], input[type=password] {
 
 .contact-btn,
 .law-btn,
-.about-btn, 
+.about-btn,
 .help-btn {
   display: inline-block;
   width: 90px;
@@ -67,9 +67,9 @@ input[type=text], input[type=password] {
 
 .login-container {
   width: 300px;
-  height: 350px;
+  height: 400px;
   margin: auto;
-  margin-top: 220px;
+  margin-top: 195px;
   text-align: center;
   overflow: hidden;
 }
@@ -151,8 +151,8 @@ input[type=text], input[type=password] {
   background: white;
   height: 1px;
   margin: auto;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .login-error {
@@ -172,17 +172,47 @@ input[type=text], input[type=password] {
   color: white;
 }
 
-.signup-button a {
+.signup-button a,
+.guest-pass-button a {
   display: inline-block;
   width: 80px;
   height: 34px;
-  background-size: cover;
+  background-size: 100% 100%;
   background-image: url(/imgs/default/signup_btn.png);
   line-height: 34px;
   background-color: inherit;
   border: none;
   font-size: 16px;
   color: white;
+}
+
+.guest-pass-button a {
+  width: 120px;
+}
+
+.protocol-read {
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+.protocol-read > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.protocol-read .protocol,
+.protocol-read .law {
+  color: #fff100;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.protocol-read input {
+  margin-right: 5px;
+  margin-top: 0px;
 }
 
 .room {

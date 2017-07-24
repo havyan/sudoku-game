@@ -2,10 +2,20 @@ var _ = require('lodash');
 var Async = require('async');
 var PropDAO = require('../daos/prop');
 var UserDAO = require('../daos/user');
+var User = require('./user');
+var Guest = require('./guest');
 var PurchaseRecordDAO = require('../daos/purchase_record');
 var PropTypeDAO = require('../daos/prop_type');
 
 var Prop = {};
+
+Prop.findOneByAccount = function(account, cb) {
+  if (Guest.isGuest(account)) {
+    cb(null, Guest.createProp(account));
+  } else {
+    PropDAO.findOneByAccount(account, cb);
+  }
+};
 
 Prop.getPropData = function(account, cb) {
   Async.parallel([
@@ -13,10 +23,10 @@ Prop.getPropData = function(account, cb) {
     PropTypeDAO.all(cb);
   },
   function(cb) {
-    UserDAO.findOneByAccount(account, cb);
+    User.findOneByAccount(account, cb);
   },
   function(cb) {
-    PropDAO.findOneByAccount(account, cb);
+    Prop.findOneByAccount(account, cb);
   }], function(error, results) {
     if (error) {
       cb(error);
@@ -61,10 +71,10 @@ Prop.buy = function(account, type, count, cb) {
       PropTypeDAO.all(cb);
     },
     function(cb) {
-      UserDAO.findOneByAccount(account, cb);
+      User.findOneByAccount(account, cb);
     },
     function(cb) {
-      PropDAO.findOneByAccount(account, cb);
+      Prop.findOneByAccount(account, cb);
     }], function(error, results) {
       if (error) {
         cb(error);

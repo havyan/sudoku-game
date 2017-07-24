@@ -31,5 +31,21 @@
     $('.law-btn').click(function(e) {
       Agreement.showLaw();
     });
+
+    $('.guest-pass-button a').click(function() {
+      if ($('.protocol-read input[type=checkbox]').is(':checked')) {
+        window.location = '/guest_pass';
+      } else {
+        Dialog.message('请先同意超天才数独玩家协议和法律声明.');
+      }
+    });
+
+    $('.protocol-read .protocol').click(function() {
+      Agreement.showProtocol();
+    });
+
+    $('.protocol-read .law').click(function() {
+      Agreement.showLaw();
+    });
   });
 })();

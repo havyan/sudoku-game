@@ -11,6 +11,13 @@ var Robot = function(game) {
   this.name = '天才机器人';
   this.icon = '/imgs/default/user_icons/robot.png';
   this.grade = 0;
+  this.points = 0;
+  this.rounds = 0;
+  this.wintimes = 0;
+  this.losetimes = 0;
+  this.winrate = 0;
+  this.grade_name = '新手';
+  this.money = 0;
 };
 
 Robot.prototype.toJSON = function() {
@@ -20,7 +27,14 @@ Robot.prototype.toJSON = function() {
     isRobot: this.isRobot,
     name: this.name,
     icon: this.icon,
-    grade: this.grade
+    grade: this.grade,
+    points: this.points,
+    rounds: this.rounds,
+    wintimes: this.wintimes,
+    losetimes: this.losetimes,
+    winrate: this.winrate,
+    grade_name: this.grade_name,
+    money: this.money
   };
 };
 

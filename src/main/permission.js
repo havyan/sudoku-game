@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var Async = require('async');
+var Guest = require('./models/guest');
 var PERMISSION = require('./permission.json');
 
 var hasAction = function(actions, action) {
@@ -20,7 +21,11 @@ var check = function(req, cb) {
     if (account !== 'SYSTEM' && hasAction(PERMISSION.admin, action)) {
       cb("No permission for action: " + action);
     } else {
-      cb(null, !_.includes(global.sealedIps, ip));
+      if (Guest.isGuest(account)) {
+        cb(null, hasAction(PERMISSION.nologin, action) || hasAction(PERMISSION.guest, action));
+      } else {
+        cb(null, !_.includes(global.sealedIps, ip));
+      }
     }
   } else {
     cb(null, hasAction(PERMISSION.nologin, action));

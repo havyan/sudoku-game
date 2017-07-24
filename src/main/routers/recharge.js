@@ -1,6 +1,7 @@
 var HttpError = require('../http_error');
 var UserDAO = require('../daos/user');
 var RuleDAO = require('../daos/rule');
+var User = require('../models/user');
 var Recharge = require('../models/recharge');
 var winston = require('winston');
 var formatDate = require('dateformat');
@@ -13,7 +14,7 @@ module.exports = function(router) {
   router.get('/recharge/data', function(req, res, next) {
     Async.parallel([
     function(cb) {
-      UserDAO.findOneByAccount(req.session.account, cb);
+      User.findOneByAccount(req.session.account, cb);
     },
     function(cb) {
       RuleDAO.getRule(cb);
@@ -71,7 +72,7 @@ module.exports = function(router) {
   router.post('/recharge/:id/pay', function(req, res, next) {
     Async.parallel([
     function(cb) {
-      UserDAO.findOneByAccount(req.session.account, cb);
+      User.findOneByAccount(req.session.account, cb);
     },
     function(cb) {
       Recharge.findOneById(req.params.id, cb);
