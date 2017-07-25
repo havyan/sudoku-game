@@ -3,6 +3,8 @@ var Async = require('async');
 var Guest = require('./models/guest');
 var PERMISSION = require('./permission.json');
 
+global.expiredGuests = [];
+
 var hasAction = function(actions, action) {
   return _.some(actions, function(e) {
     if (e.indexOf('[RE]') === 0) {
@@ -22,7 +24,15 @@ var check = function(req, cb) {
       cb("No permission for action: " + action);
     } else {
       if (Guest.isGuest(account)) {
-        cb(null, hasAction(PERMISSION.nologin, action) || hasAction(PERMISSION.guest, action));
+        if (_.includes(global.expiredGuests, account)) {
+          _.remove(global.expiredGuests, function(guest) {
+            return guest === account;
+          });
+          req.session.account = undefined;
+          cb(null, false);
+        } else {
+          cb(null, hasAction(PERMISSION.nologin, action) || hasAction(PERMISSION.guest, action));
+        }
       } else {
         cb(null, !_.includes(global.sealedIps, ip));
       }

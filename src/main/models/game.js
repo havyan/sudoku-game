@@ -600,6 +600,13 @@ Game.prototype.removePlayer = function(account) {
     this.quitTasks[account].stop();
   }
   delete this.changedScores[account];
+  this.expireGuest(account);
+};
+
+Game.prototype.expireGuest = function(account) {
+  if (Guest.isGuest(account)) {
+    global.expiredGuests.push(account);
+  }
 };
 
 Game.prototype.addMessage = function(message, account) {
@@ -824,8 +831,20 @@ Game.prototype.abort = function() {
 
 Game.prototype.over = function(cb) {
   var self = this;
+  var done = function() {
+    if (error) {
+      cb(error);
+    } else {
+      var oldStatus = self.status;
+      self.status = OVER;
+      self.emit('status-changed', self.status, oldStatus);
+      self.emit('game-over', self.results);
+      self.timer.schedule(self.destroyTask);
+      cb();
+    }
+  };
   var players = _.filter(this.players, function(player) {
-    return player && !player.isRobot;
+    return player && !player.isRobot && !player.isGuest;
   });
   players.sort(function(source, dest) {
     var sourceScore = self.scores[source.account] ? self.scores[source.account] : 0;
@@ -852,18 +871,7 @@ Game.prototype.over = function(cb) {
     function(content, cb) {
       Message.sendFromSystem(_.map(players, 'id'), '最新战报', content, cb);
     }
-  ], function(error) {
-    if (error) {
-      cb(error);
-    } else {
-      var oldStatus = self.status;
-      self.status = OVER;
-      self.emit('status-changed', self.status, oldStatus);
-      self.emit('game-over', self.results);
-      self.timer.schedule(self.destroyTask);
-      cb();
-    }
-  });
+  ], done);
 };
 
 Game.prototype.calculateGains = function(players) {
@@ -969,7 +977,13 @@ Game.prototype.recordMessages = function() {
 };
 
 Game.prototype.destroy = function(type) {
+  var self = this;
   type = type || 'normal';
+  this.players.forEach(function(player) {
+    if (player && player.isGuest) {
+      self.expireGuest(player.account);
+    }
+  });
   this.stopTimer();
   this.recordMessages();
   this.status = DESTROYED;
