@@ -66,6 +66,8 @@ html, body {
   width: 80%;
   display: inline-block;
   vertical-align: middle;
+  margin: 0px;
+  float: none;
 }
 
 .author-area .super-genius .logo img {
