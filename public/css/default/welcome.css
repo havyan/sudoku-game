@@ -8,6 +8,12 @@ html, body {
   height: 100%;
   object-fit: fill;
   z-index: -9999;
+  background-color: #0a0a0a;
+}
+
+.welcome-top {
+  position: fixed;
+  top: 0;
 }
 
 .welcome-area {
