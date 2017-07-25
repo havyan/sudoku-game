@@ -831,7 +831,7 @@ Game.prototype.abort = function() {
 
 Game.prototype.over = function(cb) {
   var self = this;
-  var done = function() {
+  var done = function(error) {
     if (error) {
       cb(error);
     } else {
