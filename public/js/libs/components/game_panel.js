@@ -136,8 +136,10 @@
     },
 
     '{model} results' : function(model, e, results) {
+      var hasResults = results && results.length > 0;
+      model.attr('hasResults', hasResults);
       var dialog = Dialog.show({
-        title : '排行榜',
+        title : hasResults ? '排行榜' : '游戏结束',
         template : '/js/libs/mst/results.mst',
         data : model,
         autoClose : false,

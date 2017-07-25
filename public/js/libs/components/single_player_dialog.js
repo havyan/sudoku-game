@@ -1,9 +1,16 @@
 (function() {
   can.Control('SinglePlayerDialog', {
+    defaults: {
+      closable: true
+    }
   }, {
     init : function(element, options) {
-      can.view('/js/libs/mst/single_player_dialog.mst', this.model, function(frag) {
+      can.view('/js/libs/mst/single_player_dialog.mst', options, function(frag) {
         this.element.append(frag);
+        if (options.visible) {
+          this.element.find('.single-player-modal').modal();
+        }
+        this.element.find('.play-mode.self-play input').prop('checked', true);
       }.bind(this));
     },
 

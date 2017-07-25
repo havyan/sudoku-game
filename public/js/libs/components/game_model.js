@@ -595,7 +595,7 @@
       this.eventReceiver.on('game-over', function(results) {
         var result = _.find(results, {account: self.attr('account')});
         self.attr('status', 'over');
-        self.attr('awardResult', result ? result.awardResult : {});
+        self.attr('awardResult', result ? result.awardResult : null);
         self.attr('results', results);
       });
       this.eventReceiver.on('game-destroyed', function(type) {

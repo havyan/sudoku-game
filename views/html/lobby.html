@@ -21,6 +21,22 @@
     <script src="{{@basejs}}/libs/components/lobby_model.js"></script>
     <script src="{{@basejs}}/libs/components/lobby_panel.js"></script>
     <script src="{{@basejs}}/libs/main.js"></script>
+    {{#isGuest}}
+    <script>
+      $(document).ready(function() {
+        var singlePlayerDialog = new SinglePlayerDialog($('body'), {
+          closable: false,
+          visible: true
+        });
+        singlePlayerDialog.show(function(params) {
+          Rest.Game.createSingleGame(params, function() {
+
+          }, function() {});
+          window.open('/table/{{account}}', '_blank');
+        });
+      });
+    </script>
+    {{/isGuest}}
     {{{statsScript}}}
   </head>
   <body>
