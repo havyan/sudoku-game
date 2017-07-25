@@ -16,6 +16,7 @@ var PointsRecordDAO = require('../daos/points_record');
 var ChatRecordDAO = require('../daos/chat_record');
 var User = require('./user');
 var Prop = require('./prop');
+var Guest = require('./guest');
 
 var Timer = require('./timer');
 var GameWaitTask = require('./tasks/game_wait');
