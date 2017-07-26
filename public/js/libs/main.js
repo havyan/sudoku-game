@@ -16,9 +16,11 @@
     };
     Rest.Lobby.getData(function(data) {
       var bindSinglePlayer = function() {
-        var singlePlayerDialog = new SinglePlayerDialog($('body'));
+        if (!window.singlePlayerDialog) {
+          window.singlePlayerDialog = new SinglePlayerDialog($('body'));
+        }
         $('a.single-player').click(function() {
-          singlePlayerDialog.show(function(params) {
+          window.singlePlayerDialog.show(function(params) {
             Rest.Game.createSingleGame(params, function() {
 
             }, function() {});

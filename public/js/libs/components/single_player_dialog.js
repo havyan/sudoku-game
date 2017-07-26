@@ -10,7 +10,9 @@
         if (options.visible) {
           this.element.find('.single-player-modal').modal();
         }
-        this.element.find('.play-mode.self-play input').prop('checked', true);
+        if (options.mode) {
+          this.selectMode(options.mode);
+        }
       }.bind(this));
     },
 
@@ -31,6 +33,10 @@
       return {
         playMode : this.element.find('.single-player-modal .play-mode input:checked').data('value')
       };
+    },
+
+    selectMode : function(mode) {
+      this.element.find('.single-player-modal .play-mode input[data-value="' + mode + '"]').prop('checked', true);
     },
 
     '.single-player-modal .confirm click' : function(element) {

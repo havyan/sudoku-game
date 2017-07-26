@@ -24,11 +24,12 @@
     {{#isGuest}}
     <script>
       $(document).ready(function() {
-        var singlePlayerDialog = new SinglePlayerDialog($('body'), {
+        window.singlePlayerDialog = new SinglePlayerDialog($('body'), {
           closable: false,
-          visible: true
+          visible: true,
+          mode: 'robot'
         });
-        singlePlayerDialog.show(function(params) {
+        window.singlePlayerDialog.show(function(params) {
           Rest.Game.createSingleGame(params, function() {
 
           }, function() {});
