@@ -53,15 +53,16 @@ app.engine('html', hbs.__express);
 // Permission handler
 app.use(function(req, res, next) {
   winston.info("Start " + req.method + " " + req.path);
-  Permission.check(req, function(error, proceed){
+  Permission.check(req, function(error, proceed, page) {
     if (error) {
       next(new HttpError(error, HttpError.UNAUTHORIZED));
     } else if (proceed) {
       next();
     } else {
+      page = page || '/login';
       req.session.account = undefined;
       req.params.error = true;
-      res.redirect('/login');
+      res.redirect(page);
     }
   });
 });

@@ -66,10 +66,10 @@ input[type=text], input[type=password] {
 }
 
 .login-container {
-  width: 300px;
+  width: 320px;
   height: 400px;
   margin: auto;
-  margin-top: 195px;
+  margin-top: 210px;
   text-align: center;
   overflow: hidden;
 }
@@ -151,8 +151,8 @@ input[type=text], input[type=password] {
   background: white;
   height: 1px;
   margin: auto;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .login-error {
@@ -160,19 +160,20 @@ input[type=text], input[type=password] {
   margin-bottom: 10px;
 }
 
-.login-button input {
-  width: 120px;
+.login-button {
+  width: 80px;
   height: 34px;
-  background-size: cover;
+  background-size: 100% 100%;
   background-image: url(/imgs/default/login_btn.png);
   line-height: 34px;
   background-color: inherit;
   border: none;
   font-size: 16px;
   color: white;
+  margin-right: 20px;
 }
 
-.signup-button a,
+.signup-button,
 .guest-pass-button a {
   display: inline-block;
   width: 80px;
@@ -192,7 +193,7 @@ input[type=text], input[type=password] {
 
 .protocol-read {
   font-size: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .protocol-read > * {

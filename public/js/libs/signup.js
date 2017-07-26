@@ -33,6 +33,7 @@
               } else {
                 $sign.removeClass('wrong');
                 self.validation.account = true;
+                self.element.find('.signup-row.name .signup-value').val(account).blur();
               }
               $sign.css('display', 'inline-block');
             }, function() {

@@ -29,7 +29,7 @@ var check = function(req, cb) {
             return guest === account;
           });
           req.session.account = undefined;
-          cb(null, false);
+          cb(null, false, '/signup');
         } else {
           cb(null, hasAction(PERMISSION.nologin, action) || hasAction(PERMISSION.guest, action));
         }
