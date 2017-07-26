@@ -48,7 +48,7 @@
 			</div>
 		</div>
 		<div class="game-state-separator light"></div>
-		<textarea class="game-message-input"></textarea>
+		<textarea class="game-message-input scroll-panel"></textarea>
 		<div class="game-state-actions">
 			<div class="rich-button game-quit-button">退出</div>
 			<div class="rich-button game-send-message-button">发送</div>
