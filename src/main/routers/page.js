@@ -158,18 +158,29 @@ module.exports = function(router) {
     res.redirect('/main');
   });
 
-  router.get('/logout', function(req, res) {
+  var logout = function(req, res) {
     var account = req.session.account;
-    winston.info('Try to quit ongoing game before logout');
-    global.gameManager.playerQuit(account, function(error) {
-      if (error) {
-        winston.error('Error when quiting game before logout with account: ' + account);
-      }
-    });
-    req.session.account = undefined;
+    if (account) {
+      winston.info('Try to quit ongoing game before logout');
+      global.gameManager.playerQuit(account, function(error) {
+        if (error) {
+          winston.error('Error when quiting game before logout with account: ' + account);
+        }
+      });
+      req.session.account = undefined;
+    }
     res.clearCookie('account');
     res.clearCookie('password');
+  };
+
+  router.get('/logout', function(req, res) {
+    logout(req, res);
     res.redirect('/login');
+  });
+
+  router.get('/logout_signup', function(req, res) {
+    logout(req, res);
+    res.redirect('/signup');
   });
 
   router.get('/main', function(req, res, next) {

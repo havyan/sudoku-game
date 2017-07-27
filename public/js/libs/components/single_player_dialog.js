@@ -1,7 +1,8 @@
 (function() {
   can.Control('SinglePlayerDialog', {
     defaults: {
-      closable: true
+      closable: true,
+      showBattle: false
     }
   }, {
     init : function(element, options) {
@@ -37,6 +38,14 @@
 
     selectMode : function(mode) {
       this.element.find('.single-player-modal .play-mode input[data-value="' + mode + '"]').prop('checked', true);
+    },
+
+    '.single-player-modal .battle-play input click' : function(element) {
+      this.element.find('.single-player-modal .signup-message .content').show();
+    },
+
+    '.single-player-modal .play-mode:not(.battle-play) input click' : function(element) {
+      this.element.find('.single-player-modal .signup-message .content').hide();
     },
 
     '.single-player-modal .confirm click' : function(element) {

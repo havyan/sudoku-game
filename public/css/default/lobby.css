@@ -214,10 +214,21 @@
   background-size: 500px 250px;
 }
 
+.lobby-modal.single-player-modal.has-battle .modal-dialog {
+  width: 550px;
+  height: 260px;
+  background-size: 550px 260px;
+}
+
 .lobby-modal.single-player-modal .lobby-modal-content {
   margin-top: 90px;
   margin-bottom: 40px;
   text-align: center;
+}
+
+.lobby-modal.single-player-modal.has-battle .lobby-modal-content {
+  margin-top: 80px;
+  margin-bottom: 20px;
 }
 
 .lobby-modal.single-player-modal .lobby-modal-content .play-mode {
@@ -238,6 +249,22 @@
   width: 25px;
   height: 25px;
   cursor: pointer;
+}
+
+.lobby-modal.single-player-modal .signup-message {
+  font-size: 20px;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
+.lobby-modal.single-player-modal .signup-message .content {
+  display: none;
+  height: 100%;
+  line-height: 100%;
+  margin: 0px;
+  width: 100%;
 }
 
 .lobby-modal .close {

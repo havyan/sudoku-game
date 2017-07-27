@@ -30,6 +30,7 @@
     "GET /events/system",
     "GET /events/game",
     "POST /single_game",
+    "GET /logout_signup",
     "[RE]GET /table/[^/\\s]+",
     "[RE](GET|POST|PUT|DELETE) /game/.+"
   ],

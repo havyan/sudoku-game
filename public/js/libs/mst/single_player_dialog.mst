@@ -1,9 +1,15 @@
-<div class="modal fade lobby-modal single-player-modal" tabindex="-1" aria-hidden="false" data-backdrop="static" data-backdrop=static data-keyboard=false>
+<div class="modal fade lobby-modal single-player-modal {{#showBattle}}has-battle{{/showBattle}}" tabindex="-1" aria-hidden="false" data-backdrop="static" data-backdrop=static data-keyboard=false>
   <div class="modal-dialog">
     {{#closable}}
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
     {{/closable}}
     <div class="lobby-modal-content">
+      {{#showBattle}}
+      <div class="play-mode battle-play">
+        <input type="radio" name="play_mode" data-value="battle" />
+        <span>对战</span>
+      </div>
+      {{/showBattle}}
       <div class="play-mode self-play">
         <input type="radio" name="play_mode" data-value="single" checked="checked" />
         <span>单机</span>
@@ -11,6 +17,11 @@
       <div class="play-mode robot-play">
         <input type="radio" name="play_mode" data-value="robot" />
         <span>人机</span>
+      </div>
+    </div>
+    <div class="signup-message">
+      <div class="content">
+        需要<a href="logout_signup">注册</a>才能进入
       </div>
     </div>
     <div class="lobby-modal-bottom">
