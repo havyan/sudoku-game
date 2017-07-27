@@ -43,5 +43,9 @@
 </table>
 {{/if}}
 <div class="destroy-countdown-label">
+  {{#if isGuest}}
+  请您<a href="/logout_signup">注册</a>，去玩更高级的游戏吧! 房间将在<span class="destroy-countdown-number">120</span>秒内关闭。
+  {{else}}
   棋局已完成，房间将在<span class="destroy-countdown-number">120</span>秒内关闭，请您尽快退出。
+  {{/if}}
 </div>

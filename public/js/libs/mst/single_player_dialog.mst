@@ -19,11 +19,13 @@
         <span>人机</span>
       </div>
     </div>
+    {{#showBattle}}
     <div class="signup-message">
       <div class="content">
-        需要<a href="logout_signup">注册</a>才能进入
+        需要<a href="/logout_signup">注册</a>才能进入
       </div>
     </div>
+    {{/showBattle}}
     <div class="lobby-modal-bottom">
       <button type="button" class="confirm">
         确认

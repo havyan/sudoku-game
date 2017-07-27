@@ -4,6 +4,7 @@
     "GET /login",
     "POST /login",
     "GET /signup",
+    "GET /logout_signup",
     "GET /guest_pass",
     "POST /user",
     "POST /user/check_account",

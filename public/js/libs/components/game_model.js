@@ -4,6 +4,7 @@
   can.Model('Models.GameModel', {}, {
     init : function(game, eventReceiver) {
       this.eventReceiver = eventReceiver;
+      this.initPlayer();
       this.initDimension();
       this.initEvents();
       this.initStatus();
@@ -18,6 +19,15 @@
       this.initManualStart();
       this.initWait();
       this.initRemainingTime();
+    },
+
+    initPlayer: function() {
+      var player = _.find(this.attr('players'), function(player) {
+        return player && player.attr('account') === this.attr('account');
+      }.bind(this));
+      if (player) {
+        this.attr('isGuest', player.attr('isGuest'));
+      }
     },
 
     initDimension : function() {
