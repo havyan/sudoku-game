@@ -267,6 +267,10 @@
   width: 100%;
 }
 
+.lobby-modal.single-player-modal .signup-message .content a {
+  color: red;
+}
+
 .lobby-modal .close {
   width: 30px;
   height: 30px;

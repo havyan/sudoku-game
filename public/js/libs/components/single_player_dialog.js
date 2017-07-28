@@ -42,10 +42,12 @@
 
     '.single-player-modal .battle-play input click' : function(element) {
       this.element.find('.single-player-modal .signup-message .content').show();
+      this.element.find('.single-player-modal .lobby-modal-bottom button').attr('disabled', true);
     },
 
     '.single-player-modal .play-mode:not(.battle-play) input click' : function(element) {
       this.element.find('.single-player-modal .signup-message .content').hide();
+      this.element.find('.single-player-modal .lobby-modal-bottom button').removeAttr('disabled');
     },
 
     '.single-player-modal .confirm click' : function(element) {
