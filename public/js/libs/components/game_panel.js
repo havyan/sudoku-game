@@ -225,7 +225,10 @@
     '.game-quit-button click' : function() {
       var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
-        var message = this.options.model.isBanker() ? '棋局已开始，您的建桌费不会返还，此桌游戏将取消，确定要退出？' : '棋局已开始，确定要退出？';
+        var message = '棋局已开始，确定要退出？';
+        if (this.options.model.isBanker() && !this.options.model.attr('isGuest')) {
+          message = '棋局已开始，您的建桌费不会返还，此桌游戏将取消，确定要退出？';
+        }
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
