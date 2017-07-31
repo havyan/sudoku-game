@@ -92,6 +92,7 @@ Game.prototype.init = function(account, params, cb) {
     },
     function(user, cb) {
       creator = user;
+      self.cost = 0;
       if (user.isGuest) {
         cb(null, user, 0);
       } else {
@@ -799,7 +800,7 @@ Game.prototype.abort = function() {
       if (banker.isGuest) {
         cb(null, banker, 0);
       } else {
-        banker.money = banker.money + this.cost;
+        banker.money = banker.money + self.cost;
         banker.save(cb);
       }
     },
