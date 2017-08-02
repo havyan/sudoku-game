@@ -29,6 +29,7 @@ var PlayerQuitTask = require('./tasks/player_quit');
 
 var PropFactory = require('./props/prop_factory');
 
+var OptionsCalculator = require('./options_calculator');
 var GameMode = require('./game_mode');
 var Message = require('./message');
 var Template = require('./template');
@@ -276,6 +277,9 @@ Game.prototype.prepare = function(cb) {
     function(puzzle, cb) {
       self.initCellValues = puzzle.question;
       self.answer = puzzle.answer;
+      if (self.isRobot()) {
+        self.allCellOptions = new OptionsCalculator(self).calcAllCellOptions();
+      }
       self.emit('puzzle-init', self.initCellValues);
       cb();
     }
@@ -761,6 +765,9 @@ Game.prototype.submit = function(account, xy, value, cb) {
       this.cellValueOwners[xy] = account;
       for (key in this.knownCellValues) {
         delete this.knownCellValues[key][xy];
+      }
+      if (this.isRobot()) {
+        new OptionsCalculator(this).resetAllCellOptions(xy, value);
       }
       this.emit('cell-correct', xy, {
         player: account,

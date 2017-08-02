@@ -7,6 +7,8 @@ var User = require('./user');
 var RuleDAO = require('../daos/rule');
 var RechargeDAO = require('../daos/recharge');
 
+var EXPIRE_TIMEOUT = 30 * 60 * 1000;
+
 var Recharge = {};
 
 Recharge.convertCost = function(purchase, cb) {
@@ -148,7 +150,21 @@ Recharge.checkAll = function(cb) {
   },
   function(recharges, cb) {
     Async.each(recharges, function(recharge, cb) {
-      self.check(recharge, cb);
+      Async.waterfall([
+        function(cb) {
+          self.check(recharge, cb);
+        },
+        function(result, cb) {
+          var passed = Date.now() - recharge.createtime.getTime();
+          if (passed > EXPIRE_TIMEOUT) {
+            winston.info('Payment failed of uid [' + recharge.payuid + '] because of timeout');
+            recharge.status = RechargeDAO.STATUS.FAIL;
+            recharge.save(cb);
+          } else {
+            cb();
+          }
+        }
+      ], cb);
     }, cb);
   }], cb);
 };

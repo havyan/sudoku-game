@@ -50,8 +50,10 @@ OptionsCalculator.prototype.removeCubicOptions = function(cellOptions, x, y) {
   }
 };
 
-OptionsCalculator.prototype.removeFromCellOptions = function(cellOptions, sourceKey) {
-  var innerValue = this.getCellValue(sourceKey);
+OptionsCalculator.prototype.removeFromCellOptions = function(cellOptions, sourceKey, innerValue) {
+  if (innerValue === undefined) {
+    innerValue = this.getCellValue(sourceKey);
+  }
   if (cellOptions && innerValue !== undefined) {
     var innerIndex = cellOptions.indexOf(innerValue);
     if (innerIndex >= 0) {
@@ -91,6 +93,43 @@ OptionsCalculator.prototype.calcAllCellOptions = function() {
     }
   });
   return allCellOptions;
+};
+
+OptionsCalculator.prototype.resetAllCellOptions = function(xy, value) {
+  var allCellOptions = this.game.allCellOptions;
+  var splits = xy.split(',');
+  var x = parseInt(splits[0]);
+  var y = parseInt(splits[1]);
+  var startX = Math.floor(x / 3) * 3;
+  var startY = Math.floor(y / 3) * 3;
+  var m = 0;
+  var removeOption = function(key) {
+    var cellOptions = allCellOptions[key];
+    if (cellOptions && key !== xy) {
+      this.removeFromCellOptions(cellOptions, xy, value);
+      if(cellOptions.length === 0) {
+        delete allCellOptions[key];
+      }
+    }
+  }.bind(this);
+  delete allCellOptions[xy];
+  while (m < 3) {
+    var n = 0;
+    while (n < 3) {
+      removeOption((startX + m) + ',' + (startY + n));
+      n++;
+    }
+    m++;
+  }
+
+  startX = Math.floor(x / 9) * 9;
+  startY = Math.floor(y / 9) * 9;
+  m = 0;
+  while(m < 9) {
+    removeOption((startX + m) + ',' + y);
+    removeOption(y + ',' + (startY + m));
+    m++;
+  }
 };
 
 OptionsCalculator.prototype.getCellValue = function(xy) {

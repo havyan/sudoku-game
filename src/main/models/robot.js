@@ -58,7 +58,10 @@ Robot.prototype.basicSampleCellOptions = function() {
 };
 
 Robot.prototype.advancedSampleCellOptions = function() {
-  var allCellOptions = new OptionsCalculator(this.game).calcAllCellOptions();
+  var allCellOptions = this.game.allCellOptions;
+  if (!allCellOptions) {
+    allCellOptions = new OptionsCalculator(this.game).calcAllCellOptions();
+  }
   var candidates = [];
   for (var i = 1; i <= 9; i++) {
     for (xy in allCellOptions) {
