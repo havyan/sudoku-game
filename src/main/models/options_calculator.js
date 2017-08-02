@@ -127,7 +127,7 @@ OptionsCalculator.prototype.resetAllCellOptions = function(xy, value) {
   m = 0;
   while(m < 9) {
     removeOption((startX + m) + ',' + y);
-    removeOption(y + ',' + (startY + m));
+    removeOption(x + ',' + (startY + m));
     m++;
   }
 };
