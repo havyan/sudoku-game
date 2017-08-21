@@ -23,7 +23,9 @@
     "POST /system/reload",
     "GET /help",
     "POST /feedback",
-    "[RE]GET /recharge/pay/\\w{32}/result"
+    "[RE]GET /recharge/pay/\\w{32}/result",
+    "GET /news",
+    "[RE]GET /news/[^/\\s]+"
   ],
   "guest": [
     "GET /main",

@@ -29,9 +29,15 @@
     </div>
     <div class="contain-area">
       <div class="common-contain">
-        <p>超天才数独网是超天才技术开发(北京)有限责任公司的专利游戏产品，发明人是著名企业家顾雏军先生，顾雏军先生曾组织庞大团队完成了数十万张九联数独棋棋盘，并由此开发出代表人类终极智慧的九段天才数独棋。天才数独棋有三种玩法，即对战、人机和单机。超天才数独网网页包括单机/人机游戏、道具、教学视频、帮助等多个模块，有多个星座和房间，为喜欢天才数独棋的玩家提供一个娱乐、交流的平台。</p>
-        <img src="/imgs/default/introduce1.png" />
-        <img src="/imgs/default/introduce2.png" />
+        <ul class="newslist">
+            {{#news}}
+                <li>
+                  <a class="newsTitle" href="/news/{{_id}}">
+                  {{title}}</a>
+                  <span>{{formatDate createtime}}</span>
+                </li>
+            {{/news}}
+        </ul>
       </div>
     </div>
   </body>

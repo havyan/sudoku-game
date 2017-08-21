@@ -14,6 +14,7 @@ var LoginHistoryDAO = require('../daos/login_history');
 var User = require('../models/user');
 var Guest = require('../models/guest');
 var Message = require('../models/message');
+var NewsDAO = require('../daos/news');
 
 module.exports = function(router) {
   var login = function(req, account, password, cb) {
@@ -379,4 +380,39 @@ module.exports = function(router) {
   router.get('/guide', function(req, res, next) {
     res.render('guide', {});
   });
+
+  router.get('/news', function(req, res, next) {
+        NewsDAO.find({},function(error, results) {
+          if (error) {
+            next(new HttpError('Error when finding user or recharge: ' + error));
+          } else {
+            var news = results;
+                res.render('news', {
+                  news : news,
+                });
+          }
+        }
+      ).sort({'createtime':-1});
+  });
+
+  router.get('/news/:id', function(req, res, next) {
+    Async.parallel([
+      function(cb) {
+        NewsDAO.findOneById(req.params.id, cb);
+      }
+    ], function(error, results) {
+      if (error) {
+        next(new HttpError('Error when finding user or recharge: ' + error));
+      } else {
+        var news = results[0];
+        res.render('newsdetails', {
+          newsTitle: news.title,
+          newsAuthor: news.author,
+          newsCreatetime: news.createtime,
+          newsContent: news.content,
+        });
+      }
+    });
+  });
+
 };

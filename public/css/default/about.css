@@ -1,6 +1,9 @@
 html, body {
     overflow-y: auto !important;
 }
+body {
+	background: #000 url(../../imgs/default/main_bg.png);
+}
 .contain-area {
 	width: 800px;
 	height: auto;
@@ -24,4 +27,53 @@ html, body {
 }
 .guide-area p {
 	text-indent: 2em;
+}
+/* 数独动态 */
+.newslist li {
+	margin: 20px auto;
+    max-height: 22px;
+    overflow: hidden;
+    line-height: 22px;
+}
+.newsTitle {
+    display: inline-block;
+    max-width: 75%;
+    font-size: 16px;
+    color: #fff;
+    height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.newsTitle:hover {
+	text-decoration: underline;
+    color: #fff;
+    font-weight: bold;
+}
+.newslist span {
+	float: right;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: right;
+    font-size: 13px;
+    color: #fff;
+}
+.common-contain h3 {
+	text-align: center;
+}
+.infordetail {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #ddd;
+}
+.infordetail span {
+	margin: 30px;
+}
+.newscontent {
+	text-align: left;
+    text-indent: 2em;
+    margin: 20px auto;
+    font-size: 16px;
+    color: #dadada;
 }
