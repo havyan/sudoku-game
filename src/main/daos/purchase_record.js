@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
-var common = require('./common');
 
 var PurchaseRecordSchema = new Schema({
   account: String,
@@ -24,7 +23,5 @@ PurchaseRecordSchema.statics.createRecord = function(account, prop_type, count, 
     cost: cost
   }, cb);
 };
-
-PurchaseRecordSchema.plugin(common);
 
 module.exports = mongoose.model('PurchaseRecord', PurchaseRecordSchema);

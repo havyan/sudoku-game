@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
-var common = require('./common');
 
 var PointsRecordSchema = new Schema({
   account: String,
@@ -21,7 +20,5 @@ PointsRecordSchema.statics.createRecord = function(account, gameId, gain, total,
     total: total
   }, cb);
 };
-
-PointsRecordSchema.plugin(common);
 
 module.exports = mongoose.model('PointsRecord', PointsRecordSchema);

@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var common = require('./common');
 var ObjectId = mongoose.Types.ObjectId;
 var EXPIRES = '24h';
 
@@ -36,7 +35,5 @@ ActiveKeySchema.statics.findOneBySource = function(source, cb) {
     source : source
   }, cb);
 };
-
-ActiveKeySchema.plugin(common);
 
 module.exports = mongoose.model('ActiveKey', ActiveKeySchema);

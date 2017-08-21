@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var common = require('./common');
 
 var PropTypeSchema = new Schema({
   type : String,
@@ -41,7 +40,5 @@ PropTypeSchema.statics.addSales = function(type, add, cb) {
     }
   });
 };
-
-PropTypeSchema.plugin(common);
 
 module.exports = mongoose.model('PropType', PropTypeSchema);

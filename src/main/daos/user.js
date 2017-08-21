@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var common = require('./common');
 var _ = require('lodash');
 var crypto = require('crypto');
 var winston = require('winston');
@@ -227,8 +226,6 @@ UserSchema.set('toJSON', {
   getters : true,
   virtuals : true
 });
-
-UserSchema.plugin(common);
 
 var User = mongoose.model('User', UserSchema);
 User.STATUS = STATUS;

@@ -5,7 +5,7 @@
     init : function(element, options) {
       can.view('/js/libs/mst/game_timer.mst', options.model, function(frag) {
         element.html(frag);
-        this.element.find('.game-timer-delay').css('opacity', options.model.attr('delayCountdownStage') / 60);
+        this.element.find('.game-timer-delay').css('opacity', options.model.attr('delayCountdown') / 60);
         this.render(options.model, options.model.attr('playerRemainingTime'));
       }.bind(this));
     },
@@ -46,7 +46,7 @@
       }
     },
 
-    '{model} delayCountdownStage' : function(model, e, stage) {
+    '{model} delayCountdown' : function(model, e, stage) {
       this.element.find('.game-timer-delay').css('opacity', stage / 60);
     },
 

@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
-var common = require('./common');
 
 var FeedbackSchema = new Schema({
   user: {
@@ -18,7 +17,5 @@ FeedbackSchema.statics.createFeedback = function(user, content, cb) {
     content: content
   }, cb);
 };
-
-FeedbackSchema.plugin(common);
 
 module.exports = mongoose.model('Feedback', FeedbackSchema);

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var common = require('./common');
 var _ = require('lodash');
 var Async = require('async');
 var Schema = mongoose.Schema;
@@ -51,7 +50,5 @@ PropSchema.statics.reset = function(cb) {
     }
   });
 };
-
-PropSchema.plugin(common);
 
 module.exports = mongoose.model('Prop', PropSchema);

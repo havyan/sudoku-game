@@ -3,7 +3,6 @@ var fs = require('fs');
 var _ = require('lodash');
 var winston = require('winston');
 var mongoose = require('mongoose');
-var common = require('./common');
 var Schema = mongoose.Schema;
 var Mixed = Schema.Types.Mixed;
 var GameMode = require('../models/game_mode');
@@ -132,8 +131,6 @@ PuzzleSchema.statics.importData = function(file, cb) {
     }, 1000);
   });
 };
-
-PuzzleSchema.plugin(common);
 
 var Puzzle = mongoose.model('Puzzle', PuzzleSchema);
 Puzzle.LEVELS = [{

@@ -11,19 +11,19 @@ class GameDelayTask extends AbstractTask {
   }
 
   process() {
-    if (this.game.delayCountdownStage == null) {
-      this.game.delayCountdownStage = COUNTDOWN;
-      this.game.emit('delay-countdown-stage', this.game.delayCountdownStage);
-    } else if (this.game.delayCountdownStage > 0) {
-      this.game.delayCountdownStage--;
-      this.game.emit('delay-countdown-stage', this.game.delayCountdownStage);
+    if (this.game.delayCountdown == null) {
+      this.game.delayCountdown = COUNTDOWN;
+      this.game.emit('delay-countdown-stage', this.game.delayCountdown);
+    } else if (this.game.delayCountdown > 0) {
+      this.game.delayCountdown--;
+      this.game.emit('delay-countdown-stage', this.game.delayCountdown);
     } else {
       this.game.stopDelayTask();
     }
   }
 
   reset() {
-    this.game.delayCountdownStage = null;
+    this.game.delayCountdown = null;
   }
 
   restart() {

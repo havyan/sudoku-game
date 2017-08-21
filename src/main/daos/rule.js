@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var common = require('./common');
+
 var Mixed = Schema.Types.Mixed;
 
 var RuleSchema = new Schema({
@@ -49,8 +49,6 @@ RuleSchema.statics.updateRule = function(rule, cb) {
     '_id': id
   }, rule, cb);
 };
-
-RuleSchema.plugin(common);
 
 var Rule = mongoose.model('Rule', RuleSchema);
 

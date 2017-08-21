@@ -81,6 +81,12 @@ var Game = function(room, index, mode, playMode, creator) {
 };
 util.inherits(Game, EventEmitter);
 
+Game.restore = function(id) {
+  // players, joinRecords, propTypes, timer, entity, quitPlayers
+  // messages (retrieve), initCellValues, props, answer, allCellOptions,
+  // quitTasks,
+};
+
 Game.prototype.init = function(account, params, cb) {
   var self = this;
   var creator;
@@ -134,17 +140,7 @@ Game.prototype.init = function(account, params, cb) {
       self.emit('init', self.toSimpleJSON());
       self.waitCountdown = self.waitTime * 60;
       self.timer.schedule(self.waitTask);
-      GameDAO.createGame(creator.isGuest ? null : creator.id, self.room.id, self.id, {
-        index: self.index,
-        mode: self.mode,
-        playMode: self.playMode,
-        level: self.level,
-        rule: self.rule,
-        capacity: self.capacity,
-        duration: self.duration,
-        start_mode: self.startMode,
-        cost: self.cost
-      }, cb);
+      self.createEntity(creator.isGuest ? null : creator.id, cb);
     },
     function(entity, cb) {
       self.entity = entity;
@@ -275,6 +271,7 @@ Game.prototype.prepare = function(cb) {
       PuzzleDAO.findRandomOneByLevel(self.level, cb);
     },
     function(puzzle, cb) {
+      self.puzzle = puzzle.id;
       self.initCellValues = puzzle.question;
       self.answer = puzzle.answer;
       if (self.isRobot()) {
@@ -494,6 +491,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
   }
   if (quitPlayer) {
     if (robotLeft) {
+      this.updateEntity();
       this.removePlayer(account);
       this.emit('player-quit', {
         account: account,
@@ -508,6 +506,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
           self.upgradePlayer(quitPlayer, status, 0, false, cb);
         },
         function(cb) {
+          self.updateEntity();
           self.quitPlayers.unshift(quitPlayer);
           self.removePlayer(account);
           self.emit('player-quit', {
@@ -522,6 +521,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
         }
       ], cb);
     } else if (quitPlayer === this.players[0]) {
+      this.updateEntity();
       this.removePlayer(account);
       this.emit('player-quit', {
         account: account,
@@ -536,6 +536,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
       self.destroy('banker-quit');
       cb();
     } else {
+      this.updateEntity();
       this.removePlayer(account);
       this.emit('player-quit', {
         account: account,
@@ -695,7 +696,7 @@ Game.prototype.toJSON = function(account) {
     scores: this.scores,
     status: this.status,
     delayed: this.delayed,
-    delayCountdownStage: this.delayCountdownStage,
+    delayCountdown: this.delayCountdown,
     account: account ? account : undefined,
     prop: account ? _.find(this.props, {
       account: account
@@ -888,7 +889,7 @@ Game.prototype.calculateGains = function(players) {
   var single = this.isSingle();
   var robot = this.isRobot();
   var score, points;
-  for(var i = players.length - 1; i >= 0; i--) {
+  for (var i = players.length - 1; i >= 0; i--) {
     var account = players[i].account;
     if (this.scores[account] === score) {
       gains[account] = points;
@@ -899,7 +900,9 @@ Game.prototype.calculateGains = function(players) {
       }
       if (robot) {
         if (this.scores[account] > 0) {
-          var robots = _.filter(this.players, { isRobot: true });
+          var robots = _.filter(this.players, {
+            isRobot: true
+          });
           var win = _.every(robots, function(r) {
             return this.scores[r.account] < this.scores[account];
           }.bind(this));
@@ -998,6 +1001,54 @@ Game.prototype.destroy = function(type) {
   this.status = DESTROYED;
   winston.info('Game [' + this.id + '] destoryed');
   this.emit('game-destroyed', type);
+};
+
+Game.prototype.createEntity = function(creator, cb) {
+  return GameDAO.createGame(creator, this.room.id, this.id, this.createEntityParams(), cb);
+};
+
+Game.prototype.updateEntity = function() {
+  return GameDAO.updateById(this.id, this.createEntityParams(), function(error) {
+    if (error) {
+      winston.error('Error when update game entity: ' + self.id);
+    }
+  });
+};
+
+Game.prototype.createEntityParams = function() {
+  return {
+    index: this.index,
+    mode: this.mode,
+    playMode: this.playMode,
+    status: this.status,
+    players: _.map(this.players, 'account'),
+    joinRecords: _.map(this.joinRecords, 'id'),
+    cost: this.cost,
+    rule: this.rule,
+    waitCountdown: this.waitCountdown,
+    gameCountdown: this.countdownTask ? this.countdownTask.remaining : null,
+    delayCountdown: this.delayCountdown,
+    capacity: this.capacity,
+    duration: this.duration,
+    remainingTime: this.remainingTime,
+    waitTime: this.waitTime,
+    level: this.level,
+    startMode: this.startMode,
+    quitPlayers: _.map(this.quitPlayers, 'account'),
+    delayed: this.delayed,
+    userCellValues: this.userCellValues,
+    cellValueOwners: this.cellValueOwners,
+    knownCellValues: this.knownCellValues,
+    scores: this.scores,
+    timeoutCounter: this.timeoutCounter,
+    optionsOnce: this.optionsOnce,
+    glassesUsed: this.glassesUsed,
+    results: this.results,
+    optionsAlways: this.optionsAlways,
+    changedScores: this.changedScores,
+    playerIndex: this.playerIndex,
+    puzzle: this.puzzle
+  };
 };
 
 module.exports = Game;

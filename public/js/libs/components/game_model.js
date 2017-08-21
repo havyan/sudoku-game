@@ -617,7 +617,7 @@
         self.attr('delayed', true);
       });
       this.eventReceiver.on('delay-countdown-stage', function(stage) {
-        self.attr('delayCountdownStage', stage);
+        self.attr('delayCountdown', stage);
       });
       this.eventReceiver.on('game-delay-cancelled', function() {
         self.attr('delayed', false);

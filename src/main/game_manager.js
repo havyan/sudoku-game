@@ -121,6 +121,10 @@ GameManager.prototype.playerJoin = function(gameId, account, index, params, cb) 
   }
 };
 
+GameManager.prototype.restoreGame = function(gameId, cb) {
+  
+};
+
 GameManager.prototype.createSingleGame = function(account, playMode, cb) {
   var game = this.findGameByUser(account);
   if (game) {

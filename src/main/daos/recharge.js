@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var formatDate = require('dateformat');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
-var common = require('./common');
 var uuid = require('uuid');
 
 var STATUS = {
@@ -87,8 +86,6 @@ RechargeSchema.statics.genTransCode = function() {
   }
   return formatDate(date, 'yyyymmddHHMMss') + ms + random;
 };
-
-RechargeSchema.plugin(common);
 
 var Recharge = mongoose.model('Recharge', RechargeSchema);
 Recharge.STATUS = STATUS;

@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var common = require('./common');
 
 var RoomSchema = new Schema({
   name : String,
@@ -31,7 +30,5 @@ RoomSchema.statics.allVirtuals = function(cb) {
     virtual : true
   }, cb);
 };
-
-RoomSchema.plugin(common);
 
 module.exports = mongoose.model('Room', RoomSchema);

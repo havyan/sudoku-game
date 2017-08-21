@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var winston = require('winston');
 var _ = require('lodash');
 var Schema = mongoose.Schema;
-var common = require('./common');
 
 var SealedIpSchema = new Schema({
   ip: String,
@@ -50,7 +49,5 @@ SealedIpSchema.statics.release = function(ip, cb) {
     released: true
   }, cb);
 };
-
-SealedIpSchema.plugin(common);
 
 module.exports = mongoose.model('SealedIp', SealedIpSchema);
