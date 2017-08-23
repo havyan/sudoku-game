@@ -3,6 +3,7 @@ var Async = require('async');
 var util = require("util");
 var EventEmitter = require('events').EventEmitter;
 var RoomDAO = require('./daos/room');
+var GameDAO = require('./daos/game');
 var RuleDAO = require('./daos/rule');
 var UserDAO = require('./daos/user');
 var PuzzleDAO = require('./daos/puzzle');
@@ -122,7 +123,36 @@ GameManager.prototype.playerJoin = function(gameId, account, index, params, cb) 
 };
 
 GameManager.prototype.restoreGame = function(gameId, cb) {
-  
+  var self = this;
+  Async.waterfall([
+    function(cb) {
+      GameDAO.findOneById(gameId, cb);
+    },
+    function(game, cb) {
+      if (game.playMode === 'multi') {
+        cb('Restoring battle game not supported now');
+      } else {
+        Game.restore(null, self.singleGames.length, game, cb);
+      }
+    },
+    function(game, cb) {
+      if (game.playMode === 'multi') {
+        cb('Restoring battle game not supported now');
+      } else {
+        self.addSingleGame(game);
+      }
+    }
+  ],cb);
+};
+
+GameManager.prototype.addSingleGame = function(game) {
+  this.singleGames.push(game);
+  game.on('game-destroyed', function() {
+    _.remove(this.singleGames, function(e) {
+      return e === game;
+    })
+  }.bind(this));
+  this.emit('single-game-created', game);
 };
 
 GameManager.prototype.createSingleGame = function(account, playMode, cb) {
@@ -134,13 +164,7 @@ GameManager.prototype.createSingleGame = function(account, playMode, cb) {
     });
   } else {
     game = new Game(null, this.singleGames.length, null, playMode || 'single', account);
-    this.singleGames.push(game);
-    game.on('game-destroyed', function() {
-      _.remove(this.singleGames, function(e) {
-        return e === game;
-      })
-    }.bind(this));
-    this.emit('single-game-created', game);
+    this.addSingleGame(game);
     Async.series([
       function(cb) {
         game.init(account, {

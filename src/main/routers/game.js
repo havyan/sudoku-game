@@ -1,5 +1,7 @@
+var Async = require('async');
 var HttpError = require('../http_error');
 var winston = require('winston');
+var GameDAO = require('../daos/game');
 var Game = require('../models/game');
 
 module.exports = function(router) {
@@ -125,6 +127,42 @@ module.exports = function(router) {
         res.send({
           status: 'ok',
           result: result
+        });
+      }
+    });
+  });
+
+  router.get('/game/user/unfinished', function(req, res, next) {
+    var account = req.session.account;
+    Async.parallel({
+      single: function(cb) {
+        GameDAO.findUnfinishedSingleGame(account, cb);
+      },
+      robot: function(cb) {
+        GameDAO.findUnfinishedRobotGame(account, cb);
+      }
+    }, function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status: 'ok',
+          result: {
+            single: result.single ? result.single.id : null,
+            robot: result.robot ? result.robot.id : null,
+          }
+        });
+      }
+    });
+  });
+
+  router.post('/game/restore/:id', function(req, res, next) {
+    global.gameManager.restoreGame(req.params.id, function(error) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send({
+          status: 'ok'
         });
       }
     });

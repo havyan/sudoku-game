@@ -81,16 +81,96 @@ var Game = function(room, index, mode, playMode, creator) {
 };
 util.inherits(Game, EventEmitter);
 
-Game.restore = function(id) {
+Game.restore = function(room, index, entity, cb) {
   // players, joinRecords, propTypes, timer, entity, quitPlayers
   // messages (retrieve), initCellValues, props, answer, allCellOptions,
   // quitTasks,
+  var game = new Game(room, index, entity.mode, entity.playMode, entity.creator);
+  Object.assign(game, entity.toJSON());
+  if (index != null) {
+    game.index = index;
+  }
+  game.entity = entity;
+  var retrieve = function(name, service, cb) {
+    Async.map(entity[name], function(e, cb) {
+      if (e) {
+        service(e, cb);
+      } else {
+        cb(null, null);
+      }
+    }, function(error, results) {
+      if (error) {
+        cb(error);
+      } else {
+        game[name] = results;
+        cb();
+      }
+    });
+  };
+  Async.waterfall([
+    function(cb) {
+      retrieve('players', UserDAO.findOneByAccount.bind(UserDAO), cb);
+    },
+    function(cb) {
+      Async.map(entity.players, function(e, cb) {
+        if (e) {
+          if (Robot.isRobot(e)) {
+            cb(null, new Robot(this, e));
+          } else {
+            Prop.findOneByAccount(e, cb);
+          }
+        } else {
+          cb(null, null);
+        }
+      }, cb);
+    },
+    function(results, cb) {
+      game.props = _.compact(results);
+      cb();
+    },
+    function(cb) {
+      retrieve('quitPlayers', UserDAO.findOneByAccount.bind(UserDAO), cb);
+    },
+    function(cb) {
+      retrieve('joinRecords', JoinRecordDAO.findOneById.bind(JoinRecordDAO), cb);
+    },
+    function(cb) {
+      PropTypeDAO.all(cb);
+    },
+    function(propTypes, cb) {
+      game.propTypes = propTypes.map(function(propType) {
+        return propType.toJSON();
+      });
+      cb();
+    },
+    function(cb) {
+      ChatRecordDAO.findRecord(entity.id, cb);
+    },
+    function(record, cb) {
+      game.messages = record.messages;
+      cb();
+    },
+    function(cb) {
+      PuzzleDAO.findOneById(game.puzzle, cb);
+    },
+    function(puzzle, cb) {
+      game.initCellValues = puzzle.question;
+      game.answer = puzzle.answer;
+      if (game.isRobot()) {
+        game.allCellOptions = new OptionsCalculator(game).calcAllCellOptions();
+      }
+      game.initTimer();
+      game.nextPlayer();
+      cb();
+    }
+  ], cb);
 };
 
 Game.prototype.init = function(account, params, cb) {
   var self = this;
   var creator;
   var level = params.level || DEFAULT_LEVEL;
+  this.creator = account;
   this.initTimer();
   this.propFactory = PropFactory.create(this);
   Async.waterfall([
@@ -140,7 +220,7 @@ Game.prototype.init = function(account, params, cb) {
       self.emit('init', self.toSimpleJSON());
       self.waitCountdown = self.waitTime * 60;
       self.timer.schedule(self.waitTask);
-      self.createEntity(creator.isGuest ? null : creator.id, cb);
+      self.createEntity(creator.isGuest ? null : account, cb);
     },
     function(entity, cb) {
       self.entity = entity;
@@ -271,7 +351,7 @@ Game.prototype.prepare = function(cb) {
       PuzzleDAO.findRandomOneByLevel(self.level, cb);
     },
     function(puzzle, cb) {
-      self.puzzle = puzzle.id;
+      self.puzzle = puzzle._id.toString();
       self.initCellValues = puzzle.question;
       self.answer = puzzle.answer;
       if (self.isRobot()) {
@@ -1017,6 +1097,7 @@ Game.prototype.updateEntity = function() {
 
 Game.prototype.createEntityParams = function() {
   return {
+    room: this.room.id,
     index: this.index,
     mode: this.mode,
     playMode: this.playMode,

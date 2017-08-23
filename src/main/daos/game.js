@@ -52,12 +52,28 @@ var GameSchema = new Schema({
   real_wait_time: Number
 });
 
-GameSchema.statics.createGame = function(userId, roomId, gameId, params, cb) {
+GameSchema.statics.createGame = function(account, roomId, gameId, params, cb) {
   this.create(Object.assign({
     _id: ObjectId(gameId),
-    creator: userId,
+    creator: account,
     room: roomId
   }, params), cb);
+};
+
+GameSchema.statics.findUnfinishedSingleGame = function(account, cb) {
+  return this.findOne({
+    creator: account,
+    status: 'ongoing',
+    playMode: 'single'
+  }, cb);
+};
+
+GameSchema.statics.findUnfinishedRobotGame = function(account, cb) {
+  return this.findOne({
+    creator: account,
+    status: 'ongoing',
+    playMode: 'robot'
+  }, cb);
 };
 
 module.exports = mongoose.model('Game', GameSchema);

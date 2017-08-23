@@ -3,10 +3,12 @@ var _ = require('lodash');
 var uuid = require('uuid');
 var OptionsCalculator = require('./options_calculator');
 
-var Robot = function(game) {
+var ROBOT_RE = /^robot-\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/g;
+
+var Robot = function(game, account) {
   this.game = game;
-  this.id = uuid.v1();
-  this.account = 'robot-' + this.id;
+  this.id = account ? account.replace(/^robot-/g, '') : uuid.v1();
+  this.account = account || ('robot-' + this.id);
   this.isRobot = true;
   this.name = '天才机器人';
   this.icon = '/imgs/default/user_icons/robot.png';
@@ -18,6 +20,10 @@ var Robot = function(game) {
   this.winrate = 0;
   this.grade_name = '新手';
   this.money = 0;
+};
+
+Robot.isRobot = function(account) {
+  return !!(account && account.match(ROBOT_RE));
 };
 
 Robot.prototype.toJSON = function() {
