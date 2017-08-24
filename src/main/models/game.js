@@ -86,15 +86,19 @@ Game.restore = function(room, index, entity, cb) {
   // messages (retrieve), initCellValues, props, answer, allCellOptions,
   // quitTasks,
   var game = new Game(room, index, entity.mode, entity.playMode, entity.creator);
-  Object.assign(game, entity.toJSON());
+  Object.assign(game, pickEntityAttrs(entity));
   if (index != null) {
     game.index = index;
   }
   game.entity = entity;
-  var retrieve = function(name, service, cb) {
+  var retrievePlayers = function(name, service, cb) {
     Async.map(entity[name], function(e, cb) {
       if (e) {
-        service(e, cb);
+        if (Robot.isRobot(e)) {
+          cb(null, new Robot(this, e));
+        } else {
+          service(e, cb);
+        }
       } else {
         cb(null, null);
       }
@@ -109,30 +113,24 @@ Game.restore = function(room, index, entity, cb) {
   };
   Async.waterfall([
     function(cb) {
-      retrieve('players', UserDAO.findOneByAccount.bind(UserDAO), cb);
+      retrievePlayers('players', User.findOneByAccount.bind(User), cb);
     },
     function(cb) {
-      Async.map(entity.players, function(e, cb) {
-        if (e) {
-          if (Robot.isRobot(e)) {
-            cb(null, new Robot(this, e));
-          } else {
-            Prop.findOneByAccount(e, cb);
-          }
-        } else {
-          cb(null, null);
-        }
-      }, cb);
+      Async.map(_.compact(entity.players), Prop.findOneByAccount.bind(Prop), cb);
     },
     function(results, cb) {
-      game.props = _.compact(results);
+      game.props = results;
       cb();
     },
     function(cb) {
-      retrieve('quitPlayers', UserDAO.findOneByAccount.bind(UserDAO), cb);
+      retrievePlayers('quitPlayers', User.findOneByAccount.bind(User), cb);
     },
     function(cb) {
-      retrieve('joinRecords', JoinRecordDAO.findOneById.bind(JoinRecordDAO), cb);
+      Async.map(_.compact(entity.joinRecords), JoinRecordDAO.findOneById.bind(JoinRecordDAO), cb);
+    },
+    function(joinRecords, cb) {
+      game.joinRecords = joinRecords;
+      cb();
     },
     function(cb) {
       PropTypeDAO.all(cb);
@@ -144,7 +142,7 @@ Game.restore = function(room, index, entity, cb) {
       cb();
     },
     function(cb) {
-      ChatRecordDAO.findRecord(entity.id, cb);
+      ChatRecordDAO.findRecord(entity._id.toString(), cb);
     },
     function(record, cb) {
       game.messages = record.messages;
@@ -161,7 +159,7 @@ Game.restore = function(room, index, entity, cb) {
       }
       game.initTimer();
       game.nextPlayer();
-      cb();
+      cb(null, game);
     }
   ], cb);
 };
@@ -1088,6 +1086,7 @@ Game.prototype.createEntity = function(creator, cb) {
 };
 
 Game.prototype.updateEntity = function() {
+  var self = this;
   return GameDAO.updateById(this.id, this.createEntityParams(), function(error) {
     if (error) {
       winston.error('Error when update game entity: ' + self.id);
@@ -1095,41 +1094,52 @@ Game.prototype.updateEntity = function() {
   });
 };
 
+var ENTITY_ATTRS = [
+  'index',
+  'mode',
+  'playMode',
+  'status',
+  'cost',
+  'rule',
+  'waitCountdown',
+  'delayCountdown',
+  'capacity',
+  'duration',
+  'remainingTime',
+  'waitTime',
+  'level',
+  'startMode',
+  'delayed',
+  'userCellValues',
+  'cellValueOwners',
+  'knownCellValues',
+  'scores',
+  'timeoutCounter',
+  'optionsOnce',
+  'glassesUsed',
+  'results',
+  'optionsAlways',
+  'changedScores',
+  'playerIndex',
+  'puzzle'
+];
+
+var pickEntityAttrs = function(target) {
+  var result = {};
+  ENTITY_ATTRS.forEach(function(attr) {
+    result[attr] = target[attr];
+  });
+  return result;
+};
+
 Game.prototype.createEntityParams = function() {
-  return {
-    room: this.room.id,
-    index: this.index,
-    mode: this.mode,
-    playMode: this.playMode,
-    status: this.status,
-    players: _.map(this.players, 'account'),
-    joinRecords: _.map(this.joinRecords, 'id'),
-    cost: this.cost,
-    rule: this.rule,
-    waitCountdown: this.waitCountdown,
-    gameCountdown: this.countdownTask ? this.countdownTask.remaining : null,
-    delayCountdown: this.delayCountdown,
-    capacity: this.capacity,
-    duration: this.duration,
-    remainingTime: this.remainingTime,
-    waitTime: this.waitTime,
-    level: this.level,
-    startMode: this.startMode,
-    quitPlayers: _.map(this.quitPlayers, 'account'),
-    delayed: this.delayed,
-    userCellValues: this.userCellValues,
-    cellValueOwners: this.cellValueOwners,
-    knownCellValues: this.knownCellValues,
-    scores: this.scores,
-    timeoutCounter: this.timeoutCounter,
-    optionsOnce: this.optionsOnce,
-    glassesUsed: this.glassesUsed,
-    results: this.results,
-    optionsAlways: this.optionsAlways,
-    changedScores: this.changedScores,
-    playerIndex: this.playerIndex,
-    puzzle: this.puzzle
-  };
+  var result = pickEntityAttrs(this);
+  result.room = this.room.id;
+  result.players = _.map(this.players, 'account');
+  result.joinRecords = _.map(this.joinRecords, 'id');
+  result.gameCountdown = this.countdownTask ? this.countdownTask.remaining : null;
+  result.quitPlayers = _.map(this.quitPlayers, 'account');
+  return result;
 };
 
 module.exports = Game;

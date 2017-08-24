@@ -140,6 +140,7 @@ GameManager.prototype.restoreGame = function(gameId, cb) {
         cb('Restoring battle game not supported now');
       } else {
         self.addSingleGame(game);
+        cb();
       }
     }
   ],cb);
