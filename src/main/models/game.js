@@ -95,7 +95,7 @@ Game.restore = function(room, index, entity, cb) {
     Async.map(entity[name], function(e, cb) {
       if (e) {
         if (Robot.isRobot(e)) {
-          cb(null, new Robot(this, e));
+          cb(null, new Robot(game, e));
         } else {
           service(e, cb);
         }
@@ -119,7 +119,7 @@ Game.restore = function(room, index, entity, cb) {
       Async.map(_.compact(entity.players), Prop.findOneByAccount.bind(Prop), cb);
     },
     function(results, cb) {
-      game.props = results;
+      game.props = _.compact(results);
       cb();
     },
     function(cb) {

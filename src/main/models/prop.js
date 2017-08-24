@@ -4,13 +4,16 @@ var PropDAO = require('../daos/prop');
 var UserDAO = require('../daos/user');
 var User = require('./user');
 var Guest = require('./guest');
+var Robot = require('./robot');
 var PurchaseRecordDAO = require('../daos/purchase_record');
 var PropTypeDAO = require('../daos/prop_type');
 
 var Prop = {};
 
 Prop.findOneByAccount = function(account, cb) {
-  if (Guest.isGuest(account)) {
+  if (Robot.isRobot(account)) {
+    cb(null, null);
+  } else if (Guest.isGuest(account)) {
     cb(null, Guest.createProp(account));
   } else {
     PropDAO.findOneByAccount(account, cb);
