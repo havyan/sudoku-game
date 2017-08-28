@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var fs = require('fs');
-var gm = require('gm');
+var gm = require('gm').subClass({ imageMagick: true });
 var Async = require('async');
 var winston = require('winston');
 var vcode = require('verify-code');
