@@ -86,6 +86,7 @@ Game.restore = function(room, index, entity, cb) {
   // messages (retrieve), initCellValues, props, answer, allCellOptions,
   // quitTasks,
   var game = new Game(room, index, entity.mode, entity.playMode, entity.creator);
+  game.id = entity._id.toString();
   Object.assign(game, pickEntityAttrs(entity));
   if (index != null) {
     game.index = index;
@@ -1087,7 +1088,9 @@ Game.prototype.createEntity = function(creator, cb) {
 
 Game.prototype.updateEntity = function() {
   var self = this;
-  return GameDAO.updateById(this.id, this.createEntityParams(), function(error) {
+  return this.entity.update({
+    $set: this.createEntityParams()
+  }, function(error) {
     if (error) {
       winston.error('Error when update game entity: ' + self.id);
     }
@@ -1102,6 +1105,7 @@ var ENTITY_ATTRS = [
   'cost',
   'rule',
   'waitCountdown',
+  'gameCountdown',
   'delayCountdown',
   'capacity',
   'duration',
@@ -1137,7 +1141,6 @@ Game.prototype.createEntityParams = function() {
   result.room = this.room.id;
   result.players = _.map(this.players, 'account');
   result.joinRecords = _.map(this.joinRecords, 'id');
-  result.gameCountdown = this.countdownTask ? this.countdownTask.remaining : null;
   result.quitPlayers = _.map(this.quitPlayers, 'account');
   return result;
 };
