@@ -76,4 +76,15 @@ GameSchema.statics.findUnfinishedRobotGame = function(account, cb) {
   }, cb);
 };
 
+GameSchema.statics.finishGames = function(account, playMode, cb) {
+  return this.update({
+    creator: account,
+    playMode: playMode
+  }, {
+    $set: {
+      status: 'over'
+    }
+  }, cb);
+};
+
 module.exports = mongoose.model('Game', GameSchema);

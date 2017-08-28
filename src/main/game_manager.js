@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var winston = require('winston');
 var Async = require('async');
 var util = require("util");
 var EventEmitter = require('events').EventEmitter;
@@ -158,13 +159,21 @@ GameManager.prototype.addSingleGame = function(game) {
 
 GameManager.prototype.createSingleGame = function(account, playMode, cb) {
   var game = this.findGameByUser(account);
+  playMode = playMode || 'single';
   if (game) {
     cb(null, {
       status: 'error',
       reason: 'There has been an game ongoing'
     });
   } else {
-    game = new Game(null, this.singleGames.length, null, playMode || 'single', account);
+    GameDAO.finishGames(account, playMode, function(error) {
+      if (error) {
+        winston.error('Error when trying to finsh stored ' + playMode + ' games of ' + account);
+      } else {
+        winston.info('Successfully finshed stored ' + playMode + ' games of ' + account);
+      }
+    });
+    game = new Game(null, this.singleGames.length, null, playMode, account);
     this.addSingleGame(game);
     Async.series([
       function(cb) {

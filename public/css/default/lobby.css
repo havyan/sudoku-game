@@ -326,6 +326,7 @@
   height: 51px;
   line-height: 51px;
   background: url(../../imgs/default/form_confirm.png) no-repeat;
+  background-size: 100% 100%;
   margin: auto;
   display: block;
   border: none;
@@ -335,6 +336,17 @@
 
 .lobby-modal  .confirm:hover {
   color: #FFF000
+}
+
+.single-player-modal.lobby-modal .lobby-modal-bottom {
+  text-align: center;
+}
+
+.single-player-modal.lobby-modal .lobby-modal-bottom button {
+  width: 120px;
+  height: 45px;
+  line-height: 45px;
+  display: inline-block;
 }
 
 .lobby-player.banker .lobby-player-icon {

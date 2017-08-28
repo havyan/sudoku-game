@@ -132,7 +132,7 @@ module.exports = function(router) {
     });
   });
 
-  router.get('/game/user/unfinished', function(req, res, next) {
+  router.get('/game/unfinished/all', function(req, res, next) {
     var account = req.session.account;
     Async.parallel({
       single: function(cb) {

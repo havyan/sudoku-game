@@ -20,11 +20,20 @@
           window.singlePlayerDialog = new SinglePlayerDialog($('body'));
         }
         $('a.single-player').click(function() {
-          window.singlePlayerDialog.show(function(params) {
-            Rest.Game.createSingleGame(params, function() {
-
-            }, function() {});
-            window.open('/table/' + data.user.account, '_blank');
+          Rest.Game.getUnfinishedGames(function(result) {
+            window.singlePlayerDialog.show({
+              unfinishedSingle: result.result.single,
+              unfinishedRobot: result.result.robot
+            }, function(params) {
+              if (params.continueLast) {
+                Rest.Game.restoreGame(result.result[params.playMode]);
+              } else {
+                Rest.Game.createSingleGame({
+                  playMode: params.playMode
+                }, function() {}, function() {});
+              }
+              window.open('/table/' + data.user.account, '_blank');
+            });
           });
         });
       };

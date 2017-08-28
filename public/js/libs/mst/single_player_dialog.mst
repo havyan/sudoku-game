@@ -27,8 +27,13 @@
     </div>
     {{/showBattle}}
     <div class="lobby-modal-bottom">
-      <button type="button" class="confirm">
-        确认
+      {{#hasUnfinished}}
+      <button type="button" class="confirm" data-value="continue">
+        继续上次游戏
+      </button>
+      {{/hasUnfinished}}
+      <button type="button" class="confirm" data-value="new">
+        开始{{#hasUnfinished}}新{{/hasUnfinished}}游戏
       </button>
     </div>
   </div>
