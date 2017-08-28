@@ -1,3 +1,4 @@
+// Deprecated, save messages to game entity direclty.
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;

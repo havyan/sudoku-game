@@ -13,7 +13,6 @@ var PropTypeDAO = require('../daos/prop_type');
 var PuzzleDAO = require('../daos/puzzle');
 var JoinRecordDAO = require('../daos/join_record');
 var PointsRecordDAO = require('../daos/points_record');
-var ChatRecordDAO = require('../daos/chat_record');
 var User = require('./user');
 var Prop = require('./prop');
 var Guest = require('./guest');
@@ -140,13 +139,6 @@ Game.restore = function(room, index, entity, cb) {
       game.propTypes = propTypes.map(function(propType) {
         return propType.toJSON();
       });
-      cb();
-    },
-    function(cb) {
-      ChatRecordDAO.findRecord(entity._id.toString(), cb);
-    },
-    function(record, cb) {
-      game.messages = record.messages;
       cb();
     },
     function(cb) {
@@ -1057,16 +1049,6 @@ Game.prototype.useProp = function(type, account, params, cb) {
   }).catch(cb);
 };
 
-Game.prototype.recordMessages = function() {
-  var messages = this.messages;
-  ChatRecordDAO.createRecord(this.id, messages, function(error) {
-    if (error) {
-      winston.error('Error when recording chat messages: ' + error);
-      winston.info('Chat messages are: ' + JSON.stringify(messages));
-    }
-  });
-};
-
 Game.prototype.destroy = function(type) {
   var self = this;
   type = type || 'normal';
@@ -1076,7 +1058,6 @@ Game.prototype.destroy = function(type) {
     }
   });
   this.stopTimer();
-  this.recordMessages();
   this.status = DESTROYED;
   winston.info('Game [' + this.id + '] destoryed');
   this.emit('game-destroyed', type);
@@ -1125,7 +1106,8 @@ var ENTITY_ATTRS = [
   'optionsAlways',
   'changedScores',
   'playerIndex',
-  'puzzle'
+  'puzzle',
+  'messages'
 ];
 
 var pickEntityAttrs = function(target) {

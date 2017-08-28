@@ -43,6 +43,7 @@ var GameSchema = new Schema({
   changedScores: Mixed,
   playerIndex: Mixed,
   puzzle: String,
+  messages: [Mixed],
   money_returned: {
     type: Boolean,
     default: false
