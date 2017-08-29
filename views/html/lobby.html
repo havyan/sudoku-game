@@ -30,7 +30,7 @@
           showBattle: true,
           mode: 'robot'
         });
-        window.singlePlayerDialog.show(function(params) {
+        window.singlePlayerDialog.show({}, function(params) {
           Rest.Game.createSingleGame(params, function() {
 
           }, function() {});
