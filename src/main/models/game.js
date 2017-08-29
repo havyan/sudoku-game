@@ -91,6 +91,7 @@ Game.restore = function(room, index, entity, cb) {
     game.index = index;
   }
   game.entity = entity;
+  game.propFactory = PropFactory.create(game);
   var retrievePlayers = function(name, service, cb) {
     Async.map(entity[name], function(e, cb) {
       if (e) {
