@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    {{> common_head }}
+    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/main.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/lobby.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
+    <script src="{{@basejs}}/libs3/lodash.js"></script>
+    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
+    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
+    <script src="{{@basejs}}/libs3/socket.io-1.7.0.min.js"></script>
+    <script src="{{@basejs}}/libs/observable.js"></script>
+    <script src="{{@basejs}}/libs/components/utils.js"></script>
+    <script src="{{@basejs}}/libs/rest/rest.js"></script>
+    <script src="{{@basejs}}/libs/components/dialog.js"></script>
+    <script src="{{@basejs}}/libs/event_center.js"></script>
+    <script src="{{@basejs}}/libs/components/lobby_game_dialog.js"></script>
+    <script src="{{@basejs}}/libs/components/single_player_dialog.js"></script>
+    <script src="{{@basejs}}/libs/components/lobby_model.js"></script>
+    <script src="{{@basejs}}/libs/components/lobby_panel.js"></script>
+    {{{statsScript}}}
+  </head>
+  <body>
+    <div class="header">
+      <div class="header-user">
+        <div class="header-user-icon">
+          <img src="{{userIcon}}"></img>
+        </div>
+        <div class="header-user-info">
+          {{#unless isGuest}}
+          <p title="{{account}}">
+            用户名：{{account}}
+          </p>
+          {{/unless}}
+          <p title="{{userName}}">
+            昵称：{{userName}}
+          </p>
+          <p title="{{money}}">
+            天才币：{{money}}
+          </p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="header-action">
+          <a class="user-button" href="/view/user">个人信息</a>
+        </div>
+        <div class="header-action">
+          <a class="single-player" href="javascript:;">开始游戏</a>
+        </div>
+        <div class="header-action">
+          <a class="props-button" href="/view/props">道具</a>
+        </div>
+        {{#isAdmin}}
+        <div class="header-action">
+          <a class="setting-button" href="/setting">管理</a>
+        </div>
+        {{/isAdmin}}
+        <div class="header-action">
+          <div class="messages-count" title="{{unreadMessagesCount}}">
+            {{unreadMessagesCount}}
+          </div>
+          <a class="messages-button" href="/view/messages">消息</a>
+        </div>
+        {{#unless isAdmin}}
+        <div class="header-action">
+          <a class="recharge-button" href="/view/recharge">充值</a>
+        </div>
+        {{/unless}}
+        <div class="header-action">
+          <a class="video-button" href="/video">教学视频</a>
+        </div>
+        <div class="header-action">
+          <a class="help-button" href="/help">帮助</a>
+        </div>
+        <div class="header-action">
+          <a class="logout-button" href="/logout">退出</a>
+        </div>
+      </div>
+    </div>
+    <div id="lobby" class="lobby"></div>
+    {{> communicate }}
+  </body>
+</html>

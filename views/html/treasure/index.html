@@ -25,7 +25,6 @@
       </div>
       {{/user}}
       <a class="about-btn" href="/">首页</a>
-      <a class="about-btn" href="/treasure/login">天才寻宝</a>
       <a class="about-btn" href="/about">关于天才数独棋</a>
       <a class="contact-btn" href="/news">数独动态</a>
       <a class="contact-btn" href="/operation">操作指引</a>
@@ -36,22 +35,16 @@
 
     </div>
     <div class="login-area">
-      {{#rooms}}
-      <div id="{{id}}" class="room">
-        <a class="icon" href="javascript:void(0);"><img src="{{icon}}" /></a>
-        <a class="label" href="javascript:void(0);">{{name}}</a>
-      </div>
-      {{/rooms}}
       <div class="login-container">
         {{#if user}}
         <a class="enter" href="/main">进入游戏</a>
         {{else}}
         <form class="login-form" action="/login" method="post">
           <div class="genius-title">
-            Genius
+            Search
           </div>
           <div class="login-title">
-            Sudoku
+            Treasure
           </div>
           <div class="login-user">
             <label class="login-label">用户名</label>
@@ -60,6 +53,9 @@
           <div class="login-password">
             <label class="login-label">密      码</label>
             <input class="login-field" type="password" name="password" autocomplete="on" placeholder="密码" />
+          </div>
+          <div class="login-feature" style="display:none;">
+            <input class="login-field" type="text" name="feature" autocomplete="on" value="treasure" />
           </div>
           {{#error}}
           <div class="login-error">
@@ -76,9 +72,6 @@
             <a  class="signup-button" href="/signup">注册</a>
           </div>
           <div class="login-separator"></div>
-          <div class="guest-pass-button">
-            <a href="javascript:void(0)">免注册试玩</a>
-          </div>
           <div class="protocol-read">
             <input type="checkbox" checked="true" />
             <label>我已阅读并同意<span class="protocol">超天才数独玩家协议</span>和<span class="law">法律声明</span></label>

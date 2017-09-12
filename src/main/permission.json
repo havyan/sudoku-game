@@ -25,7 +25,8 @@
     "POST /feedback",
     "[RE]GET /recharge/pay/\\w{32}/result",
     "GET /news",
-    "[RE]GET /news/[^/\\s]+"
+    "[RE]GET /news/[^/\\s]+",
+    "GET /treasure/login"
   ],
   "guest": [
     "GET /main",

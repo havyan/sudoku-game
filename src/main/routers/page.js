@@ -53,10 +53,11 @@ module.exports = function(router) {
     ], cb);
   };
 
-  var autoLogin = function(req, res, next) {
+  var autoLogin = function(req, res, feature, next) {
     RoomDAO.allVirtuals(function(error, rooms) {
       var render = function(user) {
-        res.render('index', {
+        var page = feature ? feature + '/index' : 'index';
+        res.render(page, {
           rooms: rooms,
           user: user,
           error: req.query.error === 'true'
@@ -81,7 +82,8 @@ module.exports = function(router) {
                 req.session.account = req.cookies.account;
                 render(user);
               } else {
-                res.redirect('/login?error=true');
+                var url = (feature ? '/' + feature : '') + '/login?error=true';
+                res.redirect(url);
               }
             }
           });
@@ -125,11 +127,13 @@ module.exports = function(router) {
 
   /* GET login page. */
   router.get('/login', function(req, res, next) {
-    autoLogin(req, res, next);
+    autoLogin(req, res, null, next);
   });
 
   router.post('/login', function(req, res, next) {
     var password = UserDAO.encryptPassword(req.body.password);
+    var feature = req.body.feature;
+    var prefix = feature ? '/' + feature : '';
     login(req, req.body.account, password, function(error, user) {
       if (error) {
         next(new HttpError('Error when login by account ' + req.body.account + ': ' + error));
@@ -144,9 +148,9 @@ module.exports = function(router) {
             });
           }
           req.session.account = user.account;
-          res.redirect('/main');
+          res.redirect(prefix + '/main');
         } else {
-          res.redirect('/login?error=true');
+          res.redirect(prefix + '/login?error=true');
         }
       }
     });
@@ -184,7 +188,7 @@ module.exports = function(router) {
     res.redirect('/signup');
   });
 
-  router.get('/main', function(req, res, next) {
+  var accessMain = function(req, res, feature, next) {
     Async.parallel([
       function(cb) {
         User.findOneByAccount(req.session.account, cb);
@@ -202,8 +206,9 @@ module.exports = function(router) {
         return;
       }
       var user = results[0];
+      var page = feature ? feature + '/lobby' : 'lobby';
       if (user) {
-        res.render('lobby', {
+        res.render(page, {
           account: user.account,
           isGuest: user.isGuest,
           userName: user.name,
@@ -219,6 +224,10 @@ module.exports = function(router) {
         res.redirect('/');
       }
     });
+  };
+
+  router.get('/main', function(req, res, next) {
+    accessMain(req, res, null, next);
   });
 
   /* GET Setting page. */
@@ -413,6 +422,18 @@ module.exports = function(router) {
         });
       }
     });
+  });
+
+
+  /********************************************************************
+   *********************Treasure Hunt Pages****************************
+   ********************************************************************/
+  router.get('/treasure/login', function(req, res, next) {
+    autoLogin(req, res, 'treasure', next);
+  });
+
+  router.get('/treasure/main', function(req, res, next) {
+    accessMain(req, res, 'treasure', next);
   });
 
 };
