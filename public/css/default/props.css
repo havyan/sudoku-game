@@ -28,6 +28,13 @@
   margin-bottom: 20px;
   vertical-align: top;
   width: 32%;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+.main .container .store .item .icon img {
+  width: 64px;
+  height: 64px;
 }
 
 .main .container .store .item .count img {
@@ -67,6 +74,11 @@
 .main .container .my-prop .my-count * {
   vertical-align: middle;
   margin-right: 5px;
+}
+
+.main .container .my-prop .item .my-count img {
+  width: 64px;
+  height: 64px;
 }
 
 .bottom-actions {
