@@ -5,6 +5,7 @@ var Async = require('async');
 var winston = require('winston');
 var RuleDAO = require('../main/daos/rule');
 var PropTypeDAO = require('../main/daos/prop_type');
+var PropDAO = require('../main/daos/prop');
 var UserDAO = require('../main/daos/user');
 var PuzzleDAO = require('../main/daos/puzzle');
 var PropDAO = require('../main/daos/prop');
@@ -38,10 +39,43 @@ module.exports = function(cb) {
           winston.info('Create prop type [' + propType.name + '] from predefined');
           PropTypeDAO.create(propType, cb);
         } else {
-          cb();
+          if (!find.category) {
+            find.category = 'sudoku';
+            find.save(function(error) {
+              if (error) {
+                winston.error('Error when update prop types: ' + error);
+              } else {
+                cb();
+              }
+            });
+          } else {
+            cb();
+          }
         }
       });
     }, cb);
+  },
+  function(cb) {
+    var initProp = require('../main/daos/prop.json').normal;
+    PropDAO.find({}).exec(function(error, props) {
+      if (error) {
+        winston.error('Error when fetching props: ' + error);
+        cb();
+      } else {
+        Async.eachSeries(props, function(prop, cb) {
+          var purchases = prop.purchases;
+          for(var key in initProp) {
+            if (prop[key] == undefined) {
+              prop[key] = initProp[key];
+            }
+            if (purchases[key] == undefined) {
+              purchases[key] = 0;
+            }
+          }
+          prop.save(cb);
+        }, cb);
+      }
+    });
   },
   function(cb) {
     var rooms = require('./predefined/rooms.json');
