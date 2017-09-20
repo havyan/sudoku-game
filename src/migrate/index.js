@@ -41,16 +41,13 @@ module.exports = function(cb) {
         } else {
           if (!find.category) {
             find.category = 'sudoku';
-            find.save(function(error) {
-              if (error) {
-                winston.error('Error when update prop types: ' + error);
-              } else {
-                cb();
-              }
-            });
-          } else {
-            cb();
           }
+          find.save(function(error) {
+            if (error) {
+              winston.error('Error when update prop types: ' + error);
+            }
+            cb();
+          });
         }
       });
     }, cb);
