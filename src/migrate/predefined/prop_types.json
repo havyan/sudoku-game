@@ -1,6 +1,7 @@
 [{
   "type": "magnifier",
   "name": "放大镜",
+  "category": "sudoku",
   "func": "显示选中格子的答案",
   "order": 0,
   "icon": "/imgs/default/prop_magnifier.png",
@@ -8,6 +9,7 @@
 }, {
   "type": "delay",
   "name": "延时卡",
+  "category": "sudoku",
   "order": 1,
   "func": "延时60s，一轮中自己只能用一次",
   "icon": "/imgs/default/prop_delay.png",
@@ -15,6 +17,7 @@
 }, {
   "type": "options_once",
   "name": "候选卡",
+  "category": "sudoku",
   "order": 2,
   "func": "显示候选数，一轮中自己只能用一次",
   "icon": "/imgs/default/prop_options_once.png",
@@ -22,6 +25,7 @@
 }, {
   "type": "options_always",
   "name": "全盘候选卡",
+  "category": "sudoku",
   "order": 3,
   "func": "游戏中全盘显示候选数",
   "icon": "/imgs/default/prop_options_always.png",
@@ -29,6 +33,7 @@
 }, {
   "type": "impunity",
   "name": "免罚卡",
+  "category": "sudoku",
   "order": 4,
   "func": "补回答错或不答所扣的分数",
   "icon": "/imgs/default/prop_impunity.png",
@@ -36,6 +41,7 @@
 }, {
   "type": "glasses",
   "name": "智能眼镜",
+  "category": "sudoku",
   "order": 5,
   "func": "显示气泡，一轮中自己只能用一次",
   "icon": "/imgs/default/prop_glasses.png",
@@ -43,6 +49,7 @@
 }, {
   "type": "scope_instrument",
   "name": "范围检测仪",
+  "category": "treasure",
   "order": 6,
   "func": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
   "icon": "/imgs/default/scope_instrument.png",
@@ -50,6 +57,7 @@
 }, {
   "type": "nerve_gas_instrument",
   "name": "神经性毒气检测仪",
+  "category": "treasure",
   "order": 7,
   "func": "可以判断毒气沙林、梭曼、维埃克斯",
   "icon": "/imgs/default/nerve_gas_instrument.png",
@@ -57,6 +65,7 @@
 }, {
   "type": "asphyxiant_gas_instrument",
   "name": "窒息性毒气检测仪",
+  "category": "treasure",
   "order": 8,
   "func": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
   "icon": "/imgs/default/asphyxiant_gas_instrument.png",
@@ -64,6 +73,7 @@
 }, {
   "type": "irritant_gas_instrument",
   "name": "刺激性毒气检测仪",
+  "category": "treasure",
   "order": 9,
   "func": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯",
   "icon": "/imgs/default/irritant_gas_instrument.png",
@@ -71,6 +81,7 @@
 }, {
   "type": "scope_paper",
   "name": "范围毒气试纸",
+  "category": "treasure",
   "order": 10,
   "func": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸",
   "icon": "/imgs/default/scope_paper.png",
@@ -78,6 +89,7 @@
 }, {
   "type": "nerve_gas_paper",
   "name": "神经性毒气试纸",
+  "category": "treasure",
   "order": 11,
   "func": "3种：沙林试纸、梭曼试纸、维埃克斯试纸",
   "icon": "/imgs/default/nerve_gas_paper.png",
@@ -85,6 +97,7 @@
 }, {
   "type": "asphyxiant_gas_paper",
   "name": "窒息性毒气试纸",
+  "category": "treasure",
   "order": 12,
   "func": "3种：光气试纸、双光气试纸、氯气试纸",
   "icon": "/imgs/default/asphyxiant_gas_paper.png",
@@ -92,6 +105,7 @@
 }, {
   "type": "irritant_gas_paper",
   "name": "刺激性毒气试纸",
+  "category": "treasure",
   "order": 13,
   "func": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸",
   "icon": "/imgs/default/irritant_gas_paper.png",
@@ -99,6 +113,7 @@
 }, {
   "type": "cough_syrup",
   "name": "止咳糖浆",
+  "category": "treasure",
   "order": 14,
   "func": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的",
   "icon": "/imgs/default/cough_syrup.png",
@@ -106,6 +121,7 @@
 }, {
   "type": "sober_potion",
   "name": "醒神药剂",
+  "category": "treasure",
   "order": 15,
   "func": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏",
   "icon": "/imgs/default/sober_potion.png",
@@ -113,6 +129,7 @@
 }, {
   "type": "invincible_bomb",
   "name": "无敌燃烧弹",
+  "category": "treasure",
   "order": 16,
   "func": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间。该道具等同于游戏过程玩家未使用道具",
   "icon": "/imgs/default/invincible_bomb.png",

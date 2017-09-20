@@ -1,10 +1,23 @@
 (function() {
   can.Control('Components.PropPanel', {}, {
     init : function(element, options) {
+      var self = this;
       this.model = new can.Model(options.data);
-      can.view('/js/libs/mst/prop_panel.mst', this.model, function(frag) {
+      this.model.attr('category', 'sudoku');
+      can.view('/js/libs/mst/prop_panel.mst', this.model, {
+        tabClass: function(category) {
+          return self.model.attr('category') === category ? 'active' : '';
+        },
+        itemClass: function(item) {
+          return self.model.attr('category') === item.category ? 'visible' : '';
+        }
+      }, function(frag) {
         element.html(frag);
       }.bind(this));
+    },
+
+    '.tabs .tab click' : function(element) {
+      this.model.attr('category', element.data('category'));
     },
 
     '.navigator .item click' : function(element) {
@@ -91,6 +104,7 @@
         Rest.Prop.buy(type.attr('type'), count, function(result) {
           if (result.success) {
             self.model.attr('money', result.money);
+            $('.welcome .money').html(result.money);
             _.find(self.model.attr('props'), {
               type : type.attr('type')
             }).attr('count', result.count);

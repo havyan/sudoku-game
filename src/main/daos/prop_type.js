@@ -1,32 +1,41 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var CATEGORY = {
+  SUDOKU: 'sudoku',
+  TREASURE: 'treasure'
+};
+
 var PropTypeSchema = new Schema({
-  type : String,
-  name : String,
-  status : {
-    type : String,
-    default : '1'
+  type: String,
+  name: String,
+  status: {
+    type: String,
+    default: '1'
   },
-  order : Number,
-  func : String,
-  icon : String,
-  price : Number,
-  sales : {
-    type : Number,
-    default : 0
+  category: {
+    type: String,
+    default: CATEGORY.SUDOKU
+  },
+  order: Number,
+  func: String,
+  icon: String,
+  price: Number,
+  sales: {
+    type: Number,
+    default: 0
   }
 });
 
 PropTypeSchema.statics.findOneByType = function(type, cb) {
   this.findOne({
-    type : type
+    type: type
   }, cb);
 };
 
 PropTypeSchema.statics.all = function(cb) {
   this.find({
-    status : '1'
+    status: '1'
   }).sort('order').exec(cb);
 };
 

@@ -1,3 +1,11 @@
+<div class="tabs">
+  <div class="rich-button tab sudoku {{tabClass 'sudoku'}}" data-category="sudoku">
+    数独游戏
+  </div>
+  <div class="rich-button tab treasure {{tabClass 'treasure'}}" data-category="treasure">
+    寻宝游戏
+  </div>
+</div>
 <div class="navigator">
   <div class="rich-button item store active">
     道具商城
@@ -9,7 +17,7 @@
 <div class="container">
   <div class="store card active">
     {{#types}}
-    <div class="item store-item" data-type="{{type}}">
+    <div class="item store-item {{itemClass this}}" data-type="{{type}}" data-category="{{category}}">
       <div class="icon">
         <img src="{{icon}}">
       </div>
@@ -44,7 +52,7 @@
   </div>
   <div class="card my-prop">
     {{#props}}
-    <div class="item  my-prop-item">
+    <div class="item  my-prop-item {{itemClass this}}">
       <div class="my-count">
         <img src="{{icon}}"> X {{count}}
       </div>

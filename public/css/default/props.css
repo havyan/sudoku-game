@@ -4,19 +4,40 @@
   margin-left: 10%;
 }
 
+.tabs {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.tabs .tab {
+  cursor: pointer;
+  font-size: 1.2em;
+  width: 150px;
+  margin-left: 15px;
+  border-radius: 10px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.tabs .tab:first-of-type {
+  margin-left: 40px;
+}
+
 .main {
   position: relative;
-  top: 60px;
+  top: 30px;
   clear: both;
 }
 
 .main .container {
   margin-left: 25%;
+  width: 75%;
+  box-sizing: border-box;
+  padding: 0px;
 }
 
 .main .container .card {
   display: none;
-  width: 85%;
 }
 
 .main .container .card.active {
@@ -24,12 +45,16 @@
 }
 
 .main .container .item {
-  display: inline-block;
+  display: none;
   margin-bottom: 20px;
   vertical-align: top;
   width: 32%;
   padding-right: 20px;
   box-sizing: border-box;
+}
+
+.main .container .item.visible {
+  display: inline-block;
 }
 
 .main .container .store .item .icon img {
