@@ -79,6 +79,9 @@
       var singleMode = this.attr('singleMode');
       var propTypes = this.attr('propTypes').attr();
       var prop = this.attr('prop').attr();
+      propTypes = _.filter(propTypes, {
+        category: 'sudoku'
+      });
       this.attr('props', propTypes.map(function(propType) {
         propType.count = prop[propType.type];
         propType.visible = !(singleMode && _.include(['delay', 'glasses'], propType.type));

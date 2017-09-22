@@ -24,13 +24,35 @@ class Guest {
       glasses: 1,
       options_once: 1,
       options_always: 1,
+      scope_instrument: 1,
+      nerve_gas_instrument: 1,
+      asphyxiant_gas_instrument: 1,
+      irritant_gas_instrument: 1,
+      scope_paper: 1,
+      nerve_gas_paper: 1,
+      asphyxiant_gas_paper: 1,
+      irritant_gas_paper: 1,
+      cough_syrup: 1,
+      sober_potion: 1,
+      invincible_bomb: 1,
       purchases: {
         magnifier: 0,
         impunity: 0,
         delay: 0,
         glasses: 0,
         options_once: 0,
-        options_always: 0
+        options_always: 0,
+        scope_instrument: 0,
+        nerve_gas_instrument: 0,
+        asphyxiant_gas_instrument: 0,
+        irritant_gas_instrument: 0,
+        scope_paper: 0,
+        nerve_gas_paper: 0,
+        asphyxiant_gas_paper: 0,
+        irritant_gas_paper: 0,
+        cough_syrup: 0,
+        sober_potion: 0,
+        invincible_bomb: 0
       }
     }
   }
