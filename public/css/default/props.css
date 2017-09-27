@@ -53,6 +53,10 @@
   box-sizing: border-box;
 }
 
+.main .container .item .func {
+  height: 40px;
+}
+
 .main .container .item.visible {
   display: inline-block;
 }

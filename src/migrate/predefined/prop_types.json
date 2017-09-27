@@ -131,7 +131,7 @@
   "name": "无敌燃烧弹",
   "category": "treasure",
   "order": 16,
-  "func": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间。该道具等同于游戏过程玩家未使用道具",
+  "func": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间",
   "icon": "/imgs/default/invincible_bomb.png",
   "price": 100
 }]

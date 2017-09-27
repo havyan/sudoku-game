@@ -24,7 +24,7 @@
       <div>
         名称：{{name}}
       </div>
-      <div>
+      <div class="func">
         功能：{{func}}
       </div>
       <div>
@@ -59,7 +59,7 @@
       <div>
         名称：{{name}}
       </div>
-      <div>
+      <div class="func">
         功能：{{func}}
       </div>
     </div>

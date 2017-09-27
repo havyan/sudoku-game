@@ -25,7 +25,7 @@
           this.hide();
           var value = parseInt(element.siblings('.value-field').val());
           Rest.User.setPoints(value, function(result) {
-            Dialog.message('修改积分成功!!!');
+            Dialog.message('修改积分成功!!!', { userClass: 'cool' });
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
             if (result && result.grade_name) {
@@ -33,7 +33,7 @@
             }
           }, function() {
           });
-        });
+        }, { userClass: 'cool' });
       },
 
       '.name-row .confirm click' : function(element) {
@@ -42,13 +42,13 @@
           Dialog.confirm('您确定要修改您的昵称为[' + value + ']吗？', function() {
             this.hide();
             Rest.User.setName(value, function(result) {
-              Dialog.message('修改昵称成功!!!');
+              Dialog.message('修改昵称成功!!!', { userClass: 'cool' });
               element.siblings('.value').html(value);
               element.closest('.info-row').removeClass('edit');
               $('.welcome .user-name').html(value);
             }, function() {
             });
-          });
+          }, { userClass: 'cool' });
         }
       },
 
@@ -57,12 +57,12 @@
           this.hide();
           var value = parseInt(element.siblings('.value-field').val());
           Rest.User.setMoney(value, function(result) {
-            Dialog.message('修改天才币成功!!!');
+            Dialog.message('修改天才币成功!!!', { userClass: 'cool' });
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
           }, function() {
           });
-        });
+        }, { userClass: 'cool' });
       },
 
       '.change-icon-action click' : function(element) {

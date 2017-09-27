@@ -734,3 +734,58 @@ to {
 .bdshare-slide-button-box {
   top: 30% !important;
 }
+
+.modal.cool .modal-dialog {
+  background: url(../../imgs/default/lobby_game_form_bg.png) no-repeat;
+  background-size: 100% 100%;
+  color: white;
+  width: 500px;
+}
+
+.modal.cool .modal-dialog .modal-content {
+  background-color: inherit;
+}
+
+.modal.cool .modal-dialog .modal-header {
+  border-bottom: none;
+  margin-left: 10px;
+  padding-top: 20px;
+  font-weight: bold;
+}
+
+.modal.cool .modal-dialog .modal-header .close {
+  width: 25px;
+  height: 25px;
+  background: url(/imgs/default/lobby_game_form_close.png) no-repeat;
+  background-size: 100% 100%;
+  margin-top: -5px;
+}
+
+.modal.cool .modal-dialog .modal-header .close span {
+  display: none;
+}
+
+.modal.cool .modal-dialog .modal-body {
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 15px;
+}
+
+.modal.cool .modal-dialog .modal-footer {
+  border-top: none;
+  text-align: center;
+}
+
+.modal.cool .modal-dialog .modal-footer button {
+  background: url(../../imgs/default/form_confirm.png) no-repeat;
+  background-color: inherit;
+  background-size: 100% 100%;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.modal.cool .modal-dialog .modal-footer button:hover {
+  color: #FFF000;
+}
