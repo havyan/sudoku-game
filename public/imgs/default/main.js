@@ -58,15 +58,5 @@
     });
 
     showMessagesCount();
-
-    Dialog.show({
-      title: '请选择角色',
-      control: Treasure.LobbyGamePanel,
-      userClass: 'cool',
-      autoClose: false,
-      actions: [{
-        name : '开始游戏'
-      },Dialog.CLOSE_ACTION]
-    });
   });
 })();
