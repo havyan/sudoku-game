@@ -91,7 +91,20 @@
     createSingleGame: function(params, success, error) {
       return $.ajax({
         type : 'post',
-        url : 'single_game',
+        url : '/single_game',
+        data : {
+          params : JSON.stringify(params || {})
+        },
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    createTreasureGame: function(params, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/treasure_game',
         data : {
           params : JSON.stringify(params || {})
         },

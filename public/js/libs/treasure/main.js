@@ -41,7 +41,7 @@
       EventReceiver.createSystemEventReceiver(function(eventReceiver) {
         var lobbyModel = new Models.LobbyModel(data, eventReceiver);
         new Components.LobbyPanel($('#lobby'), {
-          model : lobbyModel
+          model: lobbyModel
         });
       });
       if (!data.user.isGuest) {
@@ -54,19 +54,22 @@
           });
         }, 15000);
       }
-    }, function(e) {
-    });
+
+      Dialog.show({
+        title: '请选择角色',
+        control: Treasure.LobbyGamePanel,
+        userClass: 'cool',
+        autoClose: false,
+        actions: [{
+          name: '开始游戏',
+          callback: function() {
+            Rest.Game.createTreasureGame();
+            window.open('/treasure/table/' + data.user.account, '_blank');
+          }
+        }, Dialog.CLOSE_ACTION]
+      });
+    }, function(e) {});
 
     showMessagesCount();
-
-    Dialog.show({
-      title: '请选择角色',
-      control: Treasure.LobbyGamePanel,
-      userClass: 'cool',
-      autoClose: false,
-      actions: [{
-        name : '开始游戏'
-      },Dialog.CLOSE_ACTION]
-    });
   });
 })();

@@ -436,4 +436,8 @@ module.exports = function(router) {
     accessMain(req, res, 'treasure', next);
   });
 
+  router.get('/treasure/table/:id', function(req, res) {
+    res.render('table', {});
+  });
+
 };
