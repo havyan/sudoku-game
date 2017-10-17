@@ -12,8 +12,8 @@
           stop();
           Rest.Game.getGame(gameId, function(game) {
             EventReceiver.createGameEventReceiver(game.id, function(eventReceiver) {
-              var gameModel = new Models.GameModel(game, eventReceiver);
-              new Components.GamePanel($('#game'), {
+              var gameModel = new Treasure.Models.GameModel(game, eventReceiver);
+              new Treasure.Components.GamePanel($('#game'), {
                 model : gameModel
               });
             });

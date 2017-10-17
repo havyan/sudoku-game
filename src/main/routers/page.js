@@ -437,7 +437,7 @@ module.exports = function(router) {
   });
 
   router.get('/treasure/table/:id', function(req, res) {
-    res.render('table', {});
+    res.render('treasure/table', {});
   });
 
 };
