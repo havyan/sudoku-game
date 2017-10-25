@@ -1,0 +1,48 @@
+.game-panel.treasure {
+  margin-top: 50px;
+}
+
+.treasure-gate {
+  position: absolute;
+  background-size: 100% 100%;
+}
+
+@keyframes gate-top {
+  0%,100%{transform:translateY(0px);}
+  50%{transform:translateY(-5px);}
+}
+
+@keyframes gate-bottom {
+  0%,100%{transform:translateY(0px);}
+  50%{transform:translateY(5px);}
+}
+
+@keyframes gate-left {
+  0%,100%{transform:translateX(0px);}
+  50%{transform:translateX(-5px);}
+}
+
+@keyframes gate-right {
+  0%,100%{transform:translateX(0px);}
+  50%{transform:translateX(5px);}
+}
+
+.treasure-gate.treasure-gate-top {
+  animation: gate-top 500ms linear infinite;
+  background-image: url(/imgs/default/gate_arrow_top.png);
+}
+
+.treasure-gate.treasure-gate-bottom {
+  animation: gate-bottom 500ms linear infinite;
+  background-image: url(/imgs/default/gate_arrow_bottom.png);
+}
+
+.treasure-gate.treasure-gate-left {
+  animation: gate-left 500ms linear infinite;
+  background-image: url(/imgs/default/gate_arrow_left.png);
+}
+
+.treasure-gate.treasure-gate-right {
+  animation: gate-right 500ms linear infinite;
+  background-image: url(/imgs/default/gate_arrow_right.png);
+}

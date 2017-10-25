@@ -1,7 +1,11 @@
 (function() {
-  can.Control('Components.GamePanel', {}, {
+  can.Control('Components.GamePanel', {
+    defaults: {
+      template: '/js/libs/mst/game_panel.mst'
+    }
+  }, {
     init : function(element, options) {
-      can.view('/js/libs/mst/game_panel.mst', options.model, {
+      can.view(options.template, options.model, {
         formatMessage : function(message) {
           if (message.content) {
             return message.content.split('\n').reduce(function(previous, current) {
@@ -305,7 +309,11 @@
       setTimeout(function() {
         $('.game-countdown-number').remove();
       }, 2000);
-      this.chessborad = new Chessboard($('.game-main-area'), {
+      this.chessborad = this.createChessboard();
+    },
+
+    createChessboard: function() {
+      return new Chessboard($('.game-main-area'), {
         model : this.options.model
       });
     },
