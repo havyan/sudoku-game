@@ -199,7 +199,7 @@ a:active {
   width: 50%;
   margin-left: 5%;
   position: relative;
-  top: 20px;
+  top: 40px;
 }
 
 .welcome .user-name {
@@ -789,4 +789,37 @@ to {
 
 .modal.cool .modal-dialog .modal-footer button:hover {
   color: #FFF000;
+}
+
+.i18n-area {
+  font-size: 14px;
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  z-index: 9999;
+}
+
+.i18n-area.left {
+  right: initial;
+  left: 30px;
+}
+
+.i18n-area .i18n-lang {
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.i18n-area .i18n-lang:hover {
+  color: #fff100;
+}
+
+.i18n-area .i18n-separator {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 2px;
+  height: 16px;
+  background-color: white;
 }

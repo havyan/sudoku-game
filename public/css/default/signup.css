@@ -13,6 +13,10 @@ input:focus {
   margin: auto;
 }
 
+.signup .common-header .welcome {
+  top: 20px;
+}
+
 .signup-row {
   margin-bottom: 25px;
 }
