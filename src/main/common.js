@@ -1,3 +1,4 @@
+var i18next = require('i18next');
 var formatDate = require('dateformat');
 var hbs = require('hbs');
 var _ = require('lodash');
@@ -23,4 +24,9 @@ hbs.registerHelper('statsScript', function() {
   if (args.env === 'production') {
     return '<script src="' + global.config.app.locals.basejs + '/libs/stats.js"></script>'
   }
+});
+
+hbs.registerHelper('T', function(key, options) {
+  var lang = options.data.root.$lang;
+  return i18next.getFixedT(lang)(key);
 });
