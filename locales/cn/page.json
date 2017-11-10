@@ -1,8 +1,38 @@
 {
-  "welcome": {
+  "home": {
     "top": {
-      "welcome": "首页",
-      "treasure": "天才寻宝"
+      "home": "首页",
+      "treasure": "天才寻宝",
+      "about": "关于天才数独棋",
+      "news": "数独动态",
+      "operation": "操作指引",
+      "guide": "对战指南",
+      "law": "法律声明",
+      "help": "帮助",
+      "contact": "联系我们"
+    }
+  },
+  "login": {
+    "top": {
+      "welcome": "欢迎",
+      "home": "首页",
+      "treasure": "天才寻宝",
+      "about": "关于天才数独棋",
+      "news": "数独动态",
+      "operation": "操作指引",
+      "guide": "对战指南",
+      "law": "法律声明",
+      "help": "帮助",
+      "contact": "联系我们"
+    },
+    "middle": {
+      "username": "用户名",
+      "password": "密码",
+      "autologin": "下次自动登录",
+      "forgetpassword": "忘记/更改密码？",
+      "login": "登录",
+      "signup": "注册",
+      "guestpass": "免注册试玩"
     }
   }
 }

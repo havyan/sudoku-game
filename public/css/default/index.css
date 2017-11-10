@@ -38,7 +38,8 @@ input[type=text], input[type=password] {
 .about-btn,
 .help-btn {
   display: inline-block;
-  width: 90px;
+  min-width: 80px;
+  padding: 0 5px;
   height: 32px;
   background-size: 100% 100%;
   text-align: center;
@@ -51,7 +52,6 @@ input[type=text], input[type=password] {
 }
 .about-btn {
   width: auto;
-  padding: 0 16px;
 }
 
 .login-area {
@@ -242,4 +242,21 @@ input[type=text], input[type=password] {
 
 .room.favarite .label {
   color: #fff100;
+}
+
+.lang-jp .login-button,
+.lang-jp .signup-button {
+  width: 120px;
+}
+
+.lang-jp .guest-pass-button a {
+  width: 260px;
+}
+
+.lang-jp .login-label {
+  min-width: 75px;
+}
+
+.lang-en .login-label {
+  min-width: 75px;
 }

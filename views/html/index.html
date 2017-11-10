@@ -7,24 +7,24 @@
     <script src="{{@basejs}}/libs/index.js"></script>
     {{{statsScript}}}
   </head>
-  <body>
+  <body class="lang-{{$lang}}">
     {{> i18n }}
     <a class="logo" href="/"><img src="/imgs/default/logo.png" /></a>
     <div class="top-right-area">
       {{#user}}
       <div class="login-welcome">
-        欢迎 <span>{{name}}</span>
+        {{T "page:login.top.welcome"}} <span>{{name}}</span>
       </div>
       {{/user}}
-      <a class="about-btn" href="/">首页</a>
-      <a class="about-btn" href="/treasure/login">天才寻宝</a>
-      <a class="about-btn" href="/about">关于天才数独棋</a>
-      <a class="contact-btn" href="/news">数独动态</a>
-      <a class="contact-btn" href="/operation">操作指引</a>
-      <a class="contact-btn" href="/guide">对战指南</a>
-      <a class="law-btn" href="javascript:void(0);">法律声明</a>
-      <a class="help-btn" href="/help">帮助</a>
-      <a class="contact-btn" href="/contact">联系我们</a>
+      <a class="about-btn" href="/">{{T "page:login.top.home"}}</a>
+      <a class="about-btn" href="/treasure/login">{{T "page:login.top.treasure"}}</a>
+      <a class="about-btn" href="/about">{{T "page:login.top.about"}}</a>
+      <a class="contact-btn" href="/news">{{T "page:login.top.news"}}</a>
+      <a class="contact-btn" href="/operation">{{T "page:login.top.operation"}}</a>
+      <a class="contact-btn" href="/guide">{{T "page:login.top.guide"}}</a>
+      <a class="law-btn" href="javascript:void(0);">{{T "page:login.top.law"}}</a>
+      <a class="help-btn" href="/help">{{T "page:login.top.help"}}</a>
+      <a class="contact-btn" href="/contact">{{T "page:login.top.contact"}}</a>
 
     </div>
     <div class="login-area">
@@ -46,12 +46,12 @@
             Sudoku
           </div>
           <div class="login-user">
-            <label class="login-label">用户名</label>
-            <input class="login-field" type="text" name="account" autocomplete="on" placeholder="用户名" />
+            <label class="login-label">{{T "page:login.middle.username"}}</label>
+            <input class="login-field" type="text" name="account" autocomplete="on" placeholder="{{T "page:login.middle.username"}}" />
           </div>
           <div class="login-password">
-            <label class="login-label">密      码</label>
-            <input class="login-field" type="password" name="password" autocomplete="on" placeholder="密码" />
+            <label class="login-label">{{T "page:login.middle.password"}}</label>
+            <input class="login-field" type="password" name="password" autocomplete="on" placeholder="{{T "page:login.middle.password"}}" />
           </div>
           {{#error}}
           <div class="login-error">
@@ -60,16 +60,16 @@
           {{/error}}
           <div class="login-more">
             <input type="checkbox" name="remember_me" id="inputCheck" />
-            <label for="inputCheck">下次自动登录</label>
-            <a href="/retrieve_password">忘记/更改密码？</a>
+            <label for="inputCheck">{{T "page:login.middle.autologin"}}</label>
+            <a href="/retrieve_password">{{T "page:login.middle.forgetpassword"}}</a>
           </div>
           <div class="login-actions">
-            <input class="login-button" type="submit" value="登录" />
-            <a  class="signup-button" href="/signup">注册</a>
+            <input class="login-button" type="submit" value="{{T "page:login.middle.login"}}" />
+            <a  class="signup-button" href="/signup">{{T "page:login.middle.signup"}}</a>
           </div>
           <div class="login-separator"></div>
           <div class="guest-pass-button">
-            <a href="javascript:void(0)">免注册试玩</a>
+            <a href="javascript:void(0)">{{T "page:login.middle.guestpass"}}</a>
           </div>
           <div class="protocol-read">
             <input type="checkbox" checked="true" />

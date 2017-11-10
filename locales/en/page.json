@@ -1,0 +1,38 @@
+{
+  "home": {
+    "top": {
+      "home": "Home page",
+      "treasure": "天才寻宝",
+      "about": "About Genius Sudoku",
+      "news": "Sudoku dynamic",
+      "operation": "Operation guide",
+      "guide": "Game guide",
+      "law": "Legal notice",
+      "help": "Help",
+      "contact": "Contact us"
+    }
+  },
+  "login": {
+    "top": {
+      "welcome": "Wlcome",
+      "home": "Home page",
+      "treasure": "天才寻宝",
+      "about": "About Genius Sudoku",
+      "news": "Sudoku dynamic",
+      "operation": "Operation guide",
+      "guide": "Game guide",
+      "law": "Legal notice",
+      "help": "Help",
+      "contact": "Contact us"
+    },
+    "middle": {
+      "username": "User Name",
+      "password": "Password",
+      "autologin": "Remember Me",
+      "forgetpassword": "Forget/Change Password?",
+      "login": "Login",
+      "signup": "Signup",
+      "guestpass": "Guest Play"
+    }
+  }
+}

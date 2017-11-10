@@ -28,5 +28,5 @@ hbs.registerHelper('statsScript', function() {
 
 hbs.registerHelper('T', function(key, options) {
   var lang = options.data.root.$lang;
-  return i18next.getFixedT(lang)(key);
+  return i18next.getFixedT(lang)(key, options.data.root);
 });

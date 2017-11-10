@@ -1,0 +1,38 @@
+{
+  "home": {
+    "top": {
+      "home": "トップ",
+      "treasure": "天才寻宝",
+      "about": "天才数独について",
+      "news": "数独速報",
+      "operation": "ゲームガイド",
+      "guide": "対戦指南",
+      "law": "法律声明",
+      "help": "ヘルプ",
+      "contact": "コンテクスト"
+    }
+  },
+  "login": {
+    "top": {
+      "welcome": "Wlcome",
+      "home": "トップ",
+      "treasure": "天才寻宝",
+      "about": "天才数独について",
+      "news": "数独速報",
+      "operation": "ゲームガイド",
+      "guide": "対戦指南",
+      "law": "法律声明",
+      "help": "ヘルプ",
+      "contact": "コンテクスト"
+    },
+    "middle": {
+      "username": "ユーザー名",
+      "password": "パスワード",
+      "autologin": "今度自動ログイン",
+      "forgetpassword": "パスワード忘れ/変更",
+      "login": "ログイン",
+      "signup": "新規ログイン",
+      "guestpass": "新規ログインなしのゲーム体験"
+    }
+  }
+}
