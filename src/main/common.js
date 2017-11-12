@@ -26,7 +26,15 @@ hbs.registerHelper('statsScript', function() {
   }
 });
 
-hbs.registerHelper('T', function(key, options) {
-  var lang = options.data.root.$lang;
-  return i18next.getFixedT(lang)(key, options.data.root);
+hbs.registerHelper('T', function() {
+  var arg0 = arguments[0];
+  var arg1 = arguments[1];
+  var arg2 = arguments[2];
+  var key = arg0;
+  var options = arg1;
+  if (_.isString(arg1)) {
+    key = arg0 + '.' + arg1;
+    options = arg2;
+  }
+  return i18next.getFixedT(options.data.root.$lang)(key, options.data.root);
 });

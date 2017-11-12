@@ -16,22 +16,21 @@
         {{T "page:login.top.welcome"}} <span>{{name}}</span>
       </div>
       {{/user}}
-      <a class="about-btn" href="/">{{T "page:login.top.home"}}</a>
-      <a class="about-btn" href="/treasure/login">{{T "page:login.top.treasure"}}</a>
-      <a class="about-btn" href="/about">{{T "page:login.top.about"}}</a>
-      <a class="contact-btn" href="/news">{{T "page:login.top.news"}}</a>
-      <a class="contact-btn" href="/operation">{{T "page:login.top.operation"}}</a>
-      <a class="contact-btn" href="/guide">{{T "page:login.top.guide"}}</a>
-      <a class="law-btn" href="javascript:void(0);">{{T "page:login.top.law"}}</a>
-      <a class="help-btn" href="/help">{{T "page:login.top.help"}}</a>
-      <a class="contact-btn" href="/contact">{{T "page:login.top.contact"}}</a>
-
+      <a class="about-btn" href="/">{{T "common:navigator.home"}}</a>
+      <a class="about-btn" href="/treasure/login">{{T "common:navigator.treasure"}}</a>
+      <a class="about-btn" href="/about">{{T "common:navigator.about"}}</a>
+      <a class="contact-btn" href="/news">{{T "common:navigator.news"}}</a>
+      <a class="contact-btn" href="/operation">{{T "common:navigator.operation"}}</a>
+      <a class="contact-btn" href="/guide">{{T "common:navigator.guide"}}</a>
+      <a class="law-btn" href="javascript:void(0);">{{T "common:navigator.law"}}</a>
+      <a class="help-btn" href="/help">{{T "common:navigator.help"}}</a>
+      <a class="contact-btn" href="/contact">{{T "common:navigator.contact"}}</a>
     </div>
     <div class="login-area">
       {{#rooms}}
       <div id="{{id}}" class="room">
         <a class="icon" href="javascript:void(0);"><img src="{{icon}}" /></a>
-        <a class="label" href="javascript:void(0);">{{name}}</a>
+        <a class="label" href="javascript:void(0);">{{T "common:constellation" code}}</a>
       </div>
       {{/rooms}}
       <div class="login-container">

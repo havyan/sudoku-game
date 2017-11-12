@@ -12,24 +12,25 @@
     {{> i18n }}
     <a class="logo" href="/"><img src="/imgs/default/logo.png" /></a>
     <div class="top-right-area">
-      <a class="about-btn" href="/">首页</a>
-      <a class="about-btn" href="/login">登录</a>
-      <a class="about-btn" href="/about">关于天才数独棋</a>
-      <a class="contact-btn" href="/news">数独动态</a>
-      <a class="contact-btn" href="/operation">操作指引</a>
-      <a class="contact-btn" href="/guide">对战指南</a>
-      <a class="law-btn" href="javascript:void(0);">法律声明</a>
-      <a class="contact-btn" href="/contact">联系我们</a>
+      <a class="about-btn" href="/">{{T "common:navigator.home"}}</a>
+      <a class="about-btn" href="/treasure/login">{{T "common:navigator.treasure"}}</a>
+      <a class="about-btn" href="/about">{{T "common:navigator.about"}}</a>
+      <a class="contact-btn" href="/news">{{T "common:navigator.news"}}</a>
+      <a class="contact-btn" href="/operation">{{T "common:navigator.operation"}}</a>
+      <a class="contact-btn" href="/guide">{{T "common:navigator.guide"}}</a>
+      <a class="law-btn" href="javascript:void(0);">{{T "common:navigator.law"}}</a>
+      <a class="help-btn" href="/help">{{T "common:navigator.help"}}</a>
+      <a class="contact-btn" href="/contact">{{T "common:navigator.contact"}}</a>
     </div>
     <div class="contain-area">
       <div class="common-contain guide-area">
-        <p>天才数独棋是一款有着九联数独专利认证的游戏，在大厅中建桌后进入游戏，玩家可参与正在等待的游戏桌，也可作为庄家自己建桌等待他人参与游戏。若玩家为庄家，建桌时需选择题目等级、每步时间、每局时间、每局人数、开始方式、等待时间，根据玩家喜好和数独水平等情况选好选项后点击确认键建桌。</p>
-        <p>天才数独棋聊天功能从进入游戏后开启，玩家可以在此尽情的交流解法和心得。天才数独棋游戏是以座次决定玩家顺序，所以庄家是第一个需要作答的，当这个难度极高的九联数独一出现在庄家的眼前时，庄家应先从上下左右四个标准数独中看看有没有简单、显而易见的数字。其他玩家有一定时间可以观察，若看到一些唯余、宫排除的数，可以用左上角的草稿来标记。</p>
-        <p>天才数独棋游戏是有计时器的，玩家提交本轮数字时，月亮是黄色的，其他时候是白色，鼠标放在头像上面可以看见玩家资料。</p>
-        <p>天才数独棋游戏有提交/草稿模式和普通/候选模式。在提交/草稿模式下，可以在草稿的空格内标记最多4个数字或字母，作答时需切换至提交模式下，点击格子在输入框内选择数字作答。在普通/候选模式下，候选可显示所有空白格子的候选数（1-4个），作答时需切换至普通模式进行提交，候选模式只有在使用候选卡道具或全局候选卡道具时才能使用。</p>
-        <p>九联数独棋盘较大，所以设有缩放条。道具条是可以拖动的，拖动到玩家喜欢或者方便的地方。Pass按钮可以放弃本轮答题，适用于作答时间快要截止却未能找到正确答案之时，这样会比超时扣得分多一些。玩家可以看到即时排名、即时的累计分等信息。本轮答题超时会被扣分。在提交模式下，玩家可以提交本轮数字时，点击棋盘空白格子会弹出输入框，输入框里面的数字是此格子的候选数，输入框是可以拖动的，选择一个数字点击就完成提交。正确加分，错误扣分。根据答题所花的时间长短计分，所花时间在越短得分时间段得分越多。并且计时器用不同的颜色区分不同的得分时间间隔。天才数独棋谜面数字颜色是黑色的，所有玩家提交的数字是绿色的。</p>
-        <p>这么难度高的九联数独，玩起来还是需要一些道具的，所以天才数独棋开发了6款道具，分别为放大镜、延时卡、候选卡、全局候选卡、免罚卡、智能眼镜。玩家答题时，在提交状态下，选中一个空白格子，使用放大镜道具直接自动填入正确数字，适用于各种看不出来答案的时候。使用延时卡，计时器将停止一段时间，玩家可以多一些时间去考虑。使用候选卡，本轮（仅限本轮）将显示棋盘上全部空白格子的候选数，这样可以帮助玩家更好的了解一片区域的候选数情况，当然也可能发现唯一候选数哟。如果使用全局候选卡，将立即显示棋盘上全部空白格子的候选数并持续到游戏结束，每次轮到玩家作答时都可以利用候选数来辅助答题。如果使用免罚卡，可以补回上轮所扣除的分数，争第一的玩家不可小视这个道具哟。在非答题状态时，使用智能眼镜道具，可以利用其他玩家的作答时间，查看点击的空白格子里面的候选数，但不能提交。这些道具都大大增加了玩家赢的可能性，当然，天才数独棋作为一款新游戏，难度又很高，所以现在注册激活的玩家，我们都将赠送3个放大镜、3个延时卡、3个候选卡、1个全局候选卡、3个免罚卡、3个智能眼镜。赠送道具使用完后，可以充值购买，价格也不贵，所以值得拥有，帮助玩家加快在九联数独领域的段位升级。</p>
-        <p>天才数独棋这样的对战游戏，真的好好玩的，九联的难度闪耀着智慧的光芒，大家一起来沐浴智慧的阳光吧！</p>
+        <p>{{T "page:guide.p1"}}</p>
+        <p>{{T "page:guide.p2"}}</p>
+        <p>{{T "page:guide.p3"}}</p>
+        <p>{{T "page:guide.p4"}}</p>
+        <p>{{T "page:guide.p5"}}</p>
+        <p>{{T "page:guide.p6"}}</p>
+        <p>{{T "page:guide.p7"}}</p>
       </div>
     </div>
   </body>

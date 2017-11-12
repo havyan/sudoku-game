@@ -38,7 +38,7 @@ express.response.render = function(view, options, callback) {
 i18next.use(i18nextBackend).init({
   lng: 'cn',
   preload: ['cn', 'en', 'jp'],
-  ns: ['page'],
+  ns: ['page', 'common'],
   backend: {
     loadPath: 'locales/{{lng}}/{{ns}}.json',
     addPath: 'locales/{{lng}}/{{ns}}.add.json',
