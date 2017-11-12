@@ -27,14 +27,10 @@ hbs.registerHelper('statsScript', function() {
 });
 
 hbs.registerHelper('T', function() {
-  var arg0 = arguments[0];
-  var arg1 = arguments[1];
-  var arg2 = arguments[2];
-  var key = arg0;
-  var options = arg1;
-  if (_.isString(arg1)) {
-    key = arg0 + '.' + arg1;
-    options = arg2;
+  var key = arguments[0];
+  var options = arguments[arguments.length - 1];
+  for (var i = 1; i < arguments.length - 1; i++) {
+    key = key + '.' + arguments[i].toString();
   }
   return i18next.getFixedT(options.data.root.$lang)(key, options.data.root);
 });

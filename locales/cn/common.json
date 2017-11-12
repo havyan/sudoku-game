@@ -8,7 +8,16 @@
     "guide": "对战指南",
     "law": "法律声明",
     "help": "帮助",
-    "contact": "联系我们"
+    "contact": "联系我们",
+    "user": "个人信息",
+    "single_player": "单机/人机",
+    "props": "道具",
+    "settings": "管理",
+    "messages": "消息",
+    "recharge": "充值",
+    "teaching_video": "教学视频",
+    "help": "帮助",
+    "logout": "退出"
   },
   "constellation": {
     "aries": "白羊座",
@@ -23,5 +32,10 @@
     "capricorn": "摩羯座",
     "aquarius": "水瓶座",
     "pisces": "双鱼座"
-  }
+  },
+  "actions": {
+    "close": "关闭"
+  },
+  "company": "超天才技术开发(北京)有限责任公司",
+  "address": "北京市上地三街金隅嘉华大厦A座501"
 }

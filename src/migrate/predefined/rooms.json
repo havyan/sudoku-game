@@ -77,16 +77,19 @@
   "children": [
     {
       "name": "房间一",
+      "code": "room1",
       "order": 1,
       "virtual": false,
       "capacity": 12
     }, {
       "name": "房间二",
+      "code": "room2",
       "order": 2,
       "virtual": false,
       "capacity": 24
     }, {
       "name": "房间三",
+      "code": "room3",
       "order": 3,
       "virtual": false,
       "capacity": 36

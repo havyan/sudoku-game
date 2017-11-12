@@ -39,51 +39,51 @@
         <div class="header-user-info">
           {{#unless isGuest}}
           <p title="{{account}}">
-            用户名：{{account}}
+            {{T "page:lobby.username"}}：{{account}}
           </p>
           {{/unless}}
           <p title="{{userName}}">
-            昵称：{{userName}}
+            {{T "page:lobby.nickname"}}：{{userName}}
           </p>
           <p title="{{money}}">
-            天才币：{{money}}
+            {{T "page:lobby.money"}}：{{money}}
           </p>
         </div>
       </div>
       <div class="header-actions">
         <div class="header-action">
-          <a class="user-button" href="/view/user">个人信息</a>
+          <a class="user-button" href="/view/user">{{T "common:navigator.user"}}</a>
         </div>
         <div class="header-action">
-          <a class="single-player" href="javascript:;">单机/人机</a>
+          <a class="single-player" href="javascript:;">{{T "common:navigator.single_player"}}</a>
         </div>
         <div class="header-action">
-          <a class="props-button" href="/view/props">道具</a>
+          <a class="props-button" href="/view/props">{{T "common:navigator.props"}}</a>
         </div>
         {{#isAdmin}}
         <div class="header-action">
-          <a class="setting-button" href="/setting">管理</a>
+          <a class="setting-button" href="/setting">{{T "common:navigator.settings"}}</a>
         </div>
         {{/isAdmin}}
         <div class="header-action">
           <div class="messages-count" title="{{unreadMessagesCount}}">
             {{unreadMessagesCount}}
           </div>
-          <a class="messages-button" href="/view/messages">消息</a>
+          <a class="messages-button" href="/view/messages">{{T "common:navigator.messages"}}</a>
         </div>
         {{#unless isAdmin}}
         <div class="header-action">
-          <a class="recharge-button" href="/view/recharge">充值</a>
+          <a class="recharge-button" href="/view/recharge">{{T "common:navigator.recharge"}}</a>
         </div>
         {{/unless}}
         <div class="header-action">
-          <a class="video-button" href="/video">教学视频</a>
+          <a class="video-button" href="/video">{{T "common:navigator.teaching_video"}}</a>
         </div>
         <div class="header-action">
-          <a class="help-button" href="/help">帮助</a>
+          <a class="help-button" href="/help">{{T "common:navigator.help"}}</a>
         </div>
         <div class="header-action">
-          <a class="logout-button" href="/logout">退出</a>
+          <a class="logout-button" href="/logout">{{T "common:navigator.logout"}}</a>
         </div>
       </div>
     </div>

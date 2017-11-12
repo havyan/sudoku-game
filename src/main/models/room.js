@@ -5,9 +5,10 @@ var Game = require('./game');
 var PREFIX = "room";
 var CAPACITY = 12;
 
-var Room = function(id, name, virtual, capacity, order) {
+var Room = function(id, name, code, virtual, capacity, order) {
   EventEmitter.call(this);
   this.name = name;
+  this.code = code;
   this.capacity = capacity || CAPACITY;
   this.id = id || PREFIX + Date.now();
   this.virtual = virtual;
@@ -112,6 +113,7 @@ Room.prototype.toJSON = function() {
   return this.virtual ? {
     id : this.id,
     name : this.name,
+    code: this.code,
     virtual : this.virtual,
     children : this.children.map(function(room) {
       return room.toJSON();
@@ -119,6 +121,7 @@ Room.prototype.toJSON = function() {
   } : {
     id : this.id,
     name : this.name,
+    code: this. code,
     virtual : this.virtual,
     games : this.games.map(function(game) {
       return game.toSimpleJSON();

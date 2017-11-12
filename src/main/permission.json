@@ -26,7 +26,8 @@
     "[RE]GET /recharge/pay/\\w{32}/result",
     "GET /news",
     "[RE]GET /news/[^/\\s]+",
-    "GET /treasure/login"
+    "GET /treasure/login",
+    "[RE]GET /locales/\\w+/\\w+"
   ],
   "guest": [
     "GET /main",

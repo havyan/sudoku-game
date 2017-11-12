@@ -53,7 +53,7 @@
         },
         tableInfo : function(game) {
           if (game.status === 'empty') {
-            return '建桌';
+            return it('page:lobby.create_game');
           } else if (game.status === 'waiting') {
             var level = _.find(model.attr('levels'), {
               code : game.level

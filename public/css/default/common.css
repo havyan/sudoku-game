@@ -184,6 +184,9 @@ a:active {
   color: white;
   font-size: 18px;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   background-image: url(/imgs/default/header_action_bg.png);
 }
 

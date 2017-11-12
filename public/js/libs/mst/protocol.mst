@@ -1,5 +1,5 @@
 <div class="article protocol">
-  <p class="title">用户协议</p>
+  <p class="title">{{T "page:agreement.title"}}</p>
   <p class="section">一、概述</p>
   <p class="section-item-1"><span class="paragraph-number">1.1</span>用户协议（以下称为本协议）是用户与超天才技术开发（北京）有限责任公司（以下简称本公司）之间的法律协议。超天才技术开发（北京）有限责任公司（以下简称本公司）是超天才网（supergenius.cn）和天才数独棋网（game.supergenius.cn）（即本网站）的所有者和经营者。</p>
   <p class="section-item-1"><span class="paragraph-number">1.2</span>本协议中的“用户”是指愿意接受或实际上已经接受本网站提供的服务（即本服务）的个人。</p>
