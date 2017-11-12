@@ -74,6 +74,14 @@
     "nickname": "ニックネーム",
     "money": "天才金貨",
     "create_game": "テーブル",
-    "banker": "庄家"
+    "banker": "庄家",
+    "game_level": "問題レベル",
+    "game_step_time": "ステップ時間",
+    "game_duration": "毎回時間",
+    "game_capacity": "ゲーム人数",
+    "game_start_mode": "開始方法",
+    "game_auto_start": "全員揃えで自動的に開始",
+    "game_manual_start": "親が手動的に開始",
+    "game_wait_time": "待ち時間"
   }
 }

@@ -4,7 +4,7 @@
     <div class="content">
       <div class="lobby-modal-row">
         <div class="name">
-          题目等级
+          {{T "page:lobby.game_level"}}
         </div>
         <div class="value level">
           <select>
@@ -16,7 +16,7 @@
       </div>
       <div class="lobby-modal-row">
         <div class="name">
-          每步时间
+          {{T "page:lobby.game_step_time"}}
         </div>
         <div class="value step-time">
           <select>
@@ -28,7 +28,7 @@
       </div>
       <div class="lobby-modal-row">
         <div class="name">
-          每局时间
+          {{T "page:lobby.game_duration"}}
         </div>
         <div class="value duration">
           <select>
@@ -40,7 +40,7 @@
       </div>
       <div class="lobby-modal-row">
         <div class="name">
-          每局人数
+          {{T "page:lobby.game_capacity"}}
         </div>
         <div class="value capacity">
           <select>
@@ -52,18 +52,18 @@
       </div>
       <div class="lobby-modal-row">
         <div class="name">
-          开始方式
+          {{T "page:lobby.game_start_mode"}}
         </div>
         <div class="value start-mode">
           <input type="radio" name="start_mode" data-value="auto" checked="checked" />
-          人齐自动开始
+          {{T "page:lobby.game_auto_start"}}
           <input type="radio" name="start_mode" data-value="manual" />
-          庄家手动开始
+          {{T "page:lobby.game_manual_start"}}
         </div>
       </div>
       <div class="lobby-modal-row">
         <div class="name">
-          等待时间
+          {{T "page:lobby.game_wait_time"}}
         </div>
         <div class="value wait-time">
           <select>
@@ -76,7 +76,7 @@
     </div>
     <div class="lobby-modal-bottom">
       <button type="button" class="confirm">
-        确认
+        {{T "common:actions.ok"}}
       </button>
     </div>
   </div>
