@@ -12,7 +12,7 @@
       <div class="common-header">
         <div class="logo"></div>
         <div class="game-label">
-          数独棋
+          {{T "common:sudoku"}}
         </div>
       </div>
       <div class="common-separator">
@@ -21,9 +21,9 @@
       </div>
       <div class="common-content">
         {{#if available}}
-        <p>账户已激活，<a href="/">开始玩数独游戏</a></p>
+        <p>{{T "page:active_user.activated"}}，<a href="/">{{T "page:active_user.start"}}</a></p>
         {{else}}
-        <p>您的链接已失效或者不存在，请重新<a href="/signup">注册</a></p>
+        <p>{{T "page:active_user.invalid"}}<a href="/signup">{{T "page:active_user.signup"}}</a></p>
         {{/if}}
       </div>
     </div>

@@ -11,106 +11,106 @@
     {{#loggedin}}
       {{> top_actions }}
       <div class="welcome">
-        欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
+        {{T "page:help.welcome"}}<span class="user-name">{{userName}}</span>, {{T "page:help.balance"}}<span class="money">{{money}}</span>{{T "page:help.money"}}
       </div>
     {{/loggedin}}
     <div class="main">
       <div class="navigator">
         <div class="rich-button item game-spec active" data-target="game-spec">
-          九联数独棋介绍
+          {{T "page:help.game_introduction"}}
         </div>
         <div class="rich-button item how-to-play" data-target="how-to-play">
-          天才数独棋玩法
+          {{T "page:help.game_howto"}}
         </div>
         <div class="rich-button item score-spec" data-target="score-spec">
-          数独棋局分规则
+          {{T "page:help.game_round_score"}}
         </div>
         <div class="rich-button item grade-spec" data-target="grade-spec">
-          积分段位和天才币
+          {{T "page:help.game_grade_money"}}
         </div>
         <div class="rich-button item system-spec" data-target="system-spec">
-          系统操作介绍
+          {{T "page:help.system_operation_introduction"}}
         </div>
         <div class="rich-button item constellation-spec" data-target="constellation-spec">
-          星座介绍
+          {{T "page:help.constellation_introduction"}}
         </div>
         <div class="rich-button item contact-us" data-target="contact-us">
-          联系我们
+          {{T "page:help.contact_us"}}
         </div>
       </div>
       <div class="help-container">
         <div class="item game-spec active">
-          <h2>基本规则：</h2>
-          <h3>九宫格：</h3>
+          <h2>{{T "page:help.basic_rule"}}</h2>
+          <h3>{{T "page:help.grid"}}</h3>
           <p>
-            在空格内填入数字1-9，使得每行、每列、及每宫数字都是1-9不重复
+            {{T "page:help.grid_desc"}}
           </p>
           <p class="board9">
             <img src="/imgs/default/help/board9_empty.png" />
             <img src="/imgs/default/help/board9_legend.png" />
             <img src="/imgs/default/help/board9_full.png" />
           </p>
-          <h3>九联数独：</h3>
+          <h3>{{T "page:help.grid_sudoku"}}</h3>
           <p>
-            基本规则和标准数独一致，红色标注为重复宫，所在宫数字为两个数独共用
+            {{T "page:help.grid_sudoku_desc"}}
           </p>
           <img class="board99" src="/imgs/default/help/board99.png" />
         </div>
         <div class="item how-to-play">
-          <h2>游戏界面</h2>
+          <h2>{{T "page:help.game_view"}}</h2>
           <img src="/imgs/default/help/game.png" />
           <ul>
             <li>
-              <span>【倒计时】：</span>中间显示时间为每步时间，答题时间越快，分数越高
+              <span>{{T "page:help.countdown"}}</span>{{T "page:help.countdown_desc"}}
             </li>
             <li>
-              <span>【草稿/提交模式】：</span>草稿模式下可以在空格内填入1-4个数字或字母用于标记，可以更改；提交模式下，点击格子弹出输入框，选择该格正确答案，不可更改，提交后判断，答对加分，答错扣分
+              <span>{{T "page:help.draft_submit"}}</span>{{T "page:help.draft_submit_desc"}}
               <br>
-              <span>【普通/候选模式】：</span>普通模式下，没有作答的格子内为空；候选模式下，显示所有未作答格子的候选数（1-4个），候选模式通过道具开启
+              <span>{{T "page:help.plain_options"}}</span>{{T "page:help.plain_options_desc"}}
             </li>
             <li>
-              <span>【游戏界面缩放条】：</span>可调整当前界面的大小，最小1倍，最大1.5倍
+              <span>{{T "page:help.zoom"}}</span>{{T "page:help.zoom_desc"}}
             </li>
             <li>
-              <span>【道具图标】：</span>每种道具后面的数字为当前所拥有的个数，可在道具商城查看每种道具功能及购买
+              <span>{{T "page:help.prop_icon"}}</span>{{T "page:help.prop_icon_desc"}}
             </li>
             <li>
-              <span>【棋盘】：</span>九联数独棋盘区域
+              <span>{{T "page:help.chessboard"}}</span>{{T "page:help.chessboard_area"}}
             </li>
             <li>
-              <span>【月亮】：</span>轮到自己作答时月亮亮起，别人作答时月亮熄灭
+              <span>{{T "page:help.moon"}}</span>{{T "page:help.moon_desc"}}
             </li>
             <li>
-              <span>【Pass键】：</span>每轮作答时，如果没有得出确切答案，可点击pass，所扣分数为答错时的一半。
+              <span>{{T "page:help.pass"}}</span>{{T "page:help.pass_desc"}}
             </li>
             <li>
-              <span>【头像显示区】：</span>显示此局游戏所有玩家，轮到谁作答，谁的头像外有一圈黄色光环。鼠标悬停在用户头像上时，可显示此人的段位积分等信息。
+              <span>{{T "page:help.headshot"}}</span>{{T "page:help.headshot_desc"}}
               <br>
             </li>
             <li>
-              <span>【及时排名区】：</span>实时显示玩家的得分情况
+              <span>{{T "page:help.ranking"}}</span>{{T "page:help.ranking_desc"}}
             </li>
             <li>
-              <span>【聊天区】：</span>可在游戏中进行交流
+              <span>{{T "page:help.chat"}}</span>{{T "page:help.chat_desc"}}
             </li>
             <li>
-              <span>【退出键】：</span>可在开始后退出游戏，但在玩家是庄家身份时，不退还建桌的天才币
+              <span>{{T "page:help.quit"}}</span>{{T "page:help.quit_desc"}}
             </li>
           </ul>
         </div>
         <div class="item score-spec">
           {{#score}}
-          <div class="title">* 加分设置: </div>
+          <div class="title">* {{T "page:help.add_score"}} </div>
           <div class="add-content inner-container">
-            <div class="sub-title">每步时间</div>
+            <div class="sub-title">{{T "page:help.time_per_step"}}</div>
             {{#add}}
             <div class="add-item {{#selected}}selected{{/selected}}">
-              <div class="add-total">{{total}}秒</div>
+              <div class="add-total">{{total}}{{T "page:help.second"}}</div>
               {{#levels}}
               <div class="add-row">
-                <span class="add-from">{{from}}秒</span>
+                <span class="add-from">{{from}}{{T "page:help.second"}}</span>
                 <span class="add-connection">-</span>
-                <span class="add-to">{{to}}秒: </span>
+                <span class="add-to">{{to}}{{T "page:help.second"}}: </span>
                 <span class="add-score">{{score}}</span>
               </div>
               {{/levels}}
@@ -118,16 +118,16 @@
             {{/add}}
           </div>
           <div class="separator"></div>
-          <div class="title">* 减分设置: </div>
+          <div class="title">* {{T "page:help.reduce_score"}} </div>
           <div class="reduce-content inner-container">
             {{#reduce}}
             <div class="reduce-item">
               <div class="reduce-row">
-                <label>答错或超时扣分分值: </label>
+                <label>{{T "page:help.reduce_score_value"}} </label>
                 <span class="reduce-score">{{timeout}}</span>
               </div>
               <div class="reduce-row">
-                <label>Pass扣分分值: </label>
+                <label>{{T "page:help.pass_value"}} </label>
                 <span class="reduce-score">{{pass}}</span>
               </div>
             </div>
@@ -136,15 +136,15 @@
           {{/score}}
         </div>
         <div class="item grade-spec">
-          <h2>积分段位：</h2>
+          <h2>{{T "page:help.grade_score"}}</h2>
           <div class="grade-container">
             <div class="grade-row grade-head">
               <div class="grade-name">
-                段位
+                {{T "page:help.grade"}}
               </div>
               <div class="grade-connection"></div>
               <div class="grade-value">
-                积分
+                {{T "page:help.score"}}
               </div>
             </div>
             {{#grade}}
@@ -159,50 +159,50 @@
             </div>
             {{/grade}}
           </div>
-          <h2>天才币汇率：</h2>
+          <h2>{{T "page:help.exchange_rate"}}</h2>
           <p class="exchange-rate">
-            1人民币 = {{exchange.rate}}天才币
+            {{T "page:help.one_rmb"}} = {{exchange.rate}}{{T "page:help.money"}}
           </p>
         </div>
         <div class="item system-spec">
-          <h2>功能介绍</h2>
+          <h2>{{T "page:help.function_desc"}}</h2>
           <ul>
             <li>
-              <span>【个人信息】：</span>在此可以查看用户的段位，积分，天才币等信息，并可更改头像
+              <span>{{T "page:help.user_info"}}</span>{{T "page:help.user_info_desc"}}
             </li>
             <li>
-              <span>【道具】：</span>可在此处购买道具及查看自己道具的数量
+              <span>{{T "page:help.prop"}}</span>{{T "page:help.prop_desc"}}
             </li>
             <li>
-              <span>【消息】：</span>查看系统发送的各类消息，包括每局游戏战报和活动通知等
+              <span>{{T "page:help.message"}}</span>{{T "page:help.message_desc"}}
             </li>
             <li>
-              <span>【充值】：</span>可在此处充值天才币，查看用户余额及充值记录
+              <span>{{T "page:help.recharge"}}</span>{{T "page:help.recharge_desc"}}
             </li>
             <li>
-              <span>【帮助】：</span>查看帮助信息
+              <span>{{T "page:help.help"}}</span>{{T "page:help.help_desc"}}
             </li>
             <li>
-              <span>【注销】：</span>退出登录，返回首页
+              <span>{{T "page:help.logout"}}</span>{{T "page:help.logout_desc"}}
             </li>
             <li>
-              <span>【桌子】：</span>点击空桌时，弹出建桌窗口，此时用户为庄家，需支付天才币作为建桌费（入门题目除外）；点击非空桌时，用户为普通身份，不用支付天才币
+              <span>{{T "page:help.table"}}</span>{{T "page:help.table_desc"}}
             </li>
           </ul>
         </div>
         <div class="item constellation-spec">
           <div class="inner-container">
-            <h2>星座</h2>
-            <div class="none">暂无</div>
+            <h2>{{T "page:help.constellation"}}</h2>
+            <div class="none">{{T "page:help.empty"}}</div>
             <ul style="display: none">
               <li>
-                <span>【水瓶座】：</span>三个房间，每房间40张桌子，每桌2-4人
+                <span>{{T "page:help.aquarius"}}</span>{{T "page:help.aquarius_desc"}}
               </li>
               <li>
-                <span>【双鱼座】：</span>四个房间，每房间40张桌子，每桌5-9人
+                <span>{{T "page:help.pisces"}}</span>{{T "page:help.pisces_desc"}}
               </li>
               <li>
-                <span>【白羊座】：</span>三个房间，每房间36张桌子，每桌2-9人
+                <span>{{T "page:help.aries"}}</span>{{T "page:help.aries_desc"}}
               </li>
             </ul>
           </div>
@@ -212,7 +212,7 @@
             <div class="common-header">
               <div class="logo"></div>
               <div class="game-label">
-                数独棋
+                {{T "common:sudoku"}}
               </div>
             </div>
             <div class="common-separator">
@@ -221,16 +221,16 @@
             </div>
             <div class="common-content">
               <p>
-                超天才技术开发(北京)有限责任公司
+                {{T "common:company"}}
               </p>
               <p>
-                邮箱：service@supergenius.cn
+                {{T "common:email"}}：service@supergenius.cn
               </p>
               <p>
-                电话：56296776
+                {{T "common:phone"}}：56296776
               </p>
               <p>
-                地址：北京市上地三街金隅嘉华大厦A座501
+                {{T "page:help.address"}}
               </p>
             </div>
           </div>
@@ -238,7 +238,7 @@
       </div>
     </div>
     <div class="bottom-actions">
-      <a class="rich-button back" href="/main">返回</a>
+      <a class="rich-button back" href="/main">{{T "common:actions.back"}}</a>
     </div>
   </body>
 </html>
