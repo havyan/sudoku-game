@@ -1,19 +1,19 @@
 (function() {
   var STATUS = {
-    '0' : '充值未完成',
-    '1' : '充值成功',
-    '2' : '已付款，等待处理',
-    '9' : '开始充值',
-    '-1' : '充值失败'
+    '0' : it('page:recharge.recharge_incompleted'),
+    '1' : it('page:recharge.recharge_succesful'),
+    '2' : it('page:recharge.recharge_completed'),
+    '9' : it('page:recharge.recharge_start'),
+    '-1' : it('page:recharge.recharge_fail')
   };
   var BANK = {
-    '0' : '中国工商银行',
-    '1' : '招商银行',
-    '3' : '中国农业银行',
-    '4' : '中国建设银行',
-    '11' : '支付宝',
-    '6' : '中国银联',
-    '13' : '微信支付'
+    '0' : it('page:recharge.icbc'),
+    '1' : it('page:recharge.cmb'),
+    '3' : it('page:recharge.abc'),
+    '4' : it('page:recharge.ccb'),
+    '11' : it('page:recharge.alipay'),
+    '6' : it('page:recharge.union'),
+    '13' : it('page:recharge.wepay')
   };
   can.Model('Models.RechargeModel', {
   }, {
@@ -165,9 +165,9 @@
         rechargeResult : function(status) {
           status = status();
           if (status === '1' || status === '2') {
-            return '充值天才币成功！';
+            return it('page:recharge.success_message');
           } else {
-            return '充值天才币失败！';
+            return it('page:recharge.fail_message');
           }
         },
 
@@ -247,10 +247,10 @@
             model.next();
           });
         } else {
-          Dialog.message('请正确输入你要充值的对象.');
+          Dialog.message(it('page:recharge.recharge_target'));
         }
       } else {
-        Dialog.message('请选择或输入你要购买的天才币.');
+        Dialog.message(it('page:recharge.recharge_money'));
       }
     },
 
@@ -278,11 +278,11 @@
       };
       var timer = setInterval(check, 3000);
       var dialog = Dialog.show({
-        title : '付款确认',
+        title : it('page:recharge.pay_confirm'),
         userClass : 'pay-confirm-dialog',
-        content : '请在新开网银页面完成付款。<br>支付成功后订单状态可能会延迟更新，可稍后查看。',
+        content : it('page:recharge.pay_in_new_page') + '<br>' + it('page:recharge.pay_view_later'),
         actions : [{
-          name : '已完成付款',
+          name : it('page:recharge.pay_finished'),
           userClass : 'btn-primary',
           callback : function() {
             check();
@@ -291,7 +291,7 @@
             model.next();
           }
         }, {
-          name : '付款遇到问题',
+          name : it('page:recharge.pay_problem'),
           userClass : 'btn-danger',
           callback : function() {
             check();

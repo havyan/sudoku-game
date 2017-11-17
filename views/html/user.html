@@ -12,77 +12,77 @@
     {{> i18n left=true }}
     {{> top_actions }}
     <div class="welcome">
-      欢迎<span class="user-name">{{user.name}}</span>, 余额<span class="money">{{user.money}}</span>天才币
+      {{T "page:user.welcome"}}<span class="user-name">{{user.name}}</span>, {{T "page:user.balence"}}<span class="money">{{user.money}}</span>{{T "page:user.money"}}
     </div>
     <div class="main">
       <div class="info">
         <div class="info-row">
-          <span class="name">用户名：</span><span class="value">{{user.account}}</span>
+          <span class="name">{{T "page:user.username"}}</span><span class="value">{{user.account}}</span>
         </div>
         <div class="info-row name-row">
-          <span class="name">昵称：</span><span class="value">{{user.name}}</span>
-          <input class="button modify-button" type="button" value="更改" />
+          <span class="name">{{T "page:user.nickname"}}</span><span class="value">{{user.name}}</span>
+          <input class="button modify-button" type="button" value="{{T "page:user.change"}}" />
           <input class="value-field" type="text" value="{{user.name}}" />
-          <input class="button confirm" type="button" value="确认" />
-          <input class="button cancel" type="button" value="取消" />
+          <input class="button confirm" type="button" value="{{T "common:actions.ok"}}" />
+          <input class="button cancel" type="button" value="{{T "common:actions.cancel"}}" />
         </div>
         <div class="info-row">
-          <span class="name">状态：</span><span class="value">正常</span>
+          <span class="name">{{T "page:user.status"}}</span><span class="value">{{T "page:user.normal"}}</span>
         </div>
         <div class="info-row grade">
-          <span class="name">级别：</span><span class="value">{{user.grade_name}}</span>
+          <span class="name">{{T "page:user.grade"}}</span><span class="value">{{user.grade_name}}</span>
         </div>
         <div class="info-row points-row">
-          <span class="name">积分：</span><span class="value">{{user.points}}</span>
+          <span class="name">{{T "page:user.points"}}</span><span class="value">{{user.points}}</span>
           {{#isAdmin}}
-          <input class="button modify-button" type="button" value="更改" />
+          <input class="button modify-button" type="button" value="{{T "page:user.change"}}" />
           <input class="value-field" type="text" value="{{user.points}}" />
-          <input class="button confirm" type="button" value="确认" />
-          <input class="button cancel" type="button" value="取消" />
+          <input class="button confirm" type="button" value="{{T "common:actions.ok"}}" />
+          <input class="button cancel" type="button" value="{{T "common:actions.cancel"}}" />
           {{/isAdmin}}
         </div>
         <div class="info-row money-row">
-          <span class="name">天才币：</span><span class="value">{{user.money}}</span>
+          <span class="name">{{T "page:user.money"}}</span><span class="value">{{user.money}}</span>
           {{#isAdmin}}
-          <input class="button modify-button" type="button" value="更改" />
+          <input class="button modify-button" type="button" value="{{T "page:user.change"}}" />
           <input class="value-field" type="text" value="{{user.money}}" />
-          <input class="button confirm" type="button" value="确认" />
-          <input class="button cancel" type="button" value="取消" />
+          <input class="button confirm" type="button" value="{{T "common:actions.ok"}}" />
+          <input class="button cancel" type="button" value="{{T "common:actions.cancel"}}" />
           {{/isAdmin}}
         </div>
         <div class="info-row">
-          <span class="name">完成局数：</span><span class="value">{{user.rounds}}</span>
+          <span class="name">{{T "page:user.rounds"}}</span><span class="value">{{user.rounds}}</span>
         </div>
         <div class="info-row">
-          <span class="name">战绩：</span><span class="value">{{user.wintimes}}胜{{user.losetimes}}负</span>
+          <span class="name">{{T "page:user.score"}}</span><span class="value">{{user.wintimes}}{{T "page:user.win"}}{{user.losetimes}}{{T "page:user.lose"}}</span>
         </div>
         <div class="info-row">
-          <span class="name">胜率：</span><span class="value">{{user.winrate}}%</span>
+          <span class="name">{{T "page:user.winrate"}}</span><span class="value">{{user.winrate}}%</span>
         </div>
         <div class="info-row">
-          <span class="name">邮箱：</span><span class="value">{{user.email}}</span>
+          <span class="name">{{T "page:user.email"}}</span><span class="value">{{user.email}}</span>
         </div>
         <div class="info-row">
-          <span class="name">注册时间：</span><span class="value">{{formatDate user.createtime}}</span>
+          <span class="name">{{T "page:user.signup_time"}}</span><span class="value">{{formatDate user.createtime}}</span>
         </div>
         <div class="info-row">
-          <span class="name">上次登录时间：</span><span class="value">{{formatDate user.logintime}}</span>
+          <span class="name">{{T "page:user.last_login_time"}}</span><span class="value">{{formatDate user.logintime}}</span>
         </div>
         <div class="info-row">
-          <span class="name">上次登录IP：</span><span class="value">{{user.login_ip}}</span>
+          <span class="name">{{T "page:user.last_login_ip"}}</span><span class="value">{{user.login_ip}}</span>
         </div>
         <div class="info-row">
-          <span class="name">注册IP：</span><span class="value">{{user.create_ip}}</span>
+          <span class="name">{{T "page:user.signup_ip"}}</span><span class="value">{{user.create_ip}}</span>
         </div>
       </div>
       <div class="icon" data-value="{{user.icon}}">
         <img class="icon-img" src="{{user.icon}}">
         <div class="icon-actions">
           <button class="button change-icon-action">
-            更改头像
+            {{T "page:user.change_icon"}}
           </button>
           <button class="button upload-icon-action">
-            本地上传头像
+            {{T "page:user.upload_icon"}}
           </button>
         </div>
         <div class="default-icons">
@@ -93,14 +93,14 @@
       </div>
       {{#isAdmin}}
       <div class="actions">
-        <input class="button freeze-button" type="button" value="冻结" />
-        <input class="button unfreeze-button" type="button" value="解冻" />
-        <input class="button block-button" type="button" value="封IP" />
+        <input class="button freeze-button" type="button" value="{{T "page:user.freeze"}}" />
+        <input class="button unfreeze-button" type="button" value="{{T "page:user.unfreeze"}}" />
+        <input class="button block-button" type="button" value="{{T "page:user.seal_ip"}}" />
       </div>
       {{/isAdmin}}
     </div>
     <div class="bottom">
-      <input class="rich-button close-button" type="button" value="关闭" />
+      <input class="rich-button close-button" type="button" value="{{T "common:actions.close"}}" />
     </div>
   </body>
 </html>

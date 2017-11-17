@@ -2,6 +2,7 @@
   "navigator": {
     "home": "トップ",
     "treasure": "天才寻宝",
+    "lobby": "ゲームホール",
     "about": "天才数独について",
     "news": "数独速報",
     "operation": "ゲームガイド",
@@ -32,6 +33,11 @@
     "capricorn": "やぎ座",
     "aquarius": "みずがめ座",
     "pisces": "うお座"
+  },
+  "greeting": {
+    "welcome": "ようこそ",
+    "balence": "殘高",
+    "money": "天才金貨"
   },
   "actions": {
     "close": "閉じる",

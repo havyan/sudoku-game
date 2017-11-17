@@ -2,6 +2,7 @@
   "navigator": {
     "home": "Home page",
     "treasure": "天才寻宝",
+    "lobby": "游戏大厅",
     "about": "About Genius Sudoku",
     "news": "Sudoku dynamic",
     "operation": "Operation guide",
@@ -32,6 +33,11 @@
     "capricorn": "Capricorn",
     "aquarius": "Aquarius",
     "pisces": "Pisces"
+  },
+  "greeting": {
+    "welcome": "欢迎",
+    "balence": "余额",
+    "money": "天才币"
   },
   "actions": {
     "close": "Close",

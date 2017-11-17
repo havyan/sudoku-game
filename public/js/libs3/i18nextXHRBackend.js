@@ -63,7 +63,7 @@ function ajax(url, options, callback, data, cache) {
     } else {
       x = new ActiveXObject('MSXML2.XMLHTTP.3.0');
     }
-    x.open(data ? 'POST' : 'GET', url, 1);
+    x.open(data ? 'POST' : 'GET', url, false);
     if (!options.crossDomain) {
       x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     }
@@ -80,10 +80,10 @@ function ajax(url, options, callback, data, cache) {
         x.setRequestHeader(i, h[i]);
       }
     }
-    x.onreadystatechange = function () {
-      x.readyState > 3 && callback && callback(x.responseText, x);
-    };
     x.send(data);
+    if (x.status === 200) {
+      callback && callback(x.responseText, x);
+    }
   } catch (e) {
     console && console.log(e);
   }

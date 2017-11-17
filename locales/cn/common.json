@@ -2,6 +2,7 @@
   "navigator": {
     "home": "首页",
     "treasure": "天才寻宝",
+    "lobby": "游戏大厅",
     "about": "关于天才数独棋",
     "news": "数独动态",
     "operation": "操作指引",
@@ -36,7 +37,13 @@
   "actions": {
     "close": "关闭",
     "ok": "确认",
+    "cancel": "取消",
     "back": "返回"
+  },
+  "greeting": {
+    "welcome": "欢迎",
+    "balence": "余额",
+    "money": "天才币"
   },
   "company": "超天才技术开发(北京)有限责任公司",
   "address": "北京市上地三街金隅嘉华大厦A座501",

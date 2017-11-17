@@ -826,3 +826,7 @@ to {
   height: 16px;
   background-color: white;
 }
+
+.lang-jp .top-actions a {
+  font-size: 9px;
+}
