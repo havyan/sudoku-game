@@ -299,7 +299,7 @@ label {
   opacity: 0.8;
 }
 
- {
+.player-tip {
   position: absolute;
   z-index: 9999;
   width: 120px;
@@ -829,4 +829,8 @@ to {
 
 .lang-jp .top-actions a {
   font-size: 9px;
+}
+
+.lang-jp .player-tip {
+  width: 160px;
 }
