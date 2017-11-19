@@ -34,3 +34,7 @@ hbs.registerHelper('T', function() {
   }
   return i18next.getFixedT(options.data.root.$lang)(key, options.data.root);
 });
+
+hbs.registerHelper('L', function(value, options) {
+  return _.isObject(value) ? value[options.data.root.$lang] : value;
+});
