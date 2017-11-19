@@ -1,137 +1,273 @@
 [{
   "type": "magnifier",
-  "name": "放大镜",
+  "name": {
+    "cn": "放大镜",
+    "en": "Magnifying glass",
+    "jp": "拡大鏡"
+  },
   "category": "sudoku",
-  "func": "显示选中格子的答案",
+  "func": {
+    "cn": "显示选中格子的答案",
+    "en": "Displays correct number in selected grid",
+    "jp": "格子の解答が表示される"
+  },
   "order": 0,
   "icon": "/imgs/default/prop_magnifier.png",
   "price": 150
 }, {
   "type": "delay",
-  "name": "延时卡",
+  "name": {
+    "cn": "延时卡",
+    "en": "Delay card",
+    "jp": "遅延カード"
+  },
   "category": "sudoku",
   "order": 1,
-  "func": "延时60s，一轮中自己只能用一次",
+  "func": {
+    "cn": "延时60s，一轮中自己只能用一次",
+    "en": "Delay 60s, only can be used once in each round",
+    "jp": "遅延60s、1回戦で自分で一度だけ使える"
+  },
   "icon": "/imgs/default/prop_delay.png",
   "price": 30
 }, {
   "type": "options_once",
-  "name": "候选卡",
+  "name": {
+    "cn": "候选卡",
+    "en": "The candidate card",
+    "jp": "候補者カード"
+  },
   "category": "sudoku",
   "order": 2,
-  "func": "显示候选数，一轮中自己只能用一次",
+  "func": {
+    "cn": "显示候选数，一轮中自己只能用一次",
+    "en": "Displays candidate number，only can be used once in each round",
+    "jp": "候補数を表示して、1回戦で1度だけ使える"
+  },
   "icon": "/imgs/default/prop_options_once.png",
   "price": 30
 }, {
   "type": "options_always",
-  "name": "全盘候选卡",
+  "name": {
+    "cn": "全盘候选卡",
+    "en": "Total candidate card",
+    "jp": "全候補カード"
+  },
   "category": "sudoku",
   "order": 3,
-  "func": "游戏中全盘显示候选数",
+  "func": {
+    "cn": "游戏中全盘显示候选数",
+    "en": "Show all candidate numbers in the game",
+    "jp": "ゲームに碁盤の目の候補数がすべて表示される"
+  },
   "icon": "/imgs/default/prop_options_always.png",
   "price": 3000
 }, {
   "type": "impunity",
-  "name": "免罚卡",
+  "name": {
+    "cn": "免罚卡",
+    "en": "Impunity card",
+    "jp": "免罚カード"
+  },
   "category": "sudoku",
   "order": 4,
-  "func": "补回答错或不答所扣的分数",
+  "func": {
+    "cn": "补回答错或不答所扣的分数",
+    "en": "Make up for deducted scores on last round",
+    "jp": "誤答または答えないポイントを差し引くことができる"
+  },
   "icon": "/imgs/default/prop_impunity.png",
   "price": 200
 }, {
   "type": "glasses",
-  "name": "智能眼镜",
+  "name": {
+    "cn": "智能眼镜",
+    "en": "Smart glasses",
+    "jp": "スマートメガネ"
+  },
   "category": "sudoku",
   "order": 5,
-  "func": "显示气泡，一轮中自己只能用一次",
+  "func": {
+    "cn": "显示气泡，一轮中自己只能用一次",
+    "en": "Show bubbles, only can be used once in each round",
+    "jp": "気泡を表示して、1回戦で一度だけ使える"
+  },
   "icon": "/imgs/default/prop_glasses.png",
   "price": 30
 }, {
   "type": "scope_instrument",
-  "name": "范围检测仪",
+  "name": {
+    "cn": "范围检测仪",
+    "en": "范围检测仪",
+    "jp": "范围检测仪"
+  },
   "category": "treasure",
   "order": 6,
-  "func": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
+  "func": {
+    "cn": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
+    "en": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
+    "jp": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气"
+  },
   "icon": "/imgs/default/scope_instrument.png",
   "price": 30
 }, {
   "type": "nerve_gas_instrument",
-  "name": "神经性毒气检测仪",
+  "name": {
+    "cn": "神经性毒气检测仪",
+    "en": "神经性毒气检测仪",
+    "jp": "神经性毒气检测仪"
+  },
   "category": "treasure",
   "order": 7,
-  "func": "可以判断毒气沙林、梭曼、维埃克斯",
+  "func": {
+    "cn": "可以判断毒气沙林、梭曼、维埃克斯",
+    "en": "可以判断毒气沙林、梭曼、维埃克斯",
+    "jp": "可以判断毒气沙林、梭曼、维埃克斯"
+  },
   "icon": "/imgs/default/nerve_gas_instrument.png",
   "price": 100
 }, {
   "type": "asphyxiant_gas_instrument",
-  "name": "窒息性毒气检测仪",
+  "name": {
+    "cn": "窒息性毒气检测仪",
+    "en": "窒息性毒气检测仪",
+    "jp": "窒息性毒气检测仪"
+  },
   "category": "treasure",
   "order": 8,
-  "func": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
+  "func": {
+    "cn": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
+    "en": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
+    "jp": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气"
+  },
   "icon": "/imgs/default/asphyxiant_gas_instrument.png",
   "price": 80
 }, {
   "type": "irritant_gas_instrument",
-  "name": "刺激性毒气检测仪",
+  "name": {
+    "cn": "刺激性毒气检测仪",
+    "en": "刺激性毒气检测仪",
+    "jp": "刺激性毒气检测仪"
+  },
   "category": "treasure",
   "order": 9,
-  "func": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯",
+  "func": {
+    "cn": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯",
+    "en": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯",
+    "jp": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯"
+  },
   "icon": "/imgs/default/irritant_gas_instrument.png",
   "price": 50
 }, {
   "type": "scope_paper",
-  "name": "范围毒气试纸",
+  "name": {
+    "cn": "范围毒气试纸",
+    "en": "范围毒气试纸",
+    "jp": "范围毒气试纸"
+  },
   "category": "treasure",
   "order": 10,
-  "func": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸",
+  "func": {
+    "cn": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸",
+    "en": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸",
+    "jp": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸"
+  },
   "icon": "/imgs/default/scope_paper.png",
   "price": 5
 }, {
   "type": "nerve_gas_paper",
-  "name": "神经性毒气试纸",
+  "name": {
+    "cn": "神经性毒气试纸",
+    "en": "神经性毒气试纸",
+    "jp": "神经性毒气试纸"
+  },
   "category": "treasure",
   "order": 11,
-  "func": "3种：沙林试纸、梭曼试纸、维埃克斯试纸",
+  "func": {
+    "cn": "3种：沙林试纸、梭曼试纸、维埃克斯试纸",
+    "en": "3种：沙林试纸、梭曼试纸、维埃克斯试纸",
+    "jp": "3种：沙林试纸、梭曼试纸、维埃克斯试纸"
+  },
   "icon": "/imgs/default/nerve_gas_paper.png",
   "price": 5
 }, {
   "type": "asphyxiant_gas_paper",
-  "name": "窒息性毒气试纸",
+  "name": {
+    "cn": "窒息性毒气试纸",
+    "en": "窒息性毒气试纸",
+    "jp": "窒息性毒气试纸"
+  },
   "category": "treasure",
   "order": 12,
-  "func": "3种：光气试纸、双光气试纸、氯气试纸",
+  "func": {
+    "cn": "3种：光气试纸、双光气试纸、氯气试纸",
+    "en": "3种：光气试纸、双光气试纸、氯气试纸",
+    "jp": "3种：光气试纸、双光气试纸、氯气试纸"
+  },
   "icon": "/imgs/default/asphyxiant_gas_paper.png",
   "price": 5
 }, {
   "type": "irritant_gas_paper",
-  "name": "刺激性毒气试纸",
+  "name": {
+    "cn": "刺激性毒气试纸",
+    "en": "刺激性毒气试纸",
+    "jp": "刺激性毒气试纸"
+  },
   "category": "treasure",
   "order": 13,
-  "func": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸",
+  "func": {
+    "cn": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸",
+    "en": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸",
+    "jp": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸"
+  },
   "icon": "/imgs/default/irritant_gas_paper.png",
   "price": 5
 }, {
   "type": "cough_syrup",
-  "name": "止咳糖浆",
+  "name": {
+    "cn": "止咳糖浆",
+    "en": "止咳糖浆",
+    "jp": "止咳糖浆"
+  },
   "category": "treasure",
   "order": 14,
-  "func": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的",
+  "func": {
+    "cn": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的",
+    "en": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的",
+    "jp": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的"
+  },
   "icon": "/imgs/default/cough_syrup.png",
   "price": 50
 }, {
   "type": "sober_potion",
-  "name": "醒神药剂",
+  "name": {
+    "cn": "醒神药剂",
+    "en": "醒神药剂",
+    "jp": "醒神药剂"
+  },
   "category": "treasure",
   "order": 15,
-  "func": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏",
+  "func": {
+    "cn": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏",
+    "en": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏",
+    "jp": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏"
+  },
   "icon": "/imgs/default/sober_potion.png",
   "price": 50
 }, {
   "type": "invincible_bomb",
-  "name": "无敌燃烧弹",
+  "name": {
+    "cn": "无敌燃烧弹",
+    "en": "无敌燃烧弹",
+    "jp": "无敌燃烧弹"
+  },
   "category": "treasure",
   "order": 16,
-  "func": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间",
+  "func": {
+    "cn": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间",
+    "en": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间",
+    "jp": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间"
+  },
   "icon": "/imgs/default/invincible_bomb.png",
   "price": 100
 }]

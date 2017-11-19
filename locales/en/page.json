@@ -280,5 +280,23 @@
     "draft": "草稿",
     "plain": "普通",
     "options": "候选"
+  },
+  "props": {
+    "purchase_limit": "单个道具最多只能买999个。",
+    "money_not_enough": "天才币余额不足，请充值。",
+    "purchase_successful": "购买成功",
+    "purchase_fail": "购买失败: ",
+    "sudoku_game": "数独游戏",
+    "treasure_game": "寻宝游戏",
+    "prop_store": "道具商城",
+    "my_props": "我的道具",
+    "name": "名称：",
+    "func": "功能：",
+    "price": "价格：",
+    "sale": "销量：",
+    "purchased": "已购买：",
+    "number": "购买数量：",
+    "required_money": "所需天才币：",
+    "buy": "兑换"
   }
 }

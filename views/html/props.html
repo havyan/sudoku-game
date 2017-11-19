@@ -11,11 +11,11 @@
     {{> i18n left=true }}
     {{> top_actions }}
     <div class="welcome">
-      欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币
+      {{T "common:greeting.welcome"}}<span class="user-name">{{userName}}</span>, {{T "common:greeting.balence"}}<span class="money">{{money}}</span>{{T "common:greeting.money"}}
     </div>
     <div class="main"></div>
     <div class="bottom-actions">
-      <a href="/main" class="rich-button back">返回</a>
+      <a href="/main" class="rich-button back">{{T "common:actions.back"}}</a>
     </div>
   </body>
 </html>

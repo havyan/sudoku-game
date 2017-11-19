@@ -1,17 +1,17 @@
 <div class="tabs">
   <div class="rich-button tab sudoku {{tabClass 'sudoku'}}" data-category="sudoku">
-    数独游戏
+    {{T "page:props.sudoku_game"}}
   </div>
   <div class="rich-button tab treasure {{tabClass 'treasure'}}" data-category="treasure">
-    寻宝游戏
+    {{T "page:props.treasure_game"}}
   </div>
 </div>
 <div class="navigator">
   <div class="rich-button item store active">
-    道具商城
+    {{T "page:props.prop_store"}}
   </div>
   <div class="rich-button item my-prop">
-    我的道具
+    {{T "page:props.my_props"}}
   </div>
 </div>
 <div class="container">
@@ -22,30 +22,30 @@
         <img src="{{icon}}">
       </div>
       <div>
-        名称：{{name}}
+        {{T "page:props.name"}} {{L name}}
       </div>
       <div class="func">
-        功能：{{func}}
+        {{T "page:props.func"}} {{L func}}
       </div>
       <div>
-        价格：{{price}}天才币
+        {{T "page:props.price"}} {{price}}{{T "common:money"}}
       </div>
       <div>
-        销量：{{sales}}
+        {{T "page:props.sale"}} {{sales}}
       </div>
       <div>
-        已购买：{{purchase}}
+        {{T "page:props.purchased"}} {{purchase}}
       </div>
       <div class="count">
-        购买数量：<img class="subtract" src="/imgs/default/subtract.png" />
+        {{T "page:props.number"}}<img class="subtract" src="/imgs/default/subtract.png" />
         <input type="text" value="0"/>
         <img class="plus" src="/imgs/default/plus.png" />
       </div>
       <div class="total">
-        所需天才币：<span>0</span>
+        {{T "page:props.required_money"}}<span>0</span>
       </div>
       <div class="actions">
-        <input type="button" class="btn buy" value="兑换" disabled="true"/>
+        <input type="button" class="btn buy" value="{{T "page:props.buy"}}" disabled="true"/>
       </div>
     </div>
     {{/types}}
@@ -57,10 +57,10 @@
         <img src="{{icon}}"> X {{count}}
       </div>
       <div>
-        名称：{{name}}
+        {{T "page:props.name"}} {{L name}}
       </div>
       <div class="func">
-        功能：{{func}}
+        {{T "page:props.func"}} {{L func}}
       </div>
     </div>
     {{/props}}

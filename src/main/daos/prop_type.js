@@ -8,7 +8,11 @@ var CATEGORY = {
 
 var PropTypeSchema = new Schema({
   type: String,
-  name: String,
+  name: {
+    cn: String,
+    en: String,
+    jp: String
+  },
   status: {
     type: String,
     default: '1'
@@ -18,7 +22,11 @@ var PropTypeSchema = new Schema({
     default: CATEGORY.SUDOKU
   },
   order: Number,
-  func: String,
+  func: {
+    cn: String,
+    en: String,
+    jp: String
+  },
   icon: String,
   price: Number,
   sales: {

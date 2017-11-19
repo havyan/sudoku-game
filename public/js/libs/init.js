@@ -28,5 +28,17 @@
     return i18next.t(key, options.context);
   });
 
+
+  can.mustache.registerHelper('L', function() {
+    var value = arguments[0];
+    if (_.isFunction(value)) {
+      value = value();
+    }
+    if (_.isObject(value)) {
+      value = (value.attr && value.attr(lang)) || value[lang];
+    }
+    return value;
+  });
+
   window.it = i18next.t.bind(i18next);
 })();
