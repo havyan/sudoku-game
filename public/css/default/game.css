@@ -1056,3 +1056,7 @@ to {
 .always-above {
   z-index: 999;
 }
+
+.lang-jp .game-state-actions {
+  width: 80%;
+}

@@ -6,10 +6,10 @@
   {{/unless}}
   <div class="chessboard-actions always-above">
     <div class="chessboard-edit-mode">
-      <a class="button chessboard-submit-mode-action action-active">提交</a><a class="button chessboard-draft-mode-action">草稿</a>
+      <a class="button chessboard-submit-mode-action action-active">{{T "page:game.submit"}}</a><a class="button chessboard-draft-mode-action">{{T "page:game.draft"}}</a>
     </div>
     <div class="chessboard-view-mode">
-      <a class="button chessboard-plain-mode-action action-active">普通</a><a class="button chessboard-options-mode-action" {{#unless optionsEnabled}}disabled="true"{{/unless}}>候选</a>
+      <a class="button chessboard-plain-mode-action action-active">{{T "page:game.plain"}}</a><a class="button chessboard-options-mode-action" {{#unless optionsEnabled}}disabled="true"{{/unless}}>{{T "page:game.options"}}</a>
     </div>
   </div>
   <ul class="props always-above">

@@ -299,7 +299,7 @@ label {
   opacity: 0.8;
 }
 
-.player-tip {
+ {
   position: absolute;
   z-index: 9999;
   width: 120px;

@@ -1,11 +1,11 @@
 <div class="game-waiting">
   <div class="game-waiting-info">
-    用户{{#each players}}{{#if this}}{{#if @index}}, {{/if}}{{name}}{{/if}}{{/each}}已进入游戏
+    {{T "page:game.user"}}{{#each players}}{{#if this}}{{#if @index}}, {{/if}}{{name}}{{/if}}{{/each}}{{T "page:game.enter_game"}}
   </div>
   <div class="game-waiting-countdown">
-    等待倒计时: {{formatSeconds waitCountdownStage}}
+    {{T "page:game.wait_countdown"}}: {{formatSeconds waitCountdownStage}}
   </div>
   {{#manualStart}}
-  <input class="rich-button game-start-button" type="button" value="开始" />
+  <input class="rich-button game-start-button" type="button" value="{{T "page:game.start"}}" />
   {{/manualStart}}
 </div>

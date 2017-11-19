@@ -38,7 +38,15 @@
     "close": "关闭",
     "ok": "确认",
     "cancel": "取消",
-    "back": "返回"
+    "back": "返回",
+    "continue": "继续",
+    "quit": "退出"
+  },
+  "player": {
+    "grade": "段位",
+    "points": "积分",
+    "rounds": "总局数",
+    "winrate": "胜率"
   },
   "greeting": {
     "welcome": "欢迎",

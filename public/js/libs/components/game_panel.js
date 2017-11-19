@@ -17,7 +17,7 @@
         },
         formatRemainingTime : function(remainingTime) {
           if (options.model.attr('duration') === 99) {
-            return '不限制时间';
+            return it('page:game.unlimited_time');
           } else {
             return Utils.formatSeconds(remainingTime());
           }
@@ -45,7 +45,7 @@
         }
       });
       $(window).on('beforeunload', function() {
-        return '确定离开游戏页面吗？';
+        return it('page:game.leave_ok');
       });
     },
 
@@ -93,11 +93,11 @@
     '{model} maxTimeoutReached' : function() {
       var self = this;
       Dialog.show({
-        title : '确认',
-        content : '游戏将在<span class="max-timeout-countdown-number">20</span>秒后退出，是否继续？',
+        title : it('page:game.confirmation'),
+        content : it('page:game.game_will') + '<span class="max-timeout-countdown-number">20</span>' + it('page:game.continue_game'),
         autoClose : false,
         actions : [{
-          name : '继续',
+          name : it('page:game.continue'),
           userClass : 'btn-primary',
           callback : function(element) {
             self.options.model.goahead(function() {
@@ -119,9 +119,9 @@
     '{model} waitCountdownStage' : function(model, e, newStage) {
       if (newStage === 0) {
         if (model.isBanker()) {
-          Dialog.message('很遗憾，棋桌将要解散，您的建桌费会返到您的账户');
+          Dialog.message(it('page:game.sorry_over_money'));
         } else {
-          Dialog.message('很遗憾，棋桌将要解散，欢迎您继续游戏');
+          Dialog.message(it('page:game.sorry_over'));
         }
       }
     },
@@ -143,12 +143,12 @@
       var hasResults = results && results.length > 0;
       model.attr('hasResults', hasResults);
       var dialog = Dialog.show({
-        title : hasResults ? '排行榜' : '游戏结束',
+        title : hasResults ? it('page:game.ranking') : it('page:game.game_over'),
         template : '/js/libs/mst/results.mst',
         data : model,
         autoClose : false,
         actions : [{
-          name : '关闭',
+          name : it('common:actions.close'),
           dismiss : true,
           callback : function() {
             model.quit(function() {
@@ -160,7 +160,7 @@
             });
           }
         }, {
-          name : '退出',
+          name : it('page:game.quit'),
           userClass : 'btn-primary',
           callback : function(element) {
             this.hide();
@@ -229,9 +229,9 @@
     '.game-quit-button click' : function() {
       var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
-        var message = '棋局已开始，确定要退出？';
+        var message = it('page:game.quit_ok');
         if (this.options.model.isBanker() && !this.options.model.attr('isGuest')) {
-          message = '棋局已开始，您的建桌费不会返还，此桌游戏将取消，确定要退出？';
+          message = it('page:game.quit_ok_money');
         }
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
@@ -239,7 +239,7 @@
           });
         });
       } else {
-        var message = this.options.model.isBanker() ? '正在等待棋局，您的建桌费不会返还，此桌游戏将取消，确定要退出？' : '正在等待棋局，确定要退出？';
+        var message = this.options.model.isBanker() ? it('page:game.quit_ok_wait_money') : it('page:game.quit_ok_wait');
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
@@ -253,11 +253,11 @@
       var type = model.attr('destroyType');
       if (!model.isBanker() && type === 'banker-quit') {
         Dialog.show({
-          title : '确认',
-          content : '因为庄家退出，游戏将在<span class="close-countdown-number">10</span>秒后关闭',
+          title : it('page:game.confirmation'),
+          content : it('page:game.because_banker') + '<span class="close-countdown-number">10</span>' + it('page:game.seconds_close'),
           autoClose : false,
           actions : [{
-            name : '立即关闭',
+            name : it('page:game.close_now'),
             userClass : 'btn-primary',
             callback : function() {
               window.location.href = "/main";

@@ -22,9 +22,9 @@
 		<div class="game-state-separator"></div>
 		<table class="game-ranking-table">
 			<thead>
-      	<th class="game-ranking-number">即时排名</th>
-      	<th class="game-ranking-name">头像/用户</th>
-      	<th class="game-ranking-score">总分</th>
+      	<th class="game-ranking-number">{{T "page:game.ranking_now"}}</th>
+      	<th class="game-ranking-name">{{T "page:game.icon_user"}}</th>
+      	<th class="game-ranking-score">{{T "page:game.total_score"}}</th>
     	</thead>
     	<tbody>
     		{{#ranking}}
@@ -50,8 +50,8 @@
 		<div class="game-state-separator light"></div>
 		<textarea class="game-message-input scroll-panel"></textarea>
 		<div class="game-state-actions">
-			<div class="rich-button game-quit-button">退出</div>
-			<div class="rich-button game-send-message-button">发送</div>
+			<div class="rich-button game-quit-button">{{T "page:game.quit"}}</div>
+			<div class="rich-button game-send-message-button">{{T "page:game.send"}}</div>
 		</div>
 		<a class="game-state-hide-button" href="javascript:void(0);"></a>
 	</div>

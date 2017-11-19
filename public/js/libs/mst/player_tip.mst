@@ -3,7 +3,7 @@
   <div class="player-tip-content">
     <div class="player-tip-row">
       <div class="player-tip-name">
-        段位
+        {{T "common:player.grade"}}
       </div>
       <div class="player-tip-value">
         {{grade_name}}
@@ -11,7 +11,7 @@
     </div>
     <div class="player-tip-row">
       <div class="player-tip-name">
-        积分
+        {{T "common:player.points"}}
       </div>
       <div class="player-tip-value">
         {{points}}
@@ -19,7 +19,7 @@
     </div>
     <div class="player-tip-row">
       <div class="player-tip-name">
-        总局数
+        {{T "common:player.rounds"}}
       </div>
       <div class="player-tip-value">
         {{rounds}}
@@ -27,7 +27,7 @@
     </div>
     <div class="player-tip-row">
       <div class="player-tip-name">
-        胜率
+        {{T "common:player.winrate"}}
       </div>
       <div class="player-tip-value">
         {{winrate}}%

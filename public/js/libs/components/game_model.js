@@ -160,7 +160,7 @@
         ranking.push({
           account : quitPlayer.attr('account'),
           name : quitPlayer.attr('name'),
-          score : quitPlayer.status === 'quit' ? '退出' : '离线',
+          score : quitPlayer.status === 'quit' ? it('page:game.quit') : it('page:game.offline'),
           type : 'quit'
         });
       });
