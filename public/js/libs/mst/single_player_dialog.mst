@@ -12,11 +12,11 @@
       {{/showBattle}}
       <div class="play-mode self-play">
         <input type="radio" name="play_mode" data-value="single" checked="checked" />
-        <span>单机</span>
+        <span>{{T "page:lobby.single"}}</span>
       </div>
       <div class="play-mode robot-play">
         <input type="radio" name="play_mode" data-value="robot" />
-        <span>人机</span>
+        <span>{{T "page:lobby.robot"}}</span>
       </div>
     </div>
     {{#showBattle}}

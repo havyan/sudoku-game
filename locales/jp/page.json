@@ -82,7 +82,9 @@
     "game_start_mode": "開始方法",
     "game_auto_start": "全員揃えで自動的に開始",
     "game_manual_start": "親が手動的に開始",
-    "game_wait_time": "待ち時間"
+    "game_wait_time": "待ち時間",
+    "single": "スタンドアローン",
+    "robot": "マンマシン"
   },
   "help": {
     "welcome": "欢迎",

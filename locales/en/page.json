@@ -82,7 +82,9 @@
     "game_start_mode": "开始方式",
     "game_auto_start": "人齐自动开始",
     "game_manual_start": "庄家手动开始",
-    "game_wait_time": "等待时间"
+    "game_wait_time": "等待时间",
+    "single": "单机",
+    "robot": "人机"
   },
   "help": {
     "welcome": "欢迎",
