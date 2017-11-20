@@ -1,98 +1,154 @@
 {
-  "parents": [
-    {
-      "name": "白羊座",
-      "code": "aries",
-      "order": 1,
-      "icon": "/imgs/default/constellation/aries.png",
-      "virtual": true
-    }, {
-      "name": "金牛座",
-      "code": "taurus",
-      "order": 2,
-      "icon": "/imgs/default/constellation/taurus.png",
-      "virtual": true
-    }, {
-      "name": "双子座",
-      "code": "gemini",
-      "order": 3,
-      "icon": "/imgs/default/constellation/gemini.png",
-      "virtual": true
-    }, {
-      "name": "巨蟹座",
-      "code": "cancer",
-      "order": 4,
-      "icon": "/imgs/default/constellation/cancer.png",
-      "virtual": true
-    }, {
-      "name": "狮子座",
-      "code": "leo",
-      "order": 5,
-      "icon": "/imgs/default/constellation/leo.png",
-      "virtual": true
-    }, {
-      "name": "处女座",
-      "code": "virgo",
-      "order": 6,
-      "icon": "/imgs/default/constellation/virgo.png",
-      "virtual": true
-    }, {
-      "name": "天秤座",
-      "code": "libra",
-      "order": 7,
-      "icon": "/imgs/default/constellation/libra.png",
-      "virtual": true
-    }, {
-      "name": "天蝎座",
-      "code": "scorpio",
-      "order": 8,
-      "icon": "/imgs/default/constellation/scorpio.png",
-      "virtual": true
-    }, {
-      "name": "射手座",
-      "code": "sagittarius",
-      "order": 9,
-      "icon": "/imgs/default/constellation/sagittarius.png",
-      "virtual": true
-    }, {
-      "name": "摩羯座",
-      "code": "capricorn",
-      "order": 10,
-      "icon": "/imgs/default/constellation/capricorn.png",
-      "virtual": true
-    }, {
-      "name": "水瓶座",
-      "code": "aquarius",
-      "order": 11,
-      "icon": "/imgs/default/constellation/aquarius.png",
-      "virtual": true
-    }, {
-      "name": "双鱼座",
-      "code": "pisces",
-      "order": 12,
-      "icon": "/imgs/default/constellation/pisces.png",
-      "virtual": true
-    }
-  ],
-  "children": [
-    {
-      "name": "房间一",
-      "code": "room1",
-      "order": 1,
-      "virtual": false,
-      "capacity": 12
-    }, {
-      "name": "房间二",
-      "code": "room2",
-      "order": 2,
-      "virtual": false,
-      "capacity": 24
-    }, {
-      "name": "房间三",
-      "code": "room3",
-      "order": 3,
-      "virtual": false,
-      "capacity": 36
-    }
-  ]
+  "parents": [{
+    "name": {
+      "cn": "白羊座",
+      "en": "Aries",
+      "jp": "おひつじ座"
+    },
+    "code": "aries",
+    "order": 1,
+    "icon": "/imgs/default/constellation/aries.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "金牛座",
+      "en": "Taurus",
+      "jp": "おうし座"
+    },
+    "code": "taurus",
+    "order": 2,
+    "icon": "/imgs/default/constellation/taurus.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "双子座",
+      "en": "Gemini",
+      "jp": "ふたご座"
+    },
+    "code": "gemini",
+    "order": 3,
+    "icon": "/imgs/default/constellation/gemini.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "巨蟹座",
+      "en": "Cancer",
+      "jp": "かに座"
+    },
+    "code": "cancer",
+    "order": 4,
+    "icon": "/imgs/default/constellation/cancer.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "狮子座",
+      "en": "Leo",
+      "jp": "しし座"
+    },
+    "code": "leo",
+    "order": 5,
+    "icon": "/imgs/default/constellation/leo.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "处女座",
+      "en": "Virgo",
+      "jp": "おとめ座"
+    },
+    "code": "virgo",
+    "order": 6,
+    "icon": "/imgs/default/constellation/virgo.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "天秤座",
+      "en": "Libra",
+      "jp": "てんびん座"
+    },
+    "code": "libra",
+    "order": 7,
+    "icon": "/imgs/default/constellation/libra.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "天蝎座",
+      "en": "Scorpio",
+      "jp": "さそり座"
+    },
+    "code": "scorpio",
+    "order": 8,
+    "icon": "/imgs/default/constellation/scorpio.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "射手座",
+      "en": "Sagittarius",
+      "jp": "いて座"
+    },
+    "code": "sagittarius",
+    "order": 9,
+    "icon": "/imgs/default/constellation/sagittarius.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "摩羯座",
+      "en": "Capricorn",
+      "jp": "やぎ座"
+    },
+    "code": "capricorn",
+    "order": 10,
+    "icon": "/imgs/default/constellation/capricorn.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "水瓶座",
+      "en": "Aquarius",
+      "jp": "みずがめ座"
+    },
+    "code": "aquarius",
+    "order": 11,
+    "icon": "/imgs/default/constellation/aquarius.png",
+    "virtual": true
+  }, {
+    "name": {
+      "cn": "双鱼座",
+      "en": "Pisces",
+      "jp": "うお座"
+    },
+    "code": "pisces",
+    "order": 12,
+    "icon": "/imgs/default/constellation/pisces.png",
+    "virtual": true
+  }],
+  "children": [{
+    "name": {
+      "cn": "房间一",
+      "en": "Room 1",
+      "jp": "部屋一"
+    },
+    "code": "room1",
+    "order": 1,
+    "virtual": false,
+    "capacity": 12
+  }, {
+    "name": {
+      "cn": "房间二",
+      "en": "Room 2",
+      "jp": "部屋二"
+    },
+    "code": "room2",
+    "order": 2,
+    "virtual": false,
+    "capacity": 24
+  }, {
+    "name": {
+      "cn": "房间三",
+      "en": "Room 3",
+      "jp": "部屋三"
+    },
+    "code": "room3",
+    "order": 3,
+    "virtual": false,
+    "capacity": 36
+  }]
 }

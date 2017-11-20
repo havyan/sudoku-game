@@ -4,7 +4,7 @@
       {{#rooms}}
       <div id="{{id}}" class="lobby-nav-item" data-id="{{id}}">
         <div class="lobby-nav-virtual-room">
-          {{T "common:constellation" code}}({{playersCount this}})
+          {{L name}} ({{playersCount this}})
         </div>
         <div class="lobby-nav-item-content">
           <div class="lobby-nav-item-line">
@@ -15,7 +15,7 @@
           <div class="lobby-nav-real-rooms">
             {{#children}}
             <div id="{{id}}" class="lobby-nav-real-room" data-id="{{id}}">
-              {{name}}({{playersCount this}})
+              {{L name}} ({{playersCount this}})
             </div>
             {{/children}}
           </div>
