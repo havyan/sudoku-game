@@ -31,15 +31,17 @@ PuzzleSchema.statics.findOneByLevel = function(level, cb) {
 };
 
 PuzzleSchema.statics.findRandomOneByLevel = function(level, cb) {
-  this.aggregate([{
-    $match: {
-      level: level
+  this.aggregate([
+    {
+      $match: {
+        level: level
+      }
+    }, {
+      $sample: {
+        size: 1
+      }
     }
-  }, {
-    $sample: {
-      size: 1
-    }
-  }], function(error, puzzles) {
+  ], function(error, puzzles) {
     if (error) {
       cb(error);
     } else {
@@ -56,11 +58,7 @@ PuzzleSchema.statics.importData = function(file, cb) {
   var self = this;
   var creations = {};
   var seed = 0;
-  var rl = readline.createInterface({
-    input: fs.createReadStream(file),
-    output: process.stdout,
-    terminal: false
-  });
+  var rl = readline.createInterface({input: fs.createReadStream(file), output: process.stdout, terminal: false});
 
   var source,
     puzzle,
@@ -133,42 +131,92 @@ PuzzleSchema.statics.importData = function(file, cb) {
 };
 
 var Puzzle = mongoose.model('Puzzle', PuzzleSchema);
-Puzzle.LEVELS = [{
-  code: 'DDD',
-  name: '入门段'
-}, {
-  code: 'CDD',
-  name: '1段'
-}, {
-  code: 'CCD',
-  name: '2段'
-}, {
-  code: 'CCC',
-  name: '3段'
-}, {
-  code: 'BCC',
-  name: '4段'
-}, {
-  code: 'BBC',
-  name: '5段'
-}, {
-  code: 'BBB',
-  name: '6段'
-}, {
-  code: 'ABB',
-  name: '7段'
-}, {
-  code: 'AAB',
-  name: '8段'
-}, {
-  code: 'AAA',
-  name: '9段'
-}, {
-  code: 'AAAA',
-  name: '10段'
-}, {
-  code: 'AAAAA',
-  name: '11段'
-}];
+Puzzle.LEVELS = [
+  {
+    code: 'DDD',
+    name: {
+      cn: '入门段',
+      en: 'Entrance Level',
+      jp: '开门段'
+    }
+  }, {
+    code: 'CDD',
+    name: {
+      cn: '1段',
+      en: 'Level 1',
+      jp: '1段'
+    }
+  }, {
+    code: 'CCD',
+    name: {
+      cn: '2段',
+      en: 'Level 2',
+      jp: '2段'
+    }
+  }, {
+    code: 'CCC',
+    name: {
+      cn: '3段',
+      en: 'Level 3',
+      jp: '3段'
+    }
+  }, {
+    code: 'BCC',
+    name: {
+      cn: '4段',
+      en: 'Level 4',
+      jp: '4段'
+    }
+  }, {
+    code: 'BBC',
+    name: {
+      cn: '5段',
+      en: 'Level 5',
+      jp: '5段'
+    }
+  }, {
+    code: 'BBB',
+    name: {
+      cn: '6段',
+      en: 'Level 6',
+      jp: '6段'
+    }
+  }, {
+    code: 'ABB',
+    name: {
+      cn: '7段',
+      en: 'Level 7',
+      jp: '7段'
+    }
+  }, {
+    code: 'AAB',
+    name: {
+      cn: '8段',
+      en: 'Level 8',
+      jp: '8段'
+    }
+  }, {
+    code: 'AAA',
+    name: {
+      cn: '9段',
+      en: 'Level 9',
+      jp: '9段'
+    }
+  }, {
+    code: 'AAAA',
+    name: {
+      cn: '10段',
+      en: 'Level 10',
+      jp: '10段'
+    }
+  }, {
+    code: 'AAAAA',
+    name: {
+      cn: '11段',
+      en: 'Level 11',
+      jp: '11段'
+    }
+  }
+];
 
 module.exports = Puzzle;

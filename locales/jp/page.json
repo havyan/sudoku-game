@@ -14,7 +14,8 @@
       "forgetpassword": "パスワード忘れ/変更",
       "login": "ログイン",
       "signup": "新規ログイン",
-      "guestpass": "新規ログインなしのゲーム体験"
+      "guestpass": "新規ログインなしのゲーム体験",
+      "agreement": "私は<span class=\"protocol\">天才数独ユーザー協議</span>と<span class=\"law\">法律声明</span>を読んで同意しました"
     }
   },
   "about": {
@@ -84,7 +85,13 @@
     "game_manual_start": "親が手動的に開始",
     "game_wait_time": "待ち時間",
     "single": "スタンドアローン",
-    "robot": "マンマシン"
+    "robot": "マンマシン",
+    "unlimited_player": "制限人数なし",
+    "unlimited_time": "制限時間なし",
+    "hour": "時間",
+    "player": "人",
+    "second": "秒",
+    "minute": "分"
   },
   "help": {
     "welcome": "欢迎",

@@ -14,7 +14,8 @@
       "forgetpassword": "Forget/Change Password?",
       "login": "Login",
       "signup": "Signup",
-      "guestpass": "Guest Play"
+      "guestpass": "Guest Play",
+      "agreement": "我已阅读并同意<span class=\"protocol\">超天才数独玩家协议</span>和<span class=\"law\">法律声明</span>"
     }
   },
   "about": {
@@ -84,7 +85,13 @@
     "game_manual_start": "庄家手动开始",
     "game_wait_time": "等待时间",
     "single": "单机",
-    "robot": "人机"
+    "robot": "人机",
+    "unlimited_player": "不限制人数",
+    "unlimited_time": "不限制时间",
+    "hour": "小时",
+    "player": "人",
+    "second": "秒",
+    "minute": "分钟"
   },
   "help": {
     "welcome": "欢迎",

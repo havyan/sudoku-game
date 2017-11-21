@@ -206,18 +206,17 @@
   overflow: hidden;
   color: white;
   font-size: 16px;
+  background-size: 100% 100%;
 }
 
 .lobby-modal.single-player-modal .modal-dialog {
   width: 500px;
   height: 250px;
-  background-size: 500px 250px;
 }
 
 .lobby-modal.single-player-modal.has-battle .modal-dialog {
   width: 550px;
   height: 260px;
-  background-size: 550px 260px;
 }
 
 .lobby-modal.single-player-modal .lobby-modal-content {
@@ -416,4 +415,16 @@
 
 .free .lobby-game.waiting .lobby-player.empty.normal.available {
   cursor: pointer;
+}
+
+.lang-jp .lobby-modal.single-player-modal .modal-dialog {
+  width: 700px;
+}
+
+.lang-jp .lobby-modal.single-player-modal .lobby-modal-content .play-mode {
+  font-size: 24px;
+}
+
+.lang-jp .lobby-modal .lobby-modal-row .start-mode {
+  font-size: 11px;
 }

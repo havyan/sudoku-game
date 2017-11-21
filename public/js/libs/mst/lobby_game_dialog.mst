@@ -9,7 +9,7 @@
         <div class="value level">
           <select>
             {{#each levels}}
-            <option value="{{code}}">{{name}}</option>
+            <option value="{{code}}">{{L name}}</option>
             {{/each}}
           </select>
         </div>
@@ -21,7 +21,7 @@
         <div class="value step-time">
           <select>
             {{#each stepTimes}}
-            <option value="{{total}}">{{total}}秒</option>
+            <option value="{{total}}">{{total}}{{T "page:lobby.second"}}</option>
             {{/each}}
           </select>
         </div>
@@ -68,7 +68,7 @@
         <div class="value wait-time">
           <select>
             {{#each waitTimes}}
-            <option value="{{this}}">{{this}}分钟</option>
+            <option value="{{this}}">{{this}}{{T "page:lobby.minute"}}</option>
             {{/each}}
           </select>
         </div>

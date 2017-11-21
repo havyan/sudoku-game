@@ -11,10 +11,10 @@
           return '';
         },
         capacityText : function(capacity) {
-          return capacity === 99 ? '不限制人数' : capacity + '人';
+          return capacity === 99 ? it('page:lobby.unlimited_player') : capacity + it('page:lobby.player');
         },
         durationText : function(duration) {
-          return duration === 99 ? '不限制时间' : duration + '小时';
+          return duration === 99 ? it('page:lobby.unlimited_time') : duration + it('page:lobby.hour');
         }
       }, function(frag) {
         this.element.append(frag);

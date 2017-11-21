@@ -15,6 +15,31 @@ var winston = require('winston');
 
 winston.info("Start args are: " + JSON.stringify(args));
 
+var I18N_RE = /^i18n\((\S+:\S+)\)$/g;
+var handleI18n = function(lang, json, handled) {
+  handled = handled || [];
+  for (var key in json) {
+    var value = json[key];
+    if (_.isString(value)) {
+      var matches = I18N_RE.exec(value);
+      if (matches) {
+        json[key] = i18next.getFixedT(lang)(matches[1]);
+      }
+    } else if (_.isObject(value)) {
+      if (handled.indexOf(value) < 0) {
+        handleI18n(lang, value, handled);
+      }
+    } else if (_.isArray(value)) {
+      value.forEach(function(e) {
+        if (_.isObject(e) && handled.indexOf(e) < 0) {
+          handleI18n(lang, e, handled);
+        }
+      });
+    }
+  }
+  handled.push(json);
+};
+
 var superRender = express.response.render;
 express.response.render = function(view, options, callback) {
   var lang = this.req.cookies.lang || 'cn';
@@ -35,10 +60,19 @@ express.response.render = function(view, options, callback) {
   superRender.apply(this, newArgs);
 };
 
+express.response.sendI18n = function() {
+  var lang = this.req.cookies.lang || 'cn';
+  var arg0 = arguments[0];
+  if (_.isObject(arg0)) {
+    handleI18n(lang, arg0);
+  }
+  this.send.apply(this, arguments);
+};
+
 i18next.use(i18nextBackend).init({
   lng: 'cn',
   preload: ['cn', 'en', 'jp'],
-  ns: ['page', 'common'],
+  ns: ['page', 'common', 'app'],
   backend: {
     loadPath: 'locales/{{lng}}/{{ns}}.json',
     addPath: 'locales/{{lng}}/{{ns}}.add.json',
