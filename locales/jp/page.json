@@ -86,6 +86,7 @@
     "game_wait_time": "待ち時間",
     "single": "スタンドアローン",
     "robot": "マンマシン",
+    "start_game": "ゲームスタート",
     "unlimited_player": "制限人数なし",
     "unlimited_time": "制限時間なし",
     "hour": "時間",
@@ -307,5 +308,18 @@
     "number": "購入数量：",
     "required_money": "天才金貨支払い：",
     "buy": "両替"
+  },
+  "messages": {
+    "message": "メール",
+    "delete_successful": "删除成功！",
+    "select_all": "すべて選択",
+    "delete": "削除",
+    "sender": "送信者",
+    "title": "件名",
+    "date": "日付",
+    "memo": "付注",
+    "read": "既読",
+    "unread": "未读",
+    "receiver": "受信者"
   }
 }

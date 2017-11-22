@@ -53,6 +53,13 @@
     "continue": "继续",
     "quit": "退出"
   },
+  "pagination": {
+    "first": "首页",
+    "next": "下一页",
+    "previous": "上一页",
+    "last": "末页",
+    "goto": "跳转"
+  },
   "company": "超天才技术开发(北京)有限责任公司",
   "address": "北京市上地三街金隅嘉华大厦A座501",
   "email": "邮箱",

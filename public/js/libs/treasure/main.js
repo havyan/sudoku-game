@@ -61,7 +61,7 @@
         userClass: 'cool',
         autoClose: false,
         actions: [{
-          name: '开始游戏',
+          name: it('page:lobby.start_game'),
           callback: function() {
             Rest.Game.createTreasureGame();
             window.open('/treasure/table/' + data.user.account, '_blank');

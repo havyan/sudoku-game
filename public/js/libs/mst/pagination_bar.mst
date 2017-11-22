@@ -1,16 +1,16 @@
 <div class="pagination-bar {{#editable}}editable{{/editable}}">
-  <a class="button first" href="javascript:void(0)">首页</a>
-  <a class="button previous" href="javascript:void(0)">上一页</a>
+  <a class="button first" href="javascript:void(0)">{{T "common:pagination.first"}}</a>
+  <a class="button previous" href="javascript:void(0)">{{T "common:pagination.previous"}}</a>
   <a class="previous-arrow" href="javascript:void(0)">&lt;</a>
   {{#pages}}
   <a class="page-item {{type}} {{#selected}}selected{{/selected}}" href="javascript:void(0)" data-page="{{value}}">{{value}}</a>
   {{/pages}}
   <a class="next-arrow" href="javascript:void(0)">&gt;</a>
-  <a class="button next" href="javascript:void(0)">下一页</a>
-  <a class="button last" href="javascript:void(0)">末页</a>
+  <a class="button next" href="javascript:void(0)">{{T "common:pagination.next"}}</a>
+  <a class="button last" href="javascript:void(0)">{{T "common:pagination.last"}}</a>
   <input class="edit-goto" type="number" min="{{start}}" max="{{count}}" step="1" value="{{current}}" />
   <div class="current">
     {{current}}/{{count}}
   </div>
-  <a class="button goto" href="javascript:void(0)">跳转</a>
+  <a class="button goto" href="javascript:void(0)">{{T "common:pagination.goto"}}</a>
 </div>

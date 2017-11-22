@@ -86,6 +86,7 @@
     "game_wait_time": "等待时间",
     "single": "单机",
     "robot": "人机",
+    "start_game": "开始游戏",
     "unlimited_player": "不限制人数",
     "unlimited_time": "不限制时间",
     "hour": "小时",
@@ -307,5 +308,18 @@
     "number": "购买数量：",
     "required_money": "所需天才币：",
     "buy": "兑换"
+  },
+  "messages": {
+    "message": "邮件",
+    "delete_successful": "删除成功！",
+    "select_all": "全选",
+    "delete": "删除",
+    "sender": "发件人",
+    "title": "标题",
+    "date": "日期",
+    "memo": "备注",
+    "read": "已读",
+    "unread": "未读",
+    "receiver": "收件人"
   }
 }
