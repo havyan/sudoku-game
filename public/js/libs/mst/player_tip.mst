@@ -6,7 +6,7 @@
         {{T "common:player.grade"}}
       </div>
       <div class="player-tip-value">
-        {{grade_name}}
+        {{L grade_name}}
       </div>
     </div>
     <div class="player-tip-row">

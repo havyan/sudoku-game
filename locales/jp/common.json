@@ -50,6 +50,7 @@
     "ok": "確認",
     "cancel": "取消",
     "back": "戻る",
+    "submit": "提出",
     "continue": "继续",
     "quit": "退出"
   },
@@ -60,10 +61,14 @@
     "last": "最終ページ",
     "goto": "ジャンプ"
   },
+  "communicate": {
+    "feedback": "フ<br>ィ<br>ー<br>ド<br>バ<br>ッ<br>ク",
+    "group_chat": "グ<br>ル<br>ー<br>プ<br>チ<br>ャ<br>ッ<br>ト"
+  },
   "company": "超天才技術開発（北京）有限責任会社",
   "address": "北京上地三街金隅嘉华ビルA-501",
-  "email": "邮箱",
-  "phone": "电话",
+  "email": "メール",
+  "phone": "電話番号",
   "sudoku": "数独棋",
   "money": "天才金貨"
 }

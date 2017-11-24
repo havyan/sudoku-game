@@ -29,7 +29,7 @@
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
             if (result && result.grade_name) {
-              element.closest('.info').find('.info-row.grade .value').html(result.grade_name);
+              element.closest('.info').find('.info-row.grade .value').html(il(result.grade_name));
             }
           }, function() {
           });

@@ -18,7 +18,11 @@ var Robot = function(game, account) {
   this.wintimes = 0;
   this.losetimes = 0;
   this.winrate = 0;
-  this.grade_name = '新手';
+  this.grade_name = {
+    cn: "新手",
+    en: "Green Hand",
+    jp: "初心"
+  };
   this.money = 0;
 };
 

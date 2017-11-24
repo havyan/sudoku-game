@@ -834,3 +834,7 @@ to {
 .lang-jp .player-tip {
   width: 160px;
 }
+
+.lang-jp .bdshare-slide-button-box {
+  top: 10% !important;
+}

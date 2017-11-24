@@ -40,6 +40,7 @@
     "cancel": "取消",
     "back": "返回",
     "continue": "继续",
+    "submit": "提交",
     "quit": "退出"
   },
   "player": {
@@ -59,6 +60,10 @@
     "previous": "上一页",
     "last": "末页",
     "goto": "跳转"
+  },
+  "communicate": {
+    "feedback": "意<br>见<br>反<br>馈",
+    "group_chat": "加<br>入<br>群<br>聊"
   },
   "company": "超天才技术开发(北京)有限责任公司",
   "address": "北京市上地三街金隅嘉华大厦A座501",

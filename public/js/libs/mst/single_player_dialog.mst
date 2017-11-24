@@ -7,7 +7,7 @@
       {{#showBattle}}
       <div class="play-mode battle-play">
         <input type="radio" name="play_mode" data-value="battle" />
-        <span>对战</span>
+        <span>{{T "page:lobby.battle"}}</span>
       </div>
       {{/showBattle}}
       <div class="play-mode self-play">
@@ -33,7 +33,7 @@
       </button>
       {{/hasUnfinished}}
       <button type="button" class="confirm" data-value="new">
-        开始{{#hasUnfinished}}新{{/hasUnfinished}}游戏
+        {{#if hasUnfinished}}{{T "page:lobby.start_new_game"}}{{else}}{{T "page:lobby.start_game"}}{{/if}}
       </button>
     </div>
   </div>
