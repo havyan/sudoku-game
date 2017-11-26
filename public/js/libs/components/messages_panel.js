@@ -176,7 +176,7 @@
     '.messages-table tbody tr click' : _.debounce(function(element) {
       this.options.model.read(element.data('message'), function(message) {
         Dialog.show({
-          title : it('page:messages.message'),
+          title : T('page:messages.message'),
           template : '/js/libs/mst/message.mst',
           data : message,
           actions : [Dialog.CLOSE_ACTION]
@@ -187,7 +187,7 @@
 
     '.messages-remove click' : function() {
       this.options.model.removeIndex(function() {
-        Dialog.message(it('page:messages.delete_successful'));
+        Dialog.message(T('page:messages.delete_successful'));
       });
     }
   });

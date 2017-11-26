@@ -40,8 +40,8 @@
     return value;
   });
 
-  window.it = i18next.t.bind(i18next);
-  window.il = function(value) {
+  window.T = i18next.t.bind(i18next);
+  window.L = function(value) {
     if (_.isObject(value)) {
       value = (value.attr && value.attr(lang)) || value[lang];
     }

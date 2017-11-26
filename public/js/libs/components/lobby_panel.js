@@ -53,7 +53,7 @@
         },
         tableInfo : function(game) {
           if (game.status === 'empty') {
-            return it('page:lobby.create_game');
+            return T('page:lobby.create_game');
           } else if (game.status === 'waiting') {
             var level = _.find(model.attr('levels'), {
               code : game.level

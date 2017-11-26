@@ -17,7 +17,7 @@
         },
         formatRemainingTime : function(remainingTime) {
           if (options.model.attr('duration') === 99) {
-            return it('page:game.unlimited_time');
+            return T('page:game.unlimited_time');
           } else {
             return Utils.formatSeconds(remainingTime());
           }
@@ -45,7 +45,7 @@
         }
       });
       $(window).on('beforeunload', function() {
-        return it('page:game.leave_ok');
+        return T('page:game.leave_ok');
       });
     },
 
@@ -93,11 +93,11 @@
     '{model} maxTimeoutReached' : function() {
       var self = this;
       Dialog.show({
-        title : it('page:game.confirmation'),
-        content : it('page:game.game_will') + '<span class="max-timeout-countdown-number">20</span>' + it('page:game.continue_game'),
+        title : T('page:game.confirmation'),
+        content : T('page:game.game_will') + '<span class="max-timeout-countdown-number">20</span>' + T('page:game.continue_game'),
         autoClose : false,
         actions : [{
-          name : it('page:game.continue'),
+          name : T('page:game.continue'),
           userClass : 'btn-primary',
           callback : function(element) {
             self.options.model.goahead(function() {
@@ -119,9 +119,9 @@
     '{model} waitCountdownStage' : function(model, e, newStage) {
       if (newStage === 0) {
         if (model.isBanker()) {
-          Dialog.message(it('page:game.sorry_over_money'));
+          Dialog.message(T('page:game.sorry_over_money'));
         } else {
-          Dialog.message(it('page:game.sorry_over'));
+          Dialog.message(T('page:game.sorry_over'));
         }
       }
     },
@@ -143,12 +143,12 @@
       var hasResults = results && results.length > 0;
       model.attr('hasResults', hasResults);
       var dialog = Dialog.show({
-        title : hasResults ? it('page:game.ranking') : it('page:game.game_over'),
+        title : hasResults ? T('page:game.ranking') : T('page:game.game_over'),
         template : '/js/libs/mst/results.mst',
         data : model,
         autoClose : false,
         actions : [{
-          name : it('common:actions.close'),
+          name : T('common:actions.close'),
           dismiss : true,
           callback : function() {
             model.quit(function() {
@@ -160,7 +160,7 @@
             });
           }
         }, {
-          name : it('page:game.quit'),
+          name : T('page:game.quit'),
           userClass : 'btn-primary',
           callback : function(element) {
             this.hide();
@@ -229,9 +229,9 @@
     '.game-quit-button click' : function() {
       var self = this;
       if (this.options.model.attr('status') === 'ongoing') {
-        var message = it('page:game.quit_ok');
+        var message = T('page:game.quit_ok');
         if (this.options.model.isBanker() && !this.options.model.attr('isGuest')) {
-          message = it('page:game.quit_ok_money');
+          message = T('page:game.quit_ok_money');
         }
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
@@ -239,7 +239,7 @@
           });
         });
       } else {
-        var message = this.options.model.isBanker() ? it('page:game.quit_ok_wait_money') : it('page:game.quit_ok_wait');
+        var message = this.options.model.isBanker() ? T('page:game.quit_ok_wait_money') : T('page:game.quit_ok_wait');
         Dialog.confirm(message, function() {
           self.options.model.quit(function() {
             window.location.href = "/main";
@@ -253,11 +253,11 @@
       var type = model.attr('destroyType');
       if (!model.isBanker() && type === 'banker-quit') {
         Dialog.show({
-          title : it('page:game.confirmation'),
-          content : it('page:game.because_banker') + '<span class="close-countdown-number">10</span>' + it('page:game.seconds_close'),
+          title : T('page:game.confirmation'),
+          content : T('page:game.because_banker') + '<span class="close-countdown-number">10</span>' + T('page:game.seconds_close'),
           autoClose : false,
           actions : [{
-            name : it('page:game.close_now'),
+            name : T('page:game.close_now'),
             userClass : 'btn-primary',
             callback : function() {
               window.location.href = "/main";

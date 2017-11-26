@@ -11,10 +11,10 @@
           return '';
         },
         capacityText : function(capacity) {
-          return capacity === 99 ? it('page:lobby.unlimited_player') : capacity + it('page:lobby.player');
+          return capacity === 99 ? T('page:lobby.unlimited_player') : capacity + T('page:lobby.player');
         },
         durationText : function(duration) {
-          return duration === 99 ? it('page:lobby.unlimited_time') : duration + it('page:lobby.hour');
+          return duration === 99 ? T('page:lobby.unlimited_time') : duration + T('page:lobby.hour');
         }
       }, function(frag) {
         this.element.append(frag);

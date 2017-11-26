@@ -1,19 +1,19 @@
 (function() {
   var STATUS = {
-    '0' : it('page:recharge.recharge_incompleted'),
-    '1' : it('page:recharge.recharge_succesful'),
-    '2' : it('page:recharge.recharge_completed'),
-    '9' : it('page:recharge.recharge_start'),
-    '-1' : it('page:recharge.recharge_fail')
+    '0' : T('page:recharge.recharge_incompleted'),
+    '1' : T('page:recharge.recharge_succesful'),
+    '2' : T('page:recharge.recharge_completed'),
+    '9' : T('page:recharge.recharge_start'),
+    '-1' : T('page:recharge.recharge_fail')
   };
   var BANK = {
-    '0' : it('page:recharge.icbc'),
-    '1' : it('page:recharge.cmb'),
-    '3' : it('page:recharge.abc'),
-    '4' : it('page:recharge.ccb'),
-    '11' : it('page:recharge.alipay'),
-    '6' : it('page:recharge.union'),
-    '13' : it('page:recharge.wepay')
+    '0' : T('page:recharge.icbc'),
+    '1' : T('page:recharge.cmb'),
+    '3' : T('page:recharge.abc'),
+    '4' : T('page:recharge.ccb'),
+    '11' : T('page:recharge.alipay'),
+    '6' : T('page:recharge.union'),
+    '13' : T('page:recharge.wepay')
   };
   can.Model('Models.RechargeModel', {
   }, {
@@ -165,9 +165,9 @@
         rechargeResult : function(status) {
           status = status();
           if (status === '1' || status === '2') {
-            return it('page:recharge.success_message');
+            return T('page:recharge.success_message');
           } else {
-            return it('page:recharge.fail_message');
+            return T('page:recharge.fail_message');
           }
         },
 
@@ -247,10 +247,10 @@
             model.next();
           });
         } else {
-          Dialog.message(it('page:recharge.recharge_target'));
+          Dialog.message(T('page:recharge.recharge_target'));
         }
       } else {
-        Dialog.message(it('page:recharge.recharge_money'));
+        Dialog.message(T('page:recharge.recharge_money'));
       }
     },
 
@@ -278,11 +278,11 @@
       };
       var timer = setInterval(check, 3000);
       var dialog = Dialog.show({
-        title : it('page:recharge.pay_confirm'),
+        title : T('page:recharge.pay_confirm'),
         userClass : 'pay-confirm-dialog',
-        content : it('page:recharge.pay_in_new_page') + '<br>' + it('page:recharge.pay_view_later'),
+        content : T('page:recharge.pay_in_new_page') + '<br>' + T('page:recharge.pay_view_later'),
         actions : [{
-          name : it('page:recharge.pay_finished'),
+          name : T('page:recharge.pay_finished'),
           userClass : 'btn-primary',
           callback : function() {
             check();
@@ -291,7 +291,7 @@
             model.next();
           }
         }, {
-          name : it('page:recharge.pay_problem'),
+          name : T('page:recharge.pay_problem'),
           userClass : 'btn-danger',
           callback : function() {
             check();

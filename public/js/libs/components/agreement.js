@@ -3,7 +3,7 @@
 
     showProtocol: function() {
       Dialog.show({
-        title: it("page:agreement.title"),
+        title: T("page:agreement.title"),
         template: '/js/libs/mst/protocol.mst',
         userClass: 'protocol-dialog',
         autoClose: false,

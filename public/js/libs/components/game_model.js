@@ -160,7 +160,7 @@
         ranking.push({
           account : quitPlayer.attr('account'),
           name : quitPlayer.attr('name'),
-          score : quitPlayer.status === 'quit' ? it('page:game.quit') : it('page:game.offline'),
+          score : quitPlayer.status === 'quit' ? T('page:game.quit') : T('page:game.offline'),
           type : 'quit'
         });
       });

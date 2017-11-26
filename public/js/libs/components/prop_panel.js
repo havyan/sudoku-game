@@ -96,10 +96,10 @@
         type : element.closest('.store-item').data('type')
       }).count;
       if ((count + current) > 999) {
-        Dialog.message(it('page:props.purchase_limit'));
+        Dialog.message(T('page:props.purchase_limit'));
         $value.val(999 - current);
       } else if (type.price * count > money) {
-        Dialog.message(it('page:props.money_not_enough'));
+        Dialog.message(T('page:props.money_not_enough'));
       } else {
         Rest.Prop.buy(type.attr('type'), count, function(result) {
           if (result.success) {
@@ -110,9 +110,9 @@
             }).attr('count', result.count);
             type.attr('sales', type.attr('sales') + count);
             type.attr('purchase', type.attr('purchase') + count);
-            Dialog.message(it('page:props.purchase_successful'));
+            Dialog.message(T('page:props.purchase_successful'));
           } else {
-            Dialog.message(it('page:props.purchase_fail') + result.reason);
+            Dialog.message(T('page:props.purchase_fail') + result.reason);
           }
         }, function() {
         });
