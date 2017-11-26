@@ -1,3 +1,28 @@
 {
-
+  "rule": {
+    "beginner": "初心",
+    "grade1": "一段",
+    "grade2": "二段",
+    "grade3": "三段",
+    "grade4": "四段",
+    "grade5": "五段",
+    "grade6": "六段",
+    "grade7": "七段",
+    "grade8": "八段",
+    "grade9": "九段"
+  },
+  "puzzle": {
+    "beginner": "开门段",
+    "level1": "1段",
+    "level2": "2段",
+    "level3": "3段",
+    "level4": "4段",
+    "level5": "5段",
+    "level6": "6段",
+    "level7": "7段",
+    "level8": "8段",
+    "level9": "9段",
+    "level10": "10段",
+    "level11": "11段"
+  }
 }

@@ -1,3 +1,28 @@
 {
-  
+  "rule": {
+    "beginner": "Green Hand",
+    "grade1": "Grade 1",
+    "grade2": "Grade 2",
+    "grade3": "Grade 3",
+    "grade4": "Grade 4",
+    "grade5": "Grade 5",
+    "grade6": "Grade 6",
+    "grade7": "Grade 7",
+    "grade8": "Grade 8",
+    "grade9": "Grade 9"
+  },
+  "puzzle": {
+    "beginner": "Beginner",
+    "level1": "Level 1",
+    "level2": "Level 2",
+    "level3": "Level 3",
+    "level4": "Level 4",
+    "level5": "Level 5",
+    "level6": "Level 6",
+    "level7": "Level 7",
+    "level8": "Level 8",
+    "level9": "Level 9",
+    "level10": "Level 10",
+    "level11": "Level 11"
+  }
 }

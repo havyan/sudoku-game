@@ -80,6 +80,15 @@ i18next.use(i18nextBackend).init({
   }
 });
 
+global.L = function(key, options) {
+  var langs = i18next.options.preload;
+  var result = {};
+  langs.forEach(function(lang) {
+    result[lang] = i18next.getFixedT(lang)(key, options);
+  });
+  return result;
+};
+
 // init mongo connection
 var mongoConfig = global.config.mongodb;
 mongoose.plugin(commonPlugin);
