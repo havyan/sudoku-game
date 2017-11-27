@@ -55,56 +55,16 @@ RuleSchema.statics.updateRule = function(rule, cb) {
 var Rule = mongoose.model('Rule', RuleSchema);
 
 Rule.GRADE_NAMES = {
-  0: {
-    cn: "新手",
-    en: "Green Hand",
-    jp: "初心"
-  },
-  1: {
-    cn: "一段",
-    en: "Grade 1",
-    jp: "一段"
-  },
-  2: {
-    cn: "二段",
-    en: "Grade 2",
-    jp: "二段"
-  },
-  3: {
-    cn: "三段",
-    en: "Grade 3",
-    jp: "三段"
-  },
-  4: {
-    cn: "四段",
-    en: "Grade 4",
-    jp: "四段"
-  },
-  5: {
-    cn: "五段",
-    en: "Grade 5",
-    jp: "五段"
-  },
-  6: {
-    cn: "六段",
-    en: "Grade 6",
-    jp: "六段"
-  },
-  7: {
-    cn: "七段",
-    en: "Grade 7",
-    jp: "七段"
-  },
-  8: {
-    cn: "八段",
-    en: "Grade 8",
-    jp: "八段"
-  },
-  9: {
-    cn: "九段",
-    en: "Grade 9",
-    jp: "九段"
-  }
+  0: L('app:rule.beginner'),
+  1: L('app:rule.grade1'),
+  2: L('app:rule.grade2'),
+  3: L('app:rule.grade3'),
+  4: L('app:rule.grade4'),
+  5: L('app:rule.grade5'),
+  6: L('app:rule.grade6'),
+  7: L('app:rule.grade7'),
+  8: L('app:rule.grade8'),
+  9: L('app:rule.grade9')
 };
 
 module.exports = Rule;

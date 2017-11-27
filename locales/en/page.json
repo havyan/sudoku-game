@@ -94,7 +94,15 @@
     "hour": "小时",
     "player": "人",
     "second": "秒",
-    "minute": "分钟"
+    "minute": "分钟",
+    "waiting_start": "等待开始",
+    "puzzle_level": "题目等级",
+    "each_round": "每局",
+    "each_step": "每步",
+    "game_loading": "游戏加载中",
+    "game_ongoing": "游戏进行中",
+    "game_over": "游戏结束",
+    "continue_last": "继续上次游戏"
   },
   "help": {
     "welcome": "欢迎",
@@ -323,5 +331,26 @@
     "read": "已读",
     "unread": "未读",
     "receiver": "收件人"
+  },
+  "retrieve_password": {
+    "please_check": "我们将往您的邮箱发一封密码重置邮件，请尽快查收！",
+    "email": "邮箱地址:",
+    "send": "发送",
+    "message": "重置邮件已发送至您的邮箱，请在30分钟内重置密码，过期无效"
+  },
+  "signup": {
+    "welcome": "欢迎注册",
+    "username": "用户名",
+    "username_tip": "1到30位，不包含空格",
+    "nickname": "昵称",
+    "nickname_tip": "1到30位，不包含空格，支持中文",
+    "password": "密码",
+    "password_tip": "6到16位",
+    "repeat_password": "重复密码",
+    "email": "邮箱",
+    "vcode": "验证码",
+    "refresh": "刷新",
+    "agreement": "我已阅读并同意<span class=\"protocol\">超天才数独玩家协议</span>和<span class=\"law\">法律声明</span>",
+    "register": "注册"
   }
 }

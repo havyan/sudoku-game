@@ -39,6 +39,9 @@
     "balence": "殘高",
     "money": "天才金貨"
   },
+  "titles": {
+    "message": "お知らせ"
+  },
   "player": {
     "grade": "レベル",
     "points": "ポイント",
@@ -48,7 +51,7 @@
   "actions": {
     "close": "閉じる",
     "ok": "確認",
-    "cancel": "取消",
+    "cancel": "キャンセル",
     "back": "戻る",
     "submit": "提出",
     "continue": "继续",

@@ -43,6 +43,9 @@
     "submit": "提交",
     "quit": "退出"
   },
+  "titles": {
+    "message": "消息"
+  },
   "player": {
     "grade": "段位",
     "points": "积分",

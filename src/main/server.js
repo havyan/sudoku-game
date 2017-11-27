@@ -1,12 +1,24 @@
-require('./init');
+var Async = require('async');
+var init = require('./init');
 var winston = require('winston');
 
 winston.info("Starting sudoku game service");
-var app = require('./app');
+
 module.exports = function(cb) {
-  app.init(function() {
-    var server = require('http').Server(app);
-    require('./event_center')(server);
-    cb(server);
+  var app;
+  Async.series([
+    init,
+    function(cb) {
+      app = require('./app');
+      app.init(cb);
+    }
+  ], function(error) {
+    if (error) {
+      winston.error('Error when initializing app: ' + error);
+    } else {
+      var server = require('http').Server(app);
+      require('./event_center')(server);
+      cb(server);
+    }
   });
 };

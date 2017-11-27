@@ -134,88 +134,40 @@ var Puzzle = mongoose.model('Puzzle', PuzzleSchema);
 Puzzle.LEVELS = [
   {
     code: 'DDD',
-    name: {
-      cn: '入门段',
-      en: 'Entrance Level',
-      jp: '开门段'
-    }
+    name: L('app:puzzle.beginner')
   }, {
     code: 'CDD',
-    name: {
-      cn: '1段',
-      en: 'Level 1',
-      jp: '1段'
-    }
+    name: L('app:puzzle.level1')
   }, {
     code: 'CCD',
-    name: {
-      cn: '2段',
-      en: 'Level 2',
-      jp: '2段'
-    }
+    name: L('app:puzzle.level2')
   }, {
     code: 'CCC',
-    name: {
-      cn: '3段',
-      en: 'Level 3',
-      jp: '3段'
-    }
+    name: L('app:puzzle.level3')
   }, {
     code: 'BCC',
-    name: {
-      cn: '4段',
-      en: 'Level 4',
-      jp: '4段'
-    }
+    name: L('app:puzzle.level4')
   }, {
     code: 'BBC',
-    name: {
-      cn: '5段',
-      en: 'Level 5',
-      jp: '5段'
-    }
+    name: L('app:puzzle.level5')
   }, {
     code: 'BBB',
-    name: {
-      cn: '6段',
-      en: 'Level 6',
-      jp: '6段'
-    }
+    name: L('app:puzzle.level6')
   }, {
     code: 'ABB',
-    name: {
-      cn: '7段',
-      en: 'Level 7',
-      jp: '7段'
-    }
+    name: L('app:puzzle.level7')
   }, {
     code: 'AAB',
-    name: {
-      cn: '8段',
-      en: 'Level 8',
-      jp: '8段'
-    }
+    name: L('app:puzzle.level8')
   }, {
     code: 'AAA',
-    name: {
-      cn: '9段',
-      en: 'Level 9',
-      jp: '9段'
-    }
+    name: L('app:puzzle.level9')
   }, {
     code: 'AAAA',
-    name: {
-      cn: '10段',
-      en: 'Level 10',
-      jp: '10段'
-    }
+    name: L('app:puzzle.level10')
   }, {
     code: 'AAAAA',
-    name: {
-      cn: '11段',
-      en: 'Level 11',
-      jp: '11段'
-    }
+    name: L('app:puzzle.level11')
   }
 ];
 

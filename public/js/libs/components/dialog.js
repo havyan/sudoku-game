@@ -1,12 +1,12 @@
 (function() {
   can.Control('Dialog', {
     CANCEL_ACTION : {
-      name : '取消',
+      name : T('common:actions.cancel'),
       dismiss : true
     },
 
     CLOSE_ACTION : {
-      name : '关闭',
+      name : T('common:actions.close'),
       dismiss : true,
       userClass : 'btn-primary'
     },
@@ -17,7 +17,7 @@
      */
     message : function(message, options) {
       return this.show(this.merge({
-        title : '消息',
+        title : T('common:titles.message'),
         content : message,
         autoClose : true,
         actions : [this.CLOSE_ACTION]

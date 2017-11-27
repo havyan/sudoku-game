@@ -1,10 +1,8 @@
-require('../src/main/init');
+var init = require('../src/main/init');
 var winston = require('winston');
 var fs = require('fs');
 var async = require('async');
 var mongoose = require('mongoose');
-
-var PuzzleDAO = require('../src/main/daos/puzzle.js');
 
 var target = global.config.args.target;
 var done = function(error) {
@@ -19,10 +17,12 @@ var done = function(error) {
 if (target) {
   winston.info('Try to import puzzles from target: ' + target);
   async.waterfall([
+    init,
     function(cb) {
       fs.stat(target, cb);
     },
     function(stats, cb) {
+      var PuzzleDAO = require('../src/main/daos/puzzle.js');
       if (stats.isDirectory()) {
         async.waterfall([
           function(cb) {

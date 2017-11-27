@@ -25,16 +25,3 @@ hbs.registerHelper('statsScript', function() {
     return '<script src="' + global.config.app.locals.basejs + '/libs/stats.js"></script>'
   }
 });
-
-hbs.registerHelper('T', function() {
-  var key = arguments[0];
-  var options = arguments[arguments.length - 1];
-  for (var i = 1; i < arguments.length - 1; i++) {
-    key = key + '.' + arguments[i].toString();
-  }
-  return i18next.getFixedT(options.data.root.$lang)(key, options.data.root);
-});
-
-hbs.registerHelper('L', function(value, options) {
-  return _.isObject(value) ? value[options.data.root.$lang] : value;
-});

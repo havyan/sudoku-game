@@ -1,96 +1,29 @@
 var _ = require('lodash');
-var express = require('express');
-var mongoose = require('mongoose');
-var i18next = require('i18next');
-var i18nextBackend = require('i18next-node-fs-backend');
+var Async = require('async');
 var args = require('./args');
-var commonPlugin = require('./daos/common');
+var log = require('./log');
+var db = require('./db');
+var i18n = require('./i18n');
 // Read system config from json
-var configFile = args.env === 'production' ? 'production-config.json' : 'config.json';
+var configFile = args.env === 'production'
+  ? 'production-config.json'
+  : 'config.json';
+
 global.config = require('../../' + configFile);
 global.config.args = args;
+
 // Initialize log
-require('./log')();
+log.init();
 var winston = require('winston');
 
 winston.info("Start args are: " + JSON.stringify(args));
 
-var I18N_RE = /^i18n\((\S+:\S+)\)$/g;
-var handleI18n = function(lang, json, handled) {
-  handled = handled || [];
-  for (var key in json) {
-    var value = json[key];
-    if (_.isString(value)) {
-      var matches = I18N_RE.exec(value);
-      if (matches) {
-        json[key] = i18next.getFixedT(lang)(matches[1]);
-      }
-    } else if (_.isObject(value)) {
-      if (handled.indexOf(value) < 0) {
-        handleI18n(lang, value, handled);
-      }
-    } else if (_.isArray(value)) {
-      value.forEach(function(e) {
-        if (_.isObject(e) && handled.indexOf(e) < 0) {
-          handleI18n(lang, e, handled);
-        }
-      });
+module.exports = function(cb) {
+  Async.series([i18n.init.bind(i18n), db.init.bind(db)], function(error) {
+    if (error) {
+      winston.error("Error when initializing: " + error);
+    } else {
+      cb();
     }
-  }
-  handled.push(json);
-};
-
-var superRender = express.response.render;
-express.response.render = function(view, options, callback) {
-  var lang = this.req.cookies.lang || 'cn';
-  var newArgs = [];
-  options = options || {};
-  options.$lang = lang;
-  for (var i = 0; i < arguments.length; i++) {
-    newArgs.push(arguments[i]);
-  }
-  if (newArgs.length > 1) {
-    newArgs[1] = options;
-  } else {
-    if (newArgs.length === 0) {
-      newArgs.push(null);
-    }
-    newArgs.push(options);
-  }
-  superRender.apply(this, newArgs);
-};
-
-express.response.sendI18n = function() {
-  var lang = this.req.cookies.lang || 'cn';
-  var arg0 = arguments[0];
-  if (_.isObject(arg0)) {
-    handleI18n(lang, arg0);
-  }
-  this.send.apply(this, arguments);
-};
-
-i18next.use(i18nextBackend).init({
-  lng: 'cn',
-  preload: ['cn', 'en', 'jp'],
-  ns: ['page', 'common', 'app'],
-  backend: {
-    loadPath: 'locales/{{lng}}/{{ns}}.json',
-    addPath: 'locales/{{lng}}/{{ns}}.add.json',
-    jsonIndent: 2
-  }
-});
-
-global.L = function(key, options) {
-  var langs = i18next.options.preload;
-  var result = {};
-  langs.forEach(function(lang) {
-    result[lang] = i18next.getFixedT(lang)(key, options);
   });
-  return result;
 };
-
-// init mongo connection
-var mongoConfig = global.config.mongodb;
-mongoose.plugin(commonPlugin);
-mongoose.Promise = global.Promise;
-mongoose.connect(mongoConfig.url + '/' + mongoConfig.database);

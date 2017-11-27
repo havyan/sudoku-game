@@ -55,14 +55,14 @@
           if (game.status === 'empty') {
             return T('page:lobby.create_game');
           } else if (game.status === 'waiting') {
-            var level = _.find(model.attr('levels'), {
+            var level = L(_.find(model.attr('levels'), {
               code : game.level
-            }).name;
-            return '等待开始<br>题目等级' + level + '<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
+            }).name);
+            return T('page:lobby.waiting_start') + '<br>' + T('page:lobby.puzzle_level') + level + '<br>' + T('page:lobby.each_round') + game.duration + T('page:lobby.hour') + '<br>' + T('page:lobby.each_step') + game.stepTime + T('page:lobby.second');
           } else if (game.status === 'loading') {
-            return '游戏加载中...<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
+            return '游戏加载中...<br>' + T('page:lobby.each_round') + game.duration + T('page:lobby.hour') + '<br>' + T('page:lobby.each_step') + game.stepTime + T('page:lobby.second');
           } else if (game.status === 'ongoing') {
-            return '游戏进行中<br>每局' + game.duration + '小时<br>每步' + game.stepTime + '秒';
+            return T('page:lobby.game_ongoing') + '<br>' + T('page:lobby.each_round') + game.duration + T('page:lobby.hour') + '<br>' + T('page:lobby.each_step') + game.stepTime + T('page:lobby.second');
           } else if (game.status === 'over') {
             return '游戏结束';
           }

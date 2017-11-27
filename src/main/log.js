@@ -1,6 +1,6 @@
 var winston = require('winston');
 
-module.exports = function() {
+module.exports.init = function(cb) {
 	var winstonConfig = global.config.winston;
 	if (winstonConfig.transport) {
 		winston.add(winston.transports[winstonConfig.transport.type], winstonConfig.transport);
@@ -10,4 +10,5 @@ module.exports = function() {
 			timestamp: winstonConfig.transport.timestamp
 		});
 	}
+	cb && cb();
 };

@@ -39,6 +39,9 @@
     "balence": "余额",
     "money": "天才币"
   },
+  "titles": {
+    "message": "消息"
+  },
   "player": {
     "grade": "段位",
     "points": "积分",

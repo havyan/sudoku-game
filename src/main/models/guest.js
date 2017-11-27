@@ -69,11 +69,7 @@ class Guest {
     this.wintimes = 0;
     this.losetimes = 0;
     this.winrate = 0;
-    this.grade_name = {
-      cn: "新手",
-      en: "Green Hand",
-      jp: "初心"
-    };
+    this.grade_name = L('app:rule.beginner');
     this.money = 0;
   }
 

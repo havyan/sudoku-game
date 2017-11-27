@@ -97,7 +97,7 @@
         content : T('page:game.game_will') + '<span class="max-timeout-countdown-number">20</span>' + T('page:game.continue_game'),
         autoClose : false,
         actions : [{
-          name : T('page:game.continue'),
+          name : T('common:actions.continue'),
           userClass : 'btn-primary',
           callback : function(element) {
             self.options.model.goahead(function() {

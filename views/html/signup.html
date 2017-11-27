@@ -12,11 +12,11 @@
     <div class="common-container">
       <div class="common-header">
         <div class="welcome">
-          欢迎注册
+          {{T "page:signup.welcome"}}
         </div>
         <div class="logo"></div>
         <div class="game-label">
-          数独棋
+          {{T "common:sudoku"}}
         </div>
       </div>
       <div class="common-separator">
@@ -25,52 +25,52 @@
       </div>
       <form class="signup-form" action="/user" method="post">
         <div class="signup-row account">
-          <label class="signup-name">用户名</label>
-          <input class="signup-value" type="text" name="account" placeholder="1到30位，不包含空格"/>
+          <label class="signup-name">{{T "page:signup.username"}}</label>
+          <input class="signup-value" type="text" name="account" placeholder="{{T "page:signup.username_tip"}}"/>
           <span class="mandatory-sign">*</span>
           <div class="ok-sign" style="display: none;"></div>
         </div>
         <div class="signup-row name">
-          <label class="signup-name">昵称</label>
-          <input class="signup-value" type="text" name="name" placeholder="1到30位，不包含空格，支持中文"/>
+          <label class="signup-name">{{T "page:signup.nickname"}}</label>
+          <input class="signup-value" type="text" name="name" placeholder="{{T "page:signup.nickname_tip"}}"/>
           <span class="mandatory-sign">*</span>
           <div class="ok-sign"></div>
         </div>
         <div class="signup-row password">
-          <label class="signup-name">密码</label>
-          <input class="signup-value" type="password" name="password" placeholder="6到16位"/>
+          <label class="signup-name">{{T "page:signup.password"}}</label>
+          <input class="signup-value" type="password" name="password" placeholder="{{T "page:signup.password_tip"}}"/>
           <span class="mandatory-sign">*</span>
           <div class="ok-sign"></div>
         </div>
         <div class="signup-row repeat-password">
-          <label class="signup-name">重复密码</label>
-          <input class="signup-value" type="password" name="repeat_password" placeholder="6到16位"/>
+          <label class="signup-name">{{T "page:signup.repeat_password"}}</label>
+          <input class="signup-value" type="password" name="repeat_password" placeholder="{{T "page:signup.password_tip"}}"/>
           <span class="mandatory-sign">*</span>
           <div class="ok-sign"></div>
         </div>
         <div class="signup-row email">
-          <label class="signup-name">邮箱</label>
+          <label class="signup-name">{{T "page:signup.email"}}</label>
           <input class="signup-value" type="text" name="email"/>
           <span class="mandatory-sign">*</span>
           <div class="ok-sign"></div>
         </div>
         <div class="signup-row vcode">
-          <label class="signup-name">验证码</label>
+          <label class="signup-name">{{T "page:signup.vcode"}}</label>
           <input class="signup-value" type="text" name="vcode"/>
           <span class="mandatory-sign">*</span>
           <img class="verify-image" />
-          <a href="javascript:void(0)" class="refresh-vcode">刷新</a>
+          <a href="javascript:void(0)" class="refresh-vcode">{{T "page:signup.refresh"}}</a>
           <div class="ok-sign"></div>
         </div>
         <div class="signup-row protocol-read">
           <input type="checkbox"/>
-          <label>我已阅读并同意<span class="protocol">超天才数独玩家协议</span>和<span class="law">法律声明</span></label>
+          <label>{{{T "page:signup.agreement"}}}</label>
         </div>
         <div class="common-actions">
           <button class="button signup-submit" disabled="true">
-            注册
+            {{T "page:signup.register"}}
           </button>
-          <a class="button" href="/">关闭</a>
+          <a class="button" href="/">{{T "common:actions.close"}}</a>
         </div>
       </form>
     </div>
