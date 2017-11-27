@@ -260,6 +260,10 @@ input:focus {
   top: 0px;
 }
 
+.lang-jp .info {
+  width: 60%;
+}
+
 .lang-jp .icon {
   width: 275px;
 }

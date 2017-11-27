@@ -428,3 +428,7 @@
 .lang-jp .lobby-modal .lobby-modal-row .start-mode {
   font-size: 11px;
 }
+
+.lang-jp .single-player-modal.lobby-modal .lobby-modal-bottom button {
+  width: 200px;
+}

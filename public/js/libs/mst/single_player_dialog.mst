@@ -29,7 +29,7 @@
     <div class="lobby-modal-bottom">
       {{#hasUnfinished}}
       <button type="button" class="confirm" data-value="continue">
-        继续上次游戏
+        {{T "page:lobby.continue_last"}}
       </button>
       {{/hasUnfinished}}
       <button type="button" class="confirm" data-value="new">
