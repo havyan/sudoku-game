@@ -81,6 +81,7 @@
 
 .lobby-nav-real-room.active, .lobby-nav-virtual-room.active {
   color: #FFF000;
+  font-weight: bold;
 }
 
 .lobby-nav-item-line {
