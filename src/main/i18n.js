@@ -58,7 +58,10 @@ express.response.sendI18n = function() {
   this.send.apply(this, arguments);
 };
 
-var localize = function(options, lang) {
+var localizeOptions = function(options, lang) {
+  if (!options) {
+    return options;
+  }
   var result = {};
   for(var key in options) {
     var value = options[key];
@@ -75,7 +78,7 @@ global.L = function(key, options) {
   var langs = i18next.options.preload;
   var result = {};
   langs.forEach(function(lang) {
-    result[lang] = i18next.getFixedT(lang)(key, localize(options, lang));
+    result[lang] = i18next.getFixedT(lang)(key, localizeOptions(options, lang));
   });
   return result;
 };

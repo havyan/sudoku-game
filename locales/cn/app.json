@@ -28,6 +28,9 @@
   "game": {
     "guest": "游客",
     "robot": "天才机器人",
-    "join_message": "用户[{{name}}]加入"
+    "join_message": "用户[{{name}}]加入",
+    "robot_game_over": "人机游戏结束",
+    "quit": "退出",
+    "offline": "离线"
   }
 }
