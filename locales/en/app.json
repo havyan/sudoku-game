@@ -24,5 +24,10 @@
     "level9": "Level 9",
     "level10": "Level 10",
     "level11": "Level 11"
+  },
+  "game": {
+    "guest": "游客",
+    "robot": "天才机器人",
+    "join_message": "用户[{{name}}]加入"
   }
 }

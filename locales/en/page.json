@@ -14,6 +14,7 @@
       "forgetpassword": "Forget/Change Password?",
       "login": "Login",
       "signup": "Signup",
+      "enter_game": "Enter Game",
       "guestpass": "Guest Play",
       "agreement": "我已阅读并同意<span class=\"protocol\">超天才数独玩家协议</span>和<span class=\"law\">法律声明</span>"
     }

@@ -8,14 +8,14 @@
 			{{#if this}}
 			<div class="game-player" data-index="{{@index}}" account="{{account}}">
 				<div class="game-player-icon"><img src="{{icon}}"></div>
-				<div class="game-player-name" title="{{name}}">{{name}}</div>
+				<div class="game-player-name" title="{{L name}}">{{L name}}</div>
 			</div>
 			{{/if}}
 			{{/each}}
 			{{#each quitPlayers}}
 			<div class="game-player quit" data-index="{{@index}}" account="{{account}}">
 				<div class="game-player-icon"><img src="{{icon}}"></div>
-				<div class="game-player-name" title="{{name}}">{{name}}</div>
+				<div class="game-player-name" title="{{L name}}">{{L name}}</div>
 			</div>
 			{{/each}}
 		</div>
@@ -30,7 +30,7 @@
     		{{#ranking}}
     		<tr class="{{type}}">
     			<td>{{position}}</td>
-    			<td><div class="game-ranking-name-wrapper">{{name}}</div></td>
+    			<td><div class="game-ranking-name-wrapper">{{L name}}</div></td>
     			<td>{{score}}</td>
     		</tr>
     		{{/ranking}}
@@ -41,7 +41,7 @@
 		  <div class="game-chat-messages-container scroll-panel">
   			{{#messages}}
   			<div class="game-message-item game-message-from-{{from.index}}">
-  				<div class="game-message-item-header">{{from.name}} ({{date}}):</div>
+  				<div class="game-message-item-header">{{L from.name}} ({{date}}):</div>
   				<div class="game-message-item-content">{{{formatMessage this}}}</div>
   			</div>
   			{{/messages}}

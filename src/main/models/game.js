@@ -520,7 +520,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
     function(prop, cb) {
       self.props.push(prop);
       self.emit('player-joined', index, player.toJSON());
-      self.addMessage('用户[' + player.name + ']加入');
+      self.addMessage(L('app:game.join_message', { name: player.name }));
       if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
         self.switchStatus(LOADING, cb);
       } else {
@@ -542,7 +542,7 @@ Game.prototype.addRobot = function() {
   this.addPlayerIndex(player.account);
   this.knownCellValues[player.account] = {};
   this.emit('player-joined', index, player.toJSON());
-  this.addMessage('用户[' + player.name + ']加入');
+  this.addMessage(L('app:game.join_message', { name: player.name }));
 };
 
 Game.prototype.playerQuit = function(account, status, cb) {

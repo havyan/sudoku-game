@@ -14,6 +14,7 @@
       "forgetpassword": "パスワード忘れ/変更",
       "login": "ログイン",
       "signup": "新規ログイン",
+      "enter_game": "ゲームログイン",
       "guestpass": "新規ログインなしのゲーム体験",
       "agreement": "私は<span class=\"protocol\">天才数独ユーザー協議</span>と<span class=\"law\">法律声明</span>を読んで同意しました"
     }

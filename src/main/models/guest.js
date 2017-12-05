@@ -61,7 +61,7 @@ class Guest {
     this.id = account;
     this.account = account;
     this.isGuest = true;
-    this.name = '游客';
+    this.name = L('app:game.guest');
     this.icon = '/imgs/default/guest.png';
     this.grade = 0;
     this.points = 0;

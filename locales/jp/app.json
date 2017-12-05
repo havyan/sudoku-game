@@ -24,5 +24,10 @@
     "level9": "9段",
     "level10": "10段",
     "level11": "11段"
+  },
+  "game": {
+    "guest": "訪問客",
+    "robot": "天才ロボート",
+    "join_message": "ユーザー[{{name}}]が入る"
   }
 }

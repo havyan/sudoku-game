@@ -11,6 +11,7 @@
       "forgetpassword": "忘记/更改密码？",
       "login": "登录",
       "signup": "注册",
+      "enter_game": "进入游戏",
       "guestpass": "免注册试玩",
       "agreement": "我已阅读并同意<span class=\"protocol\">超天才数独玩家协议</span>和<span class=\"law\">法律声明</span>"
     }

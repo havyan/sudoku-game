@@ -58,11 +58,24 @@ express.response.sendI18n = function() {
   this.send.apply(this, arguments);
 };
 
+var localize = function(options, lang) {
+  var result = {};
+  for(var key in options) {
+    var value = options[key];
+    if (value && value[lang]) {
+      value = value[lang];
+    }
+    // TODO multiple layers
+    result[key] = value;
+  }
+  return result;
+};
+
 global.L = function(key, options) {
   var langs = i18next.options.preload;
   var result = {};
   langs.forEach(function(lang) {
-    result[lang] = i18next.getFixedT(lang)(key, options);
+    result[lang] = i18next.getFixedT(lang)(key, localize(options, lang));
   });
   return result;
 };

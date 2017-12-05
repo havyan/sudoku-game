@@ -8,7 +8,7 @@
       can.view(options.template, options.model, {
         formatMessage : function(message) {
           if (message.content) {
-            return message.content.split('\n').reduce(function(previous, current) {
+            return L(message.content).split('\n').reduce(function(previous, current) {
               return previous + '<br>' + current;
             });
           } else {
