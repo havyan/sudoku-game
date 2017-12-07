@@ -8,7 +8,7 @@
     <script src="{{@basejs}}/libs/welcome.js"></script>
     {{{statsScript}}}
   </head>
-  <body class="welcome-body">
+  <body class="welcome-body lang-{{$lang}}">
     {{> i18n }}
     <video class="welcome-bg" src="/videos/welcome.mp4" autoplay loop muted>
     </video>
@@ -37,7 +37,7 @@
             <a class="logo" href="http://www.supergenius.cn/"><img src="imgs/default/welcome/logo.png"/></a>
             <img class="arrow" src="imgs/default/welcome/arrow.gif"/>
           </div>
-          <img class="author" src="imgs/default/welcome/author.png"/>
+          <img class="author" src="imgs/default/welcome/author_{{$lang}}.png"/>
         </div>
       </div>
       <div class="welcome-bottom">

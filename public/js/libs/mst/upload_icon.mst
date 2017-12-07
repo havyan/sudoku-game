@@ -1,6 +1,6 @@
 <div class="upload-icon-container">
   <div class="upload-icon-display">
-    <span class="select-icon">请点击<span class="btn btn-success">浏览</span>来选择头像</span>
+    <span class="select-icon">{{{T "common:upload_icon.click_to"}}}</span>
     <input type="file" class="hide icon-chooser" accept="image/*">
     <div class="upload-icon-cutter">
       <div class="dragger-left"></div>

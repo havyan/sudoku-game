@@ -91,7 +91,7 @@ html, body {
 }
 
 .welcome-bottom .start {
-  background-image: url(../../imgs/default/welcome/start.gif);
+  background-image: url(../../imgs/default/welcome/start_cn.gif);
   width: 150px;
   height: 50px;
   margin-top: 50px;
@@ -105,4 +105,20 @@ html, body {
   background-size: 100% 100%;
   border: none;
   background-color: transparent;
+}
+
+.lang-jp .welcome-bottom .start {
+  background-image: url(../../imgs/default/welcome/start_jp.gif);
+  padding: 0px;
+  width: 280px;
+  height: 160px;
+  margin-top: 10px;
+}
+
+.lang-en .welcome-bottom .start {
+  background-image: url(../../imgs/default/welcome/start_en.gif);
+  padding: 0px;
+  width: 250px;
+  height: 140px;
+  margin-top: 0px;
 }

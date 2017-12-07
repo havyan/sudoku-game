@@ -91,11 +91,11 @@
         var $icons = this.element.find('.default-icons');
         var $icon = this.element.find('.icon-img');
         Dialog.show({
-          title : '上传头像',
+          title : T('page:user.upload_icon_title'),
           control : UploadIconPanel,
           autoClose : false,
           actions : [Dialog.CANCEL_ACTION, {
-            name : '确认',
+            name : T('common:actions.ok'),
             userClass : 'btn-primary',
             callback : function(element) {
               var bound = this.control.getCutterBound();

@@ -208,7 +208,8 @@
     "upload_icon": "本地上传头像",
     "freeze": "冻结",
     "unfreeze": "解冻",
-    "seal_ip": "封IP"
+    "seal_ip": "封IP",
+    "upload_icon_title": "上传头像"
   },
   "recharge": {
     "recharge_incompleted": "充值未完成",

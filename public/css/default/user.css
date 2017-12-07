@@ -267,3 +267,7 @@ input:focus {
 .lang-jp .icon {
   width: 275px;
 }
+
+.lang-jp .upload-icon-display {
+  font-size: 24px;
+}
