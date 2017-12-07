@@ -301,7 +301,17 @@
     "submit": "提出",
     "draft": "草稿",
     "plain": "普通",
-    "options": "候補"
+    "options": "候補",
+    "result": {
+      "ranking": "ランキング",
+      "user_name": "ユーザー名",
+      "score": "得分",
+      "points_change": "ポイント変更",
+      "points_now": "現ポイント",
+      "money": "天才金貨",
+      "finished_start": "ゲームがすでに終えて、部屋は",
+      "finished_end": "秒以内に閉鎖され、ご早くログアウトしてください。"
+    }
   },
   "props": {
     "purchase_limit": "单个道具最多只能买999个。",

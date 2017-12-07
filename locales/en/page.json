@@ -301,7 +301,17 @@
     "submit": "提交",
     "draft": "草稿",
     "plain": "普通",
-    "options": "候选"
+    "options": "候选",
+    "result": {
+      "ranking": "排名",
+      "user_name": "用户名",
+      "score": "局分",
+      "points_change": "积分变化",
+      "points_now": "现积分",
+      "money": "天才币",
+      "finished_start": "棋局已完成，房间将在",
+      "finished_end": "秒内关闭，请您尽快退出。"
+    }
   },
   "props": {
     "purchase_limit": "单个道具最多只能买999个。",

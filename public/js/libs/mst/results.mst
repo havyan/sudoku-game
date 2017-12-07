@@ -21,12 +21,12 @@
 {{#if hasResults}}
 <table class="table game-results-table">
   <thead>
-    <th>排名</th>
-    <th>用户名</th>
-    <th>局分</th>
-    <th>积分变化</th>
-    <th>现积分</th>
-    <th>天才币</th>
+    <th>{{T "page:game.result.ranking"}}</th>
+    <th>{{T "page:game.result.user_name"}}</th>
+    <th>{{T "page:game.result.score"}}</th>
+    <th>{{T "page:game.result.points_change"}}</th>
+    <th>{{T "page:game.result.points_now"}}</th>
+    <th>{{T "page:game.result.money"}}</th>
   </thead>
   <tbody>
     {{#results}}
@@ -46,6 +46,6 @@
   {{#if isGuest}}
   请您<a href="/logout_signup">注册</a>，去玩更高级的游戏吧! 房间将在<span class="destroy-countdown-number">120</span>秒内关闭。
   {{else}}
-  棋局已完成，房间将在<span class="destroy-countdown-number">120</span>秒内关闭，请您尽快退出。
+  {{T "page:game.result.finished_start"}}<span class="destroy-countdown-number">120</span>{{T "page:game.result.finished_end"}}
   {{/if}}
 </div>
