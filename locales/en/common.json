@@ -2,7 +2,7 @@
   "navigator": {
     "home": "Home page",
     "treasure": "天才寻宝",
-    "lobby": "游戏大厅",
+    "lobby": "Game Lobby",
     "about": "About Genius Sudoku",
     "news": "Sudoku dynamic",
     "operation": "Operation guide",
@@ -10,15 +10,15 @@
     "law": "Legal notice",
     "help": "Help",
     "contact": "Contact us",
-    "user": "个人信息",
+    "user": "Personal Information",
     "single_player": "单机/人机",
-    "props": "道具",
+    "props": "Props",
     "settings": "管理",
-    "messages": "消息",
-    "recharge": "充值",
+    "messages": "Massages",
+    "recharge": "Top up",
     "teaching_video": "教学视频",
-    "help": "帮助",
-    "logout": "退出"
+    "help": "Help",
+    "logout": "Logout"
   },
   "constellation": {
     "aries": "Aries",
@@ -58,11 +58,11 @@
     "quit": "Quit"
   },
   "pagination": {
-    "first": "首页",
-    "next": "下一页",
-    "previous": "上一页",
-    "last": "末页",
-    "goto": "跳转"
+    "first": "Home page",
+    "next": "Previous page",
+    "previous": "Next Page",
+    "last": "Last Page",
+    "goto": "Jump"
   },
   "communicate": {
     "feedback": "意<br>见<br>反<br>馈",
