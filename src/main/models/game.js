@@ -585,7 +585,8 @@ Game.prototype.playerQuit = function(account, status, cb) {
             account: account,
             status: status
           });
-          self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
+          var message = status === 'quit' ? L('app:game.quit_message', { name: quitPlayer.name }) : L('app:game.offline_message', { name: quitPlayer.name });
+          self.addMessage(message);
           if (self.playersCount() <= 0) {
             self.destroy();
           }
@@ -599,7 +600,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
         account: account,
         status: status
       });
-      self.addMessage('庄家[' + quitPlayer.name + ']退出');
+      self.addMessage(L('app:game.banker_quit_message', { name: quitPlayer.name }));
       this.players.forEach(function(player) {
         if (player) {
           self.recordQuit(player.account);
@@ -614,7 +615,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
         account: account,
         status: status
       });
-      self.addMessage('用户[' + quitPlayer.name + ']退出');
+      self.addMessage(L('app:game.quit_message', { name: quitPlayer.name }));
       if (self.playersCount() <= 0) {
         self.destroy();
       }
@@ -700,7 +701,7 @@ Game.prototype.addMessage = function(message, account) {
   } else {
     from = {
       account: 'system',
-      name: '系统',
+      name: L('common:system'),
       index: 'system'
     };
   }

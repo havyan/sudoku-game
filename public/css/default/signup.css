@@ -41,7 +41,7 @@ input:focus {
   padding-right: 3px;
 }
 
-.vcode .signup-value {
+.signup-form .vcode .signup-value {
   width: 80px;
 }
 
@@ -92,4 +92,20 @@ input:focus {
   display: inline-block;
   vertical-align: middle;
   color: red;
+}
+
+.lang-jp .signup-form {
+  width: 480px;
+}
+
+.lang-jp .signup-name {
+  width: 140px;
+}
+
+.lang-jp .signup-value {
+  width: 310px;
+}
+
+.lang-jp .protocol-read {
+  font-size: 12px;
 }
