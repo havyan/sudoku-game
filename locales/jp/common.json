@@ -66,7 +66,8 @@
   },
   "communicate": {
     "feedback": "フ<br>ィ<br>ー<br>ド<br>バ<br>ッ<br>ク",
-    "group_chat": "グ<br>ル<br>ー<br>プ<br>チ<br>ャ<br>ッ<br>ト"
+    "group_chat": "グ<br>ル<br>ー<br>プ<br>チ<br>ャ<br>ッ<br>ト",
+    "feedback_successful": "フィードバックが成功して、どうもありがとうございました!"
   },
   "upload_icon": {
     "click_to": "<span class=\"btn btn-success\">アクセス</span>をクリックして、アイコンを選んで"

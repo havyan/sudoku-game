@@ -569,7 +569,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
         account: account,
         status: status
       });
-      self.addMessage('人机游戏结束');
+      self.addMessage(L('app:game.robot_game_over'));
       self.destroy();
       cb();
     } else if (this.isOngoing()) {

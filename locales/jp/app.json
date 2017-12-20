@@ -30,9 +30,9 @@
     "robot": "天才ロボート",
     "join_message": "ユーザー[{{name}}]が入る",
     "quit_message": "ユーザー[{{name}}]ログアウト",
-    "banker_quit_message": "庄家[{{name}}]ログアウト",
+    "banker_quit_message": "親[{{name}}]ログアウト",
     "offline_message": "用户[{{name}}]离线",
-    "robot_game_over": "人机游戏结束",
+    "robot_game_over": "ゲーム終わり",
     "quit": "ログアウト",
     "offline": "离线"
   }

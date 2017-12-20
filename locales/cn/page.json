@@ -10,6 +10,7 @@
       "autologin": "下次自动登录",
       "forgetpassword": "忘记/更改密码？",
       "login": "登录",
+      "login_error": "用户名或者密码错误,或者用户未激活或被冻结.",
       "signup": "注册",
       "enter_game": "进入游戏",
       "guestpass": "免注册试玩",
@@ -100,7 +101,10 @@
     "game_loading": "游戏加载中",
     "game_ongoing": "游戏进行中",
     "game_over": "游戏结束",
-    "continue_last": "继续上次游戏"
+    "continue_last": "继续上次游戏",
+    "signup_1": "需要",
+    "signup_2": "注册",
+    "signup_3": "才能进入"
   },
   "active_user": {
     "activated": "账户已激活",
@@ -313,7 +317,11 @@
       "points_now": "现积分",
       "money": "天才币",
       "finished_start": "棋局已完成，房间将在",
-      "finished_end": "秒内关闭，请您尽快退出。"
+      "finished_end": "秒内关闭，请您尽快退出。",
+      "signup_1": "请您",
+      "signup": "注册",
+      "signup_2": "，去玩更高级的游戏吧! 房间将在",
+      "signup_3": "秒内关闭。"
     }
   },
   "props": {
@@ -366,6 +374,7 @@
     "vcode": "验证码",
     "refresh": "刷新",
     "agreement": "我已阅读并同意<span class=\"protocol\">超天才数独玩家协议</span>和<span class=\"law\">法律声明</span>",
-    "register": "注册"
+    "register": "注册",
+    "register_successful": "注册成功，请在24小时内登录您的邮箱激活您的账户"
   }
 }

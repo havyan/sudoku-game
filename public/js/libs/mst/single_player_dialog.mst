@@ -22,7 +22,7 @@
     {{#showBattle}}
     <div class="signup-message">
       <div class="content">
-        需要<a href="/logout_signup">注册</a>才能进入
+        {{T "page:lobby.signup_1"}}<a href="/logout_signup">{{T "page:lobby.signup_2"}}</a>{{T "page:lobby.signup_3"}}
       </div>
     </div>
     {{/showBattle}}

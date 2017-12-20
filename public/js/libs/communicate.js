@@ -29,7 +29,7 @@
       var content = $input.val();
       if (!_.isEmpty(content)) {
         Rest.Feedback.createFeedback(content, function() {
-          Dialog.message('反馈成功, 非常感谢!', { userClass: 'cool' });
+          Dialog.message(T('common:communicate.feedback_successful'), { userClass: 'cool' });
           $input.val('');
         }, function() {
 
