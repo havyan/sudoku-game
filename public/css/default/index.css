@@ -257,6 +257,10 @@ input[type=text], input[type=password] {
   min-width: 75px;
 }
 
+.lang-jp .login-error {
+  font-size: 12px;
+}
+
 .lang-en .login-label {
   min-width: 75px;
 }
