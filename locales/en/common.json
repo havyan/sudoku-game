@@ -1,7 +1,7 @@
 {
   "navigator": {
     "home": "Home page",
-    "treasure": "天才寻宝",
+    "treasure": "Genius Treasure",
     "lobby": "Game Lobby",
     "about": "About Genius Sudoku",
     "news": "Sudoku dynamic",
@@ -11,12 +11,12 @@
     "help": "Help",
     "contact": "Contact us",
     "user": "Personal Information",
-    "single_player": "单机/人机",
+    "single_player": "Single Player/Human-Computer",
     "props": "Props",
-    "settings": "管理",
+    "settings": "Settings",
     "messages": "Massages",
     "recharge": "Top up",
-    "teaching_video": "教学视频",
+    "teaching_video": "Tutorial Video",
     "help": "Help",
     "logout": "Logout"
   },
@@ -35,12 +35,12 @@
     "pisces": "Pisces"
   },
   "greeting": {
-    "welcome": "欢迎",
-    "balence": "余额",
-    "money": "天才币"
+    "welcome": "Welcome",
+    "balence": "Balence",
+    "money": "Genius Coin"
   },
   "titles": {
-    "message": "消息"
+    "message": "Messages"
   },
   "player": {
     "grade": "段位",
@@ -74,9 +74,9 @@
   },
   "company": "超天才技术开发(北京)有限责任公司",
   "address": "北京市上地三街金隅嘉华大厦A座501",
-  "email": "邮箱",
-  "phone": "电话",
-  "sudoku": "数独棋",
-  "money": "天才币",
+  "email": "Email",
+  "phone": "TEL",
+  "sudoku": "Sudoku",
+  "money": "Genius Coin",
   "system": "System"
 }
