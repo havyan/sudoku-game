@@ -43,10 +43,10 @@
     "message": "Messages"
   },
   "player": {
-    "grade": "段位",
-    "points": "积分",
-    "rounds": "总局数",
-    "winrate": "胜率"
+    "grade": "Grade",
+    "points": "Points",
+    "rounds": "Rounds",
+    "winrate": "Win Rate"
   },
   "actions": {
     "close": "Close",
@@ -67,10 +67,10 @@
   "communicate": {
     "feedback": "意<br>见<br>反<br>馈",
     "group_chat": "加<br>入<br>群<br>聊",
-    "feedback_successful": "反馈成功, 非常感谢!"
+    "feedback_successful": "Feedback posted successfully, thank you."
   },
   "upload_icon": {
-    "click_to": "请点击<span class=\"btn btn-success\">浏览</span>来选择头像"
+    "click_to": "Please click <span class=\"btn btn-success\">Browse</span> to select picture"
   },
   "company": "超天才技术开发(北京)有限责任公司",
   "address": "北京市上地三街金隅嘉华大厦A座501",

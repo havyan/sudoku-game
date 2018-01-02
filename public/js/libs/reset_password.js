@@ -41,7 +41,7 @@
         var validation = {};
         var $sign = e.siblings('.ok-sign');
         var $reset = $('.reset-btn');
-        var reg = /^\S{6,16}$/;
+        var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)\S{6,16}$/;
         if (!_.isEmpty(password)) {
           if (reg.test(password)) {
             $sign.removeClass('wrong');

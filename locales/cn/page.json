@@ -368,7 +368,7 @@
     "nickname": "昵称",
     "nickname_tip": "1到30位，不包含空格，支持中文",
     "password": "密码",
-    "password_tip": "6到16位",
+    "password_tip": "6到16位，必须包含数字和字母",
     "repeat_password": "重复密码",
     "email": "邮箱",
     "vcode": "验证码",

@@ -81,7 +81,7 @@
         var self = this;
         var password = e.val();
         var $sign = e.siblings('.ok-sign');
-        var reg = /^\S{6,16}$/;
+        var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)\S{6,16}$/;
         if (!_.isEmpty(password)) {
           if (reg.test(password)) {
             $sign.removeClass('wrong');

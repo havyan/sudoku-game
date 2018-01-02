@@ -13,7 +13,7 @@
       "autologin": "Remember Me",
       "forgetpassword": "Forget/Change Password?",
       "login": "Login",
-      "login_error": "用户名或者密码错误,或者用户未激活或被冻结.",
+      "login_error": "User name or password incorrect, or your account is frozen or inactivated.",
       "signup": "Signup",
       "enter_game": "Enter Game",
       "guestpass": "Guest Play",
@@ -340,17 +340,17 @@
     "buy": "Exchange"
   },
   "messages": {
-    "message": "邮件",
-    "delete_successful": "删除成功！",
+    "message": "Message",
+    "delete_successful": "Successfully deleted!",
     "select_all": "Select all",
     "delete": "Delete",
     "sender": "Sender",
     "title": "Title",
     "date": "Date",
     "memo": "Comment",
-    "read": "已读",
-    "unread": "未读",
-    "receiver": "收件人"
+    "read": "Read",
+    "unread": "Unread",
+    "receiver": "Receiver"
   },
   "retrieve_password": {
     "please_check": "我们将往您的邮箱发一封密码重置邮件，请尽快查收！",
