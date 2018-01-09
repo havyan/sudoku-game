@@ -309,6 +309,8 @@
     "draft": "草稿",
     "plain": "普通",
     "options": "候选",
+    "impunity": "超时",
+    "timeout": "免罚",
     "result": {
       "ranking": "排名",
       "user_name": "用户名",

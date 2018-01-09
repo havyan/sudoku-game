@@ -337,9 +337,9 @@
     '{model} changedScore': function(model, e, changedScore) {
       var text = changedScore.changed > 0 ? '+' + changedScore.changed : '' + changedScore.changed;
       if (changedScore.type === 'timeout') {
-        text = '超时 ' + text;
+        text = T('page:game.impunity') + ' ' + text;
       } else if (changedScore.type === 'impunity') {
-        text = '免罚 ' + text;
+        text = T('page:game.timeout') + ' ' + text;
       }
       var chessboardElement = this.element.find('.chessboard-container');
       var messageElement = this.element.find('.' + changedScore.type + '-message');

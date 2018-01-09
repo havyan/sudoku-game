@@ -306,6 +306,8 @@
     "draft": "草稿",
     "plain": "普通",
     "options": "候補",
+    "impunity": "タイムアウト",
+    "timeout": "免罰",
     "result": {
       "ranking": "ランキング",
       "user_name": "ユーザー名",

@@ -105,9 +105,9 @@
     "game_ongoing": "Game ongoing",
     "game_over": "Game over",
     "continue_last": "Continue last game",
-    "signup_1": "需要",
-    "signup_2": "注册",
-    "signup_3": "才能进入"
+    "signup_1": "You need to ",
+    "signup_2": "register",
+    "signup_3": " to enter"
   },
   "help": {
     "welcome": "Welcome",
@@ -299,13 +299,15 @@
     "total_score": "Total Score",
     "send": "Send",
     "user": "User",
-    "enter_game": "已进入游戏",
+    "enter_game": "entered game",
     "wait_countdown": "Waiting Countdown",
     "start": "Start",
     "submit": "Submit",
     "draft": "Draft",
     "plain": "Plain",
     "options": "Options",
+    "impunity": "Timeout",
+    "timeout": "Impunity",
     "result": {
       "ranking": "Ranking",
       "user_name": "User Name",
@@ -353,10 +355,10 @@
     "receiver": "Receiver"
   },
   "retrieve_password": {
-    "please_check": "我们将往您的邮箱发一封密码重置邮件，请尽快查收！",
-    "email": "邮箱地址:",
-    "send": "发送",
-    "message": "重置邮件已发送至您的邮箱，请在30分钟内重置密码，过期无效"
+    "please_check": "We will send an  email to your mailbox regarding to password reset， please check as soon as possible！",
+    "email": "Email Address: ",
+    "send": "Send",
+    "message": "Mail has been sent to you, please reset your password in 30 minutes, or it will be expired."
   },
   "signup": {
     "welcome": "Welcome to register",
@@ -370,7 +372,7 @@
     "email": "Email",
     "vcode": "Verify Code",
     "refresh": "Refresh",
-    "agreement": "I have read and agreed <span class=\"protocol\">Player Agreements</span>和<span class=\"law\">Legal Notices</span>",
+    "agreement": "I have read and agreed <span class=\"protocol\">Player Agreements</span> and <span class=\"law\">Legal Notices</span>",
     "register": "Register",
     "register_successful": "You are successfully registered, please login your email to active your account in 24 hours."
   }
