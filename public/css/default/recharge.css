@@ -388,3 +388,7 @@
 .lang-jp .recharge-panel .recharge-container {
   min-width: 900px;
 }
+
+.lang-en .recharge-step span {
+  font-size: 14px;
+}
