@@ -1,0 +1,81 @@
+{
+  "navigator": {
+    "home": "Home",
+    "treasure": "天才寻宝",
+    "lobby": "游戏大厅",
+    "about": "Über Uns",
+    "news": "Sudoku Nachrichten",
+    "operation": "Spielanleitung",
+    "guide": "Kampfhandreichung",
+    "law": "Impressum",
+    "help": "Hilfe",
+    "contact": "Kontakt Uns",
+    "user": "个人信息",
+    "single_player": "单机/人机",
+    "props": "道具",
+    "settings": "管理",
+    "messages": "消息",
+    "recharge": "充值",
+    "teaching_video": "教学视频",
+    "logout": "退出"
+  },
+  "constellation": {
+    "aries": "白羊座",
+    "taurus": "金牛座",
+    "gemini": "双子座",
+    "cancer": "巨蟹座",
+    "leo": "狮子座",
+    "virgo": "处女座",
+    "libra": "天秤座",
+    "scorpio": "天蝎座",
+    "sagittarius": "射手座",
+    "capricorn": "摩羯座",
+    "aquarius": "水瓶座",
+    "pisces": "双鱼座"
+  },
+  "actions": {
+    "close": "关闭",
+    "ok": "确认",
+    "cancel": "取消",
+    "back": "返回",
+    "continue": "继续",
+    "submit": "提交",
+    "quit": "退出"
+  },
+  "titles": {
+    "message": "消息"
+  },
+  "player": {
+    "grade": "段位",
+    "points": "积分",
+    "rounds": "总局数",
+    "winrate": "胜率"
+  },
+  "greeting": {
+    "welcome": "欢迎",
+    "balence": "余额",
+    "money": "天才币"
+  },
+  "pagination": {
+    "first": "首页",
+    "next": "下一页",
+    "previous": "上一页",
+    "last": "末页",
+    "goto": "跳转"
+  },
+  "communicate": {
+    "feedback": "意<br>见<br>反<br>馈",
+    "group_chat": "加<br>入<br>群<br>聊",
+    "feedback_successful": "反馈成功, 非常感谢!"
+  },
+  "upload_icon": {
+    "click_to": "请点击<span class=\"btn btn-success\">浏览</span>来选择头像"
+  },
+  "company": "超天才技术开发(北京)有限责任公司",
+  "address": "北京市上地三街金隅嘉华大厦A座501",
+  "email": "邮箱",
+  "phone": "电话",
+  "sudoku": "数独棋",
+  "money": "天才币",
+  "system": "系统"
+}

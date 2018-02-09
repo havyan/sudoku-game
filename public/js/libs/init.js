@@ -4,7 +4,7 @@
     lng: lang,
     fallbackLng: lang,
     preload: [
-      'cn', 'en', 'jp'
+      'cn', 'en', 'jp', 'de'
     ],
     ns: [
       'page', 'common'

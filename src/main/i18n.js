@@ -100,7 +100,7 @@ module.exports.init = function(cb) {
   i18next.use(i18nextBackend).init({
     lng: 'cn',
     fallbackLng: 'cn',
-    preload: ['cn', 'en', 'jp'],
+    preload: ['cn', 'en', 'jp', 'de'],
     ns: ['page', 'common', 'app'],
     backend: {
       loadPath: 'locales/{{lng}}/{{ns}}.json',
