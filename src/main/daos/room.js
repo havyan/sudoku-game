@@ -5,14 +5,16 @@ var RoomSchema = new Schema({
   name: {
     cn: String,
     en: String,
-    jp: String
+    jp: String,
+    de: String
   },
   code: String,
   icon: String,
   description: {
     cn: String,
     en: String,
-    jp: String
+    jp: String,
+    de: String
   },
   capacity: Number,
   virtual: Boolean,

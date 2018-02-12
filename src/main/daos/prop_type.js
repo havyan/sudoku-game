@@ -11,7 +11,8 @@ var PropTypeSchema = new Schema({
   name: {
     cn: String,
     en: String,
-    jp: String
+    jp: String,
+    de: String
   },
   status: {
     type: String,
@@ -25,7 +26,8 @@ var PropTypeSchema = new Schema({
   func: {
     cn: String,
     en: String,
-    jp: String
+    jp: String,
+    de: String
   },
   icon: String,
   price: Number,

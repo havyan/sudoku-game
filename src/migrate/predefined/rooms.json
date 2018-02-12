@@ -3,7 +3,8 @@
     "name": {
       "cn": "白羊座",
       "en": "Aries",
-      "jp": "おひつじ座"
+      "jp": "おひつじ座",
+      "de": "Widder"
     },
     "code": "aries",
     "order": 1,
@@ -13,7 +14,8 @@
     "name": {
       "cn": "金牛座",
       "en": "Taurus",
-      "jp": "おうし座"
+      "jp": "おうし座",
+      "de": "Stier"
     },
     "code": "taurus",
     "order": 2,
@@ -23,7 +25,8 @@
     "name": {
       "cn": "双子座",
       "en": "Gemini",
-      "jp": "ふたご座"
+      "jp": "ふたご座",
+      "de": "Zwillinge"
     },
     "code": "gemini",
     "order": 3,
@@ -33,7 +36,8 @@
     "name": {
       "cn": "巨蟹座",
       "en": "Cancer",
-      "jp": "かに座"
+      "jp": "かに座",
+      "de": "Krebs"
     },
     "code": "cancer",
     "order": 4,
@@ -43,7 +47,8 @@
     "name": {
       "cn": "狮子座",
       "en": "Leo",
-      "jp": "しし座"
+      "jp": "しし座",
+      "de": "Löwe"
     },
     "code": "leo",
     "order": 5,
@@ -53,7 +58,8 @@
     "name": {
       "cn": "处女座",
       "en": "Virgo",
-      "jp": "おとめ座"
+      "jp": "おとめ座",
+      "de": "Jungefrau"
     },
     "code": "virgo",
     "order": 6,
@@ -63,7 +69,8 @@
     "name": {
       "cn": "天秤座",
       "en": "Libra",
-      "jp": "てんびん座"
+      "jp": "てんびん座",
+      "de": "Waage"
     },
     "code": "libra",
     "order": 7,
@@ -73,7 +80,8 @@
     "name": {
       "cn": "天蝎座",
       "en": "Scorpio",
-      "jp": "さそり座"
+      "jp": "さそり座",
+      "de": "Skorpion"
     },
     "code": "scorpio",
     "order": 8,
@@ -83,7 +91,8 @@
     "name": {
       "cn": "射手座",
       "en": "Sagittarius",
-      "jp": "いて座"
+      "jp": "いて座",
+      "de": "Schütze"
     },
     "code": "sagittarius",
     "order": 9,
@@ -93,7 +102,8 @@
     "name": {
       "cn": "摩羯座",
       "en": "Capricorn",
-      "jp": "やぎ座"
+      "jp": "やぎ座",
+      "de": "Steinbock"
     },
     "code": "capricorn",
     "order": 10,
@@ -103,7 +113,8 @@
     "name": {
       "cn": "水瓶座",
       "en": "Aquarius",
-      "jp": "みずがめ座"
+      "jp": "みずがめ座",
+      "de": "Wassermann"
     },
     "code": "aquarius",
     "order": 11,
@@ -113,7 +124,8 @@
     "name": {
       "cn": "双鱼座",
       "en": "Pisces",
-      "jp": "うお座"
+      "jp": "うお座",
+      "de": "Fische"
     },
     "code": "pisces",
     "order": 12,
@@ -124,7 +136,8 @@
     "name": {
       "cn": "房间一",
       "en": "Room 1",
-      "jp": "部屋一"
+      "jp": "部屋一",
+      "de": "Zimmer 1"
     },
     "code": "room1",
     "order": 1,
@@ -134,7 +147,8 @@
     "name": {
       "cn": "房间二",
       "en": "Room 2",
-      "jp": "部屋二"
+      "jp": "部屋二",
+      "de": "Zimmer 2"
     },
     "code": "room2",
     "order": 2,
@@ -144,7 +158,8 @@
     "name": {
       "cn": "房间三",
       "en": "Room 3",
-      "jp": "部屋三"
+      "jp": "部屋三",
+      "de": "Zimmer 3"
     },
     "code": "room3",
     "order": 3,
