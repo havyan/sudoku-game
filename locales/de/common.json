@@ -54,7 +54,7 @@
   "greeting": {
     "welcome": "欢迎",
     "balence": "余额",
-    "money": "天才币"
+    "money": "Genie-Münzen"
   },
   "pagination": {
     "first": "Home",
@@ -75,7 +75,7 @@
   "address": "北京市上地三街金隅嘉华大厦A座501",
   "email": "邮箱",
   "phone": "电话",
-  "sudoku": "数独棋",
-  "money": "天才币",
+  "sudoku": "Sudoku",
+  "money": "Genie-Münzen",
   "system": "系统"
 }

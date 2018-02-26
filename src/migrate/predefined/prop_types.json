@@ -3,13 +3,15 @@
   "name": {
     "cn": "放大镜",
     "en": "Magnifying glass",
-    "jp": "拡大鏡"
+    "jp": "拡大鏡",
+    "de": "Lupe"
   },
   "category": "sudoku",
   "func": {
     "cn": "显示选中格子的答案",
     "en": "Displays correct number in selected grid",
-    "jp": "格子の解答が表示される"
+    "jp": "格子の解答が表示される",
+    "de": "Bekommen Sie die richtige Lösungen des ausgewählt Box"
   },
   "order": 0,
   "icon": "/imgs/default/prop_magnifier.png",
@@ -19,14 +21,16 @@
   "name": {
     "cn": "延时卡",
     "en": "Delay card",
-    "jp": "遅延カード"
+    "jp": "遅延カード",
+    "de": "Verspätungskarte"
   },
   "category": "sudoku",
   "order": 1,
   "func": {
     "cn": "延时60s，一轮中自己只能用一次",
     "en": "Delay 60s, only can be used once in each round",
-    "jp": "遅延60s、1回戦で自分で一度だけ使える"
+    "jp": "遅延60s、1回戦で自分で一度だけ使える",
+    "de": "60 Sekunden verlängern, darf nur einmal in en Spiel benutzen"
   },
   "icon": "/imgs/default/prop_delay.png",
   "price": 30
@@ -35,14 +39,16 @@
   "name": {
     "cn": "候选卡",
     "en": "The candidate card",
-    "jp": "候補者カード"
+    "jp": "候補者カード",
+    "de": "Kandidatenkarte"
   },
   "category": "sudoku",
   "order": 2,
   "func": {
     "cn": "显示候选数，一轮中自己只能用一次",
     "en": "Displays candidate number，only can be used once in each round",
-    "jp": "候補数を表示して、1回戦で1度だけ使える"
+    "jp": "候補数を表示して、1回戦で1度だけ使える",
+    "de": "Bekommen Sie alle mögliche Zählen von einen Raster-Box in einmal Ihre Spielzeit"
   },
   "icon": "/imgs/default/prop_options_once.png",
   "price": 30
@@ -51,14 +57,16 @@
   "name": {
     "cn": "全盘候选卡",
     "en": "Total candidate card",
-    "jp": "全候補カード"
+    "jp": "全候補カード",
+    "de": "Gobale Kandidatenkarten"
   },
   "category": "sudoku",
   "order": 3,
   "func": {
     "cn": "游戏中全盘显示候选数",
     "en": "Show all candidate numbers in the game",
-    "jp": "ゲームに碁盤の目の候補数がすべて表示される"
+    "jp": "ゲームに碁盤の目の候補数がすべて表示される",
+    "de": "Bekommen Sie alle mögliche Zählen von allen Rastern in ganzen Spielzeit."
   },
   "icon": "/imgs/default/prop_options_always.png",
   "price": 3000
@@ -67,14 +75,16 @@
   "name": {
     "cn": "免罚卡",
     "en": "Impunity card",
-    "jp": "免罚カード"
+    "jp": "免罚カード",
+    "de": "Freikarten"
   },
   "category": "sudoku",
   "order": 4,
   "func": {
     "cn": "补回答错或不答所扣的分数",
     "en": "Make up for deducted scores on last round",
-    "jp": "誤答または答えないポイントを差し引くことができる"
+    "jp": "誤答または答えないポイントを差し引くことができる",
+    "de": "Bekommen Sie wieder die Punkte wenn falsch Lösung gefühlt oder Zeit erschöpft."
   },
   "icon": "/imgs/default/prop_impunity.png",
   "price": 200
@@ -83,14 +93,16 @@
   "name": {
     "cn": "智能眼镜",
     "en": "Smart glasses",
-    "jp": "スマートメガネ"
+    "jp": "スマートメガネ",
+    "de": "Smart Brille"
   },
   "category": "sudoku",
   "order": 5,
   "func": {
     "cn": "显示气泡，一轮中自己只能用一次",
     "en": "Show bubbles, only can be used once in each round",
-    "jp": "気泡を表示して、1回戦で一度だけ使える"
+    "jp": "気泡を表示して、1回戦で一度だけ使える",
+    "de": "Bekommen Sie alle mögliche Zählen von einen Raster. Sie können diese Requistiten jederzeit verwenden, aber nur wenn Ihre Antwort vorliegt, können Sie die richtige Lösung abgeben"
   },
   "icon": "/imgs/default/prop_glasses.png",
   "price": 30
@@ -99,14 +111,16 @@
   "name": {
     "cn": "范围检测仪",
     "en": "范围检测仪",
-    "jp": "范围检测仪"
+    "jp": "范围检测仪",
+    "de": "范围检测仪"
   },
   "category": "treasure",
   "order": 6,
   "func": {
     "cn": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
     "en": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
-    "jp": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气"
+    "jp": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
+    "de": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气"
   },
   "icon": "/imgs/default/scope_instrument.png",
   "price": 30
@@ -115,14 +129,16 @@
   "name": {
     "cn": "神经性毒气检测仪",
     "en": "神经性毒气检测仪",
-    "jp": "神经性毒气检测仪"
+    "jp": "神经性毒气检测仪",
+    "de": "神经性毒气检测仪"
   },
   "category": "treasure",
   "order": 7,
   "func": {
     "cn": "可以判断毒气沙林、梭曼、维埃克斯",
     "en": "可以判断毒气沙林、梭曼、维埃克斯",
-    "jp": "可以判断毒气沙林、梭曼、维埃克斯"
+    "jp": "可以判断毒气沙林、梭曼、维埃克斯",
+    "de": "可以判断毒气沙林、梭曼、维埃克斯"
   },
   "icon": "/imgs/default/nerve_gas_instrument.png",
   "price": 100
@@ -131,14 +147,16 @@
   "name": {
     "cn": "窒息性毒气检测仪",
     "en": "窒息性毒气检测仪",
-    "jp": "窒息性毒气检测仪"
+    "jp": "窒息性毒气检测仪",
+    "de": "窒息性毒气检测仪"
   },
   "category": "treasure",
   "order": 8,
   "func": {
     "cn": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
     "en": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
-    "jp": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气"
+    "jp": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气",
+    "de": "可以判断毒气是否为指定类型：神经性毒气、窒息性毒气或刺激性毒气"
   },
   "icon": "/imgs/default/asphyxiant_gas_instrument.png",
   "price": 80
@@ -147,14 +165,16 @@
   "name": {
     "cn": "刺激性毒气检测仪",
     "en": "刺激性毒气检测仪",
-    "jp": "刺激性毒气检测仪"
+    "jp": "刺激性毒气检测仪",
+    "de": "刺激性毒气检测仪"
   },
   "category": "treasure",
   "order": 9,
   "func": {
     "cn": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯",
     "en": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯",
-    "jp": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯"
+    "jp": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯",
+    "de": "可以判断毒气苯氯乙酮、亚当氏气、西埃斯"
   },
   "icon": "/imgs/default/irritant_gas_instrument.png",
   "price": 50
@@ -163,14 +183,16 @@
   "name": {
     "cn": "范围毒气试纸",
     "en": "范围毒气试纸",
-    "jp": "范围毒气试纸"
+    "jp": "范围毒气试纸",
+    "de": "范围毒气试纸"
   },
   "category": "treasure",
   "order": 10,
   "func": {
     "cn": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸",
     "en": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸",
-    "jp": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸"
+    "jp": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸",
+    "de": "3种：神经性毒气试纸、窒息性毒气试纸、刺激性毒气试纸"
   },
   "icon": "/imgs/default/scope_paper.png",
   "price": 5
@@ -179,14 +201,16 @@
   "name": {
     "cn": "神经性毒气试纸",
     "en": "神经性毒气试纸",
-    "jp": "神经性毒气试纸"
+    "jp": "神经性毒气试纸",
+    "de": "神经性毒气试纸"
   },
   "category": "treasure",
   "order": 11,
   "func": {
     "cn": "3种：沙林试纸、梭曼试纸、维埃克斯试纸",
     "en": "3种：沙林试纸、梭曼试纸、维埃克斯试纸",
-    "jp": "3种：沙林试纸、梭曼试纸、维埃克斯试纸"
+    "jp": "3种：沙林试纸、梭曼试纸、维埃克斯试纸",
+    "de": "3种：沙林试纸、梭曼试纸、维埃克斯试纸"
   },
   "icon": "/imgs/default/nerve_gas_paper.png",
   "price": 5
@@ -195,14 +219,16 @@
   "name": {
     "cn": "窒息性毒气试纸",
     "en": "窒息性毒气试纸",
-    "jp": "窒息性毒气试纸"
+    "jp": "窒息性毒气试纸",
+    "de": "窒息性毒气试纸"
   },
   "category": "treasure",
   "order": 12,
   "func": {
     "cn": "3种：光气试纸、双光气试纸、氯气试纸",
     "en": "3种：光气试纸、双光气试纸、氯气试纸",
-    "jp": "3种：光气试纸、双光气试纸、氯气试纸"
+    "jp": "3种：光气试纸、双光气试纸、氯气试纸",
+    "de": "3种：光气试纸、双光气试纸、氯气试纸"
   },
   "icon": "/imgs/default/asphyxiant_gas_paper.png",
   "price": 5
@@ -211,14 +237,16 @@
   "name": {
     "cn": "刺激性毒气试纸",
     "en": "刺激性毒气试纸",
-    "jp": "刺激性毒气试纸"
+    "jp": "刺激性毒气试纸",
+    "de": "刺激性毒气试纸"
   },
   "category": "treasure",
   "order": 13,
   "func": {
     "cn": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸",
     "en": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸",
-    "jp": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸"
+    "jp": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸",
+    "de": "3种：苯氯乙酮试纸、亚当氏气试纸、西埃斯试纸"
   },
   "icon": "/imgs/default/irritant_gas_paper.png",
   "price": 5
@@ -227,14 +255,16 @@
   "name": {
     "cn": "止咳糖浆",
     "en": "止咳糖浆",
-    "jp": "止咳糖浆"
+    "jp": "止咳糖浆",
+    "de": "止咳糖浆"
   },
   "category": "treasure",
   "order": 14,
   "func": {
     "cn": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的",
     "en": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的",
-    "jp": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的"
+    "jp": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的",
+    "de": "可以帮助玩家减免咳嗽时间，原来咳嗽5分钟是不可以继续游戏的"
   },
   "icon": "/imgs/default/cough_syrup.png",
   "price": 50
@@ -243,14 +273,16 @@
   "name": {
     "cn": "醒神药剂",
     "en": "醒神药剂",
-    "jp": "醒神药剂"
+    "jp": "醒神药剂",
+    "de": "醒神药剂"
   },
   "category": "treasure",
   "order": 15,
   "func": {
     "cn": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏",
     "en": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏",
-    "jp": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏"
+    "jp": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏",
+    "de": "可以帮助玩家恢复生命，原来晕眩2分钟后自动结束游戏"
   },
   "icon": "/imgs/default/sober_potion.png",
   "price": 50
@@ -259,14 +291,16 @@
   "name": {
     "cn": "无敌燃烧弹",
     "en": "无敌燃烧弹",
-    "jp": "无敌燃烧弹"
+    "jp": "无敌燃烧弹",
+    "de": "无敌燃烧弹"
   },
   "category": "treasure",
   "order": 16,
   "func": {
     "cn": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间",
     "en": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间",
-    "jp": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间"
+    "jp": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间",
+    "de": "可以在指定格子内燃烧，燃烧后此房间不再有毒气，玩家可以直接进入房间"
   },
   "icon": "/imgs/default/invincible_bomb.png",
   "price": 100

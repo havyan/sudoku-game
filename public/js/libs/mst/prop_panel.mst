@@ -28,7 +28,7 @@
         {{T "page:props.func"}} {{L func}}
       </div>
       <div>
-        {{T "page:props.price"}} {{price}}{{T "common:money"}}
+        {{T "page:props.price"}} {{price}} {{T "common:money"}}
       </div>
       <div>
         {{T "page:props.sale"}} {{sales}}
