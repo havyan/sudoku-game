@@ -6,6 +6,10 @@ var Mixed = Schema.Types.Mixed;
 var PROP = require('./prop.json');
 
 var PropSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   account: String,
   magnifier: Number,
   impunity: Number,
@@ -48,14 +52,19 @@ var PropSchema = new Schema({
   }
 });
 
+PropSchema.statics.all = function(cb) {
+  this.find({}, cb);
+};
+
 PropSchema.statics.findOneByAccount = function(account, cb) {
   this.findOne({
     account: account
   }, cb);
 };
 
-PropSchema.statics.createDefault = function(account, predefined, cb) {
+PropSchema.statics.createDefault = function(user, account, predefined, cb) {
   var prop = _.cloneDeep(predefined ? PROP.predefined : PROP.normal);
+  prop.user = user;
   prop.account = account;
   this.create(prop, cb);
 };
