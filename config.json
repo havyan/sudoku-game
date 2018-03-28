@@ -24,9 +24,14 @@
       "basefile": "/"
     },
     "mail": {
-      "service": "163",
-      "from": "zxx.968@163.com",
-      "password": "genius"
+      "host": "smtp.exmail.qq.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+        "user": "sudokugame@supergenius.cn",
+        "pass": "Tczh123sudoku"
+      },
+      "from": "\"Genius Sudoku\" <sudokugame@supergenius.cn>"
     },
     "pay": {
       "apiuid": "7fb943a08b2b45e9911966fcf7d228bd",
