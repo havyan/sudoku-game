@@ -9,7 +9,7 @@ input:focus {
 }
 
 .signup-form {
-  width: 400px;
+  width: 450px;
   margin: auto;
 }
 
@@ -31,11 +31,11 @@ input:focus {
 }
 
 .signup-name {
-  width: 80px;
+  width: 100px;
 }
 
 .signup-value {
-  width: 230px;
+  width: 300px;
   border-radius: 8px;
   padding-left: 5px;
   padding-right: 3px;

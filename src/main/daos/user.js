@@ -26,6 +26,8 @@ var UserSchema = new Schema({
     type : String,
     default : STATUS.NEW
   },
+  citizen_id: String,
+  real_name: String,
   predefined : {
     type : Boolean,
     default : false

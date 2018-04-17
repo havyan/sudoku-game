@@ -12,7 +12,7 @@
     {{> i18n left=true }}
     {{> top_actions }}
     <div class="welcome">
-      {{T "page:user.welcome"}}<span class="user-name">{{user.name}}</span>, {{T "page:user.balence"}}<span class="money">{{user.money}}</span>{{T "page:user.money"}}
+      {{T "page:user.welcome"}}<span class="user-name">{{user.name}}</span>, {{T "page:user.balence"}}<span class="money">{{user.money}}</span>{{T "common:money"}}
     </div>
     <div class="main">
       <div class="info">
@@ -25,6 +25,12 @@
           <input class="value-field" type="text" value="{{user.name}}" />
           <input class="button confirm" type="button" value="{{T "common:actions.ok"}}" />
           <input class="button cancel" type="button" value="{{T "common:actions.cancel"}}" />
+        </div>
+        <div class="info-row">
+          <span class="name">{{T "page:user.citizen_id"}}</span><span class="value">{{user.citizen_id}}</span>
+        </div>
+        <div class="info-row">
+          <span class="name">{{T "page:user.real_name"}}</span><span class="value">{{user.real_name}}</span>
         </div>
         <div class="info-row">
           <span class="name">{{T "page:user.status"}}</span><span class="value">{{T "page:user.normal"}}</span>

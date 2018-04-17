@@ -143,6 +143,26 @@
         }
       },
 
+      '.citizen-id .signup-value blur' : function(e) {
+        var self = this;
+        var citizenId = e.val();
+        var $sign = e.siblings('.ok-sign');
+        if (!_.isEmpty(citizenId)) {
+          var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+          if (reg.test(citizenId)) {
+            self.validation.citizenId = true;
+            $sign.removeClass('wrong').css('display', 'inline-block');
+          } else {
+            $sign.addClass('wrong');
+            self.validation.citizenId = false;
+          }
+          $sign.css('display', 'inline-block');
+        } else {
+          $sign.hide();
+          self.validation.citizenId = false;
+        }
+      },
+
       '.vcode .signup-value blur' : function(e) {
         var self = this;
         var vcode = e.val();
@@ -172,7 +192,7 @@
       '.signup-submit click' : function() {
         var self = this;
         var validation = self.validation;
-        if (validation.account && validation.name && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
+        if (validation.account && validation.name && validation.citizenId && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
           $('.signup-form').ajaxSubmit({
             success : function(result) {
               if (result.success) {
