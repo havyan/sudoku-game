@@ -57,15 +57,19 @@ input:focus {
 
 .protocol-read {
   font-size: 10px;
+  white-space: nowrap;
 }
 
-.protocol-read > * {
+.protocol-read > *,
+.extra-read > * {
   display: inline-block;
   vertical-align: middle;
 }
 
 .protocol-read .protocol,
-.protocol-read .law {
+.protocol-read .law,
+.protocol-read .parents,
+.protocol-read .dispute {
   color: #fff100;
   display: inline-block;
   vertical-align: middle;
@@ -75,9 +79,18 @@ input:focus {
 }
 
 .protocol-read input {
-  margin-left: 60px;
   margin-right: 5px;
   margin-top: 0px;
+}
+
+.extra-read {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.dispute-dialog .article .section-item-1 {
+  margin-left: 0px;
 }
 
 .common-actions {

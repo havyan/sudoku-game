@@ -227,6 +227,14 @@
 
       '.protocol-read .law click' : function(e) {
         Agreement.showLaw();
+      },
+
+      '.protocol-read .parents click' : function(e) {
+        Agreement.showParents();
+      },
+
+      '.protocol-read .dispute click' : function(e) {
+        Agreement.showDispute();
       }
     });
 

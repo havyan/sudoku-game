@@ -378,7 +378,7 @@
     "email": "電子メール",
     "vcode": "認証コード",
     "refresh": "別の画像を表示する",
-    "agreement": "私は<span class=\"protocol\">天才数独ユーザー協議</span>と<span class=\"law\">法律声明</span>を読んで同意しました",
+    "agreement": "私は<span class=\"protocol\">天才数独ユーザー協議</span>, <span class=\"law\">法律声明</span>, <span class=\"parents\">家长监护</span>と<span class=\"dispute\">用户纠纷处理</span>を読んで同意しました",
     "register": "新規取得",
     "register_successful": "新規取得が成功して、24時間以内にメールを登録して、アクティブにしてください"
   }

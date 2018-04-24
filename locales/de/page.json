@@ -381,7 +381,7 @@
     "email": "邮箱",
     "vcode": "验证码",
     "refresh": "刷新",
-    "agreement": "我已阅读并同意<span class=\"protocol\">超天才数独玩家协议</span>和<span class=\"law\">法律声明</span>",
+    "agreement": "我已阅读并同意<span class=\"protocol\">超天才数独玩家协议</span>, <span class=\"law\">法律声明</span>, <span class=\"parents\">家长监护</span>和<span class=\"dispute\">用户纠纷处理</span>",
     "register": "注册",
     "register_successful": "注册成功，请在24小时内登录您的邮箱激活您的账户"
   }
