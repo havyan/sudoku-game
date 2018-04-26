@@ -31,6 +31,16 @@
       });
     },
 
+    showParentsDetail: function() {
+      Dialog.show({
+        title: '家长监护',
+        template: '/js/libs/mst/parents_detail.mst',
+        userClass: 'parents-detail-dialog',
+        autoClose: false,
+        actions: [Dialog.CLOSE_ACTION]
+      });
+    },
+
     showDispute: function() {
       Dialog.show({
         title: '用户纠纷处理',

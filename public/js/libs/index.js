@@ -32,6 +32,10 @@
       Agreement.showLaw();
     });
 
+    $('.parents-btn').click(function() {
+      Agreement.showParentsDetail();
+    });
+
     $('.guest-pass-button a').click(function() {
       if ($('.protocol-read input[type=checkbox]').is(':checked')) {
         window.location = '/guest_pass';

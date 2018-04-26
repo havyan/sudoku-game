@@ -552,6 +552,15 @@ to {
   font-size: 14px;
 }
 
+.article p {
+  margin-left: 10px;
+}
+
+.article .section-sub {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
 .article .title {
   font-size: 24px;
   font-weight: bold;
@@ -560,14 +569,20 @@ to {
 }
 
 .protocol-dialog .modal-dialog,
-.law-dialog .modal-dialog {
+.law-dialog .modal-dialog,
+.parents-dialog .modal-dialog,
+.dispute-dialog .modal-dialog,
+.parents-detail-dialog .modal-dialog {
   width: 800px;
 }
 
 .protocol-dialog .modal-dialog .modal-body,
-.law-dialog .modal-dialog .modal-body {
+.law-dialog .modal-dialog .modal-body,
+.parents-dialog .modal-dialog .modal-body,
+.dispute-dialog .modal-dialog .modal-body,
+.parents-detail-dialog .modal-dialog .modal-body {
   height: 400px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .article .section {
