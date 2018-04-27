@@ -37,7 +37,8 @@ input[type=text], input[type=password] {
 .law-btn,
 .about-btn,
 .help-btn,
-.parents-btn {
+.parents-btn,
+.dispute-btn {
   display: inline-block;
   min-width: 80px;
   padding: 0 5px;

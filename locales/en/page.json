@@ -378,7 +378,7 @@
     "email": "Email",
     "vcode": "Verify Code",
     "refresh": "Refresh",
-    "agreement": "I have read and agreed <span class=\"protocol\">Player Agreements</span>, <span class=\"law\">Legal Notices</span>, <span class=\"parents\">家长监护</span> and <span class=\"dispute\">用户纠纷处理</span>",
+    "agreement": "I have read and agreed <span class=\"protocol\">Player Agreements</span> and <span class=\"law\">Legal Notices</span>",
     "register": "Register",
     "register_successful": "You are successfully registered, please login your email to active your account in 24 hours."
   }
