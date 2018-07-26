@@ -11,7 +11,7 @@
     {{#props}}
     <div class="award-prop">
       <img class="icon" src="{{icon}}"></img>
-      <span class="text">{{name}} <span>+ {{count}}</span></span>
+      <span class="text">{{L name}} <span>+ {{count}}</span></span>
     </div>
     {{/props}}
   </div>
