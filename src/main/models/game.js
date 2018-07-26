@@ -1003,7 +1003,9 @@ Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
     return e.floor > player.points;
   });
   var oldGrade = player.grade;
-  player.grade = self.rule.grade[ceilingIndex - 1].code;
+  if (ceilingIndex > 1 && self.rule.grade[ceilingIndex - 1]) {
+    player.grade = self.rule.grade[ceilingIndex - 1].code;
+  }
   player.rounds = player.rounds + 1;
   if (win) {
     player.wintimes = player.wintimes + 1;
