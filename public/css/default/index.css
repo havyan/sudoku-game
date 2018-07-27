@@ -58,7 +58,7 @@ input[type=text], input[type=password] {
 
 .login-area {
   width: 800px;
-  height: 800px;
+  height: 600px;
   margin: auto;
   position: fixed;
   left: 0px;
@@ -71,7 +71,7 @@ input[type=text], input[type=password] {
   width: 320px;
   height: 400px;
   margin: auto;
-  margin-top: 210px;
+  margin-top: 110px;
   text-align: center;
   overflow: hidden;
 }
