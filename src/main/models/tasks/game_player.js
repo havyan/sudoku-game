@@ -1,6 +1,6 @@
 const AbstractTask = require('./abstract_task');
 
-const MAX_TIMEOUT_ROUNDS = 1;
+const MAX_TIMEOUT_ROUNDS = 10;
 
 class PlayerTimerTask extends AbstractTask {
 
