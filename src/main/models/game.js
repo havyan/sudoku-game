@@ -46,7 +46,7 @@ var CAPACITY = 4;
 var DEFAULT_LEVEL = 'DDD';
 var DEFAULT_WAIT_TIME = 5;
 var GAME_TIMEOUT = 10;
-var MAX_TIMEOUT_ROUNDS = 10;
+var MAX_TIMEOUT_ROUNDS = 1;
 var START_MODE = {
   MANUAL: 'manual',
   AUTO: 'auto'

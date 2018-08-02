@@ -5,7 +5,7 @@
     var roomHeight = $rooms.height();
     var centerX = 400;
     var centerY = 300;
-    var radius = 260;
+    var radius = 280;
     var step = Math.PI * 2 / $rooms.length;
     var start = -step;
     $rooms.each(function(i, e) {
