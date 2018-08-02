@@ -1,5 +1,7 @@
 html, body {
     overflow-y: auto !important;
+    min-width: initial !important;
+    min-height: initial !important;
 }
 body {
 	background: #000 url(../../imgs/default/main_bg.png);
