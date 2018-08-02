@@ -60,6 +60,9 @@ module.exports = function(cb) {
         cb();
       } else {
         Async.eachSeries(props, function(prop, cb) {
+          if (!prop.purchases) {
+            prop.purchases = {};
+          }
           var purchases = prop.purchases;
           for(var key in initProp) {
             if (prop[key] == undefined) {
