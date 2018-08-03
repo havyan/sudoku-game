@@ -391,17 +391,17 @@ module.exports = function(router) {
   });
 
   router.get('/news', function(req, res, next) {
-        NewsDAO.find({},function(error, results) {
+        NewsDAO.find({status: '1'},function(error, results) {
           if (error) {
             next(new HttpError('Error when finding user or recharge: ' + error));
           } else {
             var news = results;
-                res.render('news', {
-                  news : news,
-                });
+            res.render('news', {
+              news : news,
+            });
           }
         }
-      ).sort({'createtime':-1});
+      ).sort({'publishtime':-1});
   });
 
   router.get('/news/:id', function(req, res, next) {
@@ -417,7 +417,7 @@ module.exports = function(router) {
         res.render('newsdetails', {
           newsTitle: news.title,
           newsAuthor: news.author,
-          newsCreatetime: news.createtime,
+          newsPublishtime: news.publishtime,
           newsContent: news.content,
         });
       }

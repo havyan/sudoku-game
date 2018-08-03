@@ -6,6 +6,7 @@ var NewsSchema = new Schema({
   title : String,
   author : String,
   content : String,
+  publishtime : Date
 });
 
 NewsSchema.statics.findOneById = function(id, cb) {
