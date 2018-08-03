@@ -35,6 +35,9 @@ module.exports = function(cb) {
     var propTypes = require('./predefined/prop_types.json');
     Async.eachSeries(propTypes, function(propType, cb) {
       PropTypeDAO.findOneByType(propType.type, function(error, find) {
+        if (error) {
+          winston.error('Error when finding prop type: ' + error);
+        }
         if (!find) {
           winston.info('Create prop type [' + propType.name + '] from predefined');
           PropTypeDAO.create(propType, cb);
@@ -81,6 +84,9 @@ module.exports = function(cb) {
     var rooms = require('./predefined/rooms.json');
     Async.eachSeries(rooms.parents, function(room, cb) {
       RoomDAO.findOneByName(room.name, function(error, find) {
+        if (error) {
+          winston.error('Error when finding room: ' + error);
+        }
         if (!find) {
           winston.info('Create room [' + room.name + '] from predefined');
           RoomDAO.create(room, function(error, room) {
