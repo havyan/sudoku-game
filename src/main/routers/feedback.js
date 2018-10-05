@@ -2,6 +2,7 @@ var Async = require('async');
 var _ = require('lodash');
 var HttpError = require('../http_error');
 var UserDAO = require('../daos/user');
+var User = require('../models/user');
 var FeedbackDAO = require('../daos/feedback');
 var winston = require('winston');
 
@@ -10,7 +11,7 @@ module.exports = function(router) {
     Async.waterfall([
       function(cb) {
         if (req.session.account) {
-          UserDAO.findOneByAccount(req.session.account, cb);
+          User.findOneByAccount(req.session.account, cb);
         } else {
           cb(null, {});
         }

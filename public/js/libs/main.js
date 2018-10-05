@@ -1,29 +1,6 @@
 (function() {
   $(document).ready(function() {
-    Rest.Lobby.getData(function(data) {
-      var bindSinglePlayer = function() {
-        var singlePlayerDialog = new SinglePlayerDialog($('body'));
-        $('a.single-player').click(function() {
-          singlePlayerDialog.show(function(params) {
-            Rest.Game.createSingleGame(params, function() {
-
-            }, function() {});
-            window.open('/table/' + data.user.account, '_blank');
-          });
-        });
-      };
-      bindSinglePlayer();
-      EventReceiver.createSystemEventReceiver(function(eventReceiver) {
-        var lobbyModel = new Models.LobbyModel(data, eventReceiver);
-        new Components.LobbyPanel($('#lobby'), {
-          model : lobbyModel
-        });
-      });
-    }, function(e) {
-    });
-
     var $messagesCount = $('.header .messages-count');
-
     var showMessagesCount = function() {
       var count = $messagesCount.html();
       if (count && count.length > 0) {
@@ -37,14 +14,49 @@
         $messagesCount.hide();
       }
     };
-    setInterval(function() {
-      Rest.Message.getUnreadCount(function(result) {
-        $messagesCount.html(result.count).attr('title', result.count);
-        showMessagesCount();
-      }, function() {
-        window.location.reload();
+    Rest.Lobby.getData(function(data) {
+      var bindSinglePlayer = function() {
+        if (!window.singlePlayerDialog) {
+          window.singlePlayerDialog = new SinglePlayerDialog($('body'));
+        }
+        $('a.single-player').click(function() {
+          Rest.Game.getUnfinishedGames(function(result) {
+            window.singlePlayerDialog.show({
+              unfinishedSingle: result.result.single,
+              unfinishedRobot: result.result.robot
+            }, function(params) {
+              if (params.continueLast) {
+                Rest.Game.restoreGame(result.result[params.playMode]);
+              } else {
+                Rest.Game.createSingleGame({
+                  playMode: params.playMode
+                }, function() {}, function() {});
+              }
+              window.open('/table/' + data.user.account, '_blank');
+            });
+          });
+        });
+      };
+      bindSinglePlayer();
+      EventReceiver.createSystemEventReceiver(function(eventReceiver) {
+        var lobbyModel = new Models.LobbyModel(data, eventReceiver);
+        new Components.LobbyPanel($('#lobby'), {
+          model : lobbyModel
+        });
       });
-    }, 15000);
+      if (!data.user.isGuest) {
+        setInterval(function() {
+          Rest.Message.getUnreadCount(function(result) {
+            $messagesCount.html(result.count).attr('title', result.count);
+            showMessagesCount();
+          }, function() {
+            window.location.reload();
+          });
+        }, 15000);
+      }
+    }, function(e) {
+    });
+
     showMessagesCount();
   });
 })();

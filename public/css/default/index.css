@@ -8,6 +8,12 @@ input[type=text], input[type=password] {
   border: 1px solid gray;
 }
 
+.top-area {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+}
+
 .logo {
   margin-left: 30px;
   margin-top: 20px;
@@ -15,9 +21,8 @@ input[type=text], input[type=password] {
 }
 
 .top-right-area {
-  float: right;
-  margin-right: 30px;
-  margin-top: 20px;
+  margin-left: 200px;
+  margin-top: 25px;
 }
 
 .top-right-area * {
@@ -35,10 +40,13 @@ input[type=text], input[type=password] {
 
 .contact-btn,
 .law-btn,
-.about-btn, 
-.help-btn {
+.about-btn,
+.help-btn,
+.parents-btn,
+.dispute-btn {
   display: inline-block;
-  width: 90px;
+  min-width: 80px;
+  padding: 0 5px;
   height: 32px;
   background-size: 100% 100%;
   text-align: center;
@@ -51,12 +59,11 @@ input[type=text], input[type=password] {
 }
 .about-btn {
   width: auto;
-  padding: 0 16px;
 }
 
 .login-area {
   width: 800px;
-  height: 800px;
+  height: 600px;
   margin: auto;
   position: fixed;
   left: 0px;
@@ -66,10 +73,10 @@ input[type=text], input[type=password] {
 }
 
 .login-container {
-  width: 300px;
-  height: 350px;
+  width: 320px;
+  height: 400px;
   margin: auto;
-  margin-top: 220px;
+  margin-top: 110px;
   text-align: center;
   overflow: hidden;
 }
@@ -160,11 +167,26 @@ input[type=text], input[type=password] {
   margin-bottom: 10px;
 }
 
-.login-button input {
-  width: 120px;
+.login-button {
+  width: 80px;
   height: 34px;
-  background-size: cover;
+  background-size: 100% 100%;
   background-image: url(/imgs/default/login_btn.png);
+  line-height: 34px;
+  background-color: inherit;
+  border: none;
+  font-size: 16px;
+  color: white;
+  margin-right: 20px;
+}
+
+.signup-button,
+.guest-pass-button a {
+  display: inline-block;
+  width: 80px;
+  height: 34px;
+  background-size: 100% 100%;
+  background-image: url(/imgs/default/signup_btn.png);
   line-height: 34px;
   background-color: inherit;
   border: none;
@@ -172,17 +194,33 @@ input[type=text], input[type=password] {
   color: white;
 }
 
-.signup-button a {
+.guest-pass-button a {
+  width: 140px;
+}
+
+.protocol-read {
+  font-size: 10px;
+  margin-top: 10px;
+}
+
+.protocol-read > * {
   display: inline-block;
-  width: 80px;
-  height: 34px;
-  background-size: cover;
-  background-image: url(/imgs/default/signup_btn.png);
-  line-height: 34px;
-  background-color: inherit;
-  border: none;
-  font-size: 16px;
-  color: white;
+  vertical-align: middle;
+}
+
+.protocol-read .protocol,
+.protocol-read .law {
+  color: #fff100;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.protocol-read input {
+  margin-right: 5px;
+  margin-top: 0px;
 }
 
 .room {
@@ -211,4 +249,25 @@ input[type=text], input[type=password] {
 
 .room.favarite .label {
   color: #fff100;
+}
+
+.lang-jp .login-button,
+.lang-jp .signup-button {
+  width: 120px;
+}
+
+.lang-jp .guest-pass-button a {
+  width: 260px;
+}
+
+.lang-jp .login-label {
+  min-width: 75px;
+}
+
+.lang-jp .login-error {
+  font-size: 12px;
+}
+
+.lang-en .login-label {
+  min-width: 75px;
 }

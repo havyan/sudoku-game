@@ -1,19 +1,39 @@
-<div class="modal fade lobby-modal single-player-modal" tabindex="-1" aria-hidden="false" data-backdrop="static" data-backdrop=static data-keyboard=false>
+<div class="modal fade lobby-modal single-player-modal {{#showBattle}}has-battle{{/showBattle}}" tabindex="-1" aria-hidden="false" data-backdrop="static" data-backdrop=static data-keyboard=false>
   <div class="modal-dialog">
+    {{#closable}}
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+    {{/closable}}
     <div class="lobby-modal-content">
+      {{#showBattle}}
+      <div class="play-mode battle-play">
+        <input type="radio" name="play_mode" data-value="battle" />
+        <span>{{T "page:lobby.battle"}}</span>
+      </div>
+      {{/showBattle}}
       <div class="play-mode self-play">
         <input type="radio" name="play_mode" data-value="single" checked="checked" />
-        <span>单机</span>
+        <span>{{T "page:lobby.single"}}</span>
       </div>
       <div class="play-mode robot-play">
         <input type="radio" name="play_mode" data-value="robot" />
-        <span>人机</span>
+        <span>{{T "page:lobby.robot"}}</span>
       </div>
     </div>
+    {{#showBattle}}
+    <div class="signup-message">
+      <div class="content">
+        {{T "page:lobby.signup_1"}}<a href="/logout_signup">{{T "page:lobby.signup_2"}}</a>{{T "page:lobby.signup_3"}}
+      </div>
+    </div>
+    {{/showBattle}}
     <div class="lobby-modal-bottom">
-      <button type="button" class="confirm">
-        确认
+      {{#hasUnfinished}}
+      <button type="button" class="confirm" data-value="continue">
+        {{T "page:lobby.continue_last"}}
+      </button>
+      {{/hasUnfinished}}
+      <button type="button" class="confirm" data-value="new">
+        {{#if hasUnfinished}}{{T "page:lobby.start_new_game"}}{{else}}{{T "page:lobby.start_game"}}{{/if}}
       </button>
     </div>
   </div>

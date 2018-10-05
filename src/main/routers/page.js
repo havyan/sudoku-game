@@ -11,7 +11,10 @@ var RuleDAO = require('../daos/rule');
 var RechargeDAO = require('../daos/recharge');
 var ReferrerDAO = require('../daos/referrer');
 var LoginHistoryDAO = require('../daos/login_history');
+var User = require('../models/user');
+var Guest = require('../models/guest');
 var Message = require('../models/message');
+var NewsDAO = require('../daos/news');
 
 module.exports = function(router) {
   var login = function(req, account, password, cb) {
@@ -50,17 +53,18 @@ module.exports = function(router) {
     ], cb);
   };
 
-  var autoLogin = function(req, res, next) {
+  var autoLogin = function(req, res, feature, next) {
     RoomDAO.allVirtuals(function(error, rooms) {
       var render = function(user) {
-        res.render('index', {
+        var page = feature ? feature + '/index' : 'index';
+        res.render(page, {
           rooms: rooms,
           user: user,
           error: req.query.error === 'true'
         });
       };
       if (req.session.account) {
-        UserDAO.findOneByAccount(req.session.account, function(error, user) {
+        User.findOneByAccount(req.session.account, function(error, user) {
           if (error) {
             next(new HttpError('Error when processing auto login: ' + error));
             return;
@@ -78,7 +82,8 @@ module.exports = function(router) {
                 req.session.account = req.cookies.account;
                 render(user);
               } else {
-                res.redirect('/login?error=true');
+                var url = (feature ? '/' + feature : '') + '/login?error=true';
+                res.redirect(url);
               }
             }
           });
@@ -90,7 +95,7 @@ module.exports = function(router) {
   };
 
   var handleCommon = function(req, res, next, template) {
-    UserDAO.findOneByAccount(req.session.account, function(error, user) {
+    User.findOneByAccount(req.session.account, function(error, user) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.session.account + ': ' + error));
       } else {
@@ -122,11 +127,13 @@ module.exports = function(router) {
 
   /* GET login page. */
   router.get('/login', function(req, res, next) {
-    autoLogin(req, res, next);
+    autoLogin(req, res, null, next);
   });
 
   router.post('/login', function(req, res, next) {
     var password = UserDAO.encryptPassword(req.body.password);
+    var feature = req.body.feature;
+    var prefix = feature ? '/' + feature : '';
     login(req, req.body.account, password, function(error, user) {
       if (error) {
         next(new HttpError('Error when login by account ' + req.body.account + ': ' + error));
@@ -141,35 +148,57 @@ module.exports = function(router) {
             });
           }
           req.session.account = user.account;
-          res.redirect('/main');
+          res.redirect(prefix + '/main');
         } else {
-          res.redirect('/login?error=true');
+          res.redirect(prefix + '/login?error=true');
         }
       }
     });
   });
 
-  router.get('/logout', function(req, res) {
+  router.get('/guest_pass', function(req, res, next) {
+    if (!req.session.account) {
+      req.session.account = Guest.genid();
+    }
+    res.redirect('/main');
+  });
+
+  var logout = function(req, res) {
     var account = req.session.account;
-    winston.info('Try to quit ongoing game before logout');
-    global.gameManager.playerQuit(account, function(error) {
-      if (error) {
-        winston.error('Error when quiting game before logout with account: ' + account);
-      }
-    });
-    req.session.account = undefined;
+    if (account) {
+      winston.info('Try to quit ongoing game before logout');
+      global.gameManager.playerQuit(account, function(error) {
+        if (error) {
+          winston.error('Error when quiting game before logout with account: ' + account);
+        }
+      });
+      req.session.account = undefined;
+    }
     res.clearCookie('account');
     res.clearCookie('password');
+  };
+
+  router.get('/logout', function(req, res) {
+    logout(req, res);
     res.redirect('/login');
   });
 
-  router.get('/main', function(req, res, next) {
+  router.get('/logout_signup', function(req, res) {
+    logout(req, res);
+    res.redirect('/signup');
+  });
+
+  var accessMain = function(req, res, feature, next) {
     Async.parallel([
       function(cb) {
-        UserDAO.findOneByAccount(req.session.account, cb);
+        User.findOneByAccount(req.session.account, cb);
       },
       function(cb) {
-        Message.unreadCount(req.session.account, cb);
+        if (Guest.isGuest(req.session.account)) {
+          cb(null, 0);
+        } else {
+          Message.unreadCount(req.session.account, cb);
+        }
       }
     ], function(error, results) {
       if (error) {
@@ -177,9 +206,11 @@ module.exports = function(router) {
         return;
       }
       var user = results[0];
+      var page = feature ? feature + '/lobby' : 'lobby';
       if (user) {
-        res.render('lobby', {
+        res.render(page, {
           account: user.account,
+          isGuest: user.isGuest,
           userName: user.name,
           isAdmin: user.account === 'SYSTEM',
           userIcon: user.icon,
@@ -193,6 +224,10 @@ module.exports = function(router) {
         res.redirect('/');
       }
     });
+  };
+
+  router.get('/main', function(req, res, next) {
+    accessMain(req, res, null, next);
   });
 
   /* GET Setting page. */
@@ -216,7 +251,7 @@ module.exports = function(router) {
   });
 
   router.get('/view/user', function(req, res, next) {
-    UserDAO.findOneByAccount(req.session.account, function(error, user) {
+    User.findOneByAccount(req.session.account, function(error, user) {
       if (error) {
         next(new HttpError('Error when finding user by account ' + req.body.account + ': ' + error));
       } else if (user) {
@@ -284,7 +319,7 @@ module.exports = function(router) {
     Async.parallel([
       function(cb) {
         if (req.session.account) {
-          UserDAO.findOneByAccount(req.session.account, cb);
+          User.findOneByAccount(req.session.account, cb);
         } else {
           cb(null, {});
         }
@@ -323,7 +358,7 @@ module.exports = function(router) {
   router.get('/view/recharge/pay/:id', function(req, res, next) {
     Async.parallel([
       function(cb) {
-        UserDAO.findOneByAccount(req.session.account, cb);
+        User.findOneByAccount(req.session.account, cb);
       },
       function(cb) {
         RechargeDAO.findOneByPayuid(req.params.id, cb);
@@ -354,4 +389,55 @@ module.exports = function(router) {
   router.get('/guide', function(req, res, next) {
     res.render('guide', {});
   });
+
+  router.get('/news', function(req, res, next) {
+        NewsDAO.find({status: '1'},function(error, results) {
+          if (error) {
+            next(new HttpError('Error when finding user or recharge: ' + error));
+          } else {
+            var news = results;
+            res.render('news', {
+              news : news,
+            });
+          }
+        }
+      ).sort({'publishtime':-1});
+  });
+
+  router.get('/news/:id', function(req, res, next) {
+    Async.parallel([
+      function(cb) {
+        NewsDAO.findOneById(req.params.id, cb);
+      }
+    ], function(error, results) {
+      if (error) {
+        next(new HttpError('Error when finding user or recharge: ' + error));
+      } else {
+        var news = results[0];
+        res.render('newsdetails', {
+          newsTitle: news.title,
+          newsAuthor: news.author,
+          newsPublishtime: news.publishtime,
+          newsContent: news.content,
+        });
+      }
+    });
+  });
+
+
+  /********************************************************************
+   *********************Treasure Hunt Pages****************************
+   ********************************************************************/
+  router.get('/treasure/login', function(req, res, next) {
+    autoLogin(req, res, 'treasure', next);
+  });
+
+  router.get('/treasure/main', function(req, res, next) {
+    accessMain(req, res, 'treasure', next);
+  });
+
+  router.get('/treasure/table/:id', function(req, res) {
+    res.render('treasure/table', {});
+  });
+
 };

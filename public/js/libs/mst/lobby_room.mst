@@ -14,7 +14,7 @@
     <div class="lobby-player existent player-{{@index}} {{#if @index}}normal{{else}}banker{{/if}} {{seatAvailable @index}} {{playerSelf this}}" data-index="{{@index}}" data-id="{{id}}">
       {{#unless @index}}
       <div class="banker-label">
-        庄家
+        {{T "page:lobby.banker"}}
       </div>
       {{/unless}}
       <div class="lobby-player-icon">

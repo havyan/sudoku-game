@@ -81,6 +81,7 @@
 
 .lobby-nav-real-room.active, .lobby-nav-virtual-room.active {
   color: #FFF000;
+  font-weight: bold;
 }
 
 .lobby-nav-item-line {
@@ -206,18 +207,28 @@
   overflow: hidden;
   color: white;
   font-size: 16px;
+  background-size: 100% 100%;
 }
 
 .lobby-modal.single-player-modal .modal-dialog {
   width: 500px;
   height: 250px;
-  background-size: 500px 250px;
+}
+
+.lobby-modal.single-player-modal.has-battle .modal-dialog {
+  width: 550px;
+  height: 260px;
 }
 
 .lobby-modal.single-player-modal .lobby-modal-content {
   margin-top: 90px;
   margin-bottom: 40px;
   text-align: center;
+}
+
+.lobby-modal.single-player-modal.has-battle .lobby-modal-content {
+  margin-top: 80px;
+  margin-bottom: 20px;
 }
 
 .lobby-modal.single-player-modal .lobby-modal-content .play-mode {
@@ -238,6 +249,26 @@
   width: 25px;
   height: 25px;
   cursor: pointer;
+}
+
+.lobby-modal.single-player-modal .signup-message {
+  font-size: 20px;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
+.lobby-modal.single-player-modal .signup-message .content {
+  display: none;
+  height: 100%;
+  line-height: 100%;
+  margin: 0px;
+  width: 100%;
+}
+
+.lobby-modal.single-player-modal .signup-message .content a {
+  color: red;
 }
 
 .lobby-modal .close {
@@ -295,6 +326,7 @@
   height: 51px;
   line-height: 51px;
   background: url(../../imgs/default/form_confirm.png) no-repeat;
+  background-size: 100% 100%;
   margin: auto;
   display: block;
   border: none;
@@ -304,6 +336,17 @@
 
 .lobby-modal  .confirm:hover {
   color: #FFF000
+}
+
+.single-player-modal.lobby-modal .lobby-modal-bottom {
+  text-align: center;
+}
+
+.single-player-modal.lobby-modal .lobby-modal-bottom button {
+  width: 120px;
+  height: 45px;
+  line-height: 45px;
+  display: inline-block;
 }
 
 .lobby-player.banker .lobby-player-icon {
@@ -373,4 +416,20 @@
 
 .free .lobby-game.waiting .lobby-player.empty.normal.available {
   cursor: pointer;
+}
+
+.lang-jp .lobby-modal.single-player-modal .modal-dialog {
+  width: 700px;
+}
+
+.lang-jp .lobby-modal.single-player-modal .lobby-modal-content .play-mode {
+  font-size: 24px;
+}
+
+.lang-jp .lobby-modal .lobby-modal-row .start-mode {
+  font-size: 11px;
+}
+
+.lang-jp .single-player-modal.lobby-modal .lobby-modal-bottom button {
+  width: 200px;
 }

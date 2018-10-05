@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
-var common = require('./common');
 
 var JoinRecordSchema = new Schema({
   account: String,
@@ -22,7 +21,5 @@ JoinRecordSchema.statics.createRecord = function(account, gameId, cb) {
     game: ObjectId(gameId)
   }, cb);
 };
-
-JoinRecordSchema.plugin(common);
 
 module.exports = mongoose.model('JoinRecord', JoinRecordSchema);

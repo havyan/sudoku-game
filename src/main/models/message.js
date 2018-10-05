@@ -1,4 +1,5 @@
 var UserDAO = require('../daos/user');
+var User = require('./user');
 var MessageDAO = require('../daos/message');
 var Async = require('async');
 
@@ -21,7 +22,7 @@ Message.sendFromSystem = function(to, title, content, cb) {
 Message.findByAccount = function(account, start, size, cb) {
   Async.waterfall([
   function(cb) {
-    UserDAO.findOneByAccount(account, cb);
+    User.findOneByAccount(account, cb);
   },
   function(user, cb) {
     MessageDAO.inbox(user.id, start, size, cb);
@@ -31,7 +32,7 @@ Message.findByAccount = function(account, start, size, cb) {
 Message.read = function(account, messageId, cb) {
   Async.waterfall([
   function(cb) {
-    UserDAO.findOneByAccount(account, cb);
+    User.findOneByAccount(account, cb);
   },
   function(user, cb) {
     MessageDAO.read(messageId, user.id, cb);
@@ -41,7 +42,7 @@ Message.read = function(account, messageId, cb) {
 Message.count = function(account, cb) {
   Async.waterfall([
   function(cb) {
-    UserDAO.findOneByAccount(account, cb);
+    User.findOneByAccount(account, cb);
   },
   function(user, cb) {
     MessageDAO.inboxCount(user.id, cb);
@@ -51,7 +52,7 @@ Message.count = function(account, cb) {
 Message.unreadCount = function(account, cb) {
   Async.waterfall([
   function(cb) {
-    UserDAO.findOneByAccount(account, cb);
+    User.findOneByAccount(account, cb);
   },
   function(user, cb) {
     MessageDAO.unreadCount(user.id, cb);

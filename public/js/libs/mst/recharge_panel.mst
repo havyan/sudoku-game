@@ -1,13 +1,13 @@
 <div class="recharge-panel">
   <div class="navigator">
     <div class="rich-button item balance active" data-target="recharge-balance">
-      账户余额
+      {{T "page:recharge.balence"}}
     </div>
     <div class="rich-button item recharge" data-target="recharge-recharge">
-      我要充值
+      {{T "page:recharge.want_recharge"}}
     </div>
     <div class="rich-button item record" data-target="recharge-records">
-      充值记录
+      {{T "page:recharge.recharge_records"}}
     </div>
   </div>
   <div class="recharge-container">
@@ -15,10 +15,10 @@
       <div class="balance-content">
         {{#user}}
         <p class="hello">
-          您好，<span>{{name}}</span>
+          {{T "page:recharge.hello"}}<span>{{name}}</span>
         </p>
         <p class="amount">
-          您的当前账号余额为<span>{{money}}</span>金币。
+          {{T "page:recharge.your_balence"}}<span>{{money}}</span>{{T "page:recharge.gold_money"}}
         </p>
         {{/user}}
       </div>
@@ -26,87 +26,87 @@
     <div class="recharge-recharge item">
       <div class="recharge-steps">
         <div class="recharge-step order active">
-          <span class="recharge-step-icon"></span><span  class="recharge-step-label">提交充值订单</span>
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">{{T "page:recharge.submit_recharge"}}</span>
         </div>
         <div class="recharge-step pay-method">
-          <span  class="recharge-step-icon"></span><span  class="recharge-step-label">选择充值方式</span>
+          <span  class="recharge-step-icon"></span><span  class="recharge-step-label">{{T "page:recharge.recharge_method"}}</span>
         </div>
         <div class="recharge-step pay">
-          <span class="recharge-step-icon"></span><span  class="recharge-step-label">用户付款</span>
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">{{T "page:recharge.user_pay"}}</span>
         </div>
         <div class="recharge-step result">
-          <span class="recharge-step-icon"></span><span  class="recharge-step-label">充值结果</span>
+          <span class="recharge-step-icon"></span><span  class="recharge-step-label">{{T "page:recharge.recharge_result"}}</span>
         </div>
       </div>
       <div class="recharge-step-component order active">
         <div class="purchase-label">
-          请选择您要充值的金额:
+          {{T "page:recharge.choose_money"}}:
         </div>
         <div class="purchase-container">
           <div class="purchase-row" data-value="100">
             <input type="radio" checked="checked" name="purchase"/>
-            <span class="purchase-value">100</span><span>天才币</span>
+            <span class="purchase-value">100</span><span>{{T "page:recharge.money"}}</span>
           </div>
           <div class="purchase-row" data-value="500">
             <input type="radio" name="purchase"/>
-            <span class="purchase-value">500</span><span>天才币</span>
+            <span class="purchase-value">500</span><span>{{T "page:recharge.money"}}</span>
           </div>
           <div class="purchase-row" data-value="1000">
             <input type="radio" name="purchase"/>
-            <span class="purchase-value">1000</span><span>天才币</span>
+            <span class="purchase-value">1000</span><span>{{T "page:recharge.money"}}</span>
           </div>
           <div class="purchase-row custom">
             <input type="radio" name="purchase"/>
-            <span>我需要购买</span>
+            <span>{{T "page:recharge.puchase"}}</span>
             <input type="text" disabled="disabled" />
-            <span>天才币</span>
-            <span class="error">天才币不能为空</span>
+            <span>{{T "page:recharge.money"}}</span>
+            <span class="error">{{T "page:recharge.money_empty"}}</span>
           </div>
         </div>
         <div class="recharge-separator"></div>
         <div class="recharge-money">
-          <span class="recharge-money-label">所需人民币金额:</span><span class="recharge-money-value">{{cost}}</span> 元
+          <span class="recharge-money-label">{{T "page:recharge.required_money"}}:</span><span class="recharge-money-value">{{cost}}</span> {{T "page:recharge.yuan"}}
         </div>
         <div class="recharge-target-label">
-          充值对象:
+          {{T "page:recharge.recharge_target"}}:
         </div>
         <div class="recharge-target">
           <div class="recharge-target-row me">
             <input type="radio" name="target"  checked="checked"/>
-            <span>给自己</span>
+            <span>{{T "page:recharge.to_self"}}</span>
           </div>
           <div class="recharge-target-row other">
             <input type="radio" name="target"/>
-            <span>给他人</span>
+            <span>{{T "page:recharge.to_other"}}</span>
             <input type="text"  disabled="disabled" />
-            <span class="error">账号不存在</span>
+            <span class="error">{{T "page:recharge.account_not_exsiting"}}</span>
           </div>
         </div>
         <div class="recharge-steps-actions">
-          <a class="rich-button order-next" href="javascript:void(0);">下一步</a>
+          <a class="rich-button order-next" href="javascript:void(0);">{{T "page:recharge.next_step"}}</a>
         </div>
       </div>
       <div class="recharge-step-component pay-method">
         <form class="recharge-form" action="/recharge/{{order._id}}/pay" method="post" target="_blank">
           <div class="pay-method-header">
-            订单已提交，请尽快付款
+            {{T "page:recharge.please_pay"}}
           </div>
           {{#order}}
           <div class="pay-method-row">
-            <span class="name">充值到账号：</span><span class="value">{{target}}</span>
+            <span class="name">{{T "page:recharge.recharge_account"}}</span><span class="value">{{target}}</span>
           </div>
           <div class="pay-method-row">
-            <span class="name">充值天才币数量：</span><span class="value">{{purchase}}</span>
+            <span class="name">{{T "page:recharge.money_purchase"}}</span><span class="value">{{purchase}}</span>
           </div>
           <div class="pay-method-row">
-            <span class="name">您的订单号：</span><span class="value">{{trans_code}}</span>
+            <span class="name">{{T "page:recharge.bill_code"}}</span><span class="value">{{trans_code}}</span>
           </div>
           <div class="pay-method-row money">
-            <span class="name">应付金额：</span><span class="value">{{cost}}</span>元
+            <span class="name">{{T "page:recharge.pay_value"}}</span><span class="value">{{cost}}</span>{{T "page:recharge.yuan"}}
           </div>
           {{/order}}
           <div class="pay-method-row method">
-            <span class="name">选择支付方式：</span>
+            <span class="name">{{T "page:recharge.choose_method"}}</span>
             {{#banks}}
             <div class="pay-method-bank {{code}} {{#disabled}}hidden{{/disabled}}">
               <input type="radio" name="banktype" data-bank="{{code}}" value="{{value}}" {{#isBankChecked value}}checked="checked"{{/isBankChecked}}/>
@@ -115,7 +115,7 @@
             {{/banks}}
           </div>
           <div class="recharge-steps-actions">
-            <input class="rich-button pay-method-submit" name="submit" type="submit" value="立即充值">
+            <input class="rich-button pay-method-submit" name="submit" type="submit" value="{{T "page:recharge.pay_now"}}">
           </div>
         </form>
       </div>
@@ -126,7 +126,7 @@
         </p>
         {{#isToSelf}}
         <p>
-          <span class="target">{{order.target}}</span>的当前天才币为：<span class="money">{{user.money}}</span>天才币。
+          <span class="target">{{order.target}}</span>{{T "page:recharge.current_money"}}<span class="money">{{user.money}}</span>{{T "page:recharge.money"}}。
         </p>
         {{/isToSelf}}
       </div>
@@ -134,13 +134,13 @@
     <div class="recharge-records item">
       <table class="records-table">
         <thead>
-          <th class="trans-code">交易号</th>
-          <th class="status">状态</th>
-          <th class="date">充值时间</th>
-          <th class="from">充值账号</th>
-          <th class="target">被充值账号</th>
-          <th class="cost">充值金额</th>
-          <th class="bank">充值渠道</th>
+          <th class="trans-code">{{T "page:recharge.tran_code"}}</th>
+          <th class="status">{{T "page:recharge.pay_status"}}</th>
+          <th class="date">{{T "page:recharge.pay_time"}}</th>
+          <th class="from">{{T "page:recharge.from_account"}}</th>
+          <th class="target">{{T "page:recharge.to_account"}}</th>
+          <th class="cost">{{T "page:recharge.pay_money"}}</th>
+          <th class="bank">{{T "page:recharge.pay_channel"}}</th>
           <th class="actions"></th>
         </thead>
         <tbody>
@@ -153,7 +153,7 @@
             <td>{{target}}</td>
             <td>{{cost}}</td>
             <td>{{rechargeBank bank}}</td>
-            <td> {{#isContinued this}} <a class="continue-pay button" href="javascript:void(0)">继续支付</a> {{/isContinued}} </td>
+            <td> {{#isContinued this}} <a class="continue-pay button" href="javascript:void(0)">{{T "page:recharge.continue_pay"}}</a> {{/isContinued}} </td>
           </tr>
           {{/records}}
         </tbody>
@@ -162,6 +162,6 @@
     </div>
   </div>
   <div class="recharge-actions">
-    <a class="rich-button recharge-back" href="/main">返回</a>
+    <a class="rich-button recharge-back" href="/main">{{T "common:actions.back"}}</a>
   </div>
 </div>

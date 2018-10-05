@@ -8,6 +8,7 @@ var emailer = require('../emailer');
 var UserDAO = require('../daos/user');
 var ResetKeyDAO = require('../daos/reset_key');
 var ActiveKeyDAO = require('../daos/active_key');
+var Guest = require('./guest');
 var ICON_DIR = '/imgs/web/user_icons';
 var RESET_PASSWORD_EXPIRED = 30;
 
@@ -21,6 +22,14 @@ var removeFile = function(path) {
 
 var User = {};
 
+User.findOneByAccount = function(account, cb) {
+  if (Guest.isGuest(account)) {
+    cb(null, new Guest(account));
+  } else {
+    UserDAO.findOneByAccount(account, cb);
+  }
+};
+
 User.resetMoney = function(cb) {
   UserDAO.resetMoney(cb);
 };
@@ -33,7 +42,7 @@ User.updateIconByAccount = function(account, icon, library, bound, cb) {
   if (library) {
     Async.waterfall([
     function(cb) {
-      UserDAO.findOneByAccount(account, cb);
+      User.findOneByAccount(account, cb);
     },
     function(user, cb) {
       var oldIcon = user.icon;
@@ -65,7 +74,7 @@ User.updateIconByAccount = function(account, icon, library, bound, cb) {
     },
     function() {
       removeFile(source);
-      UserDAO.findOneByAccount(account, _.last(arguments));
+      User.findOneByAccount(account, _.last(arguments));
     },
     function(user, cb) {
       var oldIcon = user.icon;
@@ -101,7 +110,7 @@ User.uploadIcon = function(req, cb) {
 
 User.checkAccount = function(account, cb) {
   if (account) {
-    UserDAO.findOneByAccount(account, function(error, user) {
+    User.findOneByAccount(account, function(error, user) {
       if (error) {
         cb(error);
       } else {

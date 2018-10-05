@@ -33,6 +33,7 @@
               } else {
                 $sign.removeClass('wrong');
                 self.validation.account = true;
+                self.element.find('.signup-row.name .signup-value').val(account).blur();
               }
               $sign.css('display', 'inline-block');
             }, function() {
@@ -80,7 +81,7 @@
         var self = this;
         var password = e.val();
         var $sign = e.siblings('.ok-sign');
-        var reg = /^\S{6,16}$/;
+        var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)\S{6,16}$/;
         if (!_.isEmpty(password)) {
           if (reg.test(password)) {
             $sign.removeClass('wrong');
@@ -142,6 +143,26 @@
         }
       },
 
+      '.citizen-id .signup-value blur' : function(e) {
+        var self = this;
+        var citizenId = e.val();
+        var $sign = e.siblings('.ok-sign');
+        if (!_.isEmpty(citizenId)) {
+          var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+          if (reg.test(citizenId)) {
+            self.validation.citizenId = true;
+            $sign.removeClass('wrong').css('display', 'inline-block');
+          } else {
+            $sign.addClass('wrong');
+            self.validation.citizenId = false;
+          }
+          $sign.css('display', 'inline-block');
+        } else {
+          $sign.hide();
+          self.validation.citizenId = false;
+        }
+      },
+
       '.vcode .signup-value blur' : function(e) {
         var self = this;
         var vcode = e.val();
@@ -171,13 +192,13 @@
       '.signup-submit click' : function() {
         var self = this;
         var validation = self.validation;
-        if (validation.account && validation.name && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
+        if (validation.account && validation.name && validation.citizenId && validation.password && validation.repeatPassword && validation.email && validation.vcode) {
           $('.signup-form').ajaxSubmit({
             success : function(result) {
               if (result.success) {
-                Dialog.message('注册成功，请在24小时内登录您的邮箱激活您的账户', {
+                Dialog.message(T('page:signup.register_successful'), {
                   actions : [{
-                    name : '关闭',
+                    name : T('common:actions.close'),
                     dismiss : true,
                     userClass : 'btn-primary',
                     callback : function() {
@@ -206,6 +227,14 @@
 
       '.protocol-read .law click' : function(e) {
         Agreement.showLaw();
+      },
+
+      '.protocol-read .parents click' : function(e) {
+        Agreement.showParents();
+      },
+
+      '.protocol-read .dispute click' : function(e) {
+        Agreement.showDispute();
       }
     });
 

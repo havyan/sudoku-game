@@ -4,6 +4,7 @@
   can.Model('Models.GameModel', {}, {
     init : function(game, eventReceiver) {
       this.eventReceiver = eventReceiver;
+      this.initPlayer();
       this.initDimension();
       this.initEvents();
       this.initStatus();
@@ -18,6 +19,15 @@
       this.initManualStart();
       this.initWait();
       this.initRemainingTime();
+    },
+
+    initPlayer: function() {
+      var player = _.find(this.attr('players'), function(player) {
+        return player && player.attr('account') === this.attr('account');
+      }.bind(this));
+      if (player) {
+        this.attr('isGuest', player.attr('isGuest'));
+      }
     },
 
     initDimension : function() {
@@ -69,6 +79,9 @@
       var singleMode = this.attr('singleMode');
       var propTypes = this.attr('propTypes').attr();
       var prop = this.attr('prop').attr();
+      propTypes = _.filter(propTypes, {
+        category: 'sudoku'
+      });
       this.attr('props', propTypes.map(function(propType) {
         propType.count = prop[propType.type];
         propType.visible = !(singleMode && _.include(['delay', 'glasses'], propType.type));
@@ -147,7 +160,7 @@
         ranking.push({
           account : quitPlayer.attr('account'),
           name : quitPlayer.attr('name'),
-          score : quitPlayer.status === 'quit' ? '退出' : '离线',
+          score : quitPlayer.status === 'quit' ? T('page:game.quit') : T('page:game.offline'),
           type : 'quit'
         });
       });
@@ -593,8 +606,9 @@
         }
       });
       this.eventReceiver.on('game-over', function(results) {
+        var result = _.find(results, {account: self.attr('account')});
         self.attr('status', 'over');
-        self.attr('awardResult', _.find(results, {account: self.attr('account')}).awardResult);
+        self.attr('awardResult', result ? result.awardResult : null);
         self.attr('results', results);
       });
       this.eventReceiver.on('game-destroyed', function(type) {
@@ -606,7 +620,7 @@
         self.attr('delayed', true);
       });
       this.eventReceiver.on('delay-countdown-stage', function(stage) {
-        self.attr('delayCountdownStage', stage);
+        self.attr('delayCountdown', stage);
       });
       this.eventReceiver.on('game-delay-cancelled', function() {
         self.attr('delayed', false);

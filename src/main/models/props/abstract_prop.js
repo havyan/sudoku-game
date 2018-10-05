@@ -18,7 +18,9 @@ class AbstractProp {
     await this.check(player, prop, params);
     const result = await this.process(player, prop, params);
     prop[this.type] = amount - 1;
-    await prop.save();
+    if (!prop.isGuest) {
+      await prop.save();
+    }
     await this.afterUse(player, params);
     return result;
   }

@@ -5,6 +5,8 @@ var AwardDAO = require('../daos/award');
 var UserDAO = require('../daos/user');
 var PropTypeDAO = require('../daos/prop_type');
 var PropDAO = require('../daos/prop');
+var User = require('./user');
+var Prop = require('./prop');
 var Message = require('./message');
 var Template = require('./template');
 
@@ -16,13 +18,13 @@ Award.perform = function(code, to, cb) {
     AwardDAO.findOneByCode(code, cb);
   },
   function(cb) {
-    UserDAO.findOneByAccount(to, cb);
+    User.findOneByAccount(to, cb);
   },
   function(cb) {
     PropTypeDAO.all(cb);
   },
   function(cb) {
-    PropDAO.findOneByAccount(to, cb);
+    Prop.findOneByAccount(to, cb);
   }], function(error, results) {
     if (error) {
       cb(error);

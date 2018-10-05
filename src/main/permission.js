@@ -1,6 +1,9 @@
 var _ = require('lodash');
 var Async = require('async');
+var Guest = require('./models/guest');
 var PERMISSION = require('./permission.json');
+
+global.expiredGuests = [];
 
 var hasAction = function(actions, action) {
   return _.some(actions, function(e) {
@@ -20,7 +23,19 @@ var check = function(req, cb) {
     if (account !== 'SYSTEM' && hasAction(PERMISSION.admin, action)) {
       cb("No permission for action: " + action);
     } else {
-      cb(null, !_.includes(global.sealedIps, ip));
+      if (Guest.isGuest(account)) {
+        if (_.includes(global.expiredGuests, account)) {
+          _.remove(global.expiredGuests, function(guest) {
+            return guest === account;
+          });
+          req.session.account = undefined;
+          cb(null, false, '/signup');
+        } else {
+          cb(null, hasAction(PERMISSION.nologin, action) || hasAction(PERMISSION.guest, action));
+        }
+      } else {
+        cb(null, !_.includes(global.sealedIps, ip));
+      }
     }
   } else {
     cb(null, hasAction(PERMISSION.nologin, action));

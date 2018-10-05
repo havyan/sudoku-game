@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var common = require('./common');
 var _ = require('lodash');
 var crypto = require('crypto');
 var winston = require('winston');
@@ -27,6 +26,8 @@ var UserSchema = new Schema({
     type : String,
     default : STATUS.NEW
   },
+  citizen_id: String,
+  real_name: String,
   predefined : {
     type : Boolean,
     default : false
@@ -67,6 +68,7 @@ var UserSchema = new Schema({
 
 UserSchema.statics.createUser = function(params, cb) {
   var self = this;
+  var user;
   params = _.merge({
     password : params.account,
     email : params.account + '@supergenius.cn'
@@ -76,13 +78,14 @@ UserSchema.statics.createUser = function(params, cb) {
   function(cb) {
     self.create(params, cb);
   },
-  function(user, cb) {
+  function(entity, cb) {
+    user = entity;
     PropDAO.findOneByAccount(params.account, cb);
   },
   function(find, cb) {
     if (!find) {
       winston.info('Create prop for account [' + params.account + '] from predefined');
-      PropDAO.createDefault(params.account, params.predefined, cb);
+      PropDAO.createDefault(user ? user.id : null, params.account, params.predefined, cb);
     } else {
       cb(null, null);
     }
@@ -227,8 +230,6 @@ UserSchema.set('toJSON', {
   getters : true,
   virtuals : true
 });
-
-UserSchema.plugin(common);
 
 var User = mongoose.model('User', UserSchema);
 User.STATUS = STATUS;

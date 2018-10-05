@@ -1,0 +1,81 @@
+{
+  "navigator": {
+    "home": "Home",
+    "treasure": "天才寻宝",
+    "lobby": "游戏大厅",
+    "about": "Über Uns",
+    "news": "Sudoku Nachrichten",
+    "operation": "Spielanleitung",
+    "guide": "Kampfhandreichung",
+    "law": "Impressum",
+    "help": "Hilfe",
+    "contact": "Kontakt Uns",
+    "user": "Persönliche Information",
+    "single_player": "Stand-Alone / Mensch-Maschine",
+    "props": "Requisiten",
+    "settings": "管理",
+    "messages": "Nachrichten",
+    "recharge": "Aufladen",
+    "teaching_video": "Tutorials",
+    "logout": "Verlassen"
+  },
+  "constellation": {
+    "aries": "Widder",
+    "taurus": "Stier",
+    "gemini": "Zwillinge",
+    "cancer": "Krebs",
+    "leo": "Löwe",
+    "virgo": "Jungefrau",
+    "libra": "Waage",
+    "scorpio": "Skorpion",
+    "sagittarius": "Schütze",
+    "capricorn": "Steinbock",
+    "aquarius": "Wassermann",
+    "pisces": "Fische"
+  },
+  "actions": {
+    "close": "关闭",
+    "ok": "Stimmen",
+    "cancel": "取消",
+    "back": "返回",
+    "continue": "继续",
+    "submit": "提交",
+    "quit": "Beenden"
+  },
+  "titles": {
+    "message": "消息"
+  },
+  "player": {
+    "grade": "段位",
+    "points": "积分",
+    "rounds": "总局数",
+    "winrate": "胜率"
+  },
+  "greeting": {
+    "welcome": "欢迎",
+    "balence": "余额",
+    "money": "Genie-Münzen"
+  },
+  "pagination": {
+    "first": "Home",
+    "next": "Nächste Seite",
+    "previous": "Vorherige Seite",
+    "last": "Letzte Seite",
+    "goto": "Gehe zu"
+  },
+  "communicate": {
+    "feedback": "意<br>见<br>反<br>馈",
+    "group_chat": "加<br>入<br>群<br>聊",
+    "feedback_successful": "反馈成功, 非常感谢!"
+  },
+  "upload_icon": {
+    "click_to": "请点击<span class=\"btn btn-success\">浏览</span>来选择头像"
+  },
+  "company": "超天才技术开发(北京)有限责任公司",
+  "address": "北京市上地三街金隅嘉华大厦A座501",
+  "email": "邮箱",
+  "phone": "电话",
+  "sudoku": "Sudoku",
+  "money": "Genie-Münzen",
+  "system": "系统"
+}

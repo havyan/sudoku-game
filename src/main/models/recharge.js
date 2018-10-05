@@ -3,8 +3,11 @@ var _ = require('lodash');
 var request = require('request');
 var winston = require('winston');
 var UserDAO = require('../daos/user');
+var User = require('./user');
 var RuleDAO = require('../daos/rule');
 var RechargeDAO = require('../daos/recharge');
+
+var EXPIRE_TIMEOUT = 30 * 60 * 1000;
 
 var Recharge = {};
 
@@ -56,7 +59,7 @@ Recharge.check = function(recharge, cb) {
   if (recharge.used) {
     Async.waterfall([
     function(cb) {
-      UserDAO.findOneByAccount(recharge.target, cb);
+      User.findOneByAccount(recharge.target, cb);
     },
     function(user, cb) {
       cb(null, {
@@ -91,7 +94,7 @@ Recharge.check = function(recharge, cb) {
           recharge.save(cb);
         },
         function(recharge, count, cb) {
-          UserDAO.findOneByAccount(recharge.target, cb);
+          User.findOneByAccount(recharge.target, cb);
         },
         function(user, cb) {
           if (status === RechargeDAO.STATUS.WAITING && !recharge.used) {
@@ -147,7 +150,21 @@ Recharge.checkAll = function(cb) {
   },
   function(recharges, cb) {
     Async.each(recharges, function(recharge, cb) {
-      self.check(recharge, cb);
+      Async.waterfall([
+        function(cb) {
+          self.check(recharge, cb);
+        },
+        function(result, cb) {
+          var passed = Date.now() - recharge.createtime.getTime();
+          if (passed > EXPIRE_TIMEOUT) {
+            winston.info('Payment failed of uid [' + recharge.payuid + '] because of timeout');
+            recharge.status = RechargeDAO.STATUS.FAIL;
+            recharge.save(cb);
+          } else {
+            cb();
+          }
+        }
+      ], cb);
     }, cb);
   }], cb);
 };

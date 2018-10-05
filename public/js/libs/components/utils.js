@@ -19,6 +19,9 @@
 
   window.Utils = {
     formatSeconds : function(value) {
+      if (value <= 0) {
+        return '00:00:00';
+      }
       var seconds = Math.round(value % 60);
       seconds = seconds >= 10 ? seconds : '0' + seconds;
       var minutes = Math.round(((value - seconds) / 60) % 60);

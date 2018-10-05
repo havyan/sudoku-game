@@ -4,6 +4,8 @@
     "GET /login",
     "POST /login",
     "GET /signup",
+    "GET /logout_signup",
+    "GET /guest_pass",
     "POST /user",
     "POST /user/check_account",
     "POST /user/check_email",
@@ -21,7 +23,21 @@
     "POST /system/reload",
     "GET /help",
     "POST /feedback",
-    "[RE]GET /recharge/pay/\\w{32}/result"
+    "[RE]GET /recharge/pay/\\w{32}/result",
+    "GET /news",
+    "[RE]GET /news/[^/\\s]+",
+    "GET /treasure/login",
+    "[RE]GET /locales/\\w+/\\w+"
+  ],
+  "guest": [
+    "GET /main",
+    "GET /lobby/data",
+    "GET /events/system",
+    "GET /events/game",
+    "POST /single_game",
+    "GET /logout_signup",
+    "[RE]GET /table/[^/\\s]+",
+    "[RE](GET|POST|PUT|DELETE) /game/.+"
   ],
   "admin": [
     "PUT /user/points",

@@ -2,45 +2,44 @@
 <html>
   <head>
     {{> common_head }}
-    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
     <link href="{{@basecss}}/index.css" rel="stylesheet" type="text/css" />
-    <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
-    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
-    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
-    <script src="{{@basejs}}/libs3/lodash.js"></script>
-    <script src="{{@basejs}}/libs/components/utils.js"></script>
-    <script src="{{@basejs}}/libs/rest/rest.js"></script>
-    <script src="{{@basejs}}/libs/components/dialog.js"></script>
     <script src="{{@basejs}}/libs/components/agreement.js"></script>
     <script src="{{@basejs}}/libs/index.js"></script>
     {{{statsScript}}}
   </head>
-  <body>
-    <a class="logo" href="/"><img src="/imgs/default/logo.png" /></a>
-    <div class="top-right-area">
-      {{#user}}
-      <div class="login-welcome">
-        欢迎 <span>{{name}}</span>
+  <body class="lang-{{$lang}}">
+    {{> i18n }}
+    <div class="top-area">
+      <a class="logo" href="http://www.supergenius.cn/"><img src="/imgs/default/logo.png" /></a>
+      <div class="top-right-area">
+        {{#user}}
+        <div class="login-welcome">
+          {{T "page:login.top.welcome"}} <span>{{name}}</span>
+        </div>
+        {{/user}}
+        <a class="about-btn" href="/">{{T "common:navigator.home"}}</a>
+        <a class="about-btn" href="/treasure/login">{{T "common:navigator.treasure"}}</a>
+        <a class="about-btn" href="/about">{{T "common:navigator.about"}}</a>
+        <a class="contact-btn" href="/news">{{T "common:navigator.news"}}</a>
+        <a class="contact-btn" href="/operation">{{T "common:navigator.operation"}}</a>
+        <a class="contact-btn" href="/guide">{{T "common:navigator.guide"}}</a>
+        <a class="law-btn" href="javascript:void(0);">{{T "common:navigator.law"}}</a>
+        <a class="parents-btn" href="javascript:void(0);">家长监护</a>
+        <a class="dispute-btn" href="javascript:void(0);">用户纠纷处理</a>
+        <a class="help-btn" href="/help">{{T "common:navigator.help"}}</a>
+        <a class="contact-btn" href="/contact">{{T "common:navigator.contact"}}</a>
       </div>
-      {{/user}}
-      <a class="about-btn" href="/about">关于天才数独棋</a>
-      <a class="contact-btn" href="/operation">操作指引</a>
-      <a class="contact-btn" href="/guide">对战指南</a>
-      <a class="law-btn" href="javascript:void(0);">法律声明</a>
-      <a class="help-btn" href="/help">帮助</a>
-      <a class="contact-btn" href="/contact">联系我们</a>
     </div>
     <div class="login-area">
       {{#rooms}}
       <div id="{{id}}" class="room">
         <a class="icon" href="javascript:void(0);"><img src="{{icon}}" /></a>
-        <a class="label" href="javascript:void(0);">{{name}}</a>
+        <a class="label" href="javascript:void(0);">{{L name}}</a>
       </div>
       {{/rooms}}
       <div class="login-container">
         {{#if user}}
-        <a class="enter" href="/main">进入游戏</a>
+        <a class="enter" href="/main">{{T "page:login.middle.enter_game"}}</a>
         {{else}}
         <form class="login-form" action="/login" method="post">
           <div class="genius-title">
@@ -50,29 +49,34 @@
             Sudoku
           </div>
           <div class="login-user">
-            <label class="login-label">用户名</label>
-            <input class="login-field" type="text" name="account" autocomplete="on" placeholder="用户名" />
+            <label class="login-label">{{T "page:login.middle.username"}}</label>
+            <input class="login-field" type="text" name="account" autocomplete="on" placeholder="{{T "page:login.middle.username"}}" />
           </div>
           <div class="login-password">
-            <label class="login-label">密      码</label>
-            <input class="login-field" type="password" name="password" autocomplete="on" placeholder="密码" />
+            <label class="login-label">{{T "page:login.middle.password"}}</label>
+            <input class="login-field" type="password" name="password" autocomplete="on" placeholder="{{T "page:login.middle.password"}}" />
           </div>
           {{#error}}
           <div class="login-error">
-            用户名或者密码错误,或者用户未激活或被冻结.
+            {{T "page:login.middle.login_error"}}
           </div>
           {{/error}}
           <div class="login-more">
             <input type="checkbox" name="remember_me" id="inputCheck" />
-            <label for="inputCheck">下次自动登录</label>
-            <a href="/retrieve_password">忘记/更改密码？</a>
+            <label for="inputCheck">{{T "page:login.middle.autologin"}}</label>
+            <a href="/retrieve_password">{{T "page:login.middle.forgetpassword"}}</a>
           </div>
-          <div class="login-button">
-            <input type="submit" value="登录" />
+          <div class="login-actions">
+            <input class="login-button" type="submit" value="{{T "page:login.middle.login"}}" />
+            <a  class="signup-button" href="/signup">{{T "page:login.middle.signup"}}</a>
           </div>
           <div class="login-separator"></div>
-          <div class="signup-button">
-            <a href="/signup">注册</a>
+          <div class="guest-pass-button">
+            <a href="javascript:void(0)">{{T "page:login.middle.guestpass"}}</a>
+          </div>
+          <div class="protocol-read">
+            <input type="checkbox" checked="true" />
+            <label>{{{T "page:login.middle.agreement"}}}</label>
           </div>
         </form>
         {{/if}}

@@ -1,4 +1,5 @@
 require('./common');
+var args = require('./args');
 var _ = require('lodash');
 var winston = require('winston');
 var express = require('express');
@@ -48,20 +49,23 @@ hbs.registerPartials(app.get('conf.path.partials'));
 app.set('view engine', 'html');
 // 指定模板文件的后缀名为html
 app.engine('html', hbs.__express);
-// 运行hbs模块
+if (args.env === 'production') {
+  app.enable('view cache');
+}
 
 // Permission handler
 app.use(function(req, res, next) {
   winston.info("Start " + req.method + " " + req.path);
-  Permission.check(req, function(error, proceed){
+  Permission.check(req, function(error, proceed, page) {
     if (error) {
       next(new HttpError(error, HttpError.UNAUTHORIZED));
     } else if (proceed) {
       next();
     } else {
+      page = page || '/login';
       req.session.account = undefined;
       req.params.error = true;
-      res.redirect('/login');
+      res.redirect(page);
     }
   });
 });

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    {{> common_head }}
+    <link href="{{@basecss}}/index.css" rel="stylesheet" type="text/css" />
+    <link href="{{@basecss}}/about.css" rel="stylesheet" type="text/css" />
+    <script src="{{@basejs}}/libs/components/agreement.js"></script>
+    <script src="{{@basejs}}/libs/index.js"></script>
+    {{{statsScript}}}
+  </head>
+  <body class="lang-{{$lang}}">
+    {{> i18n }}
+    <a class="logo" href="/"><img src="/imgs/default/logo.png" /></a>
+    <div class="top-right-area">
+      <a class="about-btn" href="/">{{T "common:navigator.home"}}</a>
+      <a class="about-btn" href="/treasure/login">{{T "common:navigator.treasure"}}</a>
+      <a class="about-btn" href="/about">{{T "common:navigator.about"}}</a>
+      <a class="contact-btn" href="/news">{{T "common:navigator.news"}}</a>
+      <a class="contact-btn" href="/operation">{{T "common:navigator.operation"}}</a>
+      <a class="contact-btn" href="/guide">{{T "common:navigator.guide"}}</a>
+      <a class="law-btn" href="javascript:void(0);">{{T "common:navigator.law"}}</a>
+      <a class="help-btn" href="/help">{{T "common:navigator.help"}}</a>
+      <a class="contact-btn" href="/contact">{{T "common:navigator.contact"}}</a>
+    </div>
+    <div class="contain-area">
+      <div class="common-contain">
+        <ul class="newslist">
+            {{#news}}
+                <li>
+                  <a class="newsTitle" href="/news/{{_id}}">
+                  {{title}}</a>
+                  <span>{{formatDate publishtime}}</span>
+                </li>
+            {{/news}}
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

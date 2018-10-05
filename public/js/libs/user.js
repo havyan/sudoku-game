@@ -25,15 +25,15 @@
           this.hide();
           var value = parseInt(element.siblings('.value-field').val());
           Rest.User.setPoints(value, function(result) {
-            Dialog.message('修改积分成功!!!');
+            Dialog.message('修改积分成功!!!', { userClass: 'cool' });
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
             if (result && result.grade_name) {
-              element.closest('.info').find('.info-row.grade .value').html(result.grade_name);
+              element.closest('.info').find('.info-row.grade .value').html(L(result.grade_name));
             }
           }, function() {
           });
-        });
+        }, { userClass: 'cool' });
       },
 
       '.name-row .confirm click' : function(element) {
@@ -42,13 +42,13 @@
           Dialog.confirm('您确定要修改您的昵称为[' + value + ']吗？', function() {
             this.hide();
             Rest.User.setName(value, function(result) {
-              Dialog.message('修改昵称成功!!!');
+              Dialog.message('修改昵称成功!!!', { userClass: 'cool' });
               element.siblings('.value').html(value);
               element.closest('.info-row').removeClass('edit');
               $('.welcome .user-name').html(value);
             }, function() {
             });
-          });
+          }, { userClass: 'cool' });
         }
       },
 
@@ -57,12 +57,12 @@
           this.hide();
           var value = parseInt(element.siblings('.value-field').val());
           Rest.User.setMoney(value, function(result) {
-            Dialog.message('修改天才币成功!!!');
+            Dialog.message('修改天才币成功!!!', { userClass: 'cool' });
             element.siblings('.value').html(value);
             element.closest('.info-row').removeClass('edit');
           }, function() {
           });
-        });
+        }, { userClass: 'cool' });
       },
 
       '.change-icon-action click' : function(element) {
@@ -91,11 +91,11 @@
         var $icons = this.element.find('.default-icons');
         var $icon = this.element.find('.icon-img');
         Dialog.show({
-          title : '上传头像',
+          title : T('page:user.upload_icon_title'),
           control : UploadIconPanel,
           autoClose : false,
           actions : [Dialog.CANCEL_ACTION, {
-            name : '确认',
+            name : T('common:actions.ok'),
             userClass : 'btn-primary',
             callback : function(element) {
               var bound = this.control.getCutterBound();
