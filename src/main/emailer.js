@@ -1,15 +1,18 @@
 var nodemailer = require('nodemailer');
 var _ = require('lodash');
+var config = global.config.app.mail;
 var transporter = nodemailer.createTransport({
-  service : global.config.app.mail.service,
-  auth : {
-    user : global.config.app.mail.from,
-    pass : global.config.app.mail.password
+  host: config.host,
+  port: config.port,
+  secure: config.secure,
+  auth: {
+    user: config.auth.user,
+    pass: config.auth.pass
   }
 });
 
 module.exports.send = function(options, cb) {
   transporter.sendMail(_.merge({
-    from : global.config.app.mail.from
+    from: config.from
   }, options), cb);
 };

@@ -1,0 +1,82 @@
+{
+  "navigator": {
+    "home": "Home page",
+    "treasure": "Genius Treasure",
+    "lobby": "Game Lobby",
+    "about": "About Genius Sudoku",
+    "news": "Sudoku dynamic",
+    "operation": "Operation guide",
+    "guide": "Game guide",
+    "law": "Legal notice",
+    "help": "Help",
+    "contact": "Contact us",
+    "user": "Personal Information",
+    "single_player": "Single Player/Human-Computer",
+    "props": "Props",
+    "settings": "Settings",
+    "messages": "Massages",
+    "recharge": "Top up",
+    "teaching_video": "Tutorial Video",
+    "help": "Help",
+    "logout": "Logout"
+  },
+  "constellation": {
+    "aries": "Aries",
+    "taurus": "Taurus",
+    "gemini": "Gemini",
+    "cancer": "Cancer",
+    "leo": "Leo",
+    "virgo": "Virgo",
+    "libra": "Libra",
+    "scorpio": "Scorpio",
+    "sagittarius": "Sagittarius",
+    "capricorn": "Capricorn",
+    "aquarius": "Aquarius",
+    "pisces": "Pisces"
+  },
+  "greeting": {
+    "welcome": "Welcome",
+    "balence": "Balence",
+    "money": "Genius Coin"
+  },
+  "titles": {
+    "message": "Messages"
+  },
+  "player": {
+    "grade": "Grade",
+    "points": "Points",
+    "rounds": "Rounds",
+    "winrate": "Win Rate"
+  },
+  "actions": {
+    "close": "Close",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "back": "Back",
+    "submit": "Submit",
+    "continue": "Continue",
+    "quit": "Quit"
+  },
+  "pagination": {
+    "first": "Home page",
+    "next": "Previous page",
+    "previous": "Next Page",
+    "last": "Last Page",
+    "goto": "Jump"
+  },
+  "communicate": {
+    "feedback": "意<br>见<br>反<br>馈",
+    "group_chat": "加<br>入<br>群<br>聊",
+    "feedback_successful": "Feedback posted successfully, thank you."
+  },
+  "upload_icon": {
+    "click_to": "Please click <span class=\"btn btn-success\">Browse</span> to select picture"
+  },
+  "company": "超天才技术开发(北京)有限责任公司",
+  "address": "北京市上地三街金隅嘉华大厦A座501",
+  "email": "Email",
+  "phone": "TEL",
+  "sudoku": "Sudoku",
+  "money": "Genius Coin",
+  "system": "System"
+}

@@ -78,6 +78,16 @@ module.exports = function(router) {
     });
   });
 
+  router.post('/treasure_game', function(req, res, next) {
+    global.gameManager.createSingleGame(req.session.account, 'single', function(error, result) {
+      if (error) {
+        next(new HttpError(error));
+      } else {
+        res.send(result);
+      }
+    });
+  });
+
   router.post('/game/:id/submit', function(req, res, next) {
     global.gameManager.submit(req.params.id, req.session.account, req.body.xy, req.body.value, function(error, result) {
       if (error) {
@@ -167,4 +177,9 @@ module.exports = function(router) {
       }
     });
   });
+
+  /****************************************************************
+  **********************Treasure Game******************************
+  *****************************************************************/
+
 };

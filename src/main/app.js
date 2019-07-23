@@ -1,4 +1,5 @@
 require('./common');
+var args = require('./args');
 var _ = require('lodash');
 var winston = require('winston');
 var express = require('express');
@@ -48,7 +49,9 @@ hbs.registerPartials(app.get('conf.path.partials'));
 app.set('view engine', 'html');
 // 指定模板文件的后缀名为html
 app.engine('html', hbs.__express);
-// 运行hbs模块
+if (args.env === 'production') {
+  app.enable('view cache');
+}
 
 // Permission handler
 app.use(function(req, res, next) {

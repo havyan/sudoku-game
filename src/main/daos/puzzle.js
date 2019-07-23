@@ -31,15 +31,17 @@ PuzzleSchema.statics.findOneByLevel = function(level, cb) {
 };
 
 PuzzleSchema.statics.findRandomOneByLevel = function(level, cb) {
-  this.aggregate([{
-    $match: {
-      level: level
+  this.aggregate([
+    {
+      $match: {
+        level: level
+      }
+    }, {
+      $sample: {
+        size: 1
+      }
     }
-  }, {
-    $sample: {
-      size: 1
-    }
-  }], function(error, puzzles) {
+  ], function(error, puzzles) {
     if (error) {
       cb(error);
     } else {
@@ -56,11 +58,7 @@ PuzzleSchema.statics.importData = function(file, cb) {
   var self = this;
   var creations = {};
   var seed = 0;
-  var rl = readline.createInterface({
-    input: fs.createReadStream(file),
-    output: process.stdout,
-    terminal: false
-  });
+  var rl = readline.createInterface({input: fs.createReadStream(file), output: process.stdout, terminal: false});
 
   var source,
     puzzle,
@@ -133,42 +131,44 @@ PuzzleSchema.statics.importData = function(file, cb) {
 };
 
 var Puzzle = mongoose.model('Puzzle', PuzzleSchema);
-Puzzle.LEVELS = [{
-  code: 'DDD',
-  name: '入门段'
-}, {
-  code: 'CDD',
-  name: '1段'
-}, {
-  code: 'CCD',
-  name: '2段'
-}, {
-  code: 'CCC',
-  name: '3段'
-}, {
-  code: 'BCC',
-  name: '4段'
-}, {
-  code: 'BBC',
-  name: '5段'
-}, {
-  code: 'BBB',
-  name: '6段'
-}, {
-  code: 'ABB',
-  name: '7段'
-}, {
-  code: 'AAB',
-  name: '8段'
-}, {
-  code: 'AAA',
-  name: '9段'
-}, {
-  code: 'AAAA',
-  name: '10段'
-}, {
-  code: 'AAAAA',
-  name: '11段'
-}];
+Puzzle.LEVELS = [
+  {
+    code: 'DDD',
+    name: L('app:puzzle.beginner')
+  }, {
+    code: 'CDD',
+    name: L('app:puzzle.level1')
+  }, {
+    code: 'CCD',
+    name: L('app:puzzle.level2')
+  }, {
+    code: 'CCC',
+    name: L('app:puzzle.level3')
+  }, {
+    code: 'BCC',
+    name: L('app:puzzle.level4')
+  }, {
+    code: 'BBC',
+    name: L('app:puzzle.level5')
+  }, {
+    code: 'BBB',
+    name: L('app:puzzle.level6')
+  }, {
+    code: 'ABB',
+    name: L('app:puzzle.level7')
+  }, {
+    code: 'AAB',
+    name: L('app:puzzle.level8')
+  }, {
+    code: 'AAA',
+    name: L('app:puzzle.level9')
+  }, {
+    code: 'AAAA',
+    name: L('app:puzzle.level10')
+  }, {
+    code: 'AAAAA',
+    name: L('app:puzzle.level11')
+  }
+];
 
 module.exports = Puzzle;

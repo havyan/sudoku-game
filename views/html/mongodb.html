@@ -5,7 +5,7 @@
     <script src="{{@basejs}}/js/libs3/jquery/jquery-3.1.1.js"></script>
     {{{statsScript}}}
 </head>
-<body>
+<body class="lang-{{$lang}}">
     Users: {{userlist}}
     <form action="{{@base}}/mongodb/user/save" method="post">
         <label for="id">user.id</label><input id="id" name="id" />

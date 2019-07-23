@@ -1,15 +1,15 @@
 <div class="message">
   <div class="message-row from">
-    <span class="message-label">发件人:</span> {{from.name}}
+    <span class="message-label">{{T "page:messages.sender"}}:</span> {{from.name}}
   </div>
   <div class="message-row to">
-    <span class="message-label">收件人:</span> {{#to}}{{name}};{{/to}}
+    <span class="message-label">{{T "page:messages.receiver"}}:</span> {{#to}}{{name}};{{/to}}
   </div>
   <div class="message-row title">
-    <span class="message-label">标题:</span> {{title}}
+    <span class="message-label">{{T "page:messages.title"}}:</span> {{title}}
   </div>
   <div class="message-row date">
-    <span class="message-label">日期:</span> {{date}}
+    <span class="message-label">{{T "page:messages.date"}}:</span> {{date}}
   </div>
   <div class="message-row content">
     {{{content}}}

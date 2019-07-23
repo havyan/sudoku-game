@@ -1,0 +1,7 @@
+<div class="lobby-game-panel">
+  {{#roles}}
+    <div class="role-item {{roleClass code}}" data-role="{{code}}">
+      <img src="{{icon}}" />
+    </div>
+  {{/roles}}
+</div>

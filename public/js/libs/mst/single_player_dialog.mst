@@ -7,33 +7,33 @@
       {{#showBattle}}
       <div class="play-mode battle-play">
         <input type="radio" name="play_mode" data-value="battle" />
-        <span>对战</span>
+        <span>{{T "page:lobby.battle"}}</span>
       </div>
       {{/showBattle}}
       <div class="play-mode self-play">
         <input type="radio" name="play_mode" data-value="single" checked="checked" />
-        <span>单机</span>
+        <span>{{T "page:lobby.single"}}</span>
       </div>
       <div class="play-mode robot-play">
         <input type="radio" name="play_mode" data-value="robot" />
-        <span>人机</span>
+        <span>{{T "page:lobby.robot"}}</span>
       </div>
     </div>
     {{#showBattle}}
     <div class="signup-message">
       <div class="content">
-        需要<a href="/logout_signup">注册</a>才能进入
+        {{T "page:lobby.signup_1"}}<a href="/logout_signup">{{T "page:lobby.signup_2"}}</a>{{T "page:lobby.signup_3"}}
       </div>
     </div>
     {{/showBattle}}
     <div class="lobby-modal-bottom">
       {{#hasUnfinished}}
       <button type="button" class="confirm" data-value="continue">
-        继续上次游戏
+        {{T "page:lobby.continue_last"}}
       </button>
       {{/hasUnfinished}}
       <button type="button" class="confirm" data-value="new">
-        开始{{#hasUnfinished}}新{{/hasUnfinished}}游戏
+        {{#if hasUnfinished}}{{T "page:lobby.start_new_game"}}{{else}}{{T "page:lobby.start_game"}}{{/if}}
       </button>
     </div>
   </div>

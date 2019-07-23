@@ -49,6 +49,7 @@ Prop.getPropData = function(account, cb) {
           return {
             type : type.type,
             name : type.name,
+            category: type.category,
             func : type.func,
             icon : type.icon,
             count : prop[type.type]

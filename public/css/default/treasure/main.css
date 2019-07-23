@@ -1,0 +1,28 @@
+.lobby-game-panel {
+  text-align: center;
+}
+
+.lobby-game-panel .role-item {
+  display: inline-block;
+  margin-right: 40px;
+  border: 3px white solid;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.lobby-game-panel .role-item:hover {
+  border-color: #FFF000;
+}
+
+.lobby-game-panel .role-item.selected {
+  border-color: #FFF000;
+}
+
+.lobby-game-panel .role-item:last-of-type {
+  margin-right: 0px;
+}
+
+.lobby-game-panel .role-item img {
+  width: 120px;
+  height: 120px;
+}

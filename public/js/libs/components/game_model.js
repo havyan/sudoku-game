@@ -79,6 +79,9 @@
       var singleMode = this.attr('singleMode');
       var propTypes = this.attr('propTypes').attr();
       var prop = this.attr('prop').attr();
+      propTypes = _.filter(propTypes, {
+        category: 'sudoku'
+      });
       this.attr('props', propTypes.map(function(propType) {
         propType.count = prop[propType.type];
         propType.visible = !(singleMode && _.include(['delay', 'glasses'], propType.type));
@@ -157,7 +160,7 @@
         ranking.push({
           account : quitPlayer.attr('account'),
           name : quitPlayer.attr('name'),
-          score : quitPlayer.status === 'quit' ? '退出' : '离线',
+          score : quitPlayer.status === 'quit' ? T('page:game.quit') : T('page:game.offline'),
           type : 'quit'
         });
       });

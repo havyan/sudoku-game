@@ -46,7 +46,6 @@ var CAPACITY = 4;
 var DEFAULT_LEVEL = 'DDD';
 var DEFAULT_WAIT_TIME = 5;
 var GAME_TIMEOUT = 10;
-var MAX_TIMEOUT_ROUNDS = 10;
 var START_MODE = {
   MANUAL: 'manual',
   AUTO: 'auto'
@@ -520,7 +519,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
     function(prop, cb) {
       self.props.push(prop);
       self.emit('player-joined', index, player.toJSON());
-      self.addMessage('用户[' + player.name + ']加入');
+      self.addMessage(L('app:game.join_message', { name: player.name }));
       if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
         self.switchStatus(LOADING, cb);
       } else {
@@ -542,7 +541,7 @@ Game.prototype.addRobot = function() {
   this.addPlayerIndex(player.account);
   this.knownCellValues[player.account] = {};
   this.emit('player-joined', index, player.toJSON());
-  this.addMessage('用户[' + player.name + ']加入');
+  this.addMessage(L('app:game.join_message', { name: player.name }));
 };
 
 Game.prototype.playerQuit = function(account, status, cb) {
@@ -569,7 +568,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
         account: account,
         status: status
       });
-      self.addMessage('人机游戏结束');
+      self.addMessage(L('app:game.robot_game_over'));
       self.destroy();
       cb();
     } else if (this.isOngoing()) {
@@ -585,7 +584,8 @@ Game.prototype.playerQuit = function(account, status, cb) {
             account: account,
             status: status
           });
-          self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
+          var message = status === 'quit' ? L('app:game.quit_message', { name: quitPlayer.name }) : L('app:game.offline_message', { name: quitPlayer.name });
+          self.addMessage(message);
           if (self.playersCount() <= 0) {
             self.destroy();
           }
@@ -599,7 +599,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
         account: account,
         status: status
       });
-      self.addMessage('庄家[' + quitPlayer.name + ']退出');
+      self.addMessage(L('app:game.banker_quit_message', { name: quitPlayer.name }));
       this.players.forEach(function(player) {
         if (player) {
           self.recordQuit(player.account);
@@ -614,7 +614,7 @@ Game.prototype.playerQuit = function(account, status, cb) {
         account: account,
         status: status
       });
-      self.addMessage('用户[' + quitPlayer.name + ']退出');
+      self.addMessage(L('app:game.quit_message', { name: quitPlayer.name }));
       if (self.playersCount() <= 0) {
         self.destroy();
       }
@@ -700,7 +700,7 @@ Game.prototype.addMessage = function(message, account) {
   } else {
     from = {
       account: 'system',
-      name: '系统',
+      name: L('common:system'),
       index: 'system'
     };
   }
@@ -1002,7 +1002,9 @@ Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
     return e.floor > player.points;
   });
   var oldGrade = player.grade;
-  player.grade = self.rule.grade[ceilingIndex - 1].code;
+  if (ceilingIndex > 1 && self.rule.grade[ceilingIndex - 1]) {
+    player.grade = self.rule.grade[ceilingIndex - 1].code;
+  }
   player.rounds = player.rounds + 1;
   if (win) {
     player.wintimes = player.wintimes + 1;
