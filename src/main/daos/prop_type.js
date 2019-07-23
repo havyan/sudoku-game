@@ -1,33 +1,51 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var common = require('./common');
+
+var CATEGORY = {
+  SUDOKU: 'sudoku',
+  TREASURE: 'treasure'
+};
 
 var PropTypeSchema = new Schema({
-  type : String,
-  name : String,
-  status : {
-    type : String,
-    default : '1'
+  type: String,
+  name: {
+    cn: String,
+    en: String,
+    jp: String,
+    de: String
   },
-  order : Number,
-  func : String,
-  icon : String,
-  price : Number,
-  sales : {
-    type : Number,
-    default : 0
+  status: {
+    type: String,
+    default: '1'
+  },
+  category: {
+    type: String,
+    default: CATEGORY.SUDOKU
+  },
+  order: Number,
+  func: {
+    cn: String,
+    en: String,
+    jp: String,
+    de: String
+  },
+  icon: String,
+  price: Number,
+  sales: {
+    type: Number,
+    default: 0
   }
 });
 
 PropTypeSchema.statics.findOneByType = function(type, cb) {
   this.findOne({
-    type : type
+    type: type
   }, cb);
 };
 
 PropTypeSchema.statics.all = function(cb) {
   this.find({
-    status : '1'
+    status: '1'
   }).sort('order').exec(cb);
 };
 
@@ -41,7 +59,5 @@ PropTypeSchema.statics.addSales = function(type, add, cb) {
     }
   });
 };
-
-PropTypeSchema.plugin(common);
 
 module.exports = mongoose.model('PropType', PropTypeSchema);

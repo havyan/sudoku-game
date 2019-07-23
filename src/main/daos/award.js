@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var common = require('./common');
 var Mixed = Schema.Types.Mixed;
 
 var AwardSchema = new Schema({
@@ -16,7 +15,5 @@ AwardSchema.statics.findOneByCode = function(code, cb) {
     code : code
   }, cb);
 };
-
-AwardSchema.plugin(common);
 
 module.exports = mongoose.model('Award', AwardSchema);

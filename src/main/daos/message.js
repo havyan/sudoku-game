@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var common = require('./common');
 var _ = require('lodash');
 var ObjectId = mongoose.Types.ObjectId;
 var Async = require('async');
@@ -45,8 +44,6 @@ var InboxSchema = new Schema({
     default : false
   }
 });
-
-InboxSchema.plugin(common);
 
 var Inbox = mongoose.model('Inbox', InboxSchema);
 
@@ -150,7 +147,5 @@ MessageSchema.statics.removeInbox = function(ids, cb) {
     }], cb);
   }, cb);
 };
-
-MessageSchema.plugin(common);
 
 module.exports = mongoose.model('Message', MessageSchema);

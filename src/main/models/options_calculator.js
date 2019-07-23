@@ -122,14 +122,16 @@ OptionsCalculator.prototype.resetAllCellOptions = function(xy, value) {
     m++;
   }
 
-  startX = Math.floor(x / 9) * 9;
-  startY = Math.floor(y / 9) * 9;
-  m = 0;
-  while(m < 9) {
-    removeOption((startX + m) + ',' + y);
-    removeOption(x + ',' + (startY + m));
-    m++;
-  }
+  _.each(this.game.mode, function(xy, index) {
+    if (x >= xy.x && x < xy.x + 9 && y >= xy.y && y < xy.y + 9) {
+      m = 0;
+      while(m < 9) {
+        removeOption((xy.x + m) + ',' + y);
+        removeOption(x + ',' + (xy.y + m));
+        m++;
+      }
+    }
+  });
 };
 
 OptionsCalculator.prototype.getCellValue = function(xy) {

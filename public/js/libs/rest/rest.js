@@ -54,6 +54,26 @@
       });
     },
 
+    getUnfinishedGames : function(success, error) {
+      return $.ajax({
+        type : 'GET',
+        url : '/game/unfinished/all',
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    restoreGame: function(id, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/game/restore/' + id,
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
     playerJoin : function(id, index, params, success, error) {
       return $.ajax({
         type : 'post',
@@ -71,7 +91,20 @@
     createSingleGame: function(params, success, error) {
       return $.ajax({
         type : 'post',
-        url : 'single_game',
+        url : '/single_game',
+        data : {
+          params : JSON.stringify(params || {})
+        },
+        dataType : 'json',
+        success : success,
+        error : error
+      });
+    },
+
+    createTreasureGame: function(params, success, error) {
+      return $.ajax({
+        type : 'post',
+        url : '/treasure_game',
         data : {
           params : JSON.stringify(params || {})
         },

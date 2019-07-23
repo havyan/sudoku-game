@@ -1,17 +1,17 @@
 <div class="messages-panel">
   <div class="messages-header">
     <input class="select-all" type="checkbox" />
-    <span>全选</span>
-    <a class="button messages-remove" href="javascript:void(0)">删除</a>
+    <span>{{T "page:messages.select_all"}}</span>
+    <a class="button messages-remove" href="javascript:void(0)">{{T "page:messages.delete"}}</a>
   </div>
   <div class="messages-content">
     <table class="messages-table">
       <thead>
         <th class="select"></th>
-        <th class="from">发件人</th>
-        <th class="title">标题</th>
-        <th class="date">日期</th>
-        <th class="notes">备注</th>
+        <th class="from">{{T "page:messages.sender"}}</th>
+        <th class="title">{{T "page:messages.title"}}</th>
+        <th class="date">{{T "page:messages.date"}}</th>
+        <th class="notes">{{T "page:messages.memo"}}</th>
       </thead>
       <tbody>
         {{#messages}}
@@ -20,7 +20,7 @@
           <td>{{from.name}}</td>
           <td>{{message.title}}</td>
           <td>{{date}}</td>
-          <td>{{#if read}}已读{{else}}未读{{/if}}</td>
+          <td>{{#if read}}{{T "page:messages.read"}}{{else}}{{T "page:messages.unread"}}{{/if}}</td>
         </tr>
         {{/results}}
       </tbody>
@@ -28,6 +28,6 @@
     <div class="messages-pagination-bar"></div>
   </div>
   <div class="messages-actions">
-    <a class="rich-button messages-close" href="/main">关闭</a>
+    <a class="rich-button messages-close" href="/main">{{T "common:actions.close"}}</a>
   </div>
 </div>

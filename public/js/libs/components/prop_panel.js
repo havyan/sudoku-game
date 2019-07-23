@@ -1,10 +1,23 @@
 (function() {
   can.Control('Components.PropPanel', {}, {
     init : function(element, options) {
+      var self = this;
       this.model = new can.Model(options.data);
-      can.view('/js/libs/mst/prop_panel.mst', this.model, function(frag) {
+      this.model.attr('category', 'sudoku');
+      can.view('/js/libs/mst/prop_panel.mst', this.model, {
+        tabClass: function(category) {
+          return self.model.attr('category') === category ? 'active' : '';
+        },
+        itemClass: function(item) {
+          return self.model.attr('category') === item.category ? 'visible' : '';
+        }
+      }, function(frag) {
         element.html(frag);
       }.bind(this));
+    },
+
+    '.tabs .tab click' : function(element) {
+      this.model.attr('category', element.data('category'));
     },
 
     '.navigator .item click' : function(element) {
@@ -83,22 +96,23 @@
         type : element.closest('.store-item').data('type')
       }).count;
       if ((count + current) > 999) {
-        Dialog.message('单个道具最多只能买999个。');
+        Dialog.message(T('page:props.purchase_limit'));
         $value.val(999 - current);
       } else if (type.price * count > money) {
-        Dialog.message('天才币余额不足，请充值。');
+        Dialog.message(T('page:props.money_not_enough'));
       } else {
         Rest.Prop.buy(type.attr('type'), count, function(result) {
           if (result.success) {
             self.model.attr('money', result.money);
+            $('.welcome .money').html(result.money);
             _.find(self.model.attr('props'), {
               type : type.attr('type')
             }).attr('count', result.count);
             type.attr('sales', type.attr('sales') + count);
             type.attr('purchase', type.attr('purchase') + count);
-            Dialog.message('购买成功');
+            Dialog.message(T('page:props.purchase_successful'));
           } else {
-            Dialog.message('购买失败: ' + result.reason);
+            Dialog.message(T('page:props.purchase_fail') + result.reason);
           }
         }, function() {
         });

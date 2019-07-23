@@ -184,6 +184,9 @@ a:active {
   color: white;
   font-size: 18px;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   background-image: url(/imgs/default/header_action_bg.png);
 }
 
@@ -199,7 +202,7 @@ a:active {
   width: 50%;
   margin-left: 5%;
   position: relative;
-  top: 20px;
+  top: 40px;
 }
 
 .welcome .user-name {
@@ -549,6 +552,15 @@ to {
   font-size: 14px;
 }
 
+.article p {
+  margin-left: 10px;
+}
+
+.article .section-sub {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
 .article .title {
   font-size: 24px;
   font-weight: bold;
@@ -557,14 +569,20 @@ to {
 }
 
 .protocol-dialog .modal-dialog,
-.law-dialog .modal-dialog {
+.law-dialog .modal-dialog,
+.parents-dialog .modal-dialog,
+.dispute-dialog .modal-dialog,
+.parents-detail-dialog .modal-dialog {
   width: 800px;
 }
 
 .protocol-dialog .modal-dialog .modal-body,
-.law-dialog .modal-dialog .modal-body {
+.law-dialog .modal-dialog .modal-body,
+.parents-dialog .modal-dialog .modal-body,
+.dispute-dialog .modal-dialog .modal-body,
+.parents-detail-dialog .modal-dialog .modal-body {
   height: 400px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .article .section {
@@ -733,4 +751,105 @@ to {
 
 .bdshare-slide-button-box {
   top: 30% !important;
+}
+
+.modal.cool .modal-dialog {
+  background: url(../../imgs/default/lobby_game_form_bg.png) no-repeat;
+  background-size: 100% 100%;
+  color: white;
+  width: 500px;
+}
+
+.modal.cool .modal-dialog .modal-content {
+  background-color: inherit;
+}
+
+.modal.cool .modal-dialog .modal-header {
+  border-bottom: none;
+  margin-left: 10px;
+  padding-top: 20px;
+  padding-right: 20px;
+  font-weight: bold;
+}
+
+.modal.cool .modal-dialog .modal-header .close {
+  width: 25px;
+  height: 25px;
+  background: url(/imgs/default/lobby_game_form_close.png) no-repeat;
+  background-size: 100% 100%;
+  margin-top: -5px;
+}
+
+.modal.cool .modal-dialog .modal-header .close span {
+  display: none;
+}
+
+.modal.cool .modal-dialog .modal-body {
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 15px;
+}
+
+.modal.cool .modal-dialog .modal-footer {
+  border-top: none;
+  text-align: center;
+}
+
+.modal.cool .modal-dialog .modal-footer button {
+  background: url(../../imgs/default/form_confirm.png) no-repeat;
+  background-color: inherit;
+  background-size: 100% 100%;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.modal.cool .modal-dialog .modal-footer button:hover {
+  color: #FFF000;
+}
+
+.i18n-area {
+  font-size: 14px;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  z-index: 9999;
+}
+
+.i18n-area.left {
+  right: initial;
+  left: 15px;
+}
+
+.i18n-area .i18n-lang {
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.i18n-area .i18n-lang:hover {
+  color: #fff100;
+}
+
+.i18n-area .i18n-separator {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 2px;
+  height: 16px;
+  background-color: white;
+}
+
+.lang-jp .top-actions a {
+  font-size: 9px;
+}
+
+.lang-jp .player-tip {
+  width: 160px;
+}
+
+.lang-jp .bdshare-slide-button-box {
+  top: 10% !important;
 }

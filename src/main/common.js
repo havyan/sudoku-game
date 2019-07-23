@@ -1,3 +1,4 @@
+var i18next = require('i18next');
 var formatDate = require('dateformat');
 var hbs = require('hbs');
 var _ = require('lodash');

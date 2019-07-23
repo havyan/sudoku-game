@@ -5,7 +5,18 @@
     "delay": 10,
     "glasses": 99,
     "options_once": 10,
-    "options_always": 2
+    "options_always": 2,
+    "scope_instrument": 1,
+    "nerve_gas_instrument": 1,
+    "asphyxiant_gas_instrument": 1,
+    "irritant_gas_instrument": 1,
+    "scope_paper": 10,
+    "nerve_gas_paper": 10,
+    "asphyxiant_gas_paper": 10,
+    "irritant_gas_paper": 10,
+    "cough_syrup": 10,
+    "sober_potion": 10,
+    "invincible_bomb": 1
   },
   "normal": {
     "magnifier": 3,
@@ -13,6 +24,17 @@
     "delay": 3,
     "glasses": 3,
     "options_once": 3,
-    "options_always": 1
+    "options_always": 1,
+    "scope_instrument": 1,
+    "nerve_gas_instrument": 1,
+    "asphyxiant_gas_instrument": 1,
+    "irritant_gas_instrument": 1,
+    "scope_paper": 10,
+    "nerve_gas_paper": 10,
+    "asphyxiant_gas_paper": 10,
+    "irritant_gas_paper": 10,
+    "cough_syrup": 10,
+    "sober_potion": 10,
+    "invincible_bomb": 1
   }
 }

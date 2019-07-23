@@ -4,8 +4,8 @@
     var roomWidth = $rooms.width();
     var roomHeight = $rooms.height();
     var centerX = 400;
-    var centerY = 400;
-    var radius = 300;
+    var centerY = 300;
+    var radius = 280;
     var step = Math.PI * 2 / $rooms.length;
     var start = -step;
     $rooms.each(function(i, e) {
@@ -30,6 +30,14 @@
     });
     $('.law-btn').click(function(e) {
       Agreement.showLaw();
+    });
+
+    $('.parents-btn').click(function() {
+      Agreement.showParentsDetail();
+    });
+
+    $('.dispute-btn').click(function() {
+      Agreement.showDispute();
     });
 
     $('.guest-pass-button a').click(function() {

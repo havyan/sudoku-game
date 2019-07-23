@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var common = require('./common');
+
 var Mixed = Schema.Types.Mixed;
 
 var RuleSchema = new Schema({
@@ -13,10 +13,12 @@ var RuleSchema = new Schema({
     reduce: Mixed,
     single: Mixed
   },
-  grade: [{
-    code: String,
-    floor: Number
-  }],
+  grade: [
+    {
+      code: String,
+      floor: Number
+    }
+  ],
   exchange: {
     rate: Number
   },
@@ -50,21 +52,19 @@ RuleSchema.statics.updateRule = function(rule, cb) {
   }, rule, cb);
 };
 
-RuleSchema.plugin(common);
-
 var Rule = mongoose.model('Rule', RuleSchema);
 
 Rule.GRADE_NAMES = {
-  0: "新手",
-  1: "一段",
-  2: "二段",
-  3: "三段",
-  4: "四段",
-  5: "五段",
-  6: "六段",
-  7: "七段",
-  8: "八段",
-  9: "九段"
+  0: L('app:rule.beginner'),
+  1: L('app:rule.grade1'),
+  2: L('app:rule.grade2'),
+  3: L('app:rule.grade3'),
+  4: L('app:rule.grade4'),
+  5: L('app:rule.grade5'),
+  6: L('app:rule.grade6'),
+  7: L('app:rule.grade7'),
+  8: L('app:rule.grade8'),
+  9: L('app:rule.grade9')
 };
 
 module.exports = Rule;

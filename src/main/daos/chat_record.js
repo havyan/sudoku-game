@@ -1,8 +1,8 @@
+// Deprecated, save messages to game entity direclty.
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
 var Mixed = Schema.Types.Mixed;
-var common = require('./common');
 
 var ChatRecordSchema = new Schema({
   game: {
@@ -19,6 +19,10 @@ ChatRecordSchema.statics.createRecord = function(gameId, messages, cb) {
   }, cb);
 };
 
-ChatRecordSchema.plugin(common);
+ChatRecordSchema.statics.findRecord = function(gameId, cb) {
+  this.findOne({
+    game: ObjectId(gameId)
+  }, cb);
+};
 
 module.exports = mongoose.model('ChatRecord', ChatRecordSchema);

@@ -13,7 +13,6 @@ var PropTypeDAO = require('../daos/prop_type');
 var PuzzleDAO = require('../daos/puzzle');
 var JoinRecordDAO = require('../daos/join_record');
 var PointsRecordDAO = require('../daos/points_record');
-var ChatRecordDAO = require('../daos/chat_record');
 var User = require('./user');
 var Prop = require('./prop');
 var Guest = require('./guest');
@@ -47,7 +46,6 @@ var CAPACITY = 4;
 var DEFAULT_LEVEL = 'DDD';
 var DEFAULT_WAIT_TIME = 5;
 var GAME_TIMEOUT = 10;
-var MAX_TIMEOUT_ROUNDS = 10;
 var START_MODE = {
   MANUAL: 'manual',
   AUTO: 'auto'
@@ -81,10 +79,89 @@ var Game = function(room, index, mode, playMode, creator) {
 };
 util.inherits(Game, EventEmitter);
 
+Game.restore = function(room, index, entity, cb) {
+  // players, joinRecords, propTypes, timer, entity, quitPlayers
+  // messages (retrieve), initCellValues, props, answer, allCellOptions,
+  // quitTasks,
+  var game = new Game(room, index, entity.mode, entity.playMode, entity.creator);
+  game.id = entity._id.toString();
+  Object.assign(game, pickEntityAttrs(entity));
+  if (index != null) {
+    game.index = index;
+  }
+  game.entity = entity;
+  game.propFactory = PropFactory.create(game);
+  var retrievePlayers = function(name, service, cb) {
+    Async.map(entity[name], function(e, cb) {
+      if (e) {
+        if (Robot.isRobot(e)) {
+          cb(null, new Robot(game, e));
+        } else {
+          service(e, cb);
+        }
+      } else {
+        cb(null, null);
+      }
+    }, function(error, results) {
+      if (error) {
+        cb(error);
+      } else {
+        game[name] = results;
+        cb();
+      }
+    });
+  };
+  Async.waterfall([
+    function(cb) {
+      retrievePlayers('players', User.findOneByAccount.bind(User), cb);
+    },
+    function(cb) {
+      Async.map(_.compact(entity.players), Prop.findOneByAccount.bind(Prop), cb);
+    },
+    function(results, cb) {
+      game.props = _.compact(results);
+      cb();
+    },
+    function(cb) {
+      retrievePlayers('quitPlayers', User.findOneByAccount.bind(User), cb);
+    },
+    function(cb) {
+      Async.map(_.compact(entity.joinRecords), JoinRecordDAO.findOneById.bind(JoinRecordDAO), cb);
+    },
+    function(joinRecords, cb) {
+      game.joinRecords = joinRecords;
+      cb();
+    },
+    function(cb) {
+      PropTypeDAO.all(cb);
+    },
+    function(propTypes, cb) {
+      game.propTypes = propTypes.map(function(propType) {
+        return propType.toJSON();
+      });
+      cb();
+    },
+    function(cb) {
+      PuzzleDAO.findOneById(game.puzzle, cb);
+    },
+    function(puzzle, cb) {
+      game.initCellValues = puzzle.question;
+      game.answer = puzzle.answer;
+      if (game.isRobot()) {
+        game.allCellOptions = new OptionsCalculator(game).calcAllCellOptions();
+      }
+      game.initTimer();
+      game.nextPlayer();
+      cb(null, game);
+    }
+  ], cb);
+};
+
 Game.prototype.init = function(account, params, cb) {
   var self = this;
   var creator;
   var level = params.level || DEFAULT_LEVEL;
+  this.creator = account;
   this.initTimer();
   this.propFactory = PropFactory.create(this);
   Async.waterfall([
@@ -134,17 +211,7 @@ Game.prototype.init = function(account, params, cb) {
       self.emit('init', self.toSimpleJSON());
       self.waitCountdown = self.waitTime * 60;
       self.timer.schedule(self.waitTask);
-      GameDAO.createGame(creator.isGuest ? null : creator.id, self.room.id, self.id, {
-        index: self.index,
-        mode: self.mode,
-        playMode: self.playMode,
-        level: self.level,
-        rule: self.rule,
-        capacity: self.capacity,
-        duration: self.duration,
-        start_mode: self.startMode,
-        cost: self.cost
-      }, cb);
+      self.createEntity(creator.isGuest ? null : account, cb);
     },
     function(entity, cb) {
       self.entity = entity;
@@ -275,6 +342,7 @@ Game.prototype.prepare = function(cb) {
       PuzzleDAO.findRandomOneByLevel(self.level, cb);
     },
     function(puzzle, cb) {
+      self.puzzle = puzzle._id.toString();
       self.initCellValues = puzzle.question;
       self.answer = puzzle.answer;
       if (self.isRobot()) {
@@ -451,7 +519,7 @@ Game.prototype.playerJoin = function(account, index, cb) {
     function(prop, cb) {
       self.props.push(prop);
       self.emit('player-joined', index, player.toJSON());
-      self.addMessage('用户[' + player.name + ']加入');
+      self.addMessage(L('app:game.join_message', { name: player.name }));
       if (self.startMode === START_MODE.AUTO && self.playersCount() === self.capacity) {
         self.switchStatus(LOADING, cb);
       } else {
@@ -473,7 +541,7 @@ Game.prototype.addRobot = function() {
   this.addPlayerIndex(player.account);
   this.knownCellValues[player.account] = {};
   this.emit('player-joined', index, player.toJSON());
-  this.addMessage('用户[' + player.name + ']加入');
+  this.addMessage(L('app:game.join_message', { name: player.name }));
 };
 
 Game.prototype.playerQuit = function(account, status, cb) {
@@ -494,12 +562,13 @@ Game.prototype.playerQuit = function(account, status, cb) {
   }
   if (quitPlayer) {
     if (robotLeft) {
+      this.updateEntity();
       this.removePlayer(account);
       this.emit('player-quit', {
         account: account,
         status: status
       });
-      self.addMessage('人机游戏结束');
+      self.addMessage(L('app:game.robot_game_over'));
       self.destroy();
       cb();
     } else if (this.isOngoing()) {
@@ -508,13 +577,15 @@ Game.prototype.playerQuit = function(account, status, cb) {
           self.upgradePlayer(quitPlayer, status, 0, false, cb);
         },
         function(cb) {
+          self.updateEntity();
           self.quitPlayers.unshift(quitPlayer);
           self.removePlayer(account);
           self.emit('player-quit', {
             account: account,
             status: status
           });
-          self.addMessage('用户[' + quitPlayer.name + ']' + (status === 'quit' ? '退出' : '离线'));
+          var message = status === 'quit' ? L('app:game.quit_message', { name: quitPlayer.name }) : L('app:game.offline_message', { name: quitPlayer.name });
+          self.addMessage(message);
           if (self.playersCount() <= 0) {
             self.destroy();
           }
@@ -522,12 +593,13 @@ Game.prototype.playerQuit = function(account, status, cb) {
         }
       ], cb);
     } else if (quitPlayer === this.players[0]) {
+      this.updateEntity();
       this.removePlayer(account);
       this.emit('player-quit', {
         account: account,
         status: status
       });
-      self.addMessage('庄家[' + quitPlayer.name + ']退出');
+      self.addMessage(L('app:game.banker_quit_message', { name: quitPlayer.name }));
       this.players.forEach(function(player) {
         if (player) {
           self.recordQuit(player.account);
@@ -536,12 +608,13 @@ Game.prototype.playerQuit = function(account, status, cb) {
       self.destroy('banker-quit');
       cb();
     } else {
+      this.updateEntity();
       this.removePlayer(account);
       this.emit('player-quit', {
         account: account,
         status: status
       });
-      self.addMessage('用户[' + quitPlayer.name + ']退出');
+      self.addMessage(L('app:game.quit_message', { name: quitPlayer.name }));
       if (self.playersCount() <= 0) {
         self.destroy();
       }
@@ -627,7 +700,7 @@ Game.prototype.addMessage = function(message, account) {
   } else {
     from = {
       account: 'system',
-      name: '系统',
+      name: L('common:system'),
       index: 'system'
     };
   }
@@ -695,7 +768,7 @@ Game.prototype.toJSON = function(account) {
     scores: this.scores,
     status: this.status,
     delayed: this.delayed,
-    delayCountdownStage: this.delayCountdownStage,
+    delayCountdown: this.delayCountdown,
     account: account ? account : undefined,
     prop: account ? _.find(this.props, {
       account: account
@@ -888,7 +961,7 @@ Game.prototype.calculateGains = function(players) {
   var single = this.isSingle();
   var robot = this.isRobot();
   var score, points;
-  for(var i = players.length - 1; i >= 0; i--) {
+  for (var i = players.length - 1; i >= 0; i--) {
     var account = players[i].account;
     if (this.scores[account] === score) {
       gains[account] = points;
@@ -899,7 +972,9 @@ Game.prototype.calculateGains = function(players) {
       }
       if (robot) {
         if (this.scores[account] > 0) {
-          var robots = _.filter(this.players, { isRobot: true });
+          var robots = _.filter(this.players, {
+            isRobot: true
+          });
           var win = _.every(robots, function(r) {
             return this.scores[r.account] < this.scores[account];
           }.bind(this));
@@ -927,7 +1002,9 @@ Game.prototype.upgradePlayer = function(player, status, gainPoints, win, cb) {
     return e.floor > player.points;
   });
   var oldGrade = player.grade;
-  player.grade = self.rule.grade[ceilingIndex - 1].code;
+  if (ceilingIndex > 1 && self.rule.grade[ceilingIndex - 1]) {
+    player.grade = self.rule.grade[ceilingIndex - 1].code;
+  }
   player.rounds = player.rounds + 1;
   if (win) {
     player.wintimes = player.wintimes + 1;
@@ -975,16 +1052,6 @@ Game.prototype.useProp = function(type, account, params, cb) {
   }).catch(cb);
 };
 
-Game.prototype.recordMessages = function() {
-  var messages = this.messages;
-  ChatRecordDAO.createRecord(this.id, messages, function(error) {
-    if (error) {
-      winston.error('Error when recording chat messages: ' + error);
-      winston.info('Chat messages are: ' + JSON.stringify(messages));
-    }
-  });
-};
-
 Game.prototype.destroy = function(type) {
   var self = this;
   type = type || 'normal';
@@ -994,10 +1061,73 @@ Game.prototype.destroy = function(type) {
     }
   });
   this.stopTimer();
-  this.recordMessages();
   this.status = DESTROYED;
   winston.info('Game [' + this.id + '] destoryed');
   this.emit('game-destroyed', type);
+};
+
+Game.prototype.createEntity = function(creator, cb) {
+  return GameDAO.createGame(creator, this.room.id, this.id, this.createEntityParams(), cb);
+};
+
+Game.prototype.updateEntity = function() {
+  var self = this;
+  return this.entity.update({
+    $set: this.createEntityParams()
+  }, function(error) {
+    if (error) {
+      winston.error('Error when update game entity: ' + self.id);
+    }
+  });
+};
+
+var ENTITY_ATTRS = [
+  'index',
+  'mode',
+  'playMode',
+  'status',
+  'cost',
+  'rule',
+  'waitCountdown',
+  'gameCountdown',
+  'delayCountdown',
+  'capacity',
+  'duration',
+  'remainingTime',
+  'waitTime',
+  'level',
+  'startMode',
+  'delayed',
+  'userCellValues',
+  'cellValueOwners',
+  'knownCellValues',
+  'scores',
+  'timeoutCounter',
+  'optionsOnce',
+  'glassesUsed',
+  'results',
+  'optionsAlways',
+  'changedScores',
+  'playerIndex',
+  'puzzle',
+  'messages'
+];
+
+var pickEntityAttrs = function(target) {
+  var result = {};
+  ENTITY_ATTRS.forEach(function(attr) {
+    result[attr] = target[attr];
+  });
+  return result;
+};
+
+Game.prototype.createEntityParams = function() {
+  var result = pickEntityAttrs(this);
+  result.room = this.room.id;
+  result.players = _.map(this.players, 'account');
+  result.joinRecords = _.map(this.joinRecords, 'id');
+  result.quitPlayers = _.map(this.quitPlayers, 'account');
+  return result;
 };
 
 module.exports = Game;

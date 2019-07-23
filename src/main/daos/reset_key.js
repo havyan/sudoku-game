@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var common = require('./common');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
 var EXPIRES = 30 * 60;
@@ -30,7 +29,5 @@ ResetKeySchema.statics.findOneById = function(id, cb) {
     _id : ObjectId(id)
   }, cb);
 };
-
-ResetKeySchema.plugin(common);
 
 module.exports = mongoose.model('ResetKey', ResetKeySchema);

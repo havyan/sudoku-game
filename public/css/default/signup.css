@@ -9,8 +9,12 @@ input:focus {
 }
 
 .signup-form {
-  width: 400px;
+  width: 450px;
   margin: auto;
+}
+
+.signup .common-header .welcome {
+  top: 20px;
 }
 
 .signup-row {
@@ -27,17 +31,17 @@ input:focus {
 }
 
 .signup-name {
-  width: 80px;
+  width: 100px;
 }
 
 .signup-value {
-  width: 230px;
+  width: 300px;
   border-radius: 8px;
   padding-left: 5px;
   padding-right: 3px;
 }
 
-.vcode .signup-value {
+.signup-form .vcode .signup-value {
   width: 80px;
 }
 
@@ -53,15 +57,19 @@ input:focus {
 
 .protocol-read {
   font-size: 10px;
+  white-space: nowrap;
 }
 
-.protocol-read > * {
+.protocol-read > *,
+.extra-read > * {
   display: inline-block;
   vertical-align: middle;
 }
 
 .protocol-read .protocol,
-.protocol-read .law {
+.protocol-read .law,
+.protocol-read .parents,
+.protocol-read .dispute {
   color: #fff100;
   display: inline-block;
   vertical-align: middle;
@@ -76,6 +84,16 @@ input:focus {
   margin-top: 0px;
 }
 
+.extra-read {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.dispute-dialog .article .section-item-1 {
+  margin-left: 0px;
+}
+
 .common-actions {
   text-align: center;
 }
@@ -88,4 +106,20 @@ input:focus {
   display: inline-block;
   vertical-align: middle;
   color: red;
+}
+
+.lang-jp .signup-form {
+  width: 480px;
+}
+
+.lang-jp .signup-name {
+  width: 140px;
+}
+
+.lang-jp .signup-value {
+  width: 310px;
+}
+
+.lang-jp .protocol-read {
+  font-size: 12px;
 }

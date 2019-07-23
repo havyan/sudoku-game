@@ -2,21 +2,13 @@
 <html>
   <head>
     {{> common_head }}
-    <link href="{{@basecss}}/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{@basecss}}/common.css" rel="stylesheet" type="text/css" />
     <link href="{{@basecss}}/setting.css" rel="stylesheet" type="text/css" />
-    <script src="{{@basejs}}/libs3/jquery-3.1.1.js"></script>
-    <script src="{{@basejs}}/libs3/bootstrap.min.js"></script>
-    <script src="{{@basejs}}/libs3/lodash.js"></script>
-    <script src="{{@basejs}}/libs3/can.jquery.js"></script>
-    <script src="{{@basejs}}/libs/components/utils.js"></script>
-    <script src="{{@basejs}}/libs/components/dialog.js"></script>
-    <script src="{{@basejs}}/libs/rest/rest.js"></script>
     <script src="{{@basejs}}/libs/components/setting_panel.js"></script>
     <script src="{{@basejs}}/libs/setting.js"></script>
     {{{statsScript}}}
   </head>
-  <body data-account={{account}}>
+  <body class="lang-{{$lang}}" data-account={{account}}>
+    {{> i18n left=true }}
     {{> top_actions }}
     <div class="welcome">
       欢迎<span class="user-name">{{userName}}</span>, 余额<span class="money">{{money}}</span>天才币

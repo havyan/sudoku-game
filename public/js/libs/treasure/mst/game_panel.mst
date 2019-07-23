@@ -1,0 +1,58 @@
+<div class="game-panel {{type}}">
+	<div class="game-main-area"></div>
+	<div class="game-countdown-number" style="display:none;"></div>
+	<div class="game-state-area">
+	  <div class="game-remaining-time">{{formatRemainingTime remainingTime}}</div>
+		<div class="player-area">
+			{{#each players}}
+			{{#if this}}
+			<div class="game-player" data-index="{{@index}}" account="{{account}}">
+				<div class="game-player-icon"><img src="{{icon}}"></div>
+				<div class="game-player-name" title="{{name}}">{{name}}</div>
+			</div>
+			{{/if}}
+			{{/each}}
+			{{#each quitPlayers}}
+			<div class="game-player quit" data-index="{{@index}}" account="{{account}}">
+				<div class="game-player-icon"><img src="{{icon}}"></div>
+				<div class="game-player-name" title="{{name}}">{{name}}</div>
+			</div>
+			{{/each}}
+		</div>
+		<div class="game-state-separator"></div>
+		<table class="game-ranking-table">
+			<thead>
+      	<th class="game-ranking-number">即时排名</th>
+      	<th class="game-ranking-name">头像/用户</th>
+      	<th class="game-ranking-score">总分</th>
+    	</thead>
+    	<tbody>
+    		{{#ranking}}
+    		<tr class="{{type}}">
+    			<td>{{position}}</td>
+    			<td><div class="game-ranking-name-wrapper">{{name}}</div></td>
+    			<td>{{score}}</td>
+    		</tr>
+    		{{/ranking}}
+    	</tbody>
+		</table>
+		<div class="game-state-separator light"></div>
+		<div class="game-chat-messages">
+		  <div class="game-chat-messages-container scroll-panel">
+  			{{#messages}}
+  			<div class="game-message-item game-message-from-{{from.index}}">
+  				<div class="game-message-item-header">{{from.name}} ({{date}}):</div>
+  				<div class="game-message-item-content">{{{formatMessage this}}}</div>
+  			</div>
+  			{{/messages}}
+			</div>
+		</div>
+		<div class="game-state-separator light"></div>
+		<textarea class="game-message-input scroll-panel"></textarea>
+		<div class="game-state-actions">
+			<div class="rich-button game-quit-button">退出</div>
+			<div class="rich-button game-send-message-button">发送</div>
+		</div>
+		<a class="game-state-hide-button" href="javascript:void(0);"></a>
+	</div>
+</div>

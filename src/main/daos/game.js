@@ -2,32 +2,48 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
 var Mixed = Schema.Types.Mixed;
-var common = require('./common');
 
 var GameSchema = new Schema({
-  creator: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  room: {
-    type: Schema.Types.ObjectId,
-    ref: 'Room'
-  },
+  room: String,
   index: Number,
-  level: String,
-  capacity: Number,
-  duration: Number,
-  start_mode: String,
   mode: [Mixed],
-  playMode: {
-    type: String,
-    default: 'multi'
-  },
-  rule: Mixed,
+  playMode: String,
+  creator: String,
+  status: String,
+  players: [String],
+  joinRecords: [String],
   cost: {
     type: Number,
     default: 0
   },
+  rule: Mixed,
+  waitCountdown: Number,
+  gameCountdown: Number,
+  delayCountdown: Number,
+  capacity: Number,
+  duration: Number,
+  remainingTime: Number,
+  waitTime: Number,
+  level: String,
+  startMode: String,
+  quitPlayers: [String],
+  delayed: {
+    type: Boolean,
+    default: false
+  },
+  userCellValues: Mixed,
+  cellValueOwners: Mixed,
+  knownCellValues: Mixed,
+  scores: Mixed,
+  timeoutCounter: Mixed,
+  optionsOnce: Mixed,
+  glassesUsed: Mixed,
+  results: [Mixed],
+  optionsAlways: Mixed,
+  changedScores: Mixed,
+  playerIndex: Mixed,
+  puzzle: String,
+  messages: [Mixed],
   money_returned: {
     type: Boolean,
     default: false
@@ -37,14 +53,39 @@ var GameSchema = new Schema({
   real_wait_time: Number
 });
 
-GameSchema.statics.createGame = function(userId, roomId, gameId, params, cb) {
+GameSchema.statics.createGame = function(account, roomId, gameId, params, cb) {
   this.create(Object.assign({
     _id: ObjectId(gameId),
-    creator: userId && ObjectId(userId),
-    room: ObjectId(userId)
+    creator: account,
+    room: roomId
   }, params), cb);
 };
 
-GameSchema.plugin(common);
+GameSchema.statics.findUnfinishedSingleGame = function(account, cb) {
+  return this.findOne({
+    creator: account,
+    status: 'ongoing',
+    playMode: 'single'
+  }, cb);
+};
+
+GameSchema.statics.findUnfinishedRobotGame = function(account, cb) {
+  return this.findOne({
+    creator: account,
+    status: 'ongoing',
+    playMode: 'robot'
+  }, cb);
+};
+
+GameSchema.statics.finishGames = function(account, playMode, cb) {
+  return this.update({
+    creator: account,
+    playMode: playMode
+  }, {
+    $set: {
+      status: 'over'
+    }
+  }, cb);
+};
 
 module.exports = mongoose.model('Game', GameSchema);
